@@ -1,4 +1,5 @@
 import logging
+import sys
 
 class ContextFilter(logging.Filter):
     def __init__(self, context):
@@ -9,7 +10,7 @@ class ContextFilter(logging.Filter):
         return True
 
 
-def setup_logger(fname, context, stdout=True):
+def setup_logger(context, fname=None, stdout=True):
     # Set up the raymon logger
     logger = logging.getLogger("Raymon")
     logger.setLevel(logging.DEBUG)
@@ -17,17 +18,18 @@ def setup_logger(fname, context, stdout=True):
     logger.addFilter(ContextFilter(context))
     formatter = logging.Formatter("{asctime} - {name} - {context} - {message}", style='{')
 
-    # Add a file handler
-    fh = logging.FileHandler(fname)
-    fh.setFormatter(formatter)
-    fh.setLevel(logging.DEBUG)
-    logger.addHandler(fh)
+    if fname is not None:
+        # Add a file handler
+        fh = logging.FileHandler(fname)
+        fh.setFormatter(formatter)
+        fh.setLevel(logging.DEBUG)
+        logger.addHandler(fh)
 
     if stdout:
         print(f"Adding stout")
         # Add a stderr handler -- Do not send DEBUG messages to there (will contain binary data)
         sh = logging.StreamHandler(stream=sys.stdout)
-        sh.setLevel(logging.INFO)
+        sh.setLevel(logging.DEBUG)
         sh.setFormatter(formatter)
         logger.addHandler(sh)
     return logger

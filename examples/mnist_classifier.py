@@ -12,9 +12,10 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
 
-from raymon.raymon import RaymonFileLogger
+from raymon.raymon import FileLogger, APILogger
 
-ray = RaymonFileLogger(fpath='raymon.log', stdout=True, context="MNIST Example")
+# ray = FileLogger(fpath='raymon.log', stdout=True, context="MNIST Example")
+ray = APILogger(url="http://localhost:8000", context="MNIST Example")
 
 class Net(nn.Module):
     def __init__(self):
