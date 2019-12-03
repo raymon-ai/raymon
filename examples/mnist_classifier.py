@@ -12,10 +12,11 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
 
-from raymon.raymon import FileLogger, APILogger
+from raymon.external import FileLogger, APILogger
 
 # ray = FileLogger(fpath='raymon.log', stdout=True, context="MNIST Example")
-ray = APILogger(url="http://localhost:8000", context="MNIST Example")
+ray_api = APILogger(url="http://localhost:8000", context="MNIST Example")
+
 
 class Net(nn.Module):
     def __init__(self):
@@ -63,7 +64,7 @@ test_loader = torch.utils.data.DataLoader(
 
 model = Net().to(device)
 for ray_id, (data, target) in enumerate(test_loader):
-    print(ray_id)
+    ray = ray_api.ray(ray_id=ray_id)
     # ray.log_id(ray_id)  # Will make sure the ray is registered.
     ray.log_text(ray_id=ray_id, peephole="Ingestion", data="Received new ray")
     ray.log_numpy(ray_id=ray_id, peephole='network_input',  data=np.squeeze(data.numpy(), 0))
