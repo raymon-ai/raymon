@@ -14,9 +14,11 @@ class ContextFilter(logging.Filter):
 
 
 class Logger:
-    
-    def ray(self, ray_id=None):
-        return Ray(logger=logger, ray_id=ray_id)
+    def __init__(self, context):
+        self.context = context
+
+    # def ray(self, ray_id=None):
+    #     return Ray(logger=logger, ray_id=ray_id)
         
 
     def format(self, ray_id, peephole, data, dtype):
@@ -28,16 +30,28 @@ class Logger:
             'dtype': dtype,
         }
 
+class MockLogger(Logger):
+    def __init__(self, context="testing"):
+        super().__init__(context=context) 
+    """
+    Functions related to logging of rays
+    """
+    def log_text(self, ray_id, peephole, data):
+        pass
+
+    def log_numpy(self, ray_id, peephole, data):
+        pass
+
 
 class FileLogger(Logger):
 
     def __init__(self, fpath='/tmp/raymon.log', stdout=True, context="your_service_v1.1"):
-        self.logger = setup_logger(context=context, fname=fpath, stdout=stdout, )
+        super().__init__(context=context)
+        self.logger = setup_logger(context=context, fname=fpath, stdout=stdout)
 
     """
     Functions related to logging of rays
     """
-
     def log_text(self, ray_id, peephole, data):
         msg = self.format(ray_id=ray_id, peephole=peephole, data=data, dtype='text')
         self.logger.info(msg)
@@ -54,6 +68,7 @@ class APILogger(Logger):
                  user="raymond",
                  password="pass",
                  context="your_service_v1.1"):
+        super().__init__(context=context)
         self.url = url  # TODO: set up api connection
         self.headers = {'Content-type': 'application/msgpack',
                         'Authorization': 'YOURTOKEN'}
@@ -62,7 +77,6 @@ class APILogger(Logger):
     """
     Functions related to logging of rays
     """
-
     def log_text(self, ray_id, peephole, data):
         print(f"Logging TEXT...", flush=True)
         msg = self.format(ray_id=ray_id, peephole=peephole, data=data, dtype='text')
