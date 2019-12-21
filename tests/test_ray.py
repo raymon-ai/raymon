@@ -32,5 +32,3 @@ def test_merge():
     for i, pred in enumerate(merged_b.pred):
         pred == children[5+i]
         
-    
-test_merge()
