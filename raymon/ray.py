@@ -9,7 +9,7 @@ def _parse_ray_id(ray_id):
     elif isinstance(ray_id, tuple):
         return ray_id
     elif ray_id is None:
-        return (uuid.uuid4())
+        return (str(uuid.uuid4()), )
 
 def _match_prefix(raylist):
     ids = [str(ray) for ray in raylist]
@@ -39,10 +39,10 @@ class Ray:
     Methods related to data logging
     """
     def log_text(self, peephole, data):
-        self.logger.log_text(ray_id=self.ray_id, peephole=peephole, data=data)
+        self.logger.log_text(ray_id=str(self), peephole=peephole, data=data)
 
-    def log_numpy(self, ray_id, peephole, data):
-        self.logger.log_numpy(ray_id=self.ray_id, peephole=peephole, data=data)
+    def log_numpy(self, peephole, data):
+        self.logger.log_numpy(ray_id=str(self), peephole=peephole, data=data)
     
     """
     Methods related to splitting and merging

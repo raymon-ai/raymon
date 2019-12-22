@@ -1,6 +1,9 @@
 import logging
 import sys
 import pendulum
+import requests
+import msgpack
+
 
 from raymon.ray import Ray
 
@@ -14,25 +17,26 @@ class ContextFilter(logging.Filter):
 
 
 class Logger:
-    def __init__(self, context):
+    def __init__(self, context, project_id):
         self.context = context
-
+        self.project_id = project_id
     # def ray(self, ray_id=None):
     #     return Ray(logger=logger, ray_id=ray_id)
-        
-
+    
     def format(self, ray_id, peephole, data, dtype):
         return {
             'timestamp': str(pendulum.now()),
-            'ray_id': ray_id,
+            'ray_id': str(ray_id),
             'peephole': peephole,
             'data': data,
             'dtype': dtype,
+            'context': self.context,
+            'project_id': self.project_id,
         }
 
 class MockLogger(Logger):
-    def __init__(self, context="testing"):
-        super().__init__(context=context) 
+    def __init__(self, context="testing", project_id="default"):
+        super().__init__(context=context, project_di=project_id) 
     """
     Functions related to logging of rays
     """
@@ -45,8 +49,8 @@ class MockLogger(Logger):
 
 class FileLogger(Logger):
 
-    def __init__(self, fpath='/tmp/raymon.log', stdout=True, context="your_service_v1.1"):
-        super().__init__(context=context)
+    def __init__(self, fpath='/tmp/raymon.log', stdout=True, context="your_service_v1.1", project_id="default"):
+        super().__init__(context=context, project_id=project_id)
         self.logger = setup_logger(context=context, fname=fpath, stdout=stdout)
 
     """
@@ -65,11 +69,10 @@ class FileLogger(Logger):
 
 class APILogger(Logger):
     def __init__(self, url="http://localhost:8000",
-                 user="raymond",
-                 password="pass",
-                 context="your_service_v1.1"):
-        super().__init__(context=context)
-        self.url = url  # TODO: set up api connection
+                 context="your_service_v1.1",
+                 project_id="default"):
+        super().__init__(context=context, project_id=project_id)
+        self.url = url  
         self.headers = {'Content-type': 'application/msgpack',
                         'Authorization': 'YOURTOKEN'}
         self.logger = setup_logger(context=context, stdout=True)

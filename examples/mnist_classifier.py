@@ -13,9 +13,10 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 
 from raymon.external import FileLogger, APILogger
+from raymon.ray import Ray
 
 # ray = FileLogger(fpath='raymon.log', stdout=True, context="MNIST Example")
-ray_api = APILogger(url="http://localhost:8000", context="MNIST Example")
+ray_api = APILogger(url="http://localhost:8000", context="MNIST Example", project_id="Testing")
 
 
 class Net(nn.Module):
@@ -26,13 +27,13 @@ class Net(nn.Module):
         self.fc1 = nn.Linear(4*4*50, 500)
         self.fc2 = nn.Linear(500, 10)
 
-    def forward(self, x):
+    def forward(self, x, ray):
         x = F.relu(self.conv1(x))
         x = F.max_pool2d(x, 2, 2)
-        ray.log_numpy(ray_id=ray_id, peephole='l1_features', data=np.squeeze(data.numpy(), 0))
+        ray.log_numpy(peephole='l1_features', data=np.squeeze(data.numpy(), 0))
         x = F.relu(self.conv2(x))
         x = F.max_pool2d(x, 2, 2)
-        ray.log_numpy(ray_id=ray_id, peephole='l2_features', data=np.squeeze(data.numpy(), 0))
+        ray.log_numpy(peephole='l2_features', data=np.squeeze(data.numpy(), 0))
         x = x.view(-1, 4*4*50)
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
@@ -41,10 +42,10 @@ class Net(nn.Module):
 
 
 
-def process_ray(model, ray_id, data, target):
+def process_ray(model, ray, data, target):
     model.eval()
     with torch.no_grad():
-        output = model(data)
+        output = model(data, ray=ray)
         pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
         correct = pred.eq(target.view_as(pred)).sum().item()
         return correct
@@ -63,18 +64,18 @@ test_loader = torch.utils.data.DataLoader(
     shuffle=True)
 
 model = Net().to(device)
-for ray_id, (data, target) in enumerate(test_loader):
-    ray = ray_api.ray(ray_id=ray_id)
+for i, (data, target) in enumerate(test_loader):
+    ray = Ray(logger=ray_api)
     # ray.log_id(ray_id)  # Will make sure the ray is registered.
-    ray.log_text(ray_id=ray_id, peephole="Ingestion", data="Received new ray")
-    ray.log_numpy(ray_id=ray_id, peephole='network_input',  data=np.squeeze(data.numpy(), 0))
+    ray.log_text(peephole="Ingestion", data="Received new ray")
+    ray.log_numpy(peephole='network_input',  data=np.squeeze(data.numpy(), 0))
     data, target = data.to(device), target.to(device)
-    correct = process_ray(model, ray_id=ray_id, data=data, target=target)
-    if ray_id == 10:
+    correct = process_ray(model, ray=ray, data=data, target=target)
+    if i == 1:
         break
 
 # %%
-ray.log_text(ray_id=ray_id, peephole="Ingestion", data="Received new ray")
+ray.log_text(peephole="Ingestion", data="Received new ray")
 
 
 # %%
