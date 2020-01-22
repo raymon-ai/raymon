@@ -111,6 +111,9 @@ class APILogger(Logger):
 def setup_logger(context, fname=None, stdout=True):
     # Set up the raymon logger
     logger = logging.getLogger("Raymon")
+    if len(logger.handlers) > 0:
+        # Already configured
+        return logger
     logger.setLevel(logging.DEBUG)
     # Set level to debug -- will use debug messages for binary data
     logger.addFilter(ContextFilter(context))
