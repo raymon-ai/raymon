@@ -1,10 +1,10 @@
 # based on https://github.com/pytorch/examples/tree/master/mnist
 #%%
-# %load_ext autoreload
-# %autoreload 2
+%load_ext autoreload
+%autoreload 2
 
 import argparse
-
+from pathlib import Path
 import numpy as np
 import torch
 import torch.nn as nn
@@ -12,8 +12,9 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
 
-from raymon.external import FileLogger, APILogger
+from raymon.external import APILogger
 from raymon.ray import Ray
+import raymon.types as rt
 
 # ray = FileLogger(fpath='raymon.log', stdout=True, context="MNIST Example")
 ray_api = APILogger(url="http://localhost:8000", context="MNIST Example", project_id="Testing")
@@ -30,10 +31,10 @@ class Net(nn.Module):
     def forward(self, x, ray):
         x = F.relu(self.conv1(x))
         x = F.max_pool2d(x, 2, 2)
-        ray.log_numpy(peephole='l1_features', data=np.squeeze(data.numpy(), 0))
+        ray.log(peephole='l1_features', data=rt.Numpy(np.squeeze(data.numpy(), 0)))
         x = F.relu(self.conv2(x))
         x = F.max_pool2d(x, 2, 2)
-        ray.log_numpy(peephole='l2_features', data=np.squeeze(data.numpy(), 0))
+        ray.log(peephole='l2_features', data=rt.Numpy(np.squeeze(data.numpy(), 0)))
         x = x.view(-1, 4*4*50)
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
@@ -67,15 +68,17 @@ model = Net().to(device)
 for i, (data, target) in enumerate(test_loader):
     ray = Ray(logger=ray_api)
     # ray.log_id(ray_id)  # Will make sure the ray is registered.
-    ray.log_text(peephole="Ingestion", data="Received new ray")
-    ray.log_numpy(peephole='network_input',  data=np.squeeze(data.numpy(), 0))
+    ray.log(peephole="Ingestion", data=rt.Text("Received new ray"))
+    ray.log(peephole='network_input_img',  data=rt.ImageGrayscale(np.squeeze(data.numpy())))
+
     data, target = data.to(device), target.to(device)
     correct = process_ray(model, ray=ray, data=data, target=target)
-    if i == 1:
+    if i == 0:
         break
 
+
 # %%
-ray.log_text(peephole="Ingestion", data="Received new ray")
+data, target = next(iter(test_loader))
 
 
 # %%

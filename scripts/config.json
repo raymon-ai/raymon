@@ -1,0 +1,39 @@
+{
+    "peepholes": {
+        "Ingestion": {
+            "pipelines": [
+            ]
+        },
+        "network_input": {
+            "pipelines": [
+                {
+                    "settings": {
+                        "always": "true",
+                        "name": "Intensity Outlier detection"
+                    },
+                    "transforms": [
+                        {
+                            "type": "predef",
+                            "function": "Histogram",
+                            "params": {
+                                "bins": 15,
+                                "density": true
+                            },
+                            "store": true
+                        }
+                    ],
+                    "aggregation": {
+                        "agg_func": "average_bins",
+                        "interval": "5m"
+                    },
+                    "alerts": [
+                        {
+                            "type": "outlier_detection"
+                        }
+                    ]
+                }
+            ]
+        }
+                
+    }
+}

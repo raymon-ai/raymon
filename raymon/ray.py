@@ -38,11 +38,18 @@ class Ray:
     """
     Methods related to data logging
     """
-    def log_text(self, peephole, data):
-        self.logger.log_text(ray_id=str(self), peephole=peephole, data=data)
+    
+    def log(self, peephole, data):
+        self.logger.log(ray_id=str(self), peephole=peephole, data=data)
+        
+    # def log_text(self, peephole, data):
+    #     self.logger.log_text(ray_id=str(self), peephole=peephole, data=data)
 
-    def log_numpy(self, peephole, data):
-        self.logger.log_numpy(ray_id=str(self), peephole=peephole, data=data)
+    # def log_numpy(self, peephole, data):
+    #     self.logger.log_numpy(ray_id=str(self), peephole=peephole, data=data)
+        
+    # def log_image_rgb(self, peephole, data):
+    #     self.logger.log_image_rgb(ray_id=str(self), peephole=peephole, data=data)
     
     """
     Methods related to splitting and merging
@@ -66,7 +73,6 @@ class Ray:
         return Ray(ref_logger, ray_id=new_id, pred=raylist)
     
     def __str__(self):
-        print("Using idstr")
         return ":".join(self.ray_id)
     
 
