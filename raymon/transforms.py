@@ -21,17 +21,6 @@ class Histogram(Transform):
         return hist
 
 
-class ChannelSelect(Transform):
-
-    def __init__(self, store, **kwargs):
-        super().__init__(store)
-        self.kwargs = kwargs
-
-    def __call__(self, data):
-        hist = rt.Numpy(data=data.data[:, :, self.kwargs['channel']])
-        return hist
-
-
 tfs = {
     'Histogram': Histogram,
 }

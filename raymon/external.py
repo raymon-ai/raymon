@@ -35,17 +35,8 @@ class Logger:
             'project_id': self.project_id,
         }
 
-class MockLogger(Logger):
-    def __init__(self, context="testing", project_id="default"):
-        super().__init__(context=context, project_di=project_id) 
-    """
-    Functions related to logging of rays
-    """
-    def log(self, ray_id, peephole, data):
-        pass
 
-
-class APILogger(Logger):
+class RaymonAPI(Logger):
     def __init__(self, url="http://localhost:8000",
                  context="your_service_v1.1",
                  project_id="default",
@@ -64,7 +55,6 @@ class APILogger(Logger):
                 "client_id": self.secret['client_id'],
                 "client_secret": self.secret['client_secret']
                }
-        print(f"Request body: {body}")
         headers = {'Content-type': 'application/json'}
         resp = requests.post(url=self.secret['login_url'], headers=headers, json=body)
         if resp.status_code != 200:
@@ -77,7 +67,6 @@ class APILogger(Logger):
     """
     Functions related to logging of rays
     """
-
     def log(self, ray_id, peephole, data):
         print(f"Logging Raymon Datatype...{type(data)}", flush=True)
         msg = self.format(ray_id=ray_id, peephole=peephole, data=data.to_json())
@@ -86,26 +75,32 @@ class APILogger(Logger):
                              data=msg_data,
                              headers=self.headers)
         self.logger.debug(f"{ray_id} logged at {peephole}: {resp}")
+    
         
+    def post(self, route, data):
+        resp = requests.post(f"{self.url}/{route}",
+                             data=msgpack.packb(data),
+                             headers=self.headers)
+        return resp
+    
+    def get(self, route, params):
+        resp = requests.get(f"{self.url}/{route}",
+                            params=params,
+                            headers=self.headers)
         
-    # def log_text(self, ray_id, peephole, data):
-    #     print(f"Logging TEXT...", flush=True)
-    #     msg = self.format(ray_id=ray_id, peephole=peephole, data=data, dtype='text')
-    #     msg_data = msgpack.packb(msg)
-    #     resp = requests.post(f"{self.url}/ingest_text",
-    #                          data=msg_data,
-    #                          headers=self.headers)
-    #     print(resp)
-    #     self.logger.debug(f"{ray_id} logged at {peephole}: Text")
+        return resp
+        
 
-    # def log_numpy(self, ray_id, peephole, data):
-    #     print(f"Logging NUMPY...{type(data)}", flush=True)
-    #     msg = self.format(ray_id=ray_id, peephole=peephole, data=data.tolist(), dtype='numpy')
-    #     msg_data = msgpack.packb(msg)
-    #     resp = requests.post(f"{self.url}/ingest_image",
-    #                          data=msg_data,
-    #                          headers=self.headers)
-    #     self.logger.debug(f"{ray_id} logged at {peephole}: {resp}")
+class MockLogger(Logger):
+    def __init__(self, context="testing", project_id="default"):
+        super().__init__(context=context, project_di=project_id)
+    """
+    Functions related to logging of rays
+    """
+
+    def log(self, ray_id, peephole, data):
+        pass
+
 
 
 def setup_logger(context, fname=None, stdout=True):
@@ -135,28 +130,3 @@ def setup_logger(context, fname=None, stdout=True):
         logger.addHandler(sh)
     return logger
 
-
-# class FileLogger(Logger):
-
-#     def __init__(self, fpath='/tmp/raymon.log', stdout=True, context="your_service_v1.1", project_id="default"):
-#         super().__init__(context=context, project_id=project_id)
-#         self.logger = setup_logger(context=context, fname=fpath, stdout=stdout)
-
-#     """
-#     Functions related to logging of rays
-#     """
-#     # def log_text(self, ray_id, peephole, data):
-#     #     msg = self.format(ray_id=ray_id, peephole=peephole, data=data, dtype='Text')
-#     #     self.logger.info(msg)
-
-#     # def log_numpy(self, ray_id, peephole, data):
-#     #     # print(f"Logging image of type: {type(data)}")
-#     #     # data_enc = msgpack.packb(data.tolist())
-#     #     msg = self.format(ray_id=ray_id, peephole=peephole, data=data.tolist(), dtype='Numpy')
-#     #     self.logger.debug(msg)
-
-#     # def log_image_rgb(self, ray_id, peephole, data):
-#     #     # print(f"Logging image of type: {type(data)}")
-#     #     # data_enc = msgpack.packb(data.tolist())
-#     #     msg = self.format(ray_id=ray_id, peephole=peephole, data=data.tolist(), dtype='ImageRGB')
-#     #     self.logger.debug(msg)

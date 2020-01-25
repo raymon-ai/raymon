@@ -77,31 +77,31 @@ for i, (data, target) in enumerate(test_loader):
         break
 
 
-# %%
-data, target = next(iter(test_loader))
-rm_img = rt.ImageGrayscale(np.squeeze(data.numpy()))
+# # %%
+# data, target = next(iter(test_loader))
+# rm_img = rt.ImageGrayscale(np.squeeze(data.numpy()))
 
-# %%
-from bokeh.plotting import figure, show, output_file, output_notebook
-from bokeh.embed import json_item
-# output_file()
+# # %%
+# from bokeh.plotting import figure, show, output_file, output_notebook
+# from bokeh.embed import json_item
+# # output_file()
 
-p = rm_img.visualize(json=False)
-show(p)
-# %%
-import raymon.transforms as tfs
+# p = rm_img.visualize(json=False)
+# show(p)
+# # %%
+# import raymon.transforms as tfs
 
-hist_tf = tfs.Histogram()
-hist = hist_tf(rm_img)
+# hist_tf = tfs.Histogram()
+# hist = hist_tf(rm_img)
 
-# %%
-p = hist.visualize(json=False)
-show(p)
+# # %%
+# p = hist.visualize(json=False)
+# show(p)
 
-# %%
-from PIL import Image
-rgb_img = np.array(Image.open('/Users/kv/stack/Startup/Raymon/Code/raymon/bunny.jpeg').resize((350, 500)))
-rm_rgb = rt.ImageRGBA(data=rgb_img)
-show(rm_rgb.visualize(json=False, plot_width=500, plot_height=350))
+# # %%
+# from PIL import Image
+# rgb_img = np.array(Image.open('/Users/kv/stack/Startup/Raymon/Code/raymon/bunny.jpeg').resize((350, 500)))
+# rm_rgb = rt.ImageRGBA(data=rgb_img)
+# show(rm_rgb.visualize(json=False, plot_width=500, plot_height=350))
 
-# %%
+# # %%

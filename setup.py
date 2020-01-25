@@ -17,4 +17,15 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         ],
     python_requires='>=3.6',
+    install_requires=[
+        # For manifest parsing -- move to api
+        "pyyaml",
+        # For plotting --move to separate repo
+        "bokeh>=1.4.0",
+        "matplotlib"
+        ],
+    entry_points='''
+        [console_scripts]
+        rayctl=raymon.cli.rayctl:cli
+    ''',
 )
