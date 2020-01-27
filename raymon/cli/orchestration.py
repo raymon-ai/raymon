@@ -1,10 +1,7 @@
-import psycopg2
 import json
 import click
 import yaml
-import io
 import requests
-import msgpack
 from raymon.external import RaymonAPI
 
 @click.group()

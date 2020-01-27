@@ -1,5 +1,6 @@
 # based on https://github.com/pytorch/examples/tree/master/mnist
 #%%
+from raymon.external import RaymonAPI
 %load_ext autoreload
 %autoreload 2
 
@@ -12,12 +13,11 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
 
-from raymon.external import APILogger
 from raymon.ray import Ray
 import raymon.types as rt
 
 # ray = FileLogger(fpath='raymon.log', stdout=True, context="MNIST Example")
-ray_api = APILogger(url="http://localhost:8000", context="MNIST Example", project_id="Testing")
+ray_api = RaymonAPI(url="http://localhost:8000", context="MNIST Example", project_id="MyProj")
 
 
 class Net(nn.Module):
