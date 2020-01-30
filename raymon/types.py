@@ -3,7 +3,7 @@ import msgpack
 from abc import abstractmethod
 
 from bokeh.plotting import figure, show
-from bokeh.embed import json_item
+from bokeh.embed import components
 
 import matplotlib.pyplot as plt
 
@@ -70,9 +70,11 @@ class ImageRGBA(RaymonDataType):
         p.x_range.range_padding = p.y_range.range_padding = 0
         p.image_rgba(image=[self.data[::-1, ::-1]], x=0, y=0, dw=5, dh=5)
         if json:
+            script, div = components(p, wrap_script=False)
+            vue_plot = {'div': div, 'script': script}
             data = {
                 'type': 'bokeh',
-                'data': json_item(p, "Image")
+                'data': vue_plot
             }
             return data
         else:
@@ -104,10 +106,13 @@ class ImageGrayscale(RaymonDataType):
         p = figure()  # tooltips=[("x", "$x"), ("y", "$y"), ("value", "@image")]
         p.x_range.range_padding = p.y_range.range_padding = 0
         p.image(image=[self.data], x=0, y=0, dw=5, dh=5, palette="Greys256")
+        
         if json:
+            script, div = components(p, wrap_script=False)
+            vue_plot = {'div': div, 'script': script}
             data = {
                 'type': 'bokeh',
-                'data': json_item(p, "Image")
+                'data': vue_plot
             }
             return data
         else:
@@ -217,10 +222,12 @@ class Histogram(RaymonDataType):
         if 'y_axis_label' in self.kwargs:
             p.yaxis.axis_label = self.kwargs['y_axis_label']
         
-        if json:         
+        if json:     
+            script, div = components(p, wrap_script=False)
+            vue_plot = {'div': div, 'script': script}
             data = {
                 'type': 'bokeh',
-                'data': json_item(p, "Image")
+                'data': vue_plot
             }
             return data
         else:

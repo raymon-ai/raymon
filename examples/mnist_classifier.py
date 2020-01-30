@@ -17,7 +17,7 @@ from raymon.ray import Ray
 import raymon.types as rt
 
 # ray = FileLogger(fpath='raymon.log', stdout=True, context="MNIST Example")
-ray_api = RaymonAPI(url="http://localhost:8000", context="MNIST Example", project_id="MyProj")
+ray_api = RaymonAPI(url="http://localhost:8000", context="MNIST Example", project_id="Deployment 1")
 
 
 class Net(nn.Module):
@@ -68,12 +68,12 @@ model = Net().to(device)
 for i, (data, target) in enumerate(test_loader):
     ray = Ray(logger=ray_api)
     # ray.log_id(ray_id)  # Will make sure the ray is registered.
-    ray.log(peephole="Ingestion", data=rt.Text("Received new ray"))
+    ray.log(peephole="ingestion", data=rt.Text("Received new ray"))
     ray.log(peephole='network_input_img',  data=rt.ImageGrayscale(np.squeeze(data.numpy())))
 
     data, target = data.to(device), target.to(device)
     correct = process_ray(model, ray=ray, data=data, target=target)
-    if i == 0:
+    if i == 10:
         break
 
 
@@ -105,3 +105,6 @@ for i, (data, target) in enumerate(test_loader):
 # show(rm_rgb.visualize(json=False, plot_width=500, plot_height=350))
 
 # # %%
+
+
+# %%
