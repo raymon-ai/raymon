@@ -1,8 +1,8 @@
 # based on https://github.com/pytorch/examples/tree/master/mnist
 #%%
 from raymon.external import RaymonAPI
-%load_ext autoreload
-%autoreload 2
+# %load_ext autoreload
+# %autoreload 2
 
 import argparse
 from pathlib import Path
@@ -73,7 +73,7 @@ for i, (data, target) in enumerate(test_loader):
 
     data, target = data.to(device), target.to(device)
     correct = process_ray(model, ray=ray, data=data, target=target)
-    if i == 10:
+    if i == 9:
         break
 
 

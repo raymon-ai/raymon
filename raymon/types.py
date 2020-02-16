@@ -184,8 +184,10 @@ class Vector(RaymonDataType):
 
 class Histogram(RaymonDataType):
     def __init__(self, counts, edges, names=None, normalized=False, **kwargs):
+        counts = np.array(counts)
+        edges = np.array(edges)
         if self.valid(counts, edges):
-            self.counts = np.array(counts)
+            self.counts = counts
             self.edges = edges
             self.names = names
             self.normalized = normalized
@@ -265,9 +267,11 @@ DTYPES = {
     'Histogram': Histogram
 }
 
+def from_json(loaded_json):
+    params = loaded_json['params']
+    dtype = loaded_json['type']
+    return DTYPES[dtype](**params)
 
 def from_msgpack(data):
     loaded_data = msgpack.unpackb(data, raw=False)
-    params = loaded_data['params']
-    dtype = loaded_data['type']
-    return DTYPES[dtype](**params)
+    return from_json(loaded_data)

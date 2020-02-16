@@ -122,7 +122,7 @@ def setup_logger(context, fname=None, stdout=True):
         logger.addHandler(fh)
 
     if stdout:
-        print(f"Adding stout")
+        # print(f"Adding stout")
         # Add a stderr handler -- Do not send DEBUG messages to there (will contain binary data)
         sh = logging.StreamHandler(stream=sys.stdout)
         sh.setLevel(logging.DEBUG)
