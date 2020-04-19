@@ -65,8 +65,8 @@ class Deployment:
         self.model = model
         self.model.eval()
         # Specify the Raymon API endpoint
-        self.raymon = RaymonAPI(url="http://yourcompany.raymon.ai/api",
-                                context="MNIST Example",
+        self.raymon = RaymonAPI(url="http://localhost:8000", 
+                                context="MNIST Example", 
                                 project_id="istart")
 
     

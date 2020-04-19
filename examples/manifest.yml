@@ -9,7 +9,7 @@ peepholes:
       always: true
       transform:
         function: null
-    - name: intensity_hist
+    - name:   
       always: true
       transform:
         function: Histogram

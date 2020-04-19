@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="raymon",  # Replace with your own username
-    version="0.0.4",
+    version="0.0.5",
     author="Raymon.ai",
     author_email="dev@raymon.ai",
     description="Python package for raymon logging and monitoring.",
@@ -22,7 +22,8 @@ setuptools.setup(
         "pyyaml",
         # For plotting --move to separate repo
         "bokeh>=1.4.0",
-        "matplotlib"
+        "matplotlib",
+        "msgpack",
         ],
     entry_points='''
         [console_scripts]

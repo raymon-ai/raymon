@@ -50,7 +50,7 @@ p = figure(title="Evolution of histograms over time",
         #    x_range=range(n_times), y_range=range(n_buckets),
            tooltips=[('(ts, bin_number)', '@ts, @bin_number'), ('count', '@count')])
 
-p.plot_width = 1200
+p.plot_width = 900
 p.plot_height = 400
 p.grid.grid_line_color = None
 p.axis.axis_line_color = None
