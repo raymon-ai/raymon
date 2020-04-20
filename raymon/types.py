@@ -1,7 +1,7 @@
 import numpy as np
 import msgpack
 from abc import abstractmethod
-
+import json
 from bokeh.plotting import figure, show
 from bokeh.embed import components
 
@@ -18,15 +18,18 @@ class RaymonDataType:
         pass
 
     @abstractmethod
+    def to_dict(self):
+        pass
+    
     def to_json(self):
-        pass
+        return json.dumps(self.to_dict())
 
-    @abstractmethod
-    def visualize(self, **kwargs):
-        pass
+    # @abstractmethod
+    # def visualize(self, **kwargs):
+    #     pass
 
     def to_msgpack(self):
-        return msgpack.packb(self.to_json())
+        return msgpack.packb(self.to_dict())
 
 
 class ImageRGBA(RaymonDataType):
@@ -56,7 +59,7 @@ class ImageRGBA(RaymonDataType):
             raise DataFormatException("Image shoud have width, height and 3 channels")
         return True
 
-    def to_json(self):
+    def to_dict(self):
         data = {
             'type': self.__class__.__name__,
             'params': {
@@ -69,6 +72,7 @@ class ImageRGBA(RaymonDataType):
         p = figure(**kwargs)
         p.x_range.range_padding = p.y_range.range_padding = 0
         p.image_rgba(image=[self.data[::-1, ::-1]], x=0, y=0, dw=5, dh=5)
+
         if json:
             script, div = components(p, wrap_script=False)
             vue_plot = {'div': div, 'script': script}
@@ -77,6 +81,7 @@ class ImageRGBA(RaymonDataType):
                 'data': vue_plot
             }
             return data
+
         else:
             return p
 
@@ -93,7 +98,7 @@ class ImageGrayscale(RaymonDataType):
             raise DataFormatException("Image array should have 2 axis: Width and height")
         return True
 
-    def to_json(self):
+    def to_dict(self):
         data = {
             'type': self.__class__.__name__,
             'params': {
@@ -101,6 +106,7 @@ class ImageGrayscale(RaymonDataType):
             }
         }
         return data
+
 
     def visualize(self, json=True, **kwargs):
         p = figure()  # tooltips=[("x", "$x"), ("y", "$y"), ("value", "@image")]
@@ -115,6 +121,7 @@ class ImageGrayscale(RaymonDataType):
                 'data': vue_plot
             }
             return data
+
         else:
             return p
 
@@ -130,7 +137,7 @@ class Numpy(RaymonDataType):
         #     raise DataFormatException("Image array should have 2 axis: Width and height")
         return True
 
-    def to_json(self):
+    def to_dict(self):
         data = {
             'type': self.__class__.__name__,
             'params': {
@@ -138,6 +145,7 @@ class Numpy(RaymonDataType):
             }
         }
         return data
+
     
     def visualize(self, json=True, **kwargs):
         data = {
@@ -145,6 +153,7 @@ class Numpy(RaymonDataType):
             'data': str(self.data)
         }
         return data
+
 
 
 
@@ -163,7 +172,7 @@ class Vector(RaymonDataType):
             raise DataFormatException("Vector data and names must have same shape")
         return True
 
-    def to_json(self):
+    def to_dict(self):
         data = {
             'type': self.__class__.__name__,
             'params': {
@@ -173,6 +182,7 @@ class Vector(RaymonDataType):
 
         }
         return data
+
     
     def visualize(self, json=True, **kwargs):
         data = {
@@ -180,6 +190,7 @@ class Vector(RaymonDataType):
             'data': str(self.data)
         }
         return data
+
 
 
 class Histogram(RaymonDataType):
@@ -202,7 +213,7 @@ class Histogram(RaymonDataType):
             raise DataFormatException("len(counts) must be len(edges)-1")
         return True
 
-    def to_json(self):
+    def to_dict(self):
         data = {
             'type': self.__class__.__name__,
             'params': {
@@ -214,6 +225,7 @@ class Histogram(RaymonDataType):
 
         }
         return data
+
     
     def visualize(self,  json=True, **kwargs):
         p = figure(**kwargs)
@@ -232,6 +244,7 @@ class Histogram(RaymonDataType):
                 'data': vue_plot
             }
             return data
+
         else:
             return p
 
@@ -248,7 +261,7 @@ class Text(RaymonDataType):
             raise DataFormatException("text must be str")
         return True
 
-    def to_json(self):
+    def to_dict(self):
         data = {
             'type': self.__class__.__name__,
             'params': {
@@ -256,6 +269,7 @@ class Text(RaymonDataType):
             }
         }
         return data
+
 
 
 DTYPES = {
