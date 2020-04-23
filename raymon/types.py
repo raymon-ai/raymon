@@ -24,10 +24,6 @@ class RaymonDataType:
     def to_json(self):
         return json.dumps(self.to_dict())
 
-    # @abstractmethod
-    # def visualize(self, **kwargs):
-    #     pass
-
     def to_msgpack(self):
         return msgpack.packb(self.to_dict())
 
@@ -218,7 +214,6 @@ class Histogram(RaymonDataType):
             'type': self.__class__.__name__,
             'params': {
                 'counts': self.counts.tolist(),
-                'edges': self.edges.tolist(),
                 'names': self.names,
                 'edges': self.edges.tolist(),
             }
@@ -250,34 +245,33 @@ class Histogram(RaymonDataType):
 
 
 
-class Text(RaymonDataType):
-    def __init__(self, text):
-        if self.valid(text):
-            self.text = text
 
-    def valid(self, text):
-        # Validate 3 channels
-        if not isinstance(text, str):
-            raise DataFormatException("text must be str")
-        return True
+class HTML(RaymonDataType):
+    
+    def __init__(self, data):
+        if self.valid(data):
+            self.data = data
+    
+    def valid(self, data):
+        if isinstance(data, str):
+            return True
 
     def to_dict(self):
         data = {
             'type': self.__class__.__name__,
             'params': {
-                'text': self.text,
+                'data': self.data,
             }
         }
         return data
-
-
-
+    
+    
 DTYPES = {
     'ImageRGBA': ImageRGBA,
     'ImageGrayscale': ImageGrayscale,
     'Numpy': Numpy,
     'Vector': Vector,
-    'Text': Text,
+    'HTML': HTML,
     'Histogram': Histogram
 }
 

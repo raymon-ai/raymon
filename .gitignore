@@ -106,3 +106,7 @@ venv.bak/
 # MacOS
 **/.DS_Store
 .vscode
+
+*.jpeg
+dev/*
+store_secret.py
