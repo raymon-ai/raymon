@@ -29,6 +29,7 @@ class RaymonDataType:
 
 
 class ImageRGBA(RaymonDataType):
+    
     def __init__(self, data):
         data = np.array(data)
         if self.valid(data):
@@ -67,6 +68,7 @@ class ImageRGBA(RaymonDataType):
 
 
 class ImageGrayscale(RaymonDataType):
+    
     def __init__(self, data):
         data = np.array(data)
         if self.valid(data):
@@ -89,6 +91,7 @@ class ImageGrayscale(RaymonDataType):
 
 
 class Numpy(RaymonDataType):
+    
     def __init__(self, data):
         data = np.array(data)
         if self.valid(data):
@@ -111,6 +114,7 @@ class Numpy(RaymonDataType):
 
 
 class Vector(RaymonDataType):
+    
     def __init__(self, data, names=None):
         if self.valid(data, names):
             self.data = np.array(data)
@@ -138,6 +142,7 @@ class Vector(RaymonDataType):
 
 
 class Histogram(RaymonDataType):
+    
     def __init__(self, counts, edges, names=None, normalized=False, **kwargs):
         counts = np.array(counts)
         edges = np.array(edges)
