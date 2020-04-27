@@ -64,22 +64,6 @@ class ImageRGBA(RaymonDataType):
         }
         return data
 
-    def visualize(self, json=True, **kwargs):
-        p = figure(**kwargs)
-        p.x_range.range_padding = p.y_range.range_padding = 0
-        p.image_rgba(image=[self.data[::-1, ::-1]], x=0, y=0, dw=5, dh=5)
-
-        if json:
-            script, div = components(p, wrap_script=False)
-            vue_plot = {'div': div, 'script': script}
-            data = {
-                'type': 'bokeh',
-                'data': vue_plot
-            }
-            return data
-
-        else:
-            return p
 
 
 class ImageGrayscale(RaymonDataType):
@@ -104,23 +88,6 @@ class ImageGrayscale(RaymonDataType):
         return data
 
 
-    def visualize(self, json=True, **kwargs):
-        p = figure()  # tooltips=[("x", "$x"), ("y", "$y"), ("value", "@image")]
-        p.x_range.range_padding = p.y_range.range_padding = 0
-        p.image(image=[self.data], x=0, y=0, dw=5, dh=5, palette="Greys256")
-        
-        if json:
-            script, div = components(p, wrap_script=False)
-            vue_plot = {'div': div, 'script': script}
-            data = {
-                'type': 'bokeh',
-                'data': vue_plot
-            }
-            return data
-
-        else:
-            return p
-
 class Numpy(RaymonDataType):
     def __init__(self, data):
         data = np.array(data)
@@ -141,16 +108,6 @@ class Numpy(RaymonDataType):
             }
         }
         return data
-
-    
-    def visualize(self, json=True, **kwargs):
-        data = {
-            'type': 'text',
-            'data': str(self.data)
-        }
-        return data
-
-
 
 
 class Vector(RaymonDataType):
@@ -178,15 +135,6 @@ class Vector(RaymonDataType):
 
         }
         return data
-
-    
-    def visualize(self, json=True, **kwargs):
-        data = {
-            'type': 'text',
-            'data': str(self.data)
-        }
-        return data
-
 
 
 class Histogram(RaymonDataType):
@@ -221,30 +169,6 @@ class Histogram(RaymonDataType):
         }
         return data
 
-    
-    def visualize(self,  json=True, **kwargs):
-        p = figure(**kwargs)
-        p.quad(top=self.counts, bottom=0, left=self.edges[:-1], right=self.edges[1:])
-
-        if 'x_axis_label' in self.kwargs:
-            p.xaxis.axis_label = self.kwargs['x_axis_label']
-        if 'y_axis_label' in self.kwargs:
-            p.yaxis.axis_label = self.kwargs['y_axis_label']
-        
-        if json:     
-            script, div = components(p, wrap_script=False)
-            vue_plot = {'div': div, 'script': script}
-            data = {
-                'type': 'bokeh',
-                'data': vue_plot
-            }
-            return data
-
-        else:
-            return p
-
-
-
 
 class HTML(RaymonDataType):
     
@@ -275,11 +199,11 @@ DTYPES = {
     'Histogram': Histogram
 }
 
-def from_json(loaded_json):
+def from_dict(loaded_json):
     params = loaded_json['params']
     dtype = loaded_json['type']
     return DTYPES[dtype](**params)
 
 def from_msgpack(data):
     loaded_data = msgpack.unpackb(data, raw=False)
-    return from_json(loaded_data)
+    return from_dict(loaded_data)
