@@ -2,7 +2,6 @@ import logging
 import sys
 import pendulum
 import requests
-import msgpack
 from pathlib import Path
 
 from raymon.ray import Ray
@@ -44,8 +43,8 @@ class RaymonAPI(Logger):
                  secret_fpath=Path("~/.raymon/secret.json").expanduser()):
         super().__init__(context=context, project_id=project_id)
         self.url = url  
-        self.headers = {'Content-type': 'application/msgpack'}
-        self.auth_headers = {'Content-type': 'application/json'}
+        # self.headers = {'Content-type': 'application/msgpack'}
+        self.headers = {'Content-type': 'application/json'}
         self.logger = setup_logger(context=context, stdout=True)
         self.secret = load_secret(secret_fpath)
         self.login()
@@ -70,17 +69,16 @@ class RaymonAPI(Logger):
     """
     def log(self, ray_id, peephole, data):
         print(f"Logging Raymon Datatype...{type(data)}", flush=True)
-        msg = self.format(ray_id=ray_id, peephole=peephole, data=data.to_json())
-        msg_data = msgpack.packb(msg)
+        msg = self.format(ray_id=ray_id, peephole=peephole, data=data.to_dict())
         resp = requests.post(f"{self.url}/ingest",
-                             data=msg_data,
+                             json=msg,
                              headers=self.headers)
         self.logger.debug(f"{ray_id} logged at {peephole}: {resp}")
     
         
     def post(self, route, data):
         resp = requests.post(f"{self.url}/{route}",
-                             data=msgpack.packb(data),
+                             json=data,
                              headers=self.headers)
         return resp
     

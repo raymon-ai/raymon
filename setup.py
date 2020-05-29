@@ -23,7 +23,6 @@ setuptools.setup(
         # For plotting --move to separate repo
         "bokeh>=1.4.0",
         "matplotlib",
-        "msgpack",
         "pendulum"
         ],
     entry_points='''
