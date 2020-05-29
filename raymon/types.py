@@ -14,10 +14,6 @@ class DataFormatException(Exception):
 class RaymonDataType:
 
     @abstractmethod
-    def valid(self, data):
-        pass
-
-    @abstractmethod
     def to_dict(self):
         pass
     
@@ -28,27 +24,14 @@ class RaymonDataType:
         return msgpack.packb(self.to_dict())
 
 
-class ImageRGBA(RaymonDataType):
+class ImageRGB(RaymonDataType):
     
     def __init__(self, data):
         data = np.array(data)
-        if self.valid(data):
-            self.data = self.convert_rgba(data)
-            print(self.data.shape)
-
-    def convert_rgba(self, data):
-        if data.shape[-1] == 3:
-            rgba_shape = data.shape[0:2] + (4, )
-            rgba_img = np.ones(shape=rgba_shape) * 255
-            rgba_img[:, :, :-1] = data
-            rgba_img = rgba_img.astype(np.uint8)
-            data = rgba_img
-        # Bokeh expects rgba images in a weird way...
-        rgba_img = rgba_img.view(dtype=np.uint32).reshape((data.shape[:2]))
-
-        return rgba_img
+        self.validate(data)
+        self.data = data
         
-    def valid(self, data):
+    def validate(self, data):
         # Validate 3 channels
         if len(data.shape) != 3:
             raise DataFormatException("Image array should have 3 axis: Widht, Height and Channels")
@@ -71,10 +54,10 @@ class ImageGrayscale(RaymonDataType):
     
     def __init__(self, data):
         data = np.array(data)
-        if self.valid(data):
-            self.data = data
+        self.validate(data)
+        self.data = data
 
-    def valid(self, data):
+    def validate(self, data):
         # Validate 3 channels
         if len(data.shape) != 2:
             raise DataFormatException("Image array should have 2 axis: Width and height")
@@ -94,13 +77,10 @@ class Numpy(RaymonDataType):
     
     def __init__(self, data):
         data = np.array(data)
-        if self.valid(data):
-            self.data = data
+        self.validate(data)
+        self.data = data
 
-    def valid(self, data):
-        # # Validate 3 channels
-        # if len(data.shape) != 2:
-        #     raise DataFormatException("Image array should have 2 axis: Width and height")
+    def validate(self, data):
         return True
 
     def to_dict(self):
@@ -114,15 +94,13 @@ class Numpy(RaymonDataType):
 
 
 class Vector(RaymonDataType):
-    
-    def __init__(self, data, names=None):
-        if self.valid(data, names):
-            self.data = np.array(data)
-            self.names = np.array(names) if not names is None else None
 
-    def valid(self, data, names):
-        print(f"Vector validation input: Data {data}, names {names}")
-        # Validate 3 channels
+    def __init__(self, data, names=None):
+        self.validate(data, names)
+        self.data = np.array(data)
+        self.names = np.array(names) if not names is None else None
+
+    def validate(self, data, names):
         if len(data.shape) != 1:
             raise DataFormatException("Vector data must be a 1D array")
         if names is not None and len(data) != len(names):
@@ -146,16 +124,15 @@ class Histogram(RaymonDataType):
     def __init__(self, counts, edges, names=None, normalized=False, **kwargs):
         counts = np.array(counts)
         edges = np.array(edges)
-        if self.valid(counts, edges):
-            self.counts = counts
-            self.edges = edges
-            self.names = names
-            self.normalized = normalized
-            self.kwargs = kwargs
+        self.validate(counts, edges)
+        self.counts = counts
+        self.edges = edges
+        self.names = names
+        self.normalized = normalized
+        self.kwargs = kwargs
             
 
-    def valid(self, counts, edges):
-        # Validate 3 channels
+    def validate(self, counts, edges):
         if len(counts.shape) != 1:
             raise DataFormatException("counts must be a 1D array")
         if len(counts) != len(edges) - 1:
@@ -175,32 +152,14 @@ class Histogram(RaymonDataType):
         return data
 
 
-class HTML(RaymonDataType):
-    
-    def __init__(self, data):
-        if self.valid(data):
-            self.data = data
-    
-    def valid(self, data):
-        if isinstance(data, str):
-            return True
 
-    def to_dict(self):
-        data = {
-            'type': self.__class__.__name__,
-            'params': {
-                'data': self.data,
-            }
-        }
-        return data
     
     
 DTYPES = {
-    'ImageRGBA': ImageRGBA,
+    'ImageRGB': ImageRGB,
     'ImageGrayscale': ImageGrayscale,
     'Numpy': Numpy,
     'Vector': Vector,
-    'HTML': HTML,
     'Histogram': Histogram
 }
 

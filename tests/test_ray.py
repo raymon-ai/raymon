@@ -1,6 +1,16 @@
 #%%
 from raymon.ray import Ray
-from raymon.external import MockLogger
+
+
+class MockLogger(Logger):
+    def __init__(self, context="testing", project_id="default"):
+        super().__init__(context=context, project_di=project_id)
+    """
+    Functions related to logging of rays
+    """
+
+    def log(self, ray_id, peephole, data):
+        pass
 
 
 def test_split():
