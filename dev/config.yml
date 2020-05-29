@@ -1,4 +1,0 @@
-project: yourproject
-peepholes:
-  - model_input:
-      - 
