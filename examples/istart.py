@@ -71,9 +71,15 @@ class Deployment:
 
     
     def process(self, data):
-        # Every time you want to trace some data through your system, Do so by creating a Ray object
+        # Every time you want to trace some data through your system, Do so by creating a 
+        # Ray object
         ray = Ray(logger=self.raymon)
         # At any time, you can log data to the backend using the ray object
+        ray.metadata({
+            'client_id': 'abcde',
+            'gender': 'male',
+            'machine': 'weaving_5'
+        })
         ray.log(peephole='network_input_img',  
                 data=rt.ImageGrayscale(np.squeeze(data.numpy())))
 

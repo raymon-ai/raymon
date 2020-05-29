@@ -9,6 +9,7 @@ from raymon.ray import Ray
 from raymon.io import load_secret
 from raymon.exceptions import NetworkException
 
+
 class ContextFilter(logging.Filter):
     def __init__(self, context):
         self.context = context

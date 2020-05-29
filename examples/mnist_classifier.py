@@ -68,7 +68,6 @@ model = Net().to(device)
 for i, (data, target) in enumerate(test_loader):
     ray = Ray(logger=ray_api)
     # ray.log_id(ray_id)  # Will make sure the ray is registered.
-    ray.log(peephole="ingestion", data=rt.Text("Received new ray"))
     ray.log(peephole='network_input_img',  data=rt.ImageGrayscale(np.squeeze(data.numpy())))
 
     data, target = data.to(device), target.to(device)

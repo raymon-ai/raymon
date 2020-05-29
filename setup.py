@@ -24,6 +24,7 @@ setuptools.setup(
         "bokeh>=1.4.0",
         "matplotlib",
         "msgpack",
+        "pendulum"
         ],
     entry_points='''
         [console_scripts]
