@@ -1,6 +1,6 @@
 #%%
 from raymon.ray import Ray
-
+from raymon.log import Logger
 
 class MockLogger(Logger):
     def __init__(self, context="testing", project_id="default"):

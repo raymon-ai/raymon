@@ -1,5 +1,6 @@
 import logging
 import pendulum
+import sys
 
 class ContextFilter(logging.Filter):
     def __init__(self, context):

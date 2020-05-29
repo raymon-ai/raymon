@@ -1,9 +1,6 @@
-import sys
-import pendulum
 import requests
 from pathlib import Path
 
-from raymon.ray import Ray
 from raymon.io import load_secret
 from raymon.exceptions import NetworkException
 from raymon.log import Logger
