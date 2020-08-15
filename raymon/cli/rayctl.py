@@ -14,8 +14,8 @@ def cli():
 cli.add_command(orchestration)
 cli.add_command(project)
 cli.add_command(ray)
-cli.add_command(peephole)
-cli.add_command(piperesult)
+# cli.add_command(peephole)
+# cli.add_command(piperesult)
 cli.add_command(result)
 
 

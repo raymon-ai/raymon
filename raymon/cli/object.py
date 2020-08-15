@@ -17,7 +17,8 @@ def get(result_id):
     api.login()
     params = {'object_id': result_id}
     resp = api.get(route=f'object', params=params).json()
-    click.echo(f"Type: {resp['type']}, data:\n {resp['data']}")
+    obj = resp['object']
+    click.echo(f"Type: {obj['type']}, data:\n {obj['params']['data']}")
     
 
 

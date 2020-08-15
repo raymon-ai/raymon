@@ -18,11 +18,11 @@ def ls(project_id):
     api.login()
     params = {'project_id': project_id}
     resp = api.get(route=f'ray', params=params).json()
-    click.echo(f"{'Ray id':40s} - {'last_update':20s}")
+    click.echo(f"{'Ray id':40s} {'Last update':20s}")
     
     for ray in resp['rays']:
         
-        click.echo(f"{ray['ray_id']:40s} - {ray['last_update']:20s}")
+        click.echo(f"{ray['ray_id']:40s} {ray['ts']:20s}")
 
 
 ray.add_command(ls)

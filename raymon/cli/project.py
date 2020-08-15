@@ -14,7 +14,6 @@ def project():
 
 @click.command()
 @click.option('--project-name', help='The name of the project you want to create')
-
 def create(project_name):
     api = RaymonAPI(url="http://localhost:8000")
     api.login()
@@ -24,7 +23,7 @@ def create(project_name):
     }
     resp = api.post(route='project', data=req_data)
     project_id = resp.json()['project_id']
-    click.echo(f"New orchestration for project {project_id}: {resp}")
+    click.echo(f"New project created: {project_id}: {resp}")
     
 
 
