@@ -23,13 +23,21 @@ class RaymonAPI(Logger):
     Functions related to logging of rays
     """
     def log(self, ray_id, peephole, data):
-        print(f"Logging Raymon Datatype...{type(data)}", flush=True)
+        # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
         msg = self.format(ray_id=ray_id, peephole=peephole, data=data.to_dict())
-        resp = requests.post(f"{self.url}/ingest",
+        resp = requests.post(f"{self.url}/projects/{self.project_id}/ingest",
                              json=msg,
                              headers=self.headers)
-        self.logger.debug(f"{ray_id} logged at {peephole}: {resp}")
+        self.logger.debug(f"{ray_id} logged at {peephole}: {resp.status_code} - {resp.text}")
     
+    
+    def tag(self, ray_id, tags):
+        # TODO validate tags
+        resp = requests.post(f"{self.url}/projects/{self.project_id}/rays/{ray_id}/tags",
+                             json=tags,
+                             headers={'Content-type': 'application/json'})
+        self.logger.debug(f"{ray_id} tagged: {resp.status_code} - {resp.text}")
+        
         
     def post(self, route, data):
         resp = requests.post(f"{self.url}/{route}",

@@ -19,7 +19,7 @@ class Logger:
 
     def format(self, ray_id, peephole, data):
         return {
-            'timestamp': str(pendulum.now()),
+            'timestamp': str(pendulum.now('utc')),
             'ray_id': str(ray_id),
             'peephole': peephole, 
             'data': data,

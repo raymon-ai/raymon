@@ -41,15 +41,11 @@ class Ray:
     
     def log(self, peephole, data):
         self.logger.log(ray_id=str(self), peephole=peephole, data=data)
-        
-    # def log_text(self, peephole, data):
-    #     self.logger.log_text(ray_id=str(self), peephole=peephole, data=data)
+    
+    
+    def tag(self, tags):
+        self.logger.tag(ray_id=str(self), tags=tags)
 
-    # def log_numpy(self, peephole, data):
-    #     self.logger.log_numpy(ray_id=str(self), peephole=peephole, data=data)
-        
-    # def log_image_rgb(self, peephole, data):
-    #     self.logger.log_image_rgb(ray_id=str(self), peephole=peephole, data=data)
     
     """
     Methods related to splitting and merging
