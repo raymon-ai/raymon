@@ -32,12 +32,14 @@ class Ray:
     def __init__(self, logger, ray_id=None, pred=None):
         self.ray_id = _parse_ray_id(ray_id)
         self.logger = logger
-        self.context = logger.context
         self.pred = pred
 
     """
     Methods related to data logging
     """
+    def info(self, text):
+        self.logger.info(ray_id=str(self), text=text)
+
     
     def log(self, peephole, data):
         self.logger.log(ray_id=str(self), peephole=peephole, data=data)

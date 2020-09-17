@@ -1,42 +1,68 @@
 import requests
 from pathlib import Path
+import pendulum
 
 from raymon.io import load_secret
 from raymon.exceptions import NetworkException
-from raymon.log import Logger
+from raymon.log import setup_logger
 
 
-class RaymonAPI(Logger):
-    def __init__(self, url="http://localhost:8000",
-                 context="your_service_v1.1",
+class RaymonAPI():
+    def __init__(self,
+                 url="http://localhost:8000",
                  project_id="default",
                  secret_fpath=Path("~/.raymon/secret.json").expanduser()):
-        super().__init__(context=context, project_id=project_id)
+        
         self.url = url  
-        # self.headers = {'Content-type': 'application/msgpack'}
+        self.project_id = project_id
+        self.logger = setup_logger(stdout=True)
+        
         self.headers = {'Content-type': 'application/json'}
-        self.secret = load_secret(secret_fpath)
-        self.login()
-             
+        # self.secret = load_secret(secret_fpath)
+        # self.login()
 
+             
+    def structure(self, ray_id, peephole, data):
+        return {
+            'timestamp': str(pendulum.now('utc')),
+            'ray_id': str(ray_id),
+            'peephole': peephole,
+            'data': data,
+            'project_id': self.project_id
+        }
+            
     """
     Functions related to logging of rays
     """
+    def info(self, ray_id, text):
+        # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
+        jcr = self.structure(ray_id=ray_id, peephole=None, data=text)
+        self.logger.info(text, extra=jcr)
+        resp = requests.post(f"{self.url}/projects/{self.project_id}/ingest",
+                             json=jcr,
+                             headers=self.headers)
+        status = 'OK' if resp.ok else f'ERROR: {resp.status_code}'
+        self.logger.debug(f"Logged info. Status: {status}", extra=jcr)
+        
     def log(self, ray_id, peephole, data):
         # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
-        msg = self.format(ray_id=ray_id, peephole=peephole, data=data.to_dict())
+        jcr = self.structure(ray_id=ray_id, peephole=peephole, data=data.to_jcr())
+        self.logger.info(f"Logging data at {peephole}", extra=jcr)
         resp = requests.post(f"{self.url}/projects/{self.project_id}/ingest",
-                             json=msg,
+                             json=jcr,
                              headers=self.headers)
-        self.logger.debug(f"{ray_id} logged at {peephole}: {resp.status_code} - {resp.text}")
+        status = 'OK' if resp.ok else f'ERROR: {resp.status_code}'
+        self.logger.debug(f"Data logged at {peephole}. Status: {status}", extra = jcr)
     
     
     def tag(self, ray_id, tags):
         # TODO validate tags
+        jcr = self.structure(ray_id=ray_id, peephole=None, data=tags)
         resp = requests.post(f"{self.url}/projects/{self.project_id}/rays/{ray_id}/tags",
                              json=tags,
                              headers={'Content-type': 'application/json'})
-        self.logger.debug(f"{ray_id} tagged: {resp.status_code} - {resp.text}")
+        status = 'OK' if resp.ok else f'ERROR: {resp.status_code}'
+        self.logger.debug(f"Ray tagged. Status: {status}", extra=jcr)
         
         
     def post(self, route, data):

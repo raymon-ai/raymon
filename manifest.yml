@@ -1,0 +1,34 @@
+---
+version: draft
+pipelines:
+  - name: show_input
+    input: 
+      peephole: network_input_img
+      visualize: img
+    map:
+      function: null
+      fparams: null
+      visualize: null
+      vparams: null
+    reduce: 
+      - function: null
+        fparams: null
+        visualize: null
+        vparams: null
+        name: default
+
+  - name: intesity_hist
+    input:
+      peephole: network_input_img
+    map:
+      function: img2hist
+      fparams:
+        bins: 32
+    reduce:
+      - function: weighted_avg
+        interval: 10s
+        name: wavg
+
+
+
+
