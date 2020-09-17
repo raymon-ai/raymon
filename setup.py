@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="raymon",  # Replace with your own username
-    version="0.0.9",
+    name="raymon",
+    version="0.0.10",
     author="Raymon.ai",
     author_email="dev@raymon.ai",
     description="Python package for raymon logging and monitoring.",
@@ -25,7 +25,8 @@ setuptools.setup(
         "bokeh>=1.4.0",
         "matplotlib",
         "pendulum",
-        "click"
+        "click",
+        "pandas"
         ],
     entry_points='''
         [console_scripts]
