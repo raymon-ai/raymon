@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="raymon",
-    version="0.0.10",
+    version="0.0.11-dev1",
     author="Raymon.ai",
     author_email="dev@raymon.ai",
     description="Python package for raymon logging and monitoring.",
@@ -26,7 +26,8 @@ setuptools.setup(
         "matplotlib",
         "pendulum",
         "click",
-        "pandas"
+        "pandas",
+        "requests"
         ],
     entry_points='''
         [console_scripts]
