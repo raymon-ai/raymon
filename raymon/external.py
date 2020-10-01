@@ -11,24 +11,21 @@ class RaymonAPI():
     def __init__(self,
                  url="http://localhost:8000",
                  project_id="default",
-                 secret_fpath=Path("~/.raymon/secret.json").expanduser()):
+                 secret_fpath=None):
         
         self.url = url  
         self.project_id = project_id
         self.logger = setup_logger(stdout=True)
         
         self.headers = {'Content-type': 'application/json'}
-        # self.secret = load_secret(secret_fpath)
-        # self.login()
+        self.secret = load_secret(secret_fpath)
+        self.login()
 
              
     def structure(self, ray_id, peephole, data):
         return {
-            'timestamp': str(pendulum.now('utc')),
+            # 'timestamp': str(pendulum.now('utc')),
             'ray_id': str(ray_id),
-            'peephole': peephole,
-            'data': data,
-            'project_id': self.project_id
         }
             
     """

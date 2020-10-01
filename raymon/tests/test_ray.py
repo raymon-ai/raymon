@@ -1,10 +1,9 @@
 #%%
 from raymon.ray import Ray
-from raymon.log import Logger
 
-class MockLogger(Logger):
-    def __init__(self, context="testing", project_id="default"):
-        super().__init__(context=context, project_id=project_id)
+class MockLogger():
+    # def __init__(self, context="testing", project_id="default"):
+        # super().__init__(context=context, project_id=project_id)
     """
     Functions related to logging of rays
     """
