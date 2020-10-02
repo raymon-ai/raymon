@@ -2,7 +2,7 @@ import requests
 from pathlib import Path
 import pendulum
 
-from raymon.io import load_secret
+from raymon.auth import load_secret
 from raymon.exceptions import NetworkException
 from raymon.log import setup_logger
 
@@ -11,24 +11,21 @@ class RaymonAPI():
     def __init__(self,
                  url="http://localhost:8000",
                  project_id="default",
-                 secret_fpath=Path("~/.raymon/secret.json").expanduser()):
+                 secret_fpath=None):
         
         self.url = url  
         self.project_id = project_id
         self.logger = setup_logger(stdout=True)
         
         self.headers = {'Content-type': 'application/json'}
-        # self.secret = load_secret(secret_fpath)
-        # self.login()
+        self.secret = load_secret(project_name=project_id, fpath=secret_fpath)
+        self.login()
 
              
     def structure(self, ray_id, peephole, data):
         return {
-            'timestamp': str(pendulum.now('utc')),
+            # 'timestamp': str(pendulum.now('utc')),
             'ray_id': str(ray_id),
-            'peephole': peephole,
-            'data': data,
-            'project_id': self.project_id
         }
             
     """
@@ -82,15 +79,16 @@ class RaymonAPI():
     Functions related to Authentication
     """
     def login(self):
-        body = {"audience": self.secret['audience'],
+        data = {"audience": self.secret['audience'],
                 "grant_type": self.secret['grant_type'],
                 "client_id": self.secret['client_id'],
                 "client_secret": self.secret['client_secret']
                 }
-        headers = {'Content-type': 'application/json'}
-        resp = requests.post(url=self.secret['login_url'], headers=headers, json=body)
+
+        route = f"{self.secret['auth_url']}/oauth/token"
+        resp = requests.post(route, data=data)
         if resp.status_code != 200:
-            raise NetworkException(f"Can not login to Raymon service: \n{resp.json()}")
+            raise NetworkException(f"Can not login to Raymon service: \n{resp.text}")
         else:
             token_data = resp.json()
             self.token = token_data['access_token']
