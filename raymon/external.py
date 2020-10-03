@@ -24,8 +24,11 @@ class RaymonAPI():
              
     def structure(self, ray_id, peephole, data):
         return {
-            # 'timestamp': str(pendulum.now('utc')),
+            'timestamp': str(pendulum.now('utc')),
             'ray_id': str(ray_id),
+            'peephole': peephole,
+            'data': data,
+            'project_id': self.project_id
         }
             
     """
@@ -39,7 +42,7 @@ class RaymonAPI():
                              json=jcr,
                              headers=self.headers)
         status = 'OK' if resp.ok else f'ERROR: {resp.status_code}'
-        self.logger.debug(f"Logged info. Status: {status}", extra=jcr)
+        self.logger.info(f"Logged info. Status: {status}", extra=jcr)
         
     def log(self, ray_id, peephole, data):
         # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
@@ -49,7 +52,7 @@ class RaymonAPI():
                              json=jcr,
                              headers=self.headers)
         status = 'OK' if resp.ok else f'ERROR: {resp.status_code}'
-        self.logger.debug(f"Data logged at {peephole}. Status: {status}", extra = jcr)
+        self.logger.info(f"Data logged at {peephole}. Status: {status}", extra=jcr)
     
     
     def tag(self, ray_id, tags):
@@ -59,7 +62,7 @@ class RaymonAPI():
                              json=tags,
                              headers={'Content-type': 'application/json'})
         status = 'OK' if resp.ok else f'ERROR: {resp.status_code}'
-        self.logger.debug(f"Ray tagged. Status: {status}", extra=jcr)
+        self.logger.info(f"Ray tagged. Status: {status}", extra=jcr)
         
         
     def post(self, route, data):
