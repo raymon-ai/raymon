@@ -167,7 +167,7 @@ class DataFrame(RaymonDataType):
         data = {
             'type': self.class2str(),
             'params': {
-                'data': json.loads(self.data.to_json()),
+                'data': json.loads(self.data.to_json(orient='records')),
             }
 
         }
@@ -175,7 +175,7 @@ class DataFrame(RaymonDataType):
 
     @classmethod
     def from_jcr(cls, jcr):
-        frame = pd.read_json(json.dumps(jcr['data']), orient='columns')
+        frame = pd.read_json(json.dumps(jcr['data']), orient='records')
         return cls(frame)
 
 

@@ -60,7 +60,7 @@ class RaymonAPI():
         jcr = self.structure(ray_id=ray_id, peephole=None, data=tags)
         resp = requests.post(f"{self.url}/projects/{self.project_id}/rays/{ray_id}/tags",
                              json=tags,
-                             headers={'Content-type': 'application/json'})
+                             headers=self.headers)
         status = 'OK' if resp.ok else f'ERROR: {resp.status_code}'
         self.logger.info(f"Ray tagged. Status: {status}", extra=jcr)
         

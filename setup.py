@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="raymon",
-    version="0.0.13",
+    version="0.0.15",
     author="Raymon.ai",
     author_email="dev@raymon.ai",
     description="Python package for raymon logging and monitoring.",
