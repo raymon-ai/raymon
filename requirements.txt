@@ -1,0 +1,6 @@
+pyyaml
+msgpack==1.0.0
+pendulum
+click
+pandas
+requests

@@ -15,17 +15,16 @@ class DataFormatException(Exception):
 
 
 class RaymonDataType:
-
     @abstractmethod
     def to_jcr(self):
         pass
-    
+
     def to_json(self):
         return json.dumps(self.to_jcr())
 
     def to_msgpack(self):
         return msgpack.packb(self.to_jcr())
-    
+
     def class2str(self):
         module = str(self.__class__.__module__)
         classname = str(self.__class__.__name__)
@@ -33,12 +32,11 @@ class RaymonDataType:
 
 
 class ImageRGB(RaymonDataType):
-    
     def __init__(self, data):
         data = np.array(data)
         self.validate(data)
         self.data = data
-        
+
     def validate(self, data):
         # Validate 3 channels
         if len(data.shape) != 3:
@@ -48,18 +46,11 @@ class ImageRGB(RaymonDataType):
         return True
 
     def to_jcr(self):
-        data = {
-            'type': self.class2str(),
-            'params': {
-                'data': self.data.tolist()
-            }
-        }
+        data = {"type": self.class2str(), "params": {"data": self.data.tolist()}}
         return data
 
 
-
 class ImageGrayscale(RaymonDataType):
-    
     def __init__(self, data):
         data = np.array(data)
         self.validate(data)
@@ -72,17 +63,11 @@ class ImageGrayscale(RaymonDataType):
         return True
 
     def to_jcr(self):
-        data = {
-            'type': self.class2str(),
-            'params': {
-                'data': self.data.tolist()
-            }
-        }
+        data = {"type": self.class2str(), "params": {"data": self.data.tolist()}}
         return data
 
 
 class Numpy(RaymonDataType):
-    
     def __init__(self, data):
         data = np.array(data)
         self.validate(data)
@@ -92,17 +77,11 @@ class Numpy(RaymonDataType):
         return True
 
     def to_jcr(self):
-        data = {
-            'type': self.class2str(),
-            'params': {
-                'data': self.data.tolist()
-            }
-        }
+        data = {"type": self.class2str(), "params": {"data": self.data.tolist()}}
         return data
 
 
 class Vector(RaymonDataType):
-
     def __init__(self, data, names=None):
         self.validate(data, names)
         self.data = np.array(data)
@@ -117,15 +96,14 @@ class Vector(RaymonDataType):
 
     def to_jcr(self):
         data = {
-            'type': self.class2str(),
-            'params': {
-                'data': self.data.tolist(),
-                'names': self.names.tolist(),
-            }
-
+            "type": self.class2str(),
+            "params": {
+                "data": self.data.tolist(),
+                "names": self.names.tolist(),
+            },
         }
         return data
-    
+
 
 class Series(RaymonDataType):
     def __init__(self, data):
@@ -139,20 +117,19 @@ class Series(RaymonDataType):
 
     def to_jcr(self):
         data = {
-            'type': self.class2str(),
-            'params': {
-                'data': json.loads(self.data.to_json()),
-            }
-
+            "type": self.class2str(),
+            "params": {
+                "data": json.loads(self.data.to_json()),
+            },
         }
         return data
-    
+
     @classmethod
     def from_jcr(cls, jcr):
         series = pd.Series(**jcr)
         return cls(series)
 
-    
+
 class DataFrame(RaymonDataType):
     def __init__(self, data):
         self.validate(data)
@@ -165,19 +142,17 @@ class DataFrame(RaymonDataType):
 
     def to_jcr(self):
         data = {
-            'type': self.class2str(),
-            'params': {
-                'data': json.loads(self.data.to_json()),
-            }
-
+            "type": self.class2str(),
+            "params": {
+                "data": json.loads(self.data.to_json()),
+            },
         }
         return data
 
     @classmethod
     def from_jcr(cls, jcr):
-        frame = pd.read_json(json.dumps(jcr['data']))
+        frame = pd.read_json(json.dumps(jcr["data"]))
         return cls(frame)
-
 
 
 class JSON(RaymonDataType):
@@ -194,18 +169,17 @@ class JSON(RaymonDataType):
 
     def to_jcr(self):
         data = {
-            'type': self.class2str(),
-            'params': {
-                'data': self.data,
-            }
-
+            "type": self.class2str(),
+            "params": {
+                "data": self.data,
+            },
         }
         return data
-    
+
     @classmethod
     def from_jcr(cls, jcr):
         return cls(jcr)
-    
+
 
 class Number(RaymonDataType):
     def __init__(self, data):
@@ -219,18 +193,45 @@ class Number(RaymonDataType):
 
     def to_jcr(self):
         data = {
-            'type': self.class2str(),
-            'params': {
-                'data': self.data,
-            }
-
+            "type": self.class2str(),
+            "params": {
+                "data": self.data,
+            },
         }
         return data
-    
-    
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        data = jcr["data"]
+        return cls(data)
+
+
+class String(RaymonDataType):
+    def __init__(self, data):
+        self.validate(data)
+        self.data = data
+
+    def validate(self, data):
+        if not isinstance(data, str):
+            raise DataFormatException("Data should be str")
+        return True
+
+    def to_jcr(self):
+        data = {
+            "type": self.class2str(),
+            "params": {
+                "data": self.data,
+            },
+        }
+        return data
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        data = jcr["data"]
+        return cls(data)
+
 
 class Histogram(RaymonDataType):
-    
     def __init__(self, counts, edges, names=None, normalized=False, **kwargs):
         counts = np.array(counts)
         edges = np.array(edges)
@@ -240,7 +241,6 @@ class Histogram(RaymonDataType):
         self.names = names
         self.normalized = normalized
         self.kwargs = kwargs
-            
 
     def validate(self, counts, edges):
         if len(counts.shape) != 1:
@@ -251,26 +251,26 @@ class Histogram(RaymonDataType):
 
     def to_jcr(self):
         data = {
-            'type': self.class2str(),
-            'params': {
-                'counts': self.counts.tolist(),
-                'names': self.names,
-                'edges': self.edges.tolist(),
-            }
-
+            "type": self.class2str(),
+            "params": {
+                "counts": self.counts.tolist(),
+                "names": self.names,
+                "edges": self.edges.tolist(),
+            },
         }
         return data
 
 
 def load_jcr(jcr):
-    params = jcr['params']
-    dtype = jcr['type']
+    params = jcr["params"]
+    dtype = jcr["type"]
     type_class = locate(dtype)
     if type_class is None:
         raise NameError(f"Could not locate {dtype}")
-    
+
     loaded = type_class.from_jcr(params)
     return loaded
+
 
 def from_msgpack(data):
     loaded_data = msgpack.unpackb(data, raw=False)

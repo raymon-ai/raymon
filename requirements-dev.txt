@@ -1,0 +1,8 @@
+twine
+coverage
+pre-commit
+pytest
+wheel
+black
+pip-licenses
+pylint
