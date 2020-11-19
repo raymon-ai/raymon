@@ -1,6 +1,6 @@
 import setuptools
 import os
-from rdv.version import __version__
+from raymon.version import __version__
 
 ROOT_DIR = os.path.dirname(__file__)
 REQUIREMENTS = [line.strip() for line in open(os.path.join(ROOT_DIR, "requirements.txt")).readlines()]
