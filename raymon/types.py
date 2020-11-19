@@ -1,13 +1,9 @@
 import json
 from abc import abstractmethod
 from pydoc import locate
-
-import matplotlib.pyplot as plt
 import msgpack
 import numpy as np
 import pandas as pd
-from bokeh.embed import components
-from bokeh.plotting import figure, show
 
 
 class DataFormatException(Exception):
