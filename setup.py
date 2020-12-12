@@ -1,7 +1,7 @@
 import setuptools
 import os
-from raymon.version import __version__
 
+exec(open("raymon/version.py").read())  # Loads __version__
 ROOT_DIR = os.path.dirname(__file__)
 REQUIREMENTS = [line.strip() for line in open(os.path.join(ROOT_DIR, "requirements.txt")).readlines()]
 with open("README.md", "r") as fh:
