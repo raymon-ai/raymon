@@ -45,6 +45,10 @@ class ImageRGB(RaymonDataType):
         data = {"type": self.class2str(), "params": {"data": self.data.tolist()}}
         return data
 
+    @classmethod
+    def from_jcr(cls, jcr):
+        return cls(data=jcr["data"])
+
 
 class ImageGrayscale(RaymonDataType):
     def __init__(self, data):
@@ -61,6 +65,10 @@ class ImageGrayscale(RaymonDataType):
     def to_jcr(self):
         data = {"type": self.class2str(), "params": {"data": self.data.tolist()}}
         return data
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        return cls(data=jcr["data"])
 
 
 class Numpy(RaymonDataType):
