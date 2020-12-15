@@ -4,6 +4,8 @@ from pydoc import locate
 import msgpack
 import numpy as np
 import pandas as pd
+import base64
+import ast
 
 
 class DataFormatException(Exception):
@@ -42,12 +44,19 @@ class ImageRGB(RaymonDataType):
         return True
 
     def to_jcr(self):
-        data = {"type": self.class2str(), "params": {"data": self.data.tolist()}}
+        b64 = s = base64.b64encode(self.data).decode()
+        shape = self.data.shape
+        dtype = self.data.dtype
+        data = {"type": self.class2str(), "params": {"data": b64, "shape": str(shape), "dtype": str(dtype)}}
         return data
 
     @classmethod
-    def from_jcr(cls, jcr):
-        return cls(data=jcr["data"])
+    def from_jcr(cls, params):
+        shape = ast.literal_eval(params["shape"])
+        dtype = params["dtype"]
+        b64 = params["data"]
+        nprest = np.frombuffer(base64.decodebytes(b64.encode()), dtype=str(dtype)).reshape(shape)
+        return cls(data=nprest)
 
 
 class ImageGrayscale(RaymonDataType):
@@ -63,12 +72,19 @@ class ImageGrayscale(RaymonDataType):
         return True
 
     def to_jcr(self):
-        data = {"type": self.class2str(), "params": {"data": self.data.tolist()}}
+        b64 = s = base64.b64encode(self.data).decode()
+        shape = self.data.shape
+        dtype = self.data.dtype
+        data = {"type": self.class2str(), "params": {"data": b64, "shape": str(shape), "dtype": str(dtype)}}
         return data
 
     @classmethod
-    def from_jcr(cls, jcr):
-        return cls(data=jcr["data"])
+    def from_jcr(cls, params):
+        shape = ast.literal_eval(params["shape"])
+        dtype = params["dtype"]
+        b64 = params["data"]
+        nprest = np.frombuffer(base64.decodebytes(b64.encode()), dtype=str(dtype)).reshape(shape)
+        return cls(data=nprest)
 
 
 class Numpy(RaymonDataType):
