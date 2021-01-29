@@ -208,7 +208,7 @@ class RaymonTextFile(RaymonLoggerBase):
             return logger
         logger.setLevel(logging.INFO)
         # Add a file handler
-        fh = RotatingFileHandler(self.fname, maxBytes=100 * MB, backupCount=10)
+        fh = RotatingFileHandler(self.fname, maxBytes=200 * MB, backupCount=10)
         fh.setLevel(logging.INFO)
         logger.addHandler(fh)
 
@@ -220,7 +220,7 @@ class RaymonTextFile(RaymonLoggerBase):
         kafka_msg = {"type": "info", "jcr": jcr}
         self.logger.info(text, extra=jcr)
         self.data_logger.info(json.dumps(kafka_msg))
-        self.logger.info(f"Logged tags to textfile.", extra=jcr)
+        self.logger.info(f"Logged: {text}", extra=jcr)
 
     def log(self, ray_id, peephole, data):
         # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
@@ -229,7 +229,7 @@ class RaymonTextFile(RaymonLoggerBase):
         self.logger.info(f"Logging data at {peephole}", extra=jcr)
         # resp = requests.post(f"{self.url}/projects/{self.project_id}/ingest", json=jcr, headers=self.headers)
         self.data_logger.info(json.dumps(kafka_msg))
-        self.logger.info(f"Logged tags to textfile.", extra=jcr)
+        self.logger.info(f"Logged peephole {peephole} data to textfile.", extra=jcr)
 
     def tag(self, ray_id, tags):
         # TODO validate tags
