@@ -9,12 +9,8 @@ class SecretError(Exception):
     pass
 
 
-def save_secret(project_name, auth_endpoint, audience, client_id, client_secret, grant_type, out=None):
-    # Check out defined, else set home
-    if out is None:
-        out = Path(DEFAULT_FNAME).expanduser()
-    else:
-        out = Path(out)
+def save_secret(project_name, auth_endpoint, audience, client_id, client_secret, grant_type, out=DEFAULT_FNAME):
+    out = Path(out)
 
     known_secrets = load_secrets_file(fpath=out)
     # If so, check whether porject exists

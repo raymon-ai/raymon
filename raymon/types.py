@@ -1,6 +1,6 @@
 import json
 import io
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from pydoc import locate
 import msgpack
 import numpy as np
@@ -10,11 +10,7 @@ import ast
 from PIL import Image as PILImage
 
 
-class DataFormatException(Exception):
-    pass
-
-
-class RaymonDataType:
+class RaymonDataType(ABC):
     @abstractmethod
     def to_jcr(self):
         pass
@@ -32,26 +28,32 @@ class RaymonDataType:
 
 
 class Image(RaymonDataType):
-    def __init__(self, data):
-        self.validate(data)
+    def __init__(self, data, lossless=False):
+        self.validate(data=data, lossless=lossless)
         self.data = data
+        self.lossless = lossless
 
-    def validate(self, data):
+    def validate(self, data, lossless):
         # Validate 3 channels
         if not isinstance(data, PILImage.Image):
-            raise DataFormatException("Image shoud be a PIL Image")
+            raise ValueError("Image shoud be a PIL Image")
+        if not isinstance(lossless, bool):
+            raise ValueError("lossless should be boolean")
         return True
 
     def to_jcr(self):
         img_byte_arr = io.BytesIO()
-        # We'll save the image as JPEG. This is not lossless, but it is saves as the highest JPEG quality. This is 25 times faster than dumping as lossless PNG, and results in a size of only 1/5th the size, before b64 encoding.
-        # Measurements: PNG: 3.767667055130005s, 4008037 bytes -- PNG: 3.767667055130005s, 4008037 bytes
-        # For impact on algorithms see "On the Impact of Lossy Image and Video Compression on the Performance of Deep Convolutional Neural Network Architectures" (https://arxiv.org/abs/2007.14314), although this paper takes jpeg quality 95 as highest quality.
-        self.data.save(img_byte_arr, format="jpeg", quality=95)
+        if self.lossless:
+            self.data.save(img_byte_arr, format="png")
+        else:
+            # We'll save the image as JPEG. This is not lossless, but it is saves as the highest JPEG quality. This is 25 times faster than dumping as lossless PNG, and results in a size of only 1/5th the size, before b64 encoding.
+            # Measurements: PNG: 3.767667055130005s, 4008037 bytes -- PNG: 3.767667055130005s, 4008037 bytes
+            # For impact on algorithms see "On the Impact of Lossy Image and Video Compression on the Performance of Deep Convolutional Neural Network Architectures" (https://arxiv.org/abs/2007.14314), although this paper takes jpeg quality 95 as highest quality.
+            self.data.save(img_byte_arr, format="jpeg", quality=95)
         img_byte_arr = img_byte_arr.getvalue()
         b64 = base64.b64encode(img_byte_arr).decode()
 
-        data = {"type": self.class2str(), "params": {"data": b64}}
+        data = {"type": self.class2str(), "params": {"data": b64, "lossless": self.lossless}}
         return data
 
     @classmethod
@@ -62,76 +64,14 @@ class Image(RaymonDataType):
         return cls(data=img)
 
 
-class ImageRGB(RaymonDataType):
-    def __init__(self, data):
-        data = np.array(data)
-        self.validate(data)
-        self.data = data
-
-    def validate(self, data):
-        # Validate 3 channels
-        if len(data.shape) != 3:
-            raise DataFormatException("Image array should have 3 axis: Widht, Height and Channels")
-        if not (data.shape[2] == 3 or data.shape[2] == 4):
-            raise DataFormatException("Image shoud have width, height and 3 channels")
-        return True
-
-    def to_jcr(self):
-        # img =
-        # img_byte_arr = io.BytesIO()
-        # roi_img.save(img_byte_arr, format='PNG')
-        # img_byte_arr = img_byte_arr.getvalue()
-
-        b64 = base64.b64encode(self.data).decode()
-        shape = self.data.shape
-        dtype = self.data.dtype
-        data = {"type": self.class2str(), "params": {"data": b64, "shape": str(shape), "dtype": str(dtype)}}
-        return data
-
-    @classmethod
-    def from_jcr(cls, params):
-        shape = ast.literal_eval(params["shape"])
-        dtype = params["dtype"]
-        b64 = params["data"]
-        nprest = np.frombuffer(base64.decodebytes(b64.encode()), dtype=str(dtype)).reshape(shape)
-        return cls(data=nprest)
-
-
-class ImageGrayscale(RaymonDataType):
-    def __init__(self, data):
-        data = np.array(data)
-        self.validate(data)
-        self.data = data
-
-    def validate(self, data):
-        # Validate 3 channels
-        if len(data.shape) != 2:
-            raise DataFormatException("Image array should have 2 axis: Width and height")
-        return True
-
-    def to_jcr(self):
-        b64 = s = base64.b64encode(self.data).decode()
-        shape = self.data.shape
-        dtype = self.data.dtype
-        data = {"type": self.class2str(), "params": {"data": b64, "shape": str(shape), "dtype": str(dtype)}}
-        return data
-
-    @classmethod
-    def from_jcr(cls, params):
-        shape = ast.literal_eval(params["shape"])
-        dtype = params["dtype"]
-        b64 = params["data"]
-        nprest = np.frombuffer(base64.decodebytes(b64.encode()), dtype=str(dtype)).reshape(shape)
-        return cls(data=nprest)
-
-
 class Numpy(RaymonDataType):
     def __init__(self, data):
-        data = np.array(data)
         self.validate(data)
         self.data = data
 
     def validate(self, data):
+        if not isinstance(data, np.ndarray):
+            raise ValueError(f"Data must bu of type numpy.ndarray, not {type(data)}.")
         return True
 
     def to_jcr(self):
@@ -148,30 +88,6 @@ class Numpy(RaymonDataType):
         b64 = params["data"]
         nprest = np.frombuffer(base64.decodebytes(b64.encode()), dtype=str(dtype)).reshape(shape)
         return cls(data=nprest)
-
-
-class Vector(RaymonDataType):
-    def __init__(self, data, names=None):
-        self.validate(data, names)
-        self.data = np.array(data)
-        self.names = np.array(names) if not names is None else None
-
-    def validate(self, data, names):
-        if len(data.shape) != 1:
-            raise DataFormatException("Vector data must be a 1D array")
-        if names is not None and len(data) != len(names):
-            raise DataFormatException("Vector data and names must have same shape")
-        return True
-
-    def to_jcr(self):
-        data = {
-            "type": self.class2str(),
-            "params": {
-                "data": self.data.tolist(),
-                "names": self.names.tolist(),
-            },
-        }
-        return data
 
 
 class Series(RaymonDataType):
@@ -181,7 +97,7 @@ class Series(RaymonDataType):
 
     def validate(self, data):
         if not isinstance(data, pd.Series):
-            raise DataFormatException("Data should be a Pandas Series")
+            raise ValueError("Data should be a Pandas Series")
         return True
 
     def to_jcr(self):
@@ -206,7 +122,7 @@ class DataFrame(RaymonDataType):
 
     def validate(self, data):
         if not isinstance(data, pd.DataFrame):
-            raise DataFormatException("Data should be a Pandas DataFrame")
+            raise ValueError("Data should be a Pandas DataFrame")
         return True
 
     def to_jcr(self):
@@ -224,7 +140,7 @@ class DataFrame(RaymonDataType):
         return cls(frame)
 
 
-class JCR(RaymonDataType):
+class Native(RaymonDataType):
     def __init__(self, data):
         self.validate(data)
         self.data = data
@@ -233,7 +149,7 @@ class JCR(RaymonDataType):
         try:
             json.dumps(data)
         except TypeError as exc:
-            raise DataFormatException(f"{exc}")
+            raise ValueError(f"{exc}")
         return True
 
     def to_jcr(self):
@@ -247,87 +163,7 @@ class JCR(RaymonDataType):
 
     @classmethod
     def from_jcr(cls, jcr):
-        return cls(jcr)
-
-
-class Number(RaymonDataType):
-    def __init__(self, data):
-        self.validate(data)
-        self.data = data
-
-    def validate(self, data):
-        if not (isinstance(data, int) or isinstance(data, float)):
-            raise DataFormatException("Data should be int or float")
-        return True
-
-    def to_jcr(self):
-        data = {
-            "type": self.class2str(),
-            "params": {
-                "data": self.data,
-            },
-        }
-        return data
-
-    @classmethod
-    def from_jcr(cls, jcr):
-        data = jcr["data"]
-        return cls(data)
-
-
-class String(RaymonDataType):
-    def __init__(self, data):
-        self.validate(data)
-        self.data = data
-
-    def validate(self, data):
-        if not isinstance(data, str):
-            raise DataFormatException("Data should be str")
-        return True
-
-    def to_jcr(self):
-        data = {
-            "type": self.class2str(),
-            "params": {
-                "data": self.data,
-            },
-        }
-        return data
-
-    @classmethod
-    def from_jcr(cls, jcr):
-        data = jcr["data"]
-        return cls(data)
-
-
-class Histogram(RaymonDataType):
-    def __init__(self, counts, edges, names=None, normalized=False, **kwargs):
-        counts = np.array(counts)
-        edges = np.array(edges)
-        self.validate(counts, edges)
-        self.counts = counts
-        self.edges = edges
-        self.names = names
-        self.normalized = normalized
-        self.kwargs = kwargs
-
-    def validate(self, counts, edges):
-        if len(counts.shape) != 1:
-            raise DataFormatException("counts must be a 1D array")
-        if len(counts) != len(edges) - 1:
-            raise DataFormatException("len(counts) must be len(edges)-1")
-        return True
-
-    def to_jcr(self):
-        data = {
-            "type": self.class2str(),
-            "params": {
-                "counts": self.counts.tolist(),
-                "names": self.names,
-                "edges": self.edges.tolist(),
-            },
-        }
-        return data
+        return cls(jcr["data"])
 
 
 def load_jcr(jcr):
