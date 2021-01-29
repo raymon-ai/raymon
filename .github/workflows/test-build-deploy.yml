@@ -1,0 +1,61 @@
+name: test-build-deploy
+on:
+  push:
+    branches: master
+jobs:
+  test-build-publish-ubuntu:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+    env:
+      TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+      TWINE_PASSWORD: ""
+      TWINE_REPOSITORY_URL: ${{ secrets.TWINE_REPOSITORY_URL }}
+      MIN_COVERAGE: 50
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Black formatting
+        uses: psf/black@stable
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+      - name: Test with pytest
+        run: |
+          rm -rf coverage.svg
+          coverage run -m pytest
+          coverage-badge -o coverage.svg
+          COVERAGE_RESULT=`coverage report | grep TOTAL | awk '{print $NF}' | sed 's/%//g'`
+          echo "Coverage: ${COVERAGE_RESULT}"
+          if [[ $COVERAGE_RESULT -le $MIN_COVERAGE ]]; then
+              echo "#################################################"
+              echo "Code coverage below allowed threshold ($COVERAGE_RESULT<$MIN_COVERAGE)"
+              exit 1
+          fi
+          git config --local user.email "hello@raymon.ai"
+          git config --local user.name "github-actions[bot]"
+          git add coverage.svg
+          git diff-index --quiet HEAD || git commit -m "Adding coverage badge"
+      - name: Push badge
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+      - name: Build package
+        run: |
+          python setup.py bdist bdist_wheel
+      - name: Push to fury
+        run: twine upload dist/* --skip-existing
+      - name: Publish package to PyPI
+        # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_TOKEN }}
+          skip_existing: true
+          verbose: true
