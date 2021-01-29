@@ -1,4 +1,5 @@
 import json
+import io
 from abc import abstractmethod
 from pydoc import locate
 import msgpack
@@ -6,6 +7,7 @@ import numpy as np
 import pandas as pd
 import base64
 import ast
+from PIL import Image as PILImage
 
 
 class DataFormatException(Exception):
@@ -29,6 +31,37 @@ class RaymonDataType:
         return f"{module}.{classname}"
 
 
+class Image(RaymonDataType):
+    def __init__(self, data):
+        self.validate(data)
+        self.data = data
+
+    def validate(self, data):
+        # Validate 3 channels
+        if not isinstance(data, PILImage.Image):
+            raise DataFormatException("Image shoud be a PIL Image")
+        return True
+
+    def to_jcr(self):
+        img_byte_arr = io.BytesIO()
+        # We'll save the image as JPEG. This is not lossless, but it is saves as the highest JPEG quality. This is 25 times faster than dumping as lossless PNG, and results in a size of only 1/5th the size, before b64 encoding.
+        # Measurements: PNG: 3.767667055130005s, 4008037 bytes -- PNG: 3.767667055130005s, 4008037 bytes
+        # For impact on algorithms see "On the Impact of Lossy Image and Video Compression on the Performance of Deep Convolutional Neural Network Architectures" (https://arxiv.org/abs/2007.14314), although this paper takes jpeg quality 95 as highest quality.
+        self.data.save(img_byte_arr, format="jpeg", quality=95)
+        img_byte_arr = img_byte_arr.getvalue()
+        b64 = base64.b64encode(img_byte_arr).decode()
+
+        data = {"type": self.class2str(), "params": {"data": b64}}
+        return data
+
+    @classmethod
+    def from_jcr(cls, params):
+        b64 = params["data"]
+        img_byte_arr = io.BytesIO(base64.decodebytes(b64.encode()))
+        img = PILImage.open(img_byte_arr)
+        return cls(data=img)
+
+
 class ImageRGB(RaymonDataType):
     def __init__(self, data):
         data = np.array(data)
@@ -44,7 +77,12 @@ class ImageRGB(RaymonDataType):
         return True
 
     def to_jcr(self):
-        b64 = s = base64.b64encode(self.data).decode()
+        # img =
+        # img_byte_arr = io.BytesIO()
+        # roi_img.save(img_byte_arr, format='PNG')
+        # img_byte_arr = img_byte_arr.getvalue()
+
+        b64 = base64.b64encode(self.data).decode()
         shape = self.data.shape
         dtype = self.data.dtype
         data = {"type": self.class2str(), "params": {"data": b64, "shape": str(shape), "dtype": str(dtype)}}
@@ -97,8 +135,19 @@ class Numpy(RaymonDataType):
         return True
 
     def to_jcr(self):
-        data = {"type": self.class2str(), "params": {"data": self.data.tolist()}}
+        b64 = base64.b64encode(self.data).decode()
+        shape = self.data.shape
+        dtype = self.data.dtype
+        data = {"type": self.class2str(), "params": {"data": b64, "shape": str(shape), "dtype": str(dtype)}}
         return data
+
+    @classmethod
+    def from_jcr(cls, params):
+        shape = ast.literal_eval(params["shape"])
+        dtype = params["dtype"]
+        b64 = params["data"]
+        nprest = np.frombuffer(base64.decodebytes(b64.encode()), dtype=str(dtype)).reshape(shape)
+        return cls(data=nprest)
 
 
 class Vector(RaymonDataType):
@@ -175,7 +224,7 @@ class DataFrame(RaymonDataType):
         return cls(frame)
 
 
-class JSON(RaymonDataType):
+class JCR(RaymonDataType):
     def __init__(self, data):
         self.validate(data)
         self.data = data
