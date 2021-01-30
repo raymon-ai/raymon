@@ -23,7 +23,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ${{ env.pythonLocation }}
-          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements.txt')-${{ hashFiles('requirements-dev.txt') }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements-dev.txt') }}-${{ hashFiles('requirements.txt') }}
 
       - name: Black formatting
         uses: psf/black@stable

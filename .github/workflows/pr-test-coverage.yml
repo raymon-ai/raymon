@@ -18,10 +18,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+      # Caching python env: https://medium.com/ai2-blog/python-caching-in-github-actions-e9452698e98d
       - uses: actions/cache@v2
         with:
           path: ${{ env.pythonLocation }}
-          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements.txt')-${{ hashFiles('requirements-dev.txt') }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements-dev.txt') }}-${{ hashFiles('requirements.txt') }}
       - name: Black formatting
         uses: psf/black@stable
       - name: Install dependencies
