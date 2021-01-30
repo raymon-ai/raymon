@@ -6,6 +6,7 @@ from raymon.cli.peephole import peephole
 from raymon.cli.piperesult import piperesult
 from raymon.cli.object import result
 
+
 @click.group()
 def cli():
     pass
@@ -19,5 +20,5 @@ cli.add_command(ray)
 cli.add_command(result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cli()

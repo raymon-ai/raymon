@@ -29,5 +29,5 @@ max-line-length = "120"
 
 [tool.pytest.ini_options]
 testpaths = [
-  "raymon_api/raymon_api/tests",
+  "raymon/tests",
 ]

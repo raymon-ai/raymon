@@ -1,5 +1,7 @@
+-r requirements.txt
 twine
 coverage
+coverage-badge  # Required for github actions
 pre-commit
 pytest
 wheel

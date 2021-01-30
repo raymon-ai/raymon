@@ -1,0 +1,5 @@
+[run]
+omit = 
+    *test*
+    *dash*
+relative_files = True

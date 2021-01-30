@@ -1,0 +1,39 @@
+name: black-test-coverage
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+    branches: master
+
+jobs:
+  test-build-publish-ubuntu:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+    env:
+      MIN_COVERAGE: 50
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Black formatting
+        uses: psf/black@stable
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+      - name: Test with pytest
+        run: |
+          rm -rf coverage.svg
+          coverage run -m pytest
+          coverage-badge -o coverage.svg
+
+          COVERAGE_RESULT=`coverage report | grep TOTAL | awk '{print $NF}' | sed 's/%//g'`
+          echo "Coverage: ${COVERAGE_RESULT}"
+          if [[ $COVERAGE_RESULT -le $MIN_COVERAGE ]]; then
+              echo "#################################################"
+              echo "Code coverage below allowed threshold ($COVERAGE_RESULT<$MIN_COVERAGE)"
+              exit 1
+          fi
