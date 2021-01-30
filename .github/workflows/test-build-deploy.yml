@@ -12,13 +12,19 @@ jobs:
       TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
       TWINE_PASSWORD: ""
       TWINE_REPOSITORY_URL: ${{ secrets.TWINE_REPOSITORY_URL }}
-      MIN_COVERAGE: 50
+      MIN_COVERAGE: 85
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+      # Caching python env: https://medium.com/ai2-blog/python-caching-in-github-actions-e9452698e98d
+      - uses: actions/cache@v2
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements.txt')-${{ hashFiles('requirements-dev.txt') }}
+
       - name: Black formatting
         uses: psf/black@stable
       - name: Install dependencies
