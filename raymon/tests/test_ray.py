@@ -12,6 +12,9 @@ class MockLogger:
     def log(self, ray_id, peephole, data):
         pass
 
+    def flush(self):
+        pass
+
 
 def test_split():
     logger = MockLogger()
