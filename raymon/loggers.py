@@ -43,9 +43,10 @@ def setup_logger(fname=None, stdout=True):
 
 
 class RaymonLoggerBase:
-    def __init__(self, project_id="default"):
+    def __init__(self, project_id="default", auth_path=None):
         self.project_id = project_id
         self.logger = setup_logger(stdout=True)
+        self.login(fpath=auth_path)
 
     def structure(self, ray_id, peephole, data):
         return {
@@ -72,14 +73,38 @@ class RaymonLoggerBase:
     def flush(self):
         pass
 
+    """
+    Functions related to Authentication
+    """
+
+    def login_m2m(self, fpath):
+        config, secret = load_m2m_credentials(fpath=fpath, project_name=self.project_id)
+        return login_m2m_flow(config=config, secret=secret)
+
+    def login_user(self, fpath):
+        config, token = load_user_credentials(fpath=fpath)
+        # check token valid?
+        if not token_ok(token):
+            token = login_device_flow(config)
+        return token
+
+    def login(self, fpath):
+        # See whether we have m2m credentials set
+        try:
+            self.token = self.login_m2m(fpath=fpath)
+        except NetworkException as exc:
+            self.logger.info("Could not load m2m credemtials, will use user credentials.")
+            self.token = self.login_user(fpath=fpath)
+
+        self.headers["Authorization"] = f"Bearer {self.token}"
+
 
 class RaymonAPI(RaymonLoggerBase):
     def __init__(self, url="http://localhost:8000", project_id="default", auth_path=None):
-        super().__init__(project_id=project_id)
+        super().__init__(project_id=project_id, auth_path=auth_path)
         self.url = url
         self.headers = {"Content-type": "application/json"}
         # self.secret = load_secret(project_name=project_id, fpath=secret_fpath)
-        self.login(fpath=auth_path)
 
     """
     Functions related to logging of rays
@@ -121,38 +146,13 @@ class RaymonAPI(RaymonLoggerBase):
         # We don't need to do anything here
         pass
 
-    """
-    Functions related to Authentication
-    """
-
-    def login_m2m(self, fpath):
-        config, secret = load_m2m_credentials(fpath=fpath)
-        return login_m2m_flow(config=config, secret=secret)
-
-    def login_user(self, fpath):
-        config, token = load_user_credentials(fpath=fpath)
-        # check token valid?
-        if not token_ok(token):
-            token = login_device_flow(config)
-        return token
-
-    def login(self, fpath):
-        # See whether we have m2m credentials set
-        try:
-            self.token = self.login_m2m(fpath=fpath)
-        except NetworkException as exc:
-            self.logger.info("Could not load m2m credemtials, will use user credentials.")
-            self.token = self.login_user(fpath=fpath)
-
-        self.headers["Authorization"] = f"Bearer {self.token}"
-
 
 class RaymonTextFile(RaymonLoggerBase):
     KB = 1000
     MB = KB * 1000
 
-    def __init__(self, fname="/var/log/raymon-data.txt", project_id="default"):
-        super().__init__(project_id=project_id)
+    def __init__(self, fname="/var/log/raymon-data.txt", project_id="default", auth_path=None):
+        super().__init__(project_id=project_id, auth_path=auth_path)
         self.fname = fname
         self.data_logger = self.setup_datalogger()
 

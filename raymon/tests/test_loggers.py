@@ -28,7 +28,12 @@ class DummyKafkaProducer:
 tags = [{"name": "my-tag", "value": "my_value", "type": "label", "group": "mygroup"}]
 
 
-def test_textfile(tmp_path):
+def test_textfile(tmp_path, monkeypatch, secret_file):
+    def dummylogin(self, fpath):
+        pass
+
+    monkeypatch.setattr(RaymonTextFile, "login", dummylogin)
+
     fpath = tmp_path / "raymon.log"
     logger = RaymonTextFile(fname=fpath, project_id=PROJECT_NAME)
     ray = Ray(logger=logger)

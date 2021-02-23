@@ -1,5 +1,7 @@
 import pytest
-
+import pendulum
+import base64
+import json
 import raymon.auth
 from raymon.auth import (
     load_m2m_credentials_env,
@@ -10,6 +12,8 @@ from raymon.auth import (
     save_user_config,
     load_user_credentials,
     verify_user,
+    token_ok,
+    login_m2m_flow,
 )
 
 
@@ -278,3 +282,25 @@ def test_load_waterfall_user_prio_1(monkeypatch):
     assert config["audience"] == "audience"
     assert config["client_id"] == "client_id"
     assert secret is None
+
+
+def test_load_waterfall_user_prio_none():
+    with pytest.raises(raymon.auth.SecretError):
+        _ = load_user_credentials()
+
+
+def test_token_ok():
+    claims = json.dumps({"exp": int(pendulum.now().add(hours=2, minutes=-1).timestamp())})
+    claims = base64.b64encode(claims.encode()).decode()
+    token = f"header.{claims}.sign"
+    assert not token_ok(token)
+
+    claims = json.dumps({"exp": int(pendulum.now().add(minutes=-1).timestamp())})
+    claims = base64.b64encode(claims.encode()).decode()
+    token = f"header.{claims}.sign"
+    assert not token_ok(token)
+
+    claims = json.dumps({"exp": int(pendulum.now().add(hours=2, minutes=1).timestamp())})
+    claims = base64.b64encode(claims.encode()).decode()
+    token = f"header.{claims}.sign"
+    assert token_ok(token)
