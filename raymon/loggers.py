@@ -4,13 +4,20 @@ from logging.handlers import RotatingFileHandler
 import sys
 from abc import ABC, abstractmethod
 from pathlib import Path
-
+import traceback
 import pendulum
 import requests
 from kafka import KafkaConsumer, KafkaProducer
 
-from raymon.auth import load_m2m_credentials, load_user_credentials, login_m2m_flow, login_device_flow, token_ok
-from raymon.exceptions import NetworkException
+from raymon.auth import (
+    load_m2m_credentials,
+    load_user_credentials,
+    login_m2m_flow,
+    login_device_flow,
+    token_ok,
+    save_user_config,
+)
+from raymon.exceptions import NetworkException, SecretException
 
 MB = 1000000
 
@@ -45,6 +52,8 @@ def setup_logger(fname=None, stdout=True):
 class RaymonLoggerBase:
     def __init__(self, project_id="default", auth_path=None):
         self.project_id = project_id
+        self.headers = {"Content-type": "application/json"}
+        self.token = None
         self.logger = setup_logger(stdout=True)
         self.login(fpath=auth_path)
 
@@ -86,16 +95,30 @@ class RaymonLoggerBase:
         # check token valid?
         if not token_ok(token):
             token = login_device_flow(config)
+        save_user_config(
+            auth_endpoint=config["auth_url"],
+            audience=config["audience"],
+            client_id=config["client_id"],
+            token=token,
+        )
         return token
 
     def login(self, fpath):
         # See whether we have m2m credentials set
         try:
             self.token = self.login_m2m(fpath=fpath)
-        except NetworkException as exc:
-            self.logger.info("Could not load m2m credemtials, will use user credentials.")
-            self.token = self.login_user(fpath=fpath)
+        except (SecretException, NetworkException) as exc:
+            print(f"Could not login with m2m credentials: {type(exc)} -- {exc}")
+            # traceback.print_exc()
 
+        if self.token is None:
+            try:
+                self.token = self.login_user(fpath=fpath)
+            except (SecretException, NetworkException) as exc:
+                print(f"Could not login with user credentials: {type(exc)} -- {exc}")
+
+        if self.token is None:
+            raise NetworkException("Could not login user or machine.")
         self.headers["Authorization"] = f"Bearer {self.token}"
 
 
@@ -103,7 +126,6 @@ class RaymonAPI(RaymonLoggerBase):
     def __init__(self, url="http://localhost:8000", project_id="default", auth_path=None):
         super().__init__(project_id=project_id, auth_path=auth_path)
         self.url = url
-        self.headers = {"Content-type": "application/json"}
         # self.secret = load_secret(project_name=project_id, fpath=secret_fpath)
 
     """

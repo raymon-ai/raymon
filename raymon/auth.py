@@ -5,14 +5,16 @@ import requests
 import time
 import json
 import pendulum
-from raymon.exceptions import NetworkException
+from raymon.exceptions import NetworkException, SecretException
 import base64
 
-DEFAULT_FNAME = "~/.raymon/secrets.json"
+DEFAULT_FNAME = Path("~/.raymon/secrets.json").expanduser().absolute()
 
-
-class SecretError(Exception):
-    pass
+DEFAULT_CONFIG = {
+    "auth_url": "https://raymon-staging.eu.auth0.com",
+    "audience": "https://staging-api.raymon.ai",
+    "client_id": "O3L719qD65u8sQuxKoLNRddQekp9q2rS",
+}
 
 
 def save_m2m_config(project_name, auth_endpoint, audience, client_id, client_secret, grant_type, out=DEFAULT_FNAME):
@@ -60,9 +62,9 @@ def save_user_config(auth_endpoint, audience, client_id, token=None, out=DEFAULT
 
 def load_credentials_file(fpath):
     # Check whether outfile exists, load known secrets
-    if fpath.is_file():
+    try:
         known_secrets = json.loads(fpath.read_text())
-    else:
+    except:
         known_secrets = {"user": {}, "m2m": {}}
     return known_secrets
 
@@ -107,7 +109,7 @@ def load_m2m_credentials(project_name=None, fpath=None):
             print(f"Secret loaded from env.")
         except Exception as exc:
             print(f"Could not load secret from environment keys. ({exc})")
-            raise SecretError(f"Could not load secret for project {project_name}.")
+            raise SecretException(f"Could not load secret for project {project_name}.")
 
     return config, secret
 
@@ -126,6 +128,8 @@ def load_user_credentials(fpath=None):
     # HIGHEST PRIORITY 0: specified file path
     # Check whether file and project_name are specified, try loading it.
     try:
+        if fpath is None:
+            fpath = DEFAULT_FNAME
         config, secret = load_user_credentials_file(fpath=fpath)
         print(f"Secret loaded from specific file.")
         return config, secret
@@ -141,7 +145,7 @@ def load_user_credentials(fpath=None):
     except Exception as exc:
         print(f"Could not load config from environment keys. ({exc})")
 
-    raise SecretError(f"Could not load login config.")
+    raise SecretException(f"Could not load login config. Please initialize user config file.")
 
 
 def verify_user(config):
@@ -212,10 +216,11 @@ def login_device_flow(config):
 
 
 def token_ok(token):
+    if token is None:
+        return False
     claims = json.loads(base64.b64decode(token.split(".")[1] + "===").decode())
     expires = pendulum.from_timestamp(claims["exp"])
     ttl = expires - pendulum.now()
-    print(ttl)
     if ttl.hours < 0:
         print(f"Token expired")
         return False
@@ -223,5 +228,5 @@ def token_ok(token):
         print("Token about to expire.")
         return False
     else:
-        print("Token OK")
+        print(f"Token valid for {ttl.hours} more hours.")
         return True

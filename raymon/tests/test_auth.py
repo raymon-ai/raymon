@@ -167,12 +167,12 @@ def test_load_waterfall_prio_3(monkeypatch, tmp_path_factory):
         grant_type="test_grant",
         out=no_file,
     )
-    with pytest.raises(raymon.auth.SecretError):
+    with pytest.raises(raymon.auth.SecretException):
         config, secret = load_m2m_credentials(project_name="testing_project", fpath=no_file)
 
 
 def test_load_waterfall_prio_none():
-    with pytest.raises(raymon.auth.SecretError):
+    with pytest.raises(raymon.auth.SecretException):
         _ = load_m2m_credentials()
 
 
@@ -270,11 +270,17 @@ def test_load_waterfall_user_prio_0(monkeypatch, tmp_path_factory, envsecretfile
     assert secret is None
 
 
-def test_load_waterfall_user_prio_1(monkeypatch):
+def test_load_waterfall_user_prio_1(monkeypatch, tmp_path_factory):
 
     monkeypatch.setenv("RAYMON_AUTH0_URL", "url")
     monkeypatch.setenv("RAYMON_AUDIENCE", "audience")
     monkeypatch.setenv("RAYMON_CLIENT_ID", "client_id")
+
+    path1 = tmp_path_factory.mktemp(basename="path1")
+    no_file = path1 / "secret.json"
+
+    monkeypatch.setattr(raymon.auth, "DEFAULT_FNAME", no_file)
+    assert raymon.auth.DEFAULT_FNAME == no_file
 
     config, secret = load_user_credentials()
 
@@ -284,8 +290,13 @@ def test_load_waterfall_user_prio_1(monkeypatch):
     assert secret is None
 
 
-def test_load_waterfall_user_prio_none():
-    with pytest.raises(raymon.auth.SecretError):
+def test_load_waterfall_user_prio_none(monkeypatch, tmp_path_factory):
+    path1 = tmp_path_factory.mktemp(basename="path1")
+    no_file = path1 / "secret.json"
+
+    monkeypatch.setattr(raymon.auth, "DEFAULT_FNAME", no_file)
+    assert raymon.auth.DEFAULT_FNAME == no_file
+    with pytest.raises(raymon.auth.SecretException):
         _ = load_user_credentials()
 
 
