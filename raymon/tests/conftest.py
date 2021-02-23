@@ -1,5 +1,5 @@
 import pytest
-from raymon.auth import save_secret
+from raymon.auth import save_m2m_config
 
 PROJECT_NAME = "testing_project"
 
@@ -7,7 +7,7 @@ PROJECT_NAME = "testing_project"
 @pytest.fixture
 def secret_file(tmp_path):
     tmp_file = tmp_path / "secret.json"
-    save_secret(
+    save_m2m_config(
         project_name="testing_project",
         auth_endpoint="http://testing-url",
         audience="test_audience",
@@ -16,4 +16,12 @@ def secret_file(tmp_path):
         grant_type="test_grant",
         out=tmp_file,
     )
+    return tmp_file
+
+
+@pytest.fixture
+def envsecretfile(tmp_path):
+    tmp_file = tmp_path / "secret.txt"
+    with open(tmp_file, "w") as f:
+        f.write("client_secret")
     return tmp_file

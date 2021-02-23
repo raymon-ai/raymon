@@ -89,7 +89,7 @@ def test_textfile(tmp_path):
 
 
 def test_api_logger_info(monkeypatch, secret_file):
-    def dummylogin(self):
+    def dummylogin(self, fpath):
         pass
 
     def test_info_post(self, route, data):
@@ -104,13 +104,13 @@ def test_api_logger_info(monkeypatch, secret_file):
 
     monkeypatch.setattr(RaymonAPI, "login", dummylogin)
     monkeypatch.setattr(RaymonAPI, "post", test_info_post)
-    apilogger = RaymonAPI(url="willnotbeused", project_id=PROJECT_NAME, secret_fpath=secret_file)
+    apilogger = RaymonAPI(url="willnotbeused", project_id=PROJECT_NAME, auth_path=secret_file)
     ray = Ray(logger=apilogger)
     ray.info("This is a test")
 
 
 def test_api_logger_data(monkeypatch, secret_file):
-    def dummylogin(self):
+    def dummylogin(self, fpath):
         pass
 
     def test_data_post(self, route, data):
@@ -125,13 +125,13 @@ def test_api_logger_data(monkeypatch, secret_file):
 
     monkeypatch.setattr(RaymonAPI, "login", dummylogin)
     monkeypatch.setattr(RaymonAPI, "post", test_data_post)
-    apilogger = RaymonAPI(url="willnotbeused", project_id=PROJECT_NAME, secret_fpath=secret_file)
+    apilogger = RaymonAPI(url="willnotbeused", project_id=PROJECT_NAME, auth_path=secret_file)
     ray = Ray(logger=apilogger)
     ray.log(peephole="a-test", data=rt.Native({"a": "b"}))
 
 
 def test_api_logger_tags(monkeypatch, secret_file):
-    def dummylogin(self):
+    def dummylogin(self, fpath):
         pass
 
     def test_tags_post(self, route, data):
@@ -148,89 +148,6 @@ def test_api_logger_tags(monkeypatch, secret_file):
 
     monkeypatch.setattr(RaymonAPI, "login", dummylogin)
     monkeypatch.setattr(RaymonAPI, "post", test_tags_post)
-    apilogger = RaymonAPI(url="willnotbeused", project_id=PROJECT_NAME, secret_fpath=secret_file)
+    apilogger = RaymonAPI(url="willnotbeused", project_id=PROJECT_NAME, auth_path=secret_file)
     ray = Ray(logger=apilogger)
-    ray.tag(tags=tags)
-
-
-def test_kafka_logger_info(monkeypatch, secret_file):
-    topic = "test-topic"
-
-    def send_info_checker(self, ls, key, value):
-        assert ls == topic
-        assert PROJECT_NAME == key.decode()
-        data = json.loads(value.decode())
-        assert data["type"] == "info"
-        jcr = data["jcr"]
-        pendulum.parse(jcr["timestamp"])
-        uuid.UUID(jcr["ray_id"], version=4)
-        assert jcr["data"] == "This is a test"
-        assert jcr["peephole"] is None
-        assert jcr["project_id"] == PROJECT_NAME
-
-    monkeypatch.setattr(DummyKafkaProducer, "send", send_info_checker)
-    monkeypatch.setattr(raymon.loggers, "KafkaProducer", DummyKafkaProducer)
-
-    kafka_api = RaymonKafka(
-        bootstrap_servers="willnotbeused", topic=topic, project_id=PROJECT_NAME, secret_fpath=secret_file
-    )
-
-    ray = Ray(logger=kafka_api)
-    ray.info("This is a test")
-
-
-def test_kafka_logger_data(monkeypatch, secret_file):
-    topic = "test-topic"
-
-    def send_data_checker(self, ls, key, value):
-        assert ls == topic
-        assert PROJECT_NAME == key.decode()
-        data = json.loads(value.decode())
-        assert data["type"] == "data"
-        jcr = data["jcr"]
-        pendulum.parse(jcr["timestamp"])
-        uuid.UUID(jcr["ray_id"], version=4)
-        assert jcr["data"]["params"]["data"]["a"] == "b"
-        assert jcr["peephole"] == "a-test"
-        assert jcr["project_id"] == PROJECT_NAME
-
-    monkeypatch.setattr(DummyKafkaProducer, "send", send_data_checker)
-    monkeypatch.setattr(raymon.loggers, "KafkaProducer", DummyKafkaProducer)
-
-    kafka_api = RaymonKafka(
-        bootstrap_servers="willnotbeused", topic=topic, project_id=PROJECT_NAME, secret_fpath=secret_file
-    )
-
-    ray = Ray(logger=kafka_api)
-    ray.log(peephole="a-test", data=rt.Native({"a": "b"}))
-
-
-def test_kafka_logger_tags(monkeypatch, secret_file):
-    topic = "test-topic"
-
-    def send_data_checker(self, ls, key, value):
-        assert ls == topic
-        assert PROJECT_NAME == key.decode()
-        data = json.loads(value.decode())
-        assert data["type"] == "tags"
-        jcr = data["jcr"]
-        pendulum.parse(jcr["timestamp"])
-        uuid.UUID(jcr["ray_id"], version=4)
-        for tag_orig, tag_log in zip(tags, jcr["data"]):
-            assert tag_orig["name"] == tag_log["name"]
-            assert tag_orig["value"] == tag_log["value"]
-            assert tag_orig["type"] == tag_log["type"]
-            assert tag_orig["group"] == tag_log["group"]
-
-        assert jcr["peephole"] is None
-        assert jcr["project_id"] == PROJECT_NAME
-
-    monkeypatch.setattr(DummyKafkaProducer, "send", send_data_checker)
-    monkeypatch.setattr(raymon.loggers, "KafkaProducer", DummyKafkaProducer)
-
-    kafka_api = RaymonKafka(
-        bootstrap_servers="willnotbeused", topic=topic, project_id=PROJECT_NAME, secret_fpath=secret_file
-    )
-
-    ray = Ray(logger=kafka_api)
     ray.tag(tags=tags)

@@ -9,7 +9,7 @@ import pendulum
 import requests
 from kafka import KafkaConsumer, KafkaProducer
 
-from raymon.auth import load_secret
+from raymon.auth import load_m2m_credentials, load_user_credentials, login_m2m_flow, login_device_flow, token_ok
 from raymon.exceptions import NetworkException
 
 MB = 1000000
@@ -74,12 +74,12 @@ class RaymonLoggerBase:
 
 
 class RaymonAPI(RaymonLoggerBase):
-    def __init__(self, url="http://localhost:8000", project_id="default", secret_fpath=None):
+    def __init__(self, url="http://localhost:8000", project_id="default", auth_path=None):
         super().__init__(project_id=project_id)
         self.url = url
         self.headers = {"Content-type": "application/json"}
-        self.secret = load_secret(project_name=project_id, fpath=secret_fpath)
-        self.login()
+        # self.secret = load_secret(project_name=project_id, fpath=secret_fpath)
+        self.login(fpath=auth_path)
 
     """
     Functions related to logging of rays
@@ -125,22 +125,26 @@ class RaymonAPI(RaymonLoggerBase):
     Functions related to Authentication
     """
 
-    def login(self):
-        data = {
-            "audience": self.secret["audience"],
-            "grant_type": self.secret["grant_type"],
-            "client_id": self.secret["client_id"],
-            "client_secret": self.secret["client_secret"],
-        }
+    def login_m2m(self, fpath):
+        config, secret = load_m2m_credentials(fpath=fpath)
+        return login_m2m_flow(config=config, secret=secret)
 
-        route = f"{self.secret['auth_url']}/oauth/token"
-        resp = requests.post(route, data=data)
-        if resp.status_code != 200:
-            raise NetworkException(f"Can not login to Raymon service: \n{resp.text}")
-        else:
-            token_data = resp.json()
-            self.token = token_data["access_token"]
-            self.headers["Authorization"] = f"Bearer {self.token}"
+    def login_user(self, fpath):
+        config, token = load_user_credentials(fpath=fpath)
+        # check token valid?
+        if not token_ok(token):
+            token = login_device_flow(config)
+        return token
+
+    def login(self, fpath):
+        # See whether we have m2m credentials set
+        try:
+            self.token = self.login_m2m(fpath=fpath)
+        except NetworkException as exc:
+            self.logger.info("Could not load m2m credemtials, will use user credentials.")
+            self.token = self.login_user(fpath=fpath)
+
+        self.headers["Authorization"] = f"Bearer {self.token}"
 
 
 class RaymonKafka(RaymonLoggerBase):
