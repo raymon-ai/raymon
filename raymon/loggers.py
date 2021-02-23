@@ -147,52 +147,6 @@ class RaymonAPI(RaymonLoggerBase):
         self.headers["Authorization"] = f"Bearer {self.token}"
 
 
-class RaymonKafka(RaymonLoggerBase):
-    KB = 1000
-    MB = KB * 1000
-
-    def __init__(
-        self,
-        bootstrap_servers="http://localhost:8000",
-        topic="landingstrip",
-        project_id="default",
-        secret_fpath=None,
-        max_msg_size=15 * MB,
-    ):
-        super().__init__(project_id=project_id)
-        self.bootstrap_servers = bootstrap_servers
-        self.landingstrip = topic
-        self.producer = KafkaProducer(bootstrap_servers=self.bootstrap_servers, max_request_size=max_msg_size)
-
-    def info(self, ray_id, text):
-        # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
-        jcr = self.structure(ray_id=ray_id, peephole=None, data=text)
-        kafka_msg = {"type": "info", "jcr": jcr}
-        self.logger.info(text, extra=jcr)
-        self.producer.send(self.landingstrip, key=self.project_id.encode(), value=json.dumps(kafka_msg).encode())
-        self.logger.info(f"Logged info to landingstrip.", extra=jcr)
-
-    def log(self, ray_id, peephole, data):
-        # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
-        jcr = self.structure(ray_id=ray_id, peephole=peephole, data=data.to_jcr())
-        kafka_msg = {"type": "data", "jcr": jcr}
-        self.logger.info(f"Logging data at {peephole}", extra=jcr)
-        # resp = requests.post(f"{self.url}/projects/{self.project_id}/ingest", json=jcr, headers=self.headers)
-        self.producer.send(self.landingstrip, key=self.project_id.encode(), value=json.dumps(kafka_msg).encode())
-        self.logger.info(f"Logged data to landingstrip.", extra=jcr)
-
-    def tag(self, ray_id, tags):
-        # TODO validate tags
-        jcr = self.structure(ray_id=ray_id, peephole=None, data=tags)
-        kafka_msg = {"type": "tags", "jcr": jcr}
-        # resp = requests.post(f"{self.url}/projects/{self.project_id}/rays/{ray_id}/tags", json=tags, headers=self.headers)
-        self.producer.send(self.landingstrip, key=self.project_id.encode(), value=json.dumps(kafka_msg).encode())
-        self.logger.info(f"Logged tags to landingstrip.", extra=jcr)
-
-    def flush(self):
-        self.producer.flush()
-
-
 class RaymonTextFile(RaymonLoggerBase):
     KB = 1000
     MB = KB * 1000

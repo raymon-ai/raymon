@@ -78,7 +78,7 @@ def load_user_credentials_file(fpath):
     known_secrets = load_credentials_file(fpath=Path(fpath))
     token = known_secrets.get("user", {}).get("secret", None)
     config = known_secrets.get("user", {}).get("config", {})
-    return token, verify_user(config)
+    return verify_user(config), token
 
 
 def load_m2m_credentials_env():
@@ -126,30 +126,30 @@ def load_user_credentials(fpath=None):
     # HIGHEST PRIORITY 0: specified file path
     # Check whether file and project_name are specified, try loading it.
     try:
-        token, config = load_user_credentials_file(fpath=fpath)
+        config, secret = load_user_credentials_file(fpath=fpath)
         print(f"Secret loaded from specific file.")
-        return token, config
+        return config, secret
     except Exception as exc:
         print(f"Could not load token or config from specific file. ({exc})")
 
     # PRIORITY 1: ENV Variables
     try:
-        token = None
+        secret = None
         config = verify_user(load_user_credentials_env())
         print(f"Secret loaded from env.")
-        return token, config
+        return config, secret
     except Exception as exc:
         print(f"Could not load config from environment keys. ({exc})")
 
     raise SecretError(f"Could not load login config.")
 
 
-def verify_user(secret):
+def verify_user(config):
     keys = ["auth_url", "audience", "client_id"]
     for key in keys:
-        assert secret["config"][key] is not None
-        assert isinstance(secret[key], str)
-    return secret
+        assert config[key] is not None
+        assert isinstance(config[key], str)
+    return config
 
 
 def load_user_credentials_env():

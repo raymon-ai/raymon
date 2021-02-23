@@ -7,6 +7,9 @@ from raymon.auth import (
     verify_m2m,
     load_m2m_credentials,
     load_m2m_credentials_file,
+    save_user_config,
+    load_user_credentials,
+    verify_user,
 )
 
 
@@ -201,3 +204,77 @@ def test_verify_m2m():
         pytest.fail("Expected Failure on grant_type key")
     except:
         pass
+
+
+def test_save_load_secret_multiple(tmp_path):
+    tmp_file = tmp_path / "secret.json"
+    save_m2m_config(
+        project_name="testing_project",
+        auth_endpoint="http://testing-url",
+        audience="test_audience",
+        client_id="test_id",
+        client_secret="test_secret",
+        grant_type="test_grant",
+        out=tmp_file,
+    )
+
+    save_m2m_config(
+        project_name="testing_project2",
+        auth_endpoint="url",
+        audience="audience",
+        client_id="client_id",
+        client_secret="client_secret",
+        grant_type="client_credentials",
+        out=tmp_file,
+    )
+
+    save_user_config(
+        auth_endpoint="url",
+        audience="audience",
+        client_id="client_id",
+        out=tmp_file,
+    )
+
+    config, secret = load_user_credentials(fpath=tmp_file)
+    assert verify_user(config)
+    assert config["auth_url"] == "url"
+    assert config["audience"] == "audience"
+    assert config["client_id"] == "client_id"
+    assert secret is None
+
+
+def test_load_waterfall_user_prio_0(monkeypatch, tmp_path_factory, envsecretfile):
+
+    path1 = tmp_path_factory.mktemp(basename="path1")
+    tmp_file = path1 / "secret.json"
+    save_user_config(
+        auth_endpoint="http://testing-url",
+        audience="test_audience",
+        client_id="test_id",
+        out=tmp_file,
+    )
+
+    monkeypatch.setenv("RAYMON_AUTH0_URL", "url")
+    monkeypatch.setenv("RAYMON_AUDIENCE", "audience")
+    monkeypatch.setenv("RAYMON_CLIENT_ID", "client_id")
+
+    config, secret = load_user_credentials(fpath=tmp_file)
+
+    assert config["auth_url"] == "http://testing-url"
+    assert config["audience"] == "test_audience"
+    assert config["client_id"] == "test_id"
+    assert secret is None
+
+
+def test_load_waterfall_user_prio_1(monkeypatch):
+
+    monkeypatch.setenv("RAYMON_AUTH0_URL", "url")
+    monkeypatch.setenv("RAYMON_AUDIENCE", "audience")
+    monkeypatch.setenv("RAYMON_CLIENT_ID", "client_id")
+
+    config, secret = load_user_credentials()
+
+    assert config["auth_url"] == "url"
+    assert config["audience"] == "audience"
+    assert config["client_id"] == "client_id"
+    assert secret is None
