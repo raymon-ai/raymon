@@ -5,7 +5,8 @@ import sys
 from abc import ABC, abstractmethod
 import pendulum
 import requests
-
+import os
+from pathlib import Path
 from raymon.auth import login
 
 MB = 1000000
@@ -131,9 +132,9 @@ class RaymonTextFile(RaymonLoggerBase):
     KB = 1000
     MB = KB * 1000
 
-    def __init__(self, fname="/var/log/raymon-data.txt", project_id="default", auth_path=None):
+    def __init__(self, path="/tmp/raymon/", project_id="default", auth_path=None):
         super().__init__(project_id=project_id, auth_path=auth_path)
-        self.fname = fname
+        self.fname = Path(path) / f"raymon-{os.getpid()}.log"
         self.data_logger = self.setup_datalogger()
 
     def setup_datalogger(self):
