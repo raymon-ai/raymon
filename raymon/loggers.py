@@ -85,6 +85,7 @@ class RaymonAPI(RaymonLoggerBase):
     def __init__(self, url="http://localhost:8000", project_id="default", auth_path=None):
         super().__init__(project_id=project_id, auth_path=auth_path)
         self.url = url
+        self.session = requests.Session()
         # self.secret = load_secret(project_name=project_id, fpath=secret_fpath)
 
     """
@@ -115,11 +116,11 @@ class RaymonAPI(RaymonLoggerBase):
         self.logger.info(f"Ray tagged. Status: {status}", extra=jcr)
 
     def post(self, route, data):
-        resp = requests.post(f"{self.url}/{route}", json=data, headers=self.headers)
+        resp = self.session.post(f"{self.url}/{route}", json=data, headers=self.headers)
         return resp
 
     def get(self, route, params):
-        resp = requests.get(f"{self.url}/{route}", params=params, headers=self.headers)
+        resp = self.session.get(f"{self.url}/{route}", params=params, headers=self.headers)
 
         return resp
 
