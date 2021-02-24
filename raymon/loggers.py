@@ -85,6 +85,7 @@ class RaymonAPI(RaymonLoggerBase):
     def __init__(self, url="http://localhost:8000", project_id="default", auth_path=None):
         super().__init__(project_id=project_id, auth_path=auth_path)
         self.url = url
+        self.session = requests.Session()
         # self.secret = load_secret(project_name=project_id, fpath=secret_fpath)
 
     """
@@ -95,7 +96,7 @@ class RaymonAPI(RaymonLoggerBase):
         # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
         jcr = self.structure(ray_id=ray_id, peephole=None, data=text)
         self.logger.info(text, extra=jcr)
-        resp = self.post(route=f"{self.url}/projects/{self.project_id}/ingest", data=jcr)
+        resp = self.post(route=f"projects/{self.project_id}/ingest", data=jcr)
         status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
         self.logger.info(f"Logged info. Status: {status}", extra=jcr)
 
@@ -103,23 +104,23 @@ class RaymonAPI(RaymonLoggerBase):
         # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
         jcr = self.structure(ray_id=ray_id, peephole=peephole, data=data.to_jcr())
         self.logger.info(f"Logging data at {peephole}", extra=jcr)
-        resp = self.post(route=f"{self.url}/projects/{self.project_id}/ingest", data=jcr)
+        resp = self.post(route=f"projects/{self.project_id}/ingest", data=jcr)
         status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
         self.logger.info(f"Data logged at {peephole}. Status: {status}", extra=jcr)
 
     def tag(self, ray_id, tags):
         # TODO validate tags
         jcr = self.structure(ray_id=ray_id, peephole=None, data=tags)
-        resp = self.post(route=f"{self.url}/projects/{self.project_id}/rays/{ray_id}/tags", data=tags)
+        resp = self.post(route=f"projects/{self.project_id}/rays/{ray_id}/tags", data=tags)
         status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
         self.logger.info(f"Ray tagged. Status: {status}", extra=jcr)
 
     def post(self, route, data):
-        resp = requests.post(f"{self.url}/{route}", json=data, headers=self.headers)
+        resp = self.session.post(f"{self.url}/{route}", json=data, headers=self.headers)
         return resp
 
     def get(self, route, params):
-        resp = requests.get(f"{self.url}/{route}", params=params, headers=self.headers)
+        resp = self.session.get(f"{self.url}/{route}", params=params, headers=self.headers)
 
         return resp
 
