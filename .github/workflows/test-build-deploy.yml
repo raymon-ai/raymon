@@ -1,7 +1,7 @@
 name: test-build-deploy
 on:
-  push:
-    branches: master
+  release:
+    types: [published]
 jobs:
   test-build-publish-ubuntu:
     runs-on: ubuntu-latest
