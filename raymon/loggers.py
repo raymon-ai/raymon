@@ -3,14 +3,11 @@ import logging
 from logging.handlers import RotatingFileHandler
 import sys
 from abc import ABC, abstractmethod
-from pathlib import Path
-
 import pendulum
 import requests
-from kafka import KafkaConsumer, KafkaProducer
-
-from raymon.auth import load_secret
-from raymon.exceptions import NetworkException
+import os
+from pathlib import Path
+from raymon.auth import login
 
 MB = 1000000
 
@@ -42,10 +39,13 @@ def setup_logger(fname=None, stdout=True):
     return logger
 
 
-class RaymonLoggerBase:
-    def __init__(self, project_id="default"):
+class RaymonLoggerBase(ABC):
+    def __init__(self, project_id="default", auth_path=None):
         self.project_id = project_id
+        self.headers = {"Content-type": "application/json"}
+        self.token = None
         self.logger = setup_logger(stdout=True)
+        self.login(fpath=auth_path)
 
     def structure(self, ray_id, peephole, data):
         return {
@@ -72,14 +72,20 @@ class RaymonLoggerBase:
     def flush(self):
         pass
 
+    """
+    Functions related to Authentication
+    """
+
+    def login(self, fpath):
+        self.token = login(fpath=fpath)
+        self.headers["Authorization"] = f"Bearer {self.token}"
+
 
 class RaymonAPI(RaymonLoggerBase):
-    def __init__(self, url="http://localhost:8000", project_id="default", secret_fpath=None):
-        super().__init__(project_id=project_id)
+    def __init__(self, url="http://localhost:8000", project_id="default", auth_path=None):
+        super().__init__(project_id=project_id, auth_path=auth_path)
         self.url = url
-        self.headers = {"Content-type": "application/json"}
-        self.secret = load_secret(project_name=project_id, fpath=secret_fpath)
-        self.login()
+        # self.secret = load_secret(project_name=project_id, fpath=secret_fpath)
 
     """
     Functions related to logging of rays
@@ -121,81 +127,14 @@ class RaymonAPI(RaymonLoggerBase):
         # We don't need to do anything here
         pass
 
-    """
-    Functions related to Authentication
-    """
-
-    def login(self):
-        data = {
-            "audience": self.secret["audience"],
-            "grant_type": self.secret["grant_type"],
-            "client_id": self.secret["client_id"],
-            "client_secret": self.secret["client_secret"],
-        }
-
-        route = f"{self.secret['auth_url']}/oauth/token"
-        resp = requests.post(route, data=data)
-        if resp.status_code != 200:
-            raise NetworkException(f"Can not login to Raymon service: \n{resp.text}")
-        else:
-            token_data = resp.json()
-            self.token = token_data["access_token"]
-            self.headers["Authorization"] = f"Bearer {self.token}"
-
-
-class RaymonKafka(RaymonLoggerBase):
-    KB = 1000
-    MB = KB * 1000
-
-    def __init__(
-        self,
-        bootstrap_servers="http://localhost:8000",
-        topic="landingstrip",
-        project_id="default",
-        secret_fpath=None,
-        max_msg_size=15 * MB,
-    ):
-        super().__init__(project_id=project_id)
-        self.bootstrap_servers = bootstrap_servers
-        self.landingstrip = topic
-        self.producer = KafkaProducer(bootstrap_servers=self.bootstrap_servers, max_request_size=max_msg_size)
-
-    def info(self, ray_id, text):
-        # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
-        jcr = self.structure(ray_id=ray_id, peephole=None, data=text)
-        kafka_msg = {"type": "info", "jcr": jcr}
-        self.logger.info(text, extra=jcr)
-        self.producer.send(self.landingstrip, key=self.project_id.encode(), value=json.dumps(kafka_msg).encode())
-        self.logger.info(f"Logged info to landingstrip.", extra=jcr)
-
-    def log(self, ray_id, peephole, data):
-        # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
-        jcr = self.structure(ray_id=ray_id, peephole=peephole, data=data.to_jcr())
-        kafka_msg = {"type": "data", "jcr": jcr}
-        self.logger.info(f"Logging data at {peephole}", extra=jcr)
-        # resp = requests.post(f"{self.url}/projects/{self.project_id}/ingest", json=jcr, headers=self.headers)
-        self.producer.send(self.landingstrip, key=self.project_id.encode(), value=json.dumps(kafka_msg).encode())
-        self.logger.info(f"Logged data to landingstrip.", extra=jcr)
-
-    def tag(self, ray_id, tags):
-        # TODO validate tags
-        jcr = self.structure(ray_id=ray_id, peephole=None, data=tags)
-        kafka_msg = {"type": "tags", "jcr": jcr}
-        # resp = requests.post(f"{self.url}/projects/{self.project_id}/rays/{ray_id}/tags", json=tags, headers=self.headers)
-        self.producer.send(self.landingstrip, key=self.project_id.encode(), value=json.dumps(kafka_msg).encode())
-        self.logger.info(f"Logged tags to landingstrip.", extra=jcr)
-
-    def flush(self):
-        self.producer.flush()
-
 
 class RaymonTextFile(RaymonLoggerBase):
     KB = 1000
     MB = KB * 1000
 
-    def __init__(self, fname="/var/log/raymon-data.txt", project_id="default"):
-        super().__init__(project_id=project_id)
-        self.fname = fname
+    def __init__(self, path="/tmp/raymon/", project_id="default", auth_path=None):
+        super().__init__(project_id=project_id, auth_path=auth_path)
+        self.fname = Path(path) / f"raymon-{os.getpid()}.log"
         self.data_logger = self.setup_datalogger()
 
     def setup_datalogger(self):
