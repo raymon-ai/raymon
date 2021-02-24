@@ -22,15 +22,15 @@ def test_textfile(tmp_path, monkeypatch, secret_file):
 
     monkeypatch.setattr(RaymonTextFile, "login", dummylogin)
 
-    fpath = tmp_path / "raymon.log"
-    logger = RaymonTextFile(fname=fpath, project_id=PROJECT_NAME)
+    fpath = tmp_path
+    logger = RaymonTextFile(path=fpath, project_id=PROJECT_NAME)
     ray = Ray(logger=logger)
     ray.info("This is a test")
     ray.log(peephole="a-test", data=rt.Native({"a": "b"}))
     ray.tag(tags=tags)
 
     # load log file
-    with open(fpath, "r") as f:
+    with open(logger.fname, "r") as f:
         lines = f.readlines()
 
     # First line --info

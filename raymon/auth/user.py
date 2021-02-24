@@ -5,6 +5,7 @@ import requests
 import time
 import json
 import pendulum
+from requests.api import head
 from raymon.exceptions import NetworkException, SecretException
 import base64
 
@@ -99,7 +100,7 @@ def login_device_flow(config):
     data = dict(client_id=config["client_id"], audience=config["audience"], scope="")
     auth_url = config["auth_url"]
     headers = {"content-type": "application/x-www-form-urlencoded"}
-    resp = requests.post(f"{auth_url}/oauth/device/code", data=data, headers=headers)
+    resp = code_request(route=f"{auth_url}/oauth/device/code", data=data, headers=headers)
     device_resp = resp.json()
     device_code = device_resp["device_code"]
     polling_interval = device_resp["interval"]
@@ -112,7 +113,7 @@ def login_device_flow(config):
             grant_type="urn:ietf:params:oauth:grant-type:device_code",
             device_code=device_code,
         )
-        resp = requests.post(f"{auth_url}/oauth/token", data=data, headers=headers)
+        resp = token_request(f"{auth_url}/oauth/token", data=data, headers=headers)
 
         login_resp = resp.json()
         if "error" in login_resp and login_resp["error"] == "authorization_pending":
@@ -126,3 +127,11 @@ def login_device_flow(config):
             success = True
     token = login_resp["access_token"]
     return token
+
+
+def code_request(route, data, headers):
+    return requests.post(route, data=data, headers=headers)
+
+
+def token_request(route, data, headers):
+    return requests.post(route, data=data, headers=headers)

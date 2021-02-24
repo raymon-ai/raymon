@@ -92,10 +92,15 @@ def login_m2m_flow(config, secret):
     }
 
     route = f"{config['auth_url']}/oauth/token"
-    resp = requests.post(route, data=data)
-    if resp.status_code != 200:
+    resp = login_request(route, data)
+    if not resp.ok:
         raise NetworkException(f"Can not login to Raymon service: \n{resp.text}")
     else:
         token_data = resp.json()
         token = token_data["access_token"]
         return token
+
+
+def login_request(route, data):
+    resp = requests.post(route, data=data)
+    return resp

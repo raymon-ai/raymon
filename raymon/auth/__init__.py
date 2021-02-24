@@ -47,6 +47,7 @@ def login_user(credentials, out):
 
 
 def login(fpath, project_id=None):
+    token = None
     if fpath is None:
         fpath = DEFAULT_FNAME
     credentials = load_credentials_file(fpath=fpath)
