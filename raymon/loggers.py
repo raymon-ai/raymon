@@ -3,21 +3,10 @@ import logging
 from logging.handlers import RotatingFileHandler
 import sys
 from abc import ABC, abstractmethod
-from pathlib import Path
-import traceback
 import pendulum
 import requests
-from kafka import KafkaConsumer, KafkaProducer
 
-from raymon.auth import (
-    load_m2m_credentials,
-    load_user_credentials,
-    login_m2m_flow,
-    login_device_flow,
-    token_ok,
-    save_user_config,
-)
-from raymon.exceptions import NetworkException, SecretException
+from raymon.auth import login
 
 MB = 1000000
 
@@ -49,7 +38,7 @@ def setup_logger(fname=None, stdout=True):
     return logger
 
 
-class RaymonLoggerBase:
+class RaymonLoggerBase(ABC):
     def __init__(self, project_id="default", auth_path=None):
         self.project_id = project_id
         self.headers = {"Content-type": "application/json"}
@@ -86,39 +75,8 @@ class RaymonLoggerBase:
     Functions related to Authentication
     """
 
-    def login_m2m(self, fpath):
-        config, secret = load_m2m_credentials(fpath=fpath, project_name=self.project_id)
-        return login_m2m_flow(config=config, secret=secret)
-
-    def login_user(self, fpath):
-        config, token = load_user_credentials(fpath=fpath)
-        # check token valid?
-        if not token_ok(token):
-            token = login_device_flow(config)
-        save_user_config(
-            auth_endpoint=config["auth_url"],
-            audience=config["audience"],
-            client_id=config["client_id"],
-            token=token,
-        )
-        return token
-
     def login(self, fpath):
-        # See whether we have m2m credentials set
-        try:
-            self.token = self.login_m2m(fpath=fpath)
-        except (SecretException, NetworkException) as exc:
-            print(f"Could not login with m2m credentials: {type(exc)} -- {exc}")
-            # traceback.print_exc()
-
-        if self.token is None:
-            try:
-                self.token = self.login_user(fpath=fpath)
-            except (SecretException, NetworkException) as exc:
-                print(f"Could not login with user credentials: {type(exc)} -- {exc}")
-
-        if self.token is None:
-            raise NetworkException("Could not login user or machine.")
+        self.token = login(fpath=fpath)
         self.headers["Authorization"] = f"Bearer {self.token}"
 
 

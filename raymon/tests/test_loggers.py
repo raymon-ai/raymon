@@ -4,7 +4,6 @@ import json
 import pendulum
 import uuid
 from raymon import Ray, RaymonAPI, RaymonTextFile
-import raymon.loggers
 from raymon import types as rt
 from raymon.tests.conftest import PROJECT_NAME
 
@@ -12,17 +11,6 @@ from raymon.tests.conftest import PROJECT_NAME
 class Dummyreponse:
 
     ok = True
-
-
-class DummyKafkaProducer:
-    def __init__(self, *arge, **kwargs):
-        pass
-
-    def send(self, ls, key, value):
-        pass  # will be monkeupatched in test
-
-    def flush(self):
-        pass
 
 
 tags = [{"name": "my-tag", "value": "my_value", "type": "label", "group": "mygroup"}]

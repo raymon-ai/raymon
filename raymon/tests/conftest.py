@@ -1,5 +1,7 @@
 import pytest
-from raymon.auth import save_m2m_config
+
+# import raymon
+from raymon.auth.m2m import save_m2m_config
 
 PROJECT_NAME = "testing_project"
 
@@ -8,6 +10,7 @@ PROJECT_NAME = "testing_project"
 def secret_file(tmp_path):
     tmp_file = tmp_path / "secret.json"
     save_m2m_config(
+        existing={},
         project_name="testing_project",
         auth_endpoint="http://testing-url",
         audience="test_audience",
