@@ -96,7 +96,8 @@ class RaymonAPI(RaymonLoggerBase):
         # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
         jcr = self.structure(ray_id=ray_id, peephole=None, data=text)
         self.logger.info(text, extra=jcr)
-        resp = self.post(route=f"{self.url}/projects/{self.project_id}/ingest", data=jcr)
+        resp = self.post(route=f"projects/{self.project_id}/ingest", data=jcr)
+        print(resp.json())
         status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
         self.logger.info(f"Logged info. Status: {status}", extra=jcr)
 
@@ -104,14 +105,14 @@ class RaymonAPI(RaymonLoggerBase):
         # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
         jcr = self.structure(ray_id=ray_id, peephole=peephole, data=data.to_jcr())
         self.logger.info(f"Logging data at {peephole}", extra=jcr)
-        resp = self.post(route=f"{self.url}/projects/{self.project_id}/ingest", data=jcr)
+        resp = self.post(route=f"projects/{self.project_id}/ingest", data=jcr)
         status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
         self.logger.info(f"Data logged at {peephole}. Status: {status}", extra=jcr)
 
     def tag(self, ray_id, tags):
         # TODO validate tags
         jcr = self.structure(ray_id=ray_id, peephole=None, data=tags)
-        resp = self.post(route=f"{self.url}/projects/{self.project_id}/rays/{ray_id}/tags", data=tags)
+        resp = self.post(route=f"projects/{self.project_id}/rays/{ray_id}/tags", data=tags)
         status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
         self.logger.info(f"Ray tagged. Status: {status}", extra=jcr)
 

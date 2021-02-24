@@ -8,3 +8,4 @@ wheel
 black
 pip-licenses
 pylint
+bump2version
