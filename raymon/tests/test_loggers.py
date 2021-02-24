@@ -86,7 +86,7 @@ def test_api_logger_info(monkeypatch, secret_file):
         pass
 
     def test_info_post(self, route, data):
-        assert route == f"willnotbeused/projects/{PROJECT_NAME}/ingest"
+        assert route == f"projects/{PROJECT_NAME}/ingest"
         jcr = data
         pendulum.parse(jcr["timestamp"])
         uuid.UUID(jcr["ray_id"], version=4)
@@ -107,7 +107,7 @@ def test_api_logger_data(monkeypatch, secret_file):
         pass
 
     def test_data_post(self, route, data):
-        assert route == f"willnotbeused/projects/{PROJECT_NAME}/ingest" ""
+        assert route == f"projects/{PROJECT_NAME}/ingest" ""
         jcr = data
         pendulum.parse(jcr["timestamp"])
         uuid.UUID(jcr["ray_id"], version=4)
@@ -128,7 +128,7 @@ def test_api_logger_tags(monkeypatch, secret_file):
         pass
 
     def test_tags_post(self, route, data):
-        assert route.startswith(f"willnotbeused/projects/{PROJECT_NAME}/rays")
+        assert route.startswith(f"projects/{PROJECT_NAME}/rays")
         assert route.endswith("/tags")
         jcr = data
         for tag_orig, tag_log in zip(tags, jcr):

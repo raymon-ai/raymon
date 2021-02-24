@@ -97,7 +97,6 @@ class RaymonAPI(RaymonLoggerBase):
         jcr = self.structure(ray_id=ray_id, peephole=None, data=text)
         self.logger.info(text, extra=jcr)
         resp = self.post(route=f"projects/{self.project_id}/ingest", data=jcr)
-        print(resp.json())
         status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
         self.logger.info(f"Logged info. Status: {status}", extra=jcr)
 
