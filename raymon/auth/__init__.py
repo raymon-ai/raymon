@@ -17,15 +17,20 @@ DEFAULT_FNAME = Path("~/.raymon/secrets.json").expanduser().absolute()
 
 def load_credentials_file(fpath):
     # Check whether outfile exists, load known secrets
+    print(f"Trying to load credentials from {fpath}")
     try:
         known_secrets = json.loads(fpath.read_text())
-    except:
-        known_secrets = {"user": {}, "m2m": {}}
+    except FileNotFoundError:
+        raise SecretException(f"Could not open secret file at {fpath}")
+    print("Credentials loaded.")
     return known_secrets
 
 
 def login_m2m(credentials, project_id):
-    config, secret = load_m2m_credentials(credentials=credentials, project_id=project_id)
+    config, secret = load_m2m_credentials(
+        credentials=credentials,
+        project_id=project_id,
+    )
     return login_m2m_flow(config=config, secret=secret)
 
 
@@ -56,8 +61,7 @@ def login(fpath, project_id=None):
         token = login_m2m(credentials=credentials, project_id=project_id)
     except (SecretException, NetworkException) as exc:
         print(f"Could not login with m2m credentials: {type(exc)} -- {exc}")
-    # If we did not find m2m credentials, let the user login interactively.
-    if token is None:
+        # If we did not find m2m credentials, let the user login interactively.
         try:
             token = login_user(credentials=credentials, out=fpath)
         except (SecretException, NetworkException) as exc:
