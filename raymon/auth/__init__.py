@@ -25,7 +25,7 @@ def load_credentials_file(fpath):
 
 
 def login_m2m(credentials, project_id):
-    config, secret = load_m2m_credentials(credentials=credentials, project_name=project_id)
+    config, secret = load_m2m_credentials(credentials=credentials, project_id=project_id)
     return login_m2m_flow(config=config, secret=secret)
 
 

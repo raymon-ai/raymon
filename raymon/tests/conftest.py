@@ -11,7 +11,7 @@ def secret_file(tmp_path):
     tmp_file = tmp_path / "secret.json"
     save_m2m_config(
         existing={},
-        project_name="testing_project",
+        project_id="testing_project",
         auth_endpoint="http://testing-url",
         audience="test_audience",
         client_id="test_id",

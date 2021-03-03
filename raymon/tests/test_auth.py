@@ -42,7 +42,7 @@ def test_save_load_secret_single(tmp_path):
     tmp_file = tmp_path / "secret.json"
     save_m2m_config(
         existing={},
-        project_name="testing_project",
+        project_id="testing_project",
         auth_endpoint="http://testing-url",
         audience="test_audience",
         client_id="test_id",
@@ -51,7 +51,7 @@ def test_save_load_secret_single(tmp_path):
         out=tmp_file,
     )
     credentials = load_credentials_file(fpath=tmp_file)
-    config, secret = load_m2m_credentials(credentials=credentials, project_name="testing_project")
+    config, secret = load_m2m_credentials(credentials=credentials, project_id="testing_project")
     assert verify_m2m(config, secret)
     assert config["auth_url"] == "http://testing-url"
     assert config["audience"] == "test_audience"
@@ -64,7 +64,7 @@ def test_save_load_secret_multiple(tmp_path):
     tmp_file = tmp_path / "secret.json"
     save_m2m_config(
         existing={},
-        project_name="testing_project",
+        project_id="testing_project",
         auth_endpoint="http://testing-url",
         audience="test_audience",
         client_id="test_id",
@@ -75,7 +75,7 @@ def test_save_load_secret_multiple(tmp_path):
     existing = load_credentials_file(tmp_file)
     save_m2m_config(
         existing=existing,
-        project_name="testing_project2",
+        project_id="testing_project2",
         auth_endpoint="url",
         audience="audience",
         client_id="client_id",
@@ -84,7 +84,7 @@ def test_save_load_secret_multiple(tmp_path):
         out=tmp_file,
     )
     credentials = load_credentials_file(fpath=tmp_file)
-    config, secret = load_m2m_credentials(credentials=credentials, project_name="testing_project")
+    config, secret = load_m2m_credentials(credentials=credentials, project_id="testing_project")
     assert verify_m2m(config, secret)
     assert config["auth_url"] == "http://testing-url"
     assert config["audience"] == "test_audience"
@@ -92,7 +92,7 @@ def test_save_load_secret_multiple(tmp_path):
     assert config["grant_type"] == "test_grant"
     assert secret == "test_secret"
 
-    config, secret = load_m2m_credentials(credentials=credentials, project_name="testing_project2")
+    config, secret = load_m2m_credentials(credentials=credentials, project_id="testing_project2")
     assert verify_m2m(config, secret)
     assert config["auth_url"] == "url"
     assert config["audience"] == "audience"
@@ -107,7 +107,7 @@ def test_load_waterfall_prio_0(monkeypatch, tmp_path_factory, envsecretfile):
     tmp_file = path1 / "secret.json"
     save_m2m_config(
         existing={},
-        project_name="testing_project",
+        project_id="testing_project",
         auth_endpoint="http://testing-url",
         audience="test_audience",
         client_id="test_id",
@@ -118,7 +118,7 @@ def test_load_waterfall_prio_0(monkeypatch, tmp_path_factory, envsecretfile):
     existing = load_credentials_file(tmp_file)
     save_m2m_config(
         existing=existing,
-        project_name="testing_project2",
+        project_id="testing_project2",
         auth_endpoint="url",
         audience="audience",
         client_id="client_id",
@@ -134,7 +134,7 @@ def test_load_waterfall_prio_0(monkeypatch, tmp_path_factory, envsecretfile):
     monkeypatch.setenv("RAYMON_GRANT_TYPE", "client_credentials-env")
 
     credentials = load_credentials_file(fpath=tmp_file)
-    config, secret = load_m2m_credentials(credentials=credentials, project_name="testing_project")
+    config, secret = load_m2m_credentials(credentials=credentials, project_id="testing_project")
 
     assert config["auth_url"] == "http://testing-url"
     assert config["audience"] == "test_audience"
@@ -170,7 +170,7 @@ def test_load_waterfall_prio_3(monkeypatch, tmp_path_factory):
 
     save_m2m_config(
         existing={},
-        project_name="testing_project2",
+        project_id="testing_project2",
         auth_endpoint="http://testing-url",
         audience="test_audience",
         client_id="test_id",
@@ -179,7 +179,7 @@ def test_load_waterfall_prio_3(monkeypatch, tmp_path_factory):
         out=no_file,
     )
     with pytest.raises(SecretException):
-        config, secret = load_m2m_credentials(project_name="testing_project")
+        config, secret = load_m2m_credentials(project_id="testing_project")
 
 
 def test_load_waterfall_prio_none():
@@ -225,7 +225,7 @@ def test_save_load_secret_multiple_with_user(tmp_path):
     tmp_file = tmp_path / "secret.json"
     save_m2m_config(
         existing={},
-        project_name="testing_project",
+        project_id="testing_project",
         auth_endpoint="http://testing-url",
         audience="test_audience",
         client_id="test_id",
@@ -236,7 +236,7 @@ def test_save_load_secret_multiple_with_user(tmp_path):
     existing = load_credentials_file(tmp_file)
     save_m2m_config(
         existing=existing,
-        project_name="testing_project2",
+        project_id="testing_project2",
         auth_endpoint="url",
         audience="audience",
         client_id="client_id",

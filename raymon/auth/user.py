@@ -85,11 +85,8 @@ def token_ok(token):
     claims = json.loads(base64.b64decode(token.split(".")[1] + "===").decode())
     expires = pendulum.from_timestamp(claims["exp"])
     ttl = expires - pendulum.now()
-    if ttl.hours < 0:
-        print(f"Token expired")
-        return False
-    elif ttl.hours < 2:
-        print("Token about to expire.")
+    if ttl.hours < 2:
+        print(f"Token expired or about to expire. Logging in...")
         return False
     else:
         print(f"Token valid for {ttl.hours} more hours.")

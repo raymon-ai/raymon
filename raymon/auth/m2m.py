@@ -10,7 +10,7 @@ from raymon.exceptions import NetworkException, SecretException
 
 def save_m2m_config(
     existing,
-    project_name,
+    project_id,
     auth_endpoint,
     audience,
     client_id,
@@ -24,7 +24,7 @@ def save_m2m_config(
     # If so, check whether porject exists
     if "m2m" not in known_configs:
         known_configs["m2m"] = {}
-    project_config = known_configs["m2m"].get(project_name, {})
+    project_config = known_configs["m2m"].get(project_id, {})
     project_config["config"] = {}
     project_config["secret"] = None
 
@@ -36,7 +36,7 @@ def save_m2m_config(
     project_config["config"]["grant_type"] = grant_type
 
     # Save secret
-    known_configs["m2m"][project_name] = project_config
+    known_configs["m2m"][project_id] = project_config
     with open(out, "w") as f:
         json.dump(known_configs, fp=f, indent=4)
 
@@ -52,13 +52,13 @@ def load_m2m_credentials_env():
     return verify_m2m(project_config, secret)
 
 
-def load_m2m_credentials(credentials=None, project_name=None):
+def load_m2m_credentials(credentials=None, project_id=None):
     # HIGHEST PRIORITY 0: specified file path
     # Check whether file and project_name are specified, try loading it.
     try:
-        assert project_name is not None
-        config = credentials.get("m2m")[project_name]["config"]
-        secret = credentials.get("m2m")[project_name]["secret"]
+        assert project_id is not None
+        config = credentials.get("m2m")[project_id]["config"]
+        secret = credentials.get("m2m")[project_id]["secret"]
         config, secret = verify_m2m(config, secret)
         print(f"Secret loaded from specific file.")
     except Exception as exc:
@@ -69,7 +69,7 @@ def load_m2m_credentials(credentials=None, project_name=None):
             print(f"Secret loaded from env.")
         except Exception as exc:
             print(f"Could not load secret from environment keys. ({exc})")
-            raise SecretException(f"Could not load secret for project {project_name}.")
+            raise SecretException(f"Could not load secret for project {project_id}.")
 
     return config, secret
 
