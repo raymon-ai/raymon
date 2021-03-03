@@ -5,14 +5,6 @@ from raymon.auth import login
 MB = 1000000
 
 
-def parse_response(func):
-    def wrapper(*args, **kwargs):
-        resp = func(*args, **kwargs)
-        return resp.json(), resp.ok
-
-    return wrapper
-
-
 class RaymonAPI:
     def __init__(self, url="http://localhost:8000", project_id=None, auth_path=None):
         self.project_id = project_id
@@ -35,7 +27,6 @@ class RaymonAPI:
 
     """HTTP METHODS"""
 
-    @parse_response
     def post(self, route, json, params=None):
         resp = self.session.post(
             f"{self.url}/{route}",
@@ -45,7 +36,6 @@ class RaymonAPI:
         )
         return resp
 
-    @parse_response
     def put(self, route, json, params=None):
         resp = self.session.put(
             f"{self.url}/{route}",
@@ -55,7 +45,6 @@ class RaymonAPI:
         )
         return resp
 
-    @parse_response
     def get(self, route, json={}, params=None):
         resp = self.session.get(
             f"{self.url}/{route}",
@@ -65,7 +54,6 @@ class RaymonAPI:
         )
         return resp
 
-    @parse_response
     def delete(self, route, json={}, params=None):
         resp = self.session.delete(
             f"{self.url}/{route}",
