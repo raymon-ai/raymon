@@ -54,7 +54,7 @@ def load_m2m_credentials(credentials=None, project_id=None):
 
     except Exception as exc:
         print(f"Could not load M2M secret. {type(exc)}({exc})")
-        raise SecretException(f"Could not load login config. Please initialize user config file.")
+        raise SecretException from exc
 
 
 def verify_m2m(config, secret):

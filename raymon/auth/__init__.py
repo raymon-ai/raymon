@@ -60,12 +60,12 @@ def login(fpath, project_id=None):
     try:
         token = login_m2m(credentials=credentials, project_id=project_id)
     except (SecretException, NetworkException) as exc:
-        print(f"Could not login with m2m credentials: {type(exc)} -- {exc}")
+        print(f"Could not login with m2m credentials. Trying user credentials.")
         # If we did not find m2m credentials, let the user login interactively.
         try:
             token = login_user(credentials=credentials, out=fpath)
         except (SecretException, NetworkException) as exc:
-            print(f"Could not login with user credentials: {type(exc)} -- {exc}")
+            print(f"Could not login with user credentials.")
 
     if token is None:
         raise NetworkException("Could not login user or machine.")

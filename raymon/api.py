@@ -89,7 +89,8 @@ class RaymonAPI:
         return self.put(route=f"projects/{project_id}", json=owner)
 
     def orchestration_apply(self, project_id, cfg):
-        resp = self.put(route=f"projects/{project_id}", json=cfg)
+        data = {"config": cfg}
+        resp = self.put(route=f"projects/{project_id}", json=data)
         return resp
 
     def org_create(self, org_id, description):

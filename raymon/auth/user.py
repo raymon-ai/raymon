@@ -46,7 +46,7 @@ def load_user_credentials(credentials):
         secret = credentials.get("user", {}).get("secret", None)
         config = credentials.get("user", {}).get("config", {})
         config = verify_user(config)
-        print(f"user secret loaded.")
+        print(f"User secret loaded.")
         return config, secret
     except Exception as exc:
         print(f"Could not load user secret. {type(exc)}({exc})")
@@ -81,7 +81,6 @@ def login_device_flow(config):
     headers = {"content-type": "application/x-www-form-urlencoded"}
     resp = code_request(route=f"{auth_url}/oauth/device/code", data=data, headers=headers)
     device_resp = resp.json()
-    print("Device resp: ", device_resp)
     device_code = device_resp["device_code"]
     polling_interval = device_resp["interval"]
 
