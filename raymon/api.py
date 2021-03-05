@@ -27,7 +27,7 @@ class RaymonAPI:
 
     """HTTP METHODS"""
 
-    def post(self, route, json, params=None):
+    def post(self, route, json=None, params=None):
         resp = self.session.post(
             f"{self.url}/{route}",
             json=json,
@@ -36,7 +36,7 @@ class RaymonAPI:
         )
         return resp
 
-    def put(self, route, json, params=None):
+    def put(self, route, json=None, params=None):
         resp = self.session.put(
             f"{self.url}/{route}",
             json=json,
@@ -45,7 +45,7 @@ class RaymonAPI:
         )
         return resp
 
-    def get(self, route, json={}, params=None):
+    def get(self, route, json=None, params=None):
         resp = self.session.get(
             f"{self.url}/{route}",
             json=json,
@@ -54,7 +54,7 @@ class RaymonAPI:
         )
         return resp
 
-    def delete(self, route, json={}, params=None):
+    def delete(self, route, json=None, params=None):
         resp = self.session.delete(
             f"{self.url}/{route}",
             json=json,
