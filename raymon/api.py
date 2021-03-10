@@ -107,3 +107,19 @@ class RaymonAPI:
     def org_rm_user(self, org_id, user_id):
         data = {"user_id": user_id}
         return self.delete(route=f"orgs/{org_id}/users", json=data)
+
+    def schema_create(self, project_id, schema):
+        schema_jcr = schema.to_jcr()
+        schema_name = schema.name
+        schema_version = schema.version
+        return self.post(route=f"projects/{project_id}/schemas/{schema_name}/{schema_version}", json=schema_jcr)
+
+    def schema_ls(self, project_id):
+        return self.get(route=f"projects/{project_id}/schemas")
+
+    def schema_get(self, project_id, schema_name, schema_version):
+        return self.get(route=f"projects/{project_id}/schemas/{schema_name}/{schema_version}")
+
+    def schema_reduce(self, project_id, schema_name, schema_version, begin, end, slicestr):
+        params = {"begin": begin, "end": end, "slicestr": slicestr}
+        return self.get(route=f"projects/{project_id}/schemas/{schema_name}/{schema_version}/reduce", params=params)
