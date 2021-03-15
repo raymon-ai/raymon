@@ -123,3 +123,34 @@ class RaymonAPI:
     def schema_reduce(self, project_id, schema_name, schema_version, begin, end, slicestr):
         params = {"begin": begin, "end": end, "slicestr": slicestr}
         return self.get(route=f"projects/{project_id}/schemas/{schema_name}/{schema_version}/reduce", params=params)
+
+    def ray_ls(self, project_id, slicestr, begin, end, limit=250):
+        params = {"begin": begin, "end": end, "slicestr": slicestr, "lim": limit}
+        return self.get(route=f"projects/{project_id}/rays", params=params)
+
+    def ray_get(self, project_id, ray_id):
+        return self.get(route=f"projects/{project_id}/rays/{ray_id}")
+
+    def object_ls(self, project_id, peephole, slicestr, begin, end, limit=250):
+        params = {"begin": begin, "end": end, "slicestr": slicestr, "lim": limit, "peephole": peephole}
+        return self.get(route=f"projects/{project_id}/objects", params=params)
+
+    def object_get(self, project_id, object_id):
+        return self.get(route=f"projects/{project_id}/objects/{object_id}")
+
+    def object_search(self, project_id, ray_id, peephole):
+        params = {
+            "ray_id": ray_id,
+            "peephole": peephole,
+        }
+        return self.get(route=f"projects/{project_id}/objects/search", params=params)
+
+    def peepholes_ls(self, project_id, slicestr, begin, end, limit=250):
+        params = {"begin": begin, "end": end, "slicestr": slicestr, "lim": limit}
+        return self.get(route=f"projects/{project_id}/peepholes", params=params)
+
+    def tags_ls(self, project_id):
+        return self.get(route=f"projects/{project_id}/tags")
+
+    def tags_get(self, project_id, ray_id):
+        return self.get(route=f"projects/{project_id}/rays/{ray_id}/tags")
