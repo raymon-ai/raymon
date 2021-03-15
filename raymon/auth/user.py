@@ -46,21 +46,11 @@ def load_user_credentials(credentials):
         secret = credentials.get("user", {}).get("secret", None)
         config = credentials.get("user", {}).get("config", {})
         config = verify_user(config)
-        print(f"Secret loaded from specific file.")
+        print(f"User secret loaded.")
         return config, secret
     except Exception as exc:
-        print(f"Could not load token or config from specific file. ({exc})")
-
-    # PRIORITY 1: ENV Variables
-    try:
-        secret = None
-        config = verify_user(load_user_credentials_env())
-        print(f"Secret loaded from env.")
-        return config, secret
-    except Exception as exc:
-        print(f"Could not load config from environment keys. ({exc})")
-
-    raise SecretException(f"Could not load login config. Please initialize user config file.")
+        print(f"Could not load user secret. {type(exc)}({exc})")
+        raise SecretException(f"Could not load login config. Please initialize user config file.")
 
 
 def verify_user(config):
@@ -71,25 +61,14 @@ def verify_user(config):
     return config
 
 
-def load_user_credentials_env():
-    project_config = {}
-    project_config["auth_url"] = os.environ["RAYMON_AUTH0_URL"]
-    project_config["audience"] = os.environ["RAYMON_AUDIENCE"]
-    project_config["client_id"] = os.environ["RAYMON_CLIENT_ID"]
-    return verify_user(project_config)
-
-
 def token_ok(token):
     if token is None:
         return False
     claims = json.loads(base64.b64decode(token.split(".")[1] + "===").decode())
     expires = pendulum.from_timestamp(claims["exp"])
     ttl = expires - pendulum.now()
-    if ttl.hours < 0:
-        print(f"Token expired")
-        return False
-    elif ttl.hours < 2:
-        print("Token about to expire.")
+    if ttl.hours < 2:
+        print(f"Token expired or about to expire. Logging in...")
         return False
     else:
         print(f"Token valid for {ttl.hours} more hours.")

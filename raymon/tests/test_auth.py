@@ -6,7 +6,6 @@ import raymon
 
 from raymon.auth import load_credentials_file
 from raymon.auth.m2m import (
-    load_m2m_credentials_env,
     save_m2m_config,
     verify_m2m,
     load_m2m_credentials,
@@ -21,28 +20,11 @@ from raymon.auth.user import (
 from raymon.exceptions import SecretException
 
 
-def test_load_env(monkeypatch, envsecretfile):
-    monkeypatch.setenv("RAYMON_AUTH0_URL", "url")
-    monkeypatch.setenv("RAYMON_AUDIENCE", "audience")
-    monkeypatch.setenv("RAYMON_CLIENT_ID", "client_id")
-    monkeypatch.setenv("RAYMON_CLIENT_SECRET_FILE", str(envsecretfile))
-    monkeypatch.setenv("RAYMON_GRANT_TYPE", "client_credentials")
-
-    config, secret = load_m2m_credentials_env()
-
-    assert config["auth_url"] == "url"
-    assert config["audience"] == "audience"
-    assert config["client_id"] == "client_id"
-    assert config["grant_type"] == "client_credentials"
-    assert secret == "client_secret"
-
-
 def test_save_load_secret_single(tmp_path):
-
     tmp_file = tmp_path / "secret.json"
     save_m2m_config(
         existing={},
-        project_name="testing_project",
+        project_id="testing_project",
         auth_endpoint="http://testing-url",
         audience="test_audience",
         client_id="test_id",
@@ -51,7 +33,7 @@ def test_save_load_secret_single(tmp_path):
         out=tmp_file,
     )
     credentials = load_credentials_file(fpath=tmp_file)
-    config, secret = load_m2m_credentials(credentials=credentials, project_name="testing_project")
+    config, secret = load_m2m_credentials(credentials=credentials, project_id="testing_project")
     assert verify_m2m(config, secret)
     assert config["auth_url"] == "http://testing-url"
     assert config["audience"] == "test_audience"
@@ -64,7 +46,7 @@ def test_save_load_secret_multiple(tmp_path):
     tmp_file = tmp_path / "secret.json"
     save_m2m_config(
         existing={},
-        project_name="testing_project",
+        project_id="testing_project",
         auth_endpoint="http://testing-url",
         audience="test_audience",
         client_id="test_id",
@@ -75,7 +57,7 @@ def test_save_load_secret_multiple(tmp_path):
     existing = load_credentials_file(tmp_file)
     save_m2m_config(
         existing=existing,
-        project_name="testing_project2",
+        project_id="testing_project2",
         auth_endpoint="url",
         audience="audience",
         client_id="client_id",
@@ -84,7 +66,7 @@ def test_save_load_secret_multiple(tmp_path):
         out=tmp_file,
     )
     credentials = load_credentials_file(fpath=tmp_file)
-    config, secret = load_m2m_credentials(credentials=credentials, project_name="testing_project")
+    config, secret = load_m2m_credentials(credentials=credentials, project_id="testing_project")
     assert verify_m2m(config, secret)
     assert config["auth_url"] == "http://testing-url"
     assert config["audience"] == "test_audience"
@@ -92,7 +74,7 @@ def test_save_load_secret_multiple(tmp_path):
     assert config["grant_type"] == "test_grant"
     assert secret == "test_secret"
 
-    config, secret = load_m2m_credentials(credentials=credentials, project_name="testing_project2")
+    config, secret = load_m2m_credentials(credentials=credentials, project_id="testing_project2")
     assert verify_m2m(config, secret)
     assert config["auth_url"] == "url"
     assert config["audience"] == "audience"
@@ -107,7 +89,7 @@ def test_load_waterfall_prio_0(monkeypatch, tmp_path_factory, envsecretfile):
     tmp_file = path1 / "secret.json"
     save_m2m_config(
         existing={},
-        project_name="testing_project",
+        project_id="testing_project",
         auth_endpoint="http://testing-url",
         audience="test_audience",
         client_id="test_id",
@@ -118,7 +100,7 @@ def test_load_waterfall_prio_0(monkeypatch, tmp_path_factory, envsecretfile):
     existing = load_credentials_file(tmp_file)
     save_m2m_config(
         existing=existing,
-        project_name="testing_project2",
+        project_id="testing_project2",
         auth_endpoint="url",
         audience="audience",
         client_id="client_id",
@@ -134,52 +116,13 @@ def test_load_waterfall_prio_0(monkeypatch, tmp_path_factory, envsecretfile):
     monkeypatch.setenv("RAYMON_GRANT_TYPE", "client_credentials-env")
 
     credentials = load_credentials_file(fpath=tmp_file)
-    config, secret = load_m2m_credentials(credentials=credentials, project_name="testing_project")
+    config, secret = load_m2m_credentials(credentials=credentials, project_id="testing_project")
 
     assert config["auth_url"] == "http://testing-url"
     assert config["audience"] == "test_audience"
     assert config["client_id"] == "test_id"
     assert secret == "test_secret"
     assert config["grant_type"] == "test_grant"
-
-
-def test_load_waterfall_prio_1(monkeypatch, tmp_path_factory, envsecretfile):
-
-    # path1 = tmp_path_factory.mktemp()
-    # path2 = tmp_path_factory.mktemp()
-
-    monkeypatch.setenv("RAYMON_AUTH0_URL", "url")
-    monkeypatch.setenv("RAYMON_AUDIENCE", "audience")
-    monkeypatch.setenv("RAYMON_CLIENT_ID", "client_id")
-    monkeypatch.setenv("RAYMON_CLIENT_SECRET_FILE", str(envsecretfile))
-    monkeypatch.setenv("RAYMON_GRANT_TYPE", "client_credentials")
-
-    config, secret = load_m2m_credentials()
-
-    assert config["auth_url"] == "url"
-    assert config["audience"] == "audience"
-    assert config["client_id"] == "client_id"
-    assert secret == "client_secret"
-    assert config["grant_type"] == "client_credentials"
-
-
-def test_load_waterfall_prio_3(monkeypatch, tmp_path_factory):
-
-    path1 = tmp_path_factory.mktemp(basename="path1")
-    no_file = path1 / "secret.json"
-
-    save_m2m_config(
-        existing={},
-        project_name="testing_project2",
-        auth_endpoint="http://testing-url",
-        audience="test_audience",
-        client_id="test_id",
-        client_secret="test_secret",
-        grant_type="test_grant",
-        out=no_file,
-    )
-    with pytest.raises(SecretException):
-        config, secret = load_m2m_credentials(project_name="testing_project")
 
 
 def test_load_waterfall_prio_none():
@@ -225,7 +168,7 @@ def test_save_load_secret_multiple_with_user(tmp_path):
     tmp_file = tmp_path / "secret.json"
     save_m2m_config(
         existing={},
-        project_name="testing_project",
+        project_id="testing_project",
         auth_endpoint="http://testing-url",
         audience="test_audience",
         client_id="test_id",
@@ -236,7 +179,7 @@ def test_save_load_secret_multiple_with_user(tmp_path):
     existing = load_credentials_file(tmp_file)
     save_m2m_config(
         existing=existing,
-        project_name="testing_project2",
+        project_id="testing_project2",
         auth_endpoint="url",
         audience="audience",
         client_id="client_id",
@@ -288,37 +231,15 @@ def test_load_waterfall_user_prio_0(monkeypatch, tmp_path_factory, envsecretfile
     assert secret is None
 
 
-def test_load_waterfall_user_prio_1(monkeypatch, tmp_path_factory):
-
-    monkeypatch.setenv("RAYMON_AUTH0_URL", "url")
-    monkeypatch.setenv("RAYMON_AUDIENCE", "audience")
-    monkeypatch.setenv("RAYMON_CLIENT_ID", "client_id")
-
-    path1 = tmp_path_factory.mktemp(basename="path1")
-    no_file = path1 / "secret.json"
-
-    monkeypatch.setattr(raymon.auth, "DEFAULT_FNAME", no_file)
-    assert raymon.auth.DEFAULT_FNAME == no_file
-    credentials = load_credentials_file(fpath=no_file)
-
-    config, secret = load_user_credentials(credentials=credentials)
-
-    assert config["auth_url"] == "url"
-    assert config["audience"] == "audience"
-    assert config["client_id"] == "client_id"
-    assert secret is None
-
-
 def test_load_waterfall_user_prio_none(monkeypatch, tmp_path_factory):
     path1 = tmp_path_factory.mktemp(basename="path1")
     no_file = path1 / "secret.json"
 
     monkeypatch.setattr(raymon.auth, "DEFAULT_FNAME", no_file)
     assert raymon.auth.DEFAULT_FNAME == no_file
-    credentials = load_credentials_file(fpath=no_file)
 
     with pytest.raises(SecretException):
-        _ = load_user_credentials(credentials=credentials)
+        credentials = load_credentials_file(fpath=no_file)
 
 
 def test_token_ok():

@@ -3,7 +3,7 @@ import pytest
 import json
 import pendulum
 import uuid
-from raymon import Ray, RaymonAPI, RaymonTextFile
+from raymon import Ray, RaymonAPI, RaymonAPILogger, RaymonFileLogger
 from raymon import types as rt
 from raymon.tests.conftest import PROJECT_NAME
 
@@ -17,13 +17,9 @@ tags = [{"name": "my-tag", "value": "my_value", "type": "label", "group": "mygro
 
 
 def test_textfile(tmp_path, monkeypatch, secret_file):
-    def dummylogin(self, fpath):
-        pass
-
-    monkeypatch.setattr(RaymonTextFile, "login", dummylogin)
 
     fpath = tmp_path
-    logger = RaymonTextFile(path=fpath, project_id=PROJECT_NAME)
+    logger = RaymonFileLogger(path=fpath, project_id=PROJECT_NAME)
     ray = Ray(logger=logger)
     ray.info("This is a test")
     ray.log(peephole="a-test", data=rt.Native({"a": "b"}))
@@ -82,12 +78,12 @@ def test_textfile(tmp_path, monkeypatch, secret_file):
 
 
 def test_api_logger_info(monkeypatch, secret_file):
-    def dummylogin(self, fpath):
+    def dummylogin(self):
         pass
 
-    def test_info_post(self, route, data):
+    def test_info_post(self, route, json):
         assert route == f"projects/{PROJECT_NAME}/ingest"
-        jcr = data
+        jcr = json
         pendulum.parse(jcr["timestamp"])
         uuid.UUID(jcr["ray_id"], version=4)
         assert jcr["data"] == "This is a test"
@@ -97,18 +93,18 @@ def test_api_logger_info(monkeypatch, secret_file):
 
     monkeypatch.setattr(RaymonAPI, "login", dummylogin)
     monkeypatch.setattr(RaymonAPI, "post", test_info_post)
-    apilogger = RaymonAPI(url="willnotbeused", project_id=PROJECT_NAME, auth_path=secret_file)
+    apilogger = RaymonAPILogger(url="willnotbeused", project_id=PROJECT_NAME, auth_path=secret_file)
     ray = Ray(logger=apilogger)
     ray.info("This is a test")
 
 
 def test_api_logger_data(monkeypatch, secret_file):
-    def dummylogin(self, fpath):
+    def dummylogin(self):
         pass
 
-    def test_data_post(self, route, data):
+    def test_data_post(self, route, json):
         assert route == f"projects/{PROJECT_NAME}/ingest" ""
-        jcr = data
+        jcr = json
         pendulum.parse(jcr["timestamp"])
         uuid.UUID(jcr["ray_id"], version=4)
         assert jcr["data"]["params"]["data"]["a"] == "b"
@@ -118,19 +114,19 @@ def test_api_logger_data(monkeypatch, secret_file):
 
     monkeypatch.setattr(RaymonAPI, "login", dummylogin)
     monkeypatch.setattr(RaymonAPI, "post", test_data_post)
-    apilogger = RaymonAPI(url="willnotbeused", project_id=PROJECT_NAME, auth_path=secret_file)
+    apilogger = RaymonAPILogger(url="willnotbeused", project_id=PROJECT_NAME, auth_path=secret_file)
     ray = Ray(logger=apilogger)
     ray.log(peephole="a-test", data=rt.Native({"a": "b"}))
 
 
 def test_api_logger_tags(monkeypatch, secret_file):
-    def dummylogin(self, fpath):
+    def dummylogin(self):
         pass
 
-    def test_tags_post(self, route, data):
+    def test_tags_post(self, route, json):
         assert route.startswith(f"projects/{PROJECT_NAME}/rays")
         assert route.endswith("/tags")
-        jcr = data
+        jcr = json
         for tag_orig, tag_log in zip(tags, jcr):
             assert tag_orig["name"] == tag_log["name"]
             assert tag_orig["value"] == tag_log["value"]
@@ -141,6 +137,6 @@ def test_api_logger_tags(monkeypatch, secret_file):
 
     monkeypatch.setattr(RaymonAPI, "login", dummylogin)
     monkeypatch.setattr(RaymonAPI, "post", test_tags_post)
-    apilogger = RaymonAPI(url="willnotbeused", project_id=PROJECT_NAME, auth_path=secret_file)
+    apilogger = RaymonAPILogger(url="willnotbeused", project_id=PROJECT_NAME, auth_path=secret_file)
     ray = Ray(logger=apilogger)
     ray.tag(tags=tags)
