@@ -46,9 +46,6 @@ class Ray:
     def tag(self, tags):
         self.logger.tag(ray_id=str(self), tags=tags)
 
-    def flush(self):
-        self.logger.flush()
-
     """
     Methods related to splitting and merging
     """
@@ -73,6 +70,3 @@ class Ray:
 
     def __str__(self):
         return ":".join(self.ray_id)
-
-    def __del__(self):
-        self.flush()

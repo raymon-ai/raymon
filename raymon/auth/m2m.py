@@ -10,7 +10,7 @@ from raymon.exceptions import NetworkException, SecretException
 
 def save_m2m_config(
     existing,
-    project_name,
+    project_id,
     auth_endpoint,
     audience,
     client_id,
@@ -24,7 +24,7 @@ def save_m2m_config(
     # If so, check whether porject exists
     if "m2m" not in known_configs:
         known_configs["m2m"] = {}
-    project_config = known_configs["m2m"].get(project_name, {})
+    project_config = known_configs["m2m"].get(project_id, {})
     project_config["config"] = {}
     project_config["secret"] = None
 
@@ -36,42 +36,25 @@ def save_m2m_config(
     project_config["config"]["grant_type"] = grant_type
 
     # Save secret
-    known_configs["m2m"][project_name] = project_config
+    known_configs["m2m"][project_id] = project_config
     with open(out, "w") as f:
         json.dump(known_configs, fp=f, indent=4)
 
 
-def load_m2m_credentials_env():
-    project_config = {}
-    project_config["auth_url"] = os.environ["RAYMON_AUTH0_URL"]
-    project_config["audience"] = os.environ["RAYMON_AUDIENCE"]
-    project_config["client_id"] = os.environ["RAYMON_CLIENT_ID"]
-    project_config["grant_type"] = os.environ["RAYMON_GRANT_TYPE"]
-
-    secret = Path(os.environ["RAYMON_CLIENT_SECRET_FILE"]).read_text()
-    return verify_m2m(project_config, secret)
-
-
-def load_m2m_credentials(credentials=None, project_name=None):
+def load_m2m_credentials(credentials=None, project_id=None):
     # HIGHEST PRIORITY 0: specified file path
     # Check whether file and project_name are specified, try loading it.
     try:
-        assert project_name is not None
-        config = credentials.get("m2m")[project_name]["config"]
-        secret = credentials.get("m2m")[project_name]["secret"]
+        assert project_id is not None
+        config = credentials.get("m2m")[project_id]["config"]
+        secret = credentials.get("m2m")[project_id]["secret"]
         config, secret = verify_m2m(config, secret)
-        print(f"Secret loaded from specific file.")
-    except Exception as exc:
-        print(f"Could not load secret from specific file. ({exc})")
-        # PRIORITY 1: ENV Variables
-        try:
-            config, secret = load_m2m_credentials_env()
-            print(f"Secret loaded from env.")
-        except Exception as exc:
-            print(f"Could not load secret from environment keys. ({exc})")
-            raise SecretException(f"Could not load secret for project {project_name}.")
+        print(f"M2M secret loaded.")
+        return config, secret
 
-    return config, secret
+    except Exception as exc:
+        print(f"Could not load M2M secret. {type(exc)}({exc})")
+        raise SecretException from exc
 
 
 def verify_m2m(config, secret):

@@ -63,16 +63,12 @@ def test_login_m2m_ok(monkeypatch, secret_file):
     assert token == "m2m"
 
 
-def test_login_m2m_nok_but_user_ok(monkeypatch, secret_file):
+def test_login_m2m_nok_but_user_ok(monkeypatch, secret_file_user):
     monkeypatch.setattr(m2m, "login_request", request_nok_gen())
     monkeypatch.setattr(user, "code_request", code_request_ok_gen())
     monkeypatch.setattr(user, "token_request", request_token_ok_gen("user"))
 
-    monkeypatch.setenv("RAYMON_AUTH0_URL", "url")
-    monkeypatch.setenv("RAYMON_AUDIENCE", "audience")
-    monkeypatch.setenv("RAYMON_CLIENT_ID", "client_id")
-
-    token = login(fpath=secret_file, project_id="testing_project")
+    token = login(fpath=secret_file_user, project_id="testing_project")
     assert token == "user"
 
 
