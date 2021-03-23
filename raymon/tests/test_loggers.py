@@ -19,7 +19,7 @@ tags = [{"name": "my-tag", "value": "my_value", "type": "label", "group": "mygro
 def test_textfile(tmp_path, monkeypatch, secret_file):
 
     fpath = tmp_path
-    logger = RaymonFileLogger(path=fpath, project_id=PROJECT_NAME)
+    logger = RaymonFileLogger(path=fpath, project_id=PROJECT_NAME, reset_file=True)
     ray = Ray(logger=logger)
     ray.info("This is a test")
     ray.log(peephole="a-test", data=rt.Native({"a": "b"}))
@@ -75,6 +75,34 @@ def test_textfile(tmp_path, monkeypatch, secret_file):
 
     assert jcr["peephole"] is None
     assert jcr["project_id"] == PROJECT_NAME
+
+
+def test_2_textloggers(tmp_path):
+
+    fpath = tmp_path  # Path(".")
+    logger = RaymonFileLogger(path=fpath, project_id=PROJECT_NAME, reset_file=True)
+    ray = Ray(logger=logger)
+    ray.info("This is a test")
+    ray.log(peephole="a-test", data=rt.Native({"a": "b"}))
+    ray.tag(tags=tags)
+
+    # load log file
+    with open(logger.fname, "r") as f:
+        lines = f.readlines()
+        assert len(lines) == 3
+
+    logger2 = RaymonFileLogger(path=fpath, project_id=PROJECT_NAME, reset_file=True)
+    ray = Ray(logger=logger2)
+    ray.info("This is a test")
+    ray.log(peephole="a-test", data=rt.Native({"a": "b"}))
+    ray.tag(tags=tags)
+    ray.info("This is a test too")
+
+    assert logger.fname != logger2.fname
+    # load log file
+    with open(logger2.fname, "r") as f:
+        lines = f.readlines()
+        assert len(lines) == 4
 
 
 def test_api_logger_info(monkeypatch, secret_file):
