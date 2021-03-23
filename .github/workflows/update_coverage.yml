@@ -1,16 +1,11 @@
-name: test-build-deploy
+name: update-coverage
 on:
   push:
-    tags:
-      - "v*"
     branches:
       - main
 jobs:
-  test-build-publish-ubuntu:
+  update-coverage:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8]
     env:
       TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
       TWINE_PASSWORD: ""
@@ -34,16 +29,25 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
-      - name: Build package
+      - name: Test with pytest
         run: |
-          python setup.py bdist bdist_wheel
-      - name: Push to fury
-        run: twine upload dist/* --skip-existing
-      - name: Publish package to PyPI
-        if: "!contains(github.ref, 'rc')"
-        uses: pypa/gh-action-pypi-publish@master
+          rm -rf coverage.svg
+          coverage run -m pytest
+          coverage-badge -o coverage.svg
+          COVERAGE_RESULT=`coverage report | grep TOTAL | awk '{print $NF}' | sed 's/%//g'`
+          echo "Coverage: ${COVERAGE_RESULT}"
+          if [[ $COVERAGE_RESULT -le $MIN_COVERAGE ]]; then
+              echo "#################################################"
+              echo "Code coverage below allowed threshold ($COVERAGE_RESULT<$MIN_COVERAGE)"
+              exit 1
+          fi
+          git config --local user.email "hello@raymon.ai"
+          git config --local user.name "github-actions[bot]"
+          git add coverage.svg
+          git diff-index --quiet HEAD || git commit -m "Adding coverage badge"
+      - name: Push badge
+        # if: "contains(github.ref, 'master')"
+        uses: ad-m/github-push-action@master
         with:
-          user: __token__
-          password: ${{ secrets.PYPI_TOKEN }}
-          skip_existing: true
-          verbose: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
