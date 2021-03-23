@@ -1,11 +1,11 @@
-name: black-test-coverage
+name: pr-test-coverage
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
     branches: master
 
 jobs:
-  test-build-publish-ubuntu:
+  pr-test-coverage-job:
     runs-on: ubuntu-latest
     strategy:
       matrix:
