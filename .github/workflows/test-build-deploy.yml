@@ -51,7 +51,7 @@ jobs:
           git add coverage.svg
           git diff-index --quiet HEAD || git commit -m "Adding coverage badge"
       - name: Push badge
-        if: "contains(github.ref, 'master')"
+        # if: "contains(github.ref, 'master')"
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
