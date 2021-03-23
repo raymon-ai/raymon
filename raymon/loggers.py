@@ -1,4 +1,5 @@
 import json
+import uuid
 import logging
 from logging.handlers import RotatingFileHandler
 import sys
@@ -58,24 +59,32 @@ class RaymonFileLogger(RaymonLoggerBase):
     KB = 1000
     MB = KB * 1000
 
-    def __init__(self, path="/tmp/raymon/", project_id="default"):
+    def __init__(self, path="/tmp/raymon/", project_id="default", reset_file=False):
         super().__init__(project_id=project_id)
-        self.fname = Path(path) / f"raymon-{os.getpid()}.log"
-        self.setup_datalogger()
+        self.setup_datalogger(path=path, reset_file=reset_file)
 
-    def setup_datalogger(self):
+    def setup_datalogger(self, path, reset_file=False):
         # Set up the raymon logger
         logger = logging.getLogger("Raymon-data")
-        if len(logger.handlers) > 0:
-            # Already configured
-            return logger
+        self.data_logger = logger
+        if len(logger.handlers) == 1 and isinstance(logger.handlers[0], RotatingFileHandler):
+            if reset_file:
+                print(f"Handler found, but reseting file.")
+                logger.handlers = []
+            else:
+                # Already configured
+                print(f"Skipping add handler", logger.handlers, flush=True)
+                # traceback.print_stack()
+                self.fname = logger.handlers[0].baseFilename
+                return
+
+        print(f"Adding handler")
+        self.fname = Path(path) / f"raymon-{str(uuid.uuid4())}.log"
         logger.setLevel(logging.INFO)
         # Add a file handler
         fh = RotatingFileHandler(self.fname, maxBytes=200 * MB, backupCount=10)
         fh.setLevel(logging.INFO)
         logger.addHandler(fh)
-
-        self.data_logger = logger
 
     def info(self, ray_id, text):
         jcr = self.structure(ray_id=ray_id, peephole=None, data=text)

@@ -1,16 +1,15 @@
-name: pr-test-coverage
+name: update-coverage
 on:
-  pull_request:
-    types: [opened, edited, synchronize, reopened]
-    branches: master
-
+  push:
+    branches:
+      - main
 jobs:
-  pr-test-coverage-job:
+  update-coverage-job:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8]
     env:
+      TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+      TWINE_PASSWORD: ""
+      TWINE_REPOSITORY_URL: ${{ secrets.TWINE_REPOSITORY_URL }}
       MIN_COVERAGE: 85
     steps:
       - uses: actions/checkout@v2
@@ -23,6 +22,7 @@ jobs:
         with:
           path: ${{ env.pythonLocation }}
           key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements-dev.txt') }}-${{ hashFiles('requirements.txt') }}
+
       - name: Black formatting
         uses: psf/black@stable
       - name: Install dependencies
@@ -34,7 +34,6 @@ jobs:
           rm -rf coverage.svg
           coverage run -m pytest
           coverage-badge -o coverage.svg
-
           COVERAGE_RESULT=`coverage report | grep TOTAL | awk '{print $NF}' | sed 's/%//g'`
           echo "Coverage: ${COVERAGE_RESULT}"
           if [[ $COVERAGE_RESULT -le $MIN_COVERAGE ]]; then
@@ -42,3 +41,13 @@ jobs:
               echo "Code coverage below allowed threshold ($COVERAGE_RESULT<$MIN_COVERAGE)"
               exit 1
           fi
+          git config --local user.email "hello@raymon.ai"
+          git config --local user.name "github-actions[bot]"
+          git add coverage.svg
+          git diff-index --quiet HEAD || git commit -m "Adding coverage badge"
+      - name: Push badge
+        # if: "contains(github.ref, 'master')"
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
