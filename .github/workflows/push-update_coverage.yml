@@ -2,7 +2,7 @@ name: update-coverage
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
   update-coverage-job:
     runs-on: ubuntu-latest
