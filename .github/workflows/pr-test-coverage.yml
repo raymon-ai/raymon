@@ -11,7 +11,7 @@ jobs:
       matrix:
         python-version: [3.8]
     env:
-      MIN_COVERAGE: 50
+      MIN_COVERAGE: 85
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
