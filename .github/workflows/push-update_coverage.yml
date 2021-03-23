@@ -6,6 +6,9 @@ on:
 jobs:
   update-coverage-job:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
     env:
       TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
       TWINE_PASSWORD: ""
