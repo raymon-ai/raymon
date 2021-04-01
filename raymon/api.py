@@ -6,10 +6,11 @@ MB = 1000000
 
 
 class RaymonAPI:
-    def __init__(self, url="http://localhost:8000", project_id=None, auth_path=None):
+    def __init__(self, url="http://localhost:8000", project_id=None, auth_path=None, env=None):
         self.project_id = project_id
         self.url = url
         self.auth_path = auth_path
+        self.env = env
 
         self.session = requests.Session()
         self.headers = {"Content-type": "application/json"}
@@ -22,7 +23,7 @@ class RaymonAPI:
     """
 
     def login(self):
-        self.token = login(fpath=self.auth_path, project_id=self.project_id)
+        self.token = login(fpath=self.auth_path, project_id=self.project_id, env=self.env)
         self.headers["Authorization"] = f"Bearer {self.token}"
 
     """HTTP METHODS"""
