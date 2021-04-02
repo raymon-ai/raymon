@@ -16,6 +16,14 @@ class DummyTokenreponseOK:
         return {"access_token": self.token}
 
 
+class DummyTokenreponseNOK:
+    def __init__(self):
+        self.ok = False
+
+    def json(self):
+        return {"error": "access_denied"}
+
+
 class DummyreponseNOK:
     ok = False
     text = "Well it failed duh."
@@ -24,6 +32,13 @@ class DummyreponseNOK:
 def request_token_ok_gen(token):
     def request(*args, **kwargs):
         return DummyTokenreponseOK(token)
+
+    return request
+
+
+def request_token_nok_gen():
+    def request(*args, **kwargs):
+        return DummyTokenreponseNOK()
 
     return request
 
@@ -68,15 +83,18 @@ def test_login_m2m_nok_but_user_ok(monkeypatch, secret_file_user):
     monkeypatch.setattr(user, "code_request", code_request_ok_gen())
     monkeypatch.setattr(user, "token_request", request_token_ok_gen("user"))
 
-    token = login(fpath=secret_file_user, project_id="testing_project")
+    token = login(
+        fpath=secret_file_user,
+        project_id="testing_project",
+        env={"auth_url": "testing_auth", "audience": "raymon-backend-api", "client_id": "testing-id"},
+    )
     assert token == "user"
 
 
 def test_login_m2m_nok_user_nok(monkeypatch, secret_file):
     monkeypatch.setattr(m2m, "login_request", request_nok_gen())
     monkeypatch.setattr(user, "code_request", code_request_ok_gen())
-    monkeypatch.setattr(user, "token_request", request_nok_gen())
+    monkeypatch.setattr(user, "token_request", request_token_nok_gen())
 
     with pytest.raises(NetworkException):
-
         _ = login(fpath=secret_file)

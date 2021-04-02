@@ -195,9 +195,13 @@ def test_save_load_secret_multiple_with_user(tmp_path):
         client_id="client_id",
         token=None,
         out=tmp_file,
+        env={"auth_url": "testing_auth", "audience": "raymon-backend-api", "client_id": "testing-id"},
     )
     credentials = load_credentials_file(fpath=tmp_file)
-    config, secret = load_user_credentials(credentials=credentials)
+    config, secret = load_user_credentials(
+        credentials=credentials,
+        env={"auth_url": "testing_auth", "audience": "raymon-backend-api", "client_id": "testing-id"},
+    )
     assert verify_user(config)
     assert config["auth_url"] == "url"
     assert config["audience"] == "audience"
@@ -216,6 +220,7 @@ def test_load_waterfall_user_prio_0(monkeypatch, tmp_path_factory, envsecretfile
         client_id="test_id",
         token=None,
         out=tmp_file,
+        env={"auth_url": "testing_auth", "audience": "raymon-backend-api", "client_id": "testing-id"},
     )
 
     monkeypatch.setenv("RAYMON_AUTH0_URL", "url")
@@ -223,7 +228,10 @@ def test_load_waterfall_user_prio_0(monkeypatch, tmp_path_factory, envsecretfile
     monkeypatch.setenv("RAYMON_CLIENT_ID", "client_id")
 
     credentials = load_credentials_file(fpath=tmp_file)
-    config, secret = load_user_credentials(credentials=credentials)
+    config, secret = load_user_credentials(
+        credentials=credentials,
+        env={"auth_url": "testing_auth", "audience": "raymon-backend-api", "client_id": "testing-id"},
+    )
 
     assert config["auth_url"] == "http://testing-url"
     assert config["audience"] == "test_audience"
@@ -237,9 +245,9 @@ def test_load_waterfall_user_prio_none(monkeypatch, tmp_path_factory):
 
     monkeypatch.setattr(raymon.auth, "DEFAULT_FNAME", no_file)
     assert raymon.auth.DEFAULT_FNAME == no_file
-
-    with pytest.raises(SecretException):
-        credentials = load_credentials_file(fpath=no_file)
+    credentials = load_credentials_file(fpath=no_file)
+    assert "user" in credentials
+    assert "m2m" in credentials
 
 
 def test_token_ok():

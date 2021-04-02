@@ -33,6 +33,7 @@ def secret_file_user(tmp_path):
         client_id="test_id",
         token=None,
         out=tmp_file,
+        env={"auth_url": "testing_auth", "audience": "raymon-backend-api", "client_id": "testing-id"},
     )
     return tmp_file
 

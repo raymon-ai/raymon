@@ -34,7 +34,8 @@ def save_user_config(existing, auth_endpoint, audience, client_id, token, out, e
     env_config["secret"] = token
 
     # Save secret
-    known_configs["user"][env["auth_url"]] = env_config
+    user_config[env["auth_url"]] = env_config
+    known_configs["user"] = user_config
     with open(out, "w") as f:
         json.dump(known_configs, fp=f, indent=4)
 
@@ -91,7 +92,6 @@ def login_device_flow(config):
             device_code=device_code,
         )
         resp = token_request(f"{auth_url}/oauth/token", data=data, headers=headers)
-
         login_resp = resp.json()
         if "error" in login_resp and login_resp["error"] == "authorization_pending":
             time.sleep(polling_interval)
@@ -102,7 +102,7 @@ def login_device_flow(config):
                 webbrowser.open_new_tab(device_resp["verification_uri_complete"])
                 first = False
         elif "error" in login_resp and login_resp["error"] == "access_denied":
-            raise (Exception("Access Denied"))
+            raise (NetworkException("Access Denied"))
         else:
             success = True
     token = login_resp["access_token"]
