@@ -8,49 +8,40 @@ import pendulum
 from requests.api import head
 from raymon.exceptions import NetworkException, SecretException
 import base64
+import webbrowser
 
 
-DEFAULT_CONFIG = {
-    "auth_url": "https://raymon-staging.eu.auth0.com",
-    "audience": "https://staging-api.raymon.ai",
-    "client_id": "O3L719qD65u8sQuxKoLNRddQekp9q2rS",
-}
-
-
-def save_user_config(existing, auth_endpoint, audience, client_id, token, out):
+def save_user_config(existing, auth_endpoint, audience, client_id, token, out, env):
     out = Path(out)
 
     known_configs = existing
-    # If so, check whether porject exists
+    # If so, check whether project exists
     user_config = known_configs.get("user", {})
-    user_config["config"] = {}
-    user_config["secret"] = None
+    env_config = user_config.get(env["auth_url"], {})
+    env_config["config"] = {}
+    env_config["secret"] = None
 
     # If exists, overwrite secret
-    user_config["config"]["auth_url"] = auth_endpoint
-    user_config["config"]["audience"] = audience
-    user_config["config"]["client_id"] = client_id
-    user_config["secret"] = token
+    env_config["config"]["auth_url"] = auth_endpoint
+    env_config["config"]["audience"] = audience
+    env_config["config"]["client_id"] = client_id
+    env_config["secret"] = token
 
     # Save secret
+    user_config[env["auth_url"]] = env_config
     known_configs["user"] = user_config
     with open(out, "w") as f:
         json.dump(known_configs, fp=f, indent=4)
 
 
-def load_user_credentials(credentials):
-
-    # HIGHEST PRIORITY 0: specified file path
-    # Check whether file and project_name are specified, try loading it.
-    try:
-        secret = credentials.get("user", {}).get("secret", None)
-        config = credentials.get("user", {}).get("config", {})
-        config = verify_user(config)
-        print(f"User secret loaded.")
-        return config, secret
-    except Exception as exc:
-        print(f"Could not load user secret. {type(exc)}({exc})")
-        raise SecretException(f"Could not load login config. Please initialize user config file.")
+def load_user_credentials(credentials, env):
+    print("Loading user credential...", end=" ")
+    user_env = credentials.get("user", {}).get(env["auth_url"], {})
+    secret = user_env.get("secret", None)
+    config = user_env.get("config", env)
+    config = verify_user(config)
+    print(f"Done.")
+    return config, secret
 
 
 def verify_user(config):
@@ -76,6 +67,7 @@ def token_ok(token):
 
 
 def login_device_flow(config):
+    print("Logging in...")
     data = dict(client_id=config["client_id"], audience=config["audience"], scope="")
     auth_url = config["auth_url"]
     headers = {"content-type": "application/x-www-form-urlencoded"}
@@ -86,6 +78,7 @@ def login_device_flow(config):
 
     # Poll for login
     success = False
+    first = True
     while not success:
         data = dict(
             client_id=config["client_id"],
@@ -93,15 +86,17 @@ def login_device_flow(config):
             device_code=device_code,
         )
         resp = token_request(f"{auth_url}/oauth/token", data=data, headers=headers)
-
         login_resp = resp.json()
         if "error" in login_resp and login_resp["error"] == "authorization_pending":
             time.sleep(polling_interval)
             print(
                 f'Login required. Please visit the following URL to authenticate: {device_resp["verification_uri_complete"]}'
             )
+            if first:
+                webbrowser.open_new_tab(device_resp["verification_uri_complete"])
+                first = False
         elif "error" in login_resp and login_resp["error"] == "access_denied":
-            raise (Exception("Access Denied"))
+            raise (NetworkException("Access Denied"))
         else:
             success = True
     token = login_resp["access_token"]

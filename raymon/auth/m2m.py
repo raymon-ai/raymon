@@ -44,6 +44,7 @@ def save_m2m_config(
 def load_m2m_credentials(credentials=None, project_id=None):
     # HIGHEST PRIORITY 0: specified file path
     # Check whether file and project_name are specified, try loading it.
+
     try:
         assert project_id is not None
         config = credentials.get("m2m")[project_id]["config"]
@@ -51,9 +52,11 @@ def load_m2m_credentials(credentials=None, project_id=None):
         config, secret = verify_m2m(config, secret)
         print(f"M2M secret loaded.")
         return config, secret
-
+    except AssertionError as exc:
+        print("Project id is None. Cannot load m2m credentials.")
+        raise SecretException from exc
     except Exception as exc:
-        print(f"Could not load M2M secret. {type(exc)}({exc})")
+        print(f"Could not load M2M credentials. {type(exc)}")
         raise SecretException from exc
 
 
