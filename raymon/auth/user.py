@@ -10,12 +10,6 @@ from raymon.exceptions import NetworkException, SecretException
 import base64
 import webbrowser
 
-# DEFAULT_CONFIG = {
-#     "auth_url": "https://raymon.eu.auth0.com",
-#     "audience": "raymon-backend-api",
-#     "client_id": "bxDpl9xNyKG0n810aZVQddAGqFbGDVrc",
-# }
-
 
 def save_user_config(existing, auth_endpoint, audience, client_id, token, out, env):
     out = Path(out)
