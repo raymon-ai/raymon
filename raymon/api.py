@@ -132,23 +132,23 @@ class RaymonAPI:
     def ray_get(self, project_id, ray_id):
         return self.get(route=f"projects/{project_id}/rays/{ray_id}")
 
-    def object_ls(self, project_id, peephole, slicestr, begin, end, limit=250):
-        params = {"begin": begin, "end": end, "slicestr": slicestr, "lim": limit, "peephole": peephole}
+    def object_ls(self, project_id, ref, slicestr, begin, end, limit=250):
+        params = {"begin": begin, "end": end, "slicestr": slicestr, "lim": limit, "ref": ref}
         return self.get(route=f"projects/{project_id}/objects", params=params)
 
     def object_get(self, project_id, object_id):
         return self.get(route=f"projects/{project_id}/objects/{object_id}")
 
-    def object_search(self, project_id, ray_id, peephole):
+    def object_search(self, project_id, ray_id, ref):
         params = {
             "ray_id": ray_id,
-            "peephole": peephole,
+            "ref": ref,
         }
         return self.get(route=f"projects/{project_id}/objects/search", params=params)
 
-    def peepholes_ls(self, project_id, slicestr, begin, end, limit=250):
+    def refs_ls(self, project_id, slicestr, begin, end, limit=250):
         params = {"begin": begin, "end": end, "slicestr": slicestr, "lim": limit}
-        return self.get(route=f"projects/{project_id}/peepholes", params=params)
+        return self.get(route=f"projects/{project_id}/refs", params=params)
 
     def tags_ls(self, project_id):
         return self.get(route=f"projects/{project_id}/tags")

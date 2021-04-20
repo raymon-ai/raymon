@@ -9,7 +9,7 @@ class MockLogger:
     Functions related to logging of rays
     """
 
-    def log(self, ray_id, peephole, data):
+    def log(self, ray_id, ref, data):
         pass
 
     def flush(self):
@@ -18,21 +18,21 @@ class MockLogger:
 
 def test_split():
     logger = MockLogger()
-    base_ray = Ray(logger=logger, ray_id="base")
+    base_ray = Trace(logger=logger, ray_id="base")
     child = base_ray.split(suffix="a")
     assert child.ray_id == ("base", "a")
 
 
 def test_split_tuple():
     logger = MockLogger()
-    base_ray = Ray(logger=logger, ray_id=("base", "split"))
+    base_ray = Trace(logger=logger, ray_id=("base", "split"))
     child = base_ray.split(suffix="a")
     assert child.ray_id == ("base", "split", "a")
 
 
 def test_merge():
     logger = MockLogger()
-    base_ray = Ray(logger=logger, ray_id="base")
+    base_ray = Trace(logger=logger, ray_id="base")
     children = [base_ray.split(suffix=str(i)) for i in range(10)]
 
     for child in children:

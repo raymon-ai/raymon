@@ -14,20 +14,20 @@ def piperesult():
 @click.command()
 @click.option("--project-id", help="The name of the project you want to list the rays for")
 # @click.option('--ray-id', help='The ray id')
-# @click.option('--peephole', help='the peepholes')
+# @click.option('--ref', help='the refs')
 def ls(project_id):
     api = RaymonAPI(url="http://localhost:8000")
     api.login()
     params = {
         "project_id": project_id,
         #   'ray_id': ray_id,
-        #   'peephole': peephole
+        #   'ref': ref
     }
     resp = api.get(route=f"piperesult", params=params).json()
-    click.echo(f"{'Ray id':40s} - {'peephole':20s} - {'pipeline':20s} - {'data_object_id':40s} - {'viz_object_id':40s}")
+    click.echo(f"{'Ray id':40s} - {'ref':20s} - {'pipeline':20s} - {'data_object_id':40s} - {'viz_object_id':40s}")
     for piperes in resp["results"]:
         click.echo(
-            f"{piperes['ray_id']:40s} - {piperes['peephole']:20s} - {piperes['pipeline']:20s} - {piperes['data_object_id']:40s} - {piperes['viz_object_id']:40s}"
+            f"{piperes['ray_id']:40s} - {piperes['ref']:20s} - {piperes['pipeline']:20s} - {piperes['data_object_id']:40s} - {piperes['viz_object_id']:40s}"
         )
 
 

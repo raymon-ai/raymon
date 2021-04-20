@@ -18,11 +18,11 @@ class RaymonLoggerBase(ABC):
         self.project_id = project_id
         self.setup_logger(stdout=True)
 
-    def structure(self, ray_id, peephole, data):
+    def structure(self, ray_id, ref, data):
         return {
             "timestamp": str(pendulum.now("utc")),
             "ray_id": str(ray_id),
-            "peephole": peephole,
+            "ref": ref,
             "data": data,
             "project_id": self.project_id,
         }
@@ -47,7 +47,7 @@ class RaymonLoggerBase(ABC):
         pass
 
     @abstractmethod
-    def log(self, ray_id, peephole, data):
+    def log(self, ray_id, ref, data):
         pass
 
     @abstractmethod
@@ -87,21 +87,21 @@ class RaymonFileLogger(RaymonLoggerBase):
         logger.addHandler(fh)
 
     def info(self, ray_id, text):
-        jcr = self.structure(ray_id=ray_id, peephole=None, data=text)
+        jcr = self.structure(ray_id=ray_id, ref=None, data=text)
         kafka_msg = {"type": "info", "jcr": jcr}
         self.logger.info(text, extra=jcr)
         self.data_logger.info(json.dumps(kafka_msg))
         self.logger.info(f"Logged: {text}", extra=jcr)
 
-    def log(self, ray_id, peephole, data):
-        jcr = self.structure(ray_id=ray_id, peephole=peephole, data=data.to_jcr())
+    def log(self, ray_id, ref, data):
+        jcr = self.structure(ray_id=ray_id, ref=ref, data=data.to_jcr())
         kafka_msg = {"type": "data", "jcr": jcr}
-        self.logger.info(f"Logging data at {peephole}", extra=jcr)
+        self.logger.info(f"Logging data at {ref}", extra=jcr)
         self.data_logger.info(json.dumps(kafka_msg))
-        self.logger.info(f"Logged peephole {peephole} data to textfile.", extra=jcr)
+        self.logger.info(f"Logged ref {ref} data to textfile.", extra=jcr)
 
     def tag(self, ray_id, tags):
-        jcr = self.structure(ray_id=ray_id, peephole=None, data=tags)
+        jcr = self.structure(ray_id=ray_id, ref=None, data=tags)
         kafka_msg = {"type": "tags", "jcr": jcr}
         self.data_logger.info(json.dumps(kafka_msg))
         self.logger.info(f"Logged tags to textfile.", extra=jcr)
@@ -118,7 +118,7 @@ class RaymonAPILogger(RaymonLoggerBase):
 
     def info(self, ray_id, text):
         # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
-        jcr = self.structure(ray_id=ray_id, peephole=None, data=text)
+        jcr = self.structure(ray_id=ray_id, ref=None, data=text)
         self.logger.info(text, extra=jcr)
         resp = self.api.post(
             route=f"projects/{self.project_id}/ingest",
@@ -127,20 +127,20 @@ class RaymonAPILogger(RaymonLoggerBase):
         status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
         self.logger.info(f"Logged info. Status: {status}", extra=jcr)
 
-    def log(self, ray_id, peephole, data):
+    def log(self, ray_id, ref, data):
         # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
-        jcr = self.structure(ray_id=ray_id, peephole=peephole, data=data.to_jcr())
-        self.logger.info(f"Logging data at {peephole}", extra=jcr)
+        jcr = self.structure(ray_id=ray_id, ref=ref, data=data.to_jcr())
+        self.logger.info(f"Logging data at {ref}", extra=jcr)
         resp = self.api.post(
             route=f"projects/{self.project_id}/ingest",
             json=jcr,
         )
         status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
-        self.logger.info(f"Data logged at {peephole}. Status: {status}", extra=jcr)
+        self.logger.info(f"Data logged at {ref}. Status: {status}", extra=jcr)
 
     def tag(self, ray_id, tags):
         # TODO validate tags
-        jcr = self.structure(ray_id=ray_id, peephole=None, data=tags)
+        jcr = self.structure(ray_id=ray_id, ref=None, data=tags)
         resp = self.api.post(
             route=f"projects/{self.project_id}/rays/{ray_id}/tags",
             json=tags,

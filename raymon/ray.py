@@ -27,7 +27,7 @@ def _match_prefix(raylist):
     return prefix
 
 
-class Ray:
+class Trace:
     def __init__(self, logger, ray_id=None, pred=None):
         self.ray_id = _parse_ray_id(ray_id)
         self.logger = logger
@@ -40,8 +40,8 @@ class Ray:
     def info(self, text):
         self.logger.info(ray_id=str(self), text=text)
 
-    def log(self, peephole, data):
-        self.logger.log(ray_id=str(self), peephole=peephole, data=data)
+    def log(self, ref, data):
+        self.logger.log(ray_id=str(self), ref=ref, data=data)
 
     def tag(self, tags):
         self.logger.tag(ray_id=str(self), tags=tags)
@@ -54,7 +54,7 @@ class Ray:
         if suffix is None:
             suffix = uuid.uuid4()
         new_id = self.ray_id + (suffix,)
-        return Ray(self.logger, ray_id=new_id, pred=self)
+        return Trace(self.logger, ray_id=new_id, pred=self)
 
     @classmethod
     def merge(cls, raylist, suffix):
@@ -66,7 +66,7 @@ class Ray:
         ref_logger = raylist[0].logger
         # Add suffix
         new_id = prefix + (suffix,)
-        return Ray(ref_logger, ray_id=new_id, pred=raylist)
+        return Trace(ref_logger, ray_id=new_id, pred=raylist)
 
     def __str__(self):
         return ":".join(self.ray_id)

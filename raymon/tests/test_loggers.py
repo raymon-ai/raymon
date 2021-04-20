@@ -20,9 +20,9 @@ def test_textfile(tmp_path, monkeypatch, secret_file):
 
     fpath = tmp_path
     logger = RaymonFileLogger(path=fpath, project_id=PROJECT_NAME, reset_file=True)
-    ray = Ray(logger=logger)
+    ray = Trace(logger=logger)
     ray.info("This is a test")
-    ray.log(peephole="a-test", data=rt.Native({"a": "b"}))
+    ray.log(ref="a-test", data=rt.Native({"a": "b"}))
     ray.tag(tags=tags)
 
     # load log file
@@ -31,7 +31,7 @@ def test_textfile(tmp_path, monkeypatch, secret_file):
 
     # First line --info
     """
-    {"type": "info", "jcr": {"timestamp": "2021-01-29T08:33:51.428387+00:00", "ray_id": "3cc9dec5-e9e5-48b4-8c5c-ba2b48460c92", "peephole": null, "data": "This is a test", "project_id": "testing"}}
+    {"type": "info", "jcr": {"timestamp": "2021-01-29T08:33:51.428387+00:00", "ray_id": "3cc9dec5-e9e5-48b4-8c5c-ba2b48460c92", "ref": null, "data": "This is a test", "project_id": "testing"}}
     """
     line = json.loads(lines[0])
     assert line["type"] == "info"
@@ -40,12 +40,12 @@ def test_textfile(tmp_path, monkeypatch, secret_file):
     pendulum.parse(jcr["timestamp"])
     uuid.UUID(jcr["ray_id"], version=4)
     assert jcr["data"] == "This is a test"
-    assert jcr["peephole"] is None
+    assert jcr["ref"] is None
     assert jcr["project_id"] == PROJECT_NAME
 
     # 2nd line --data
     """
-    {"type": "info", "jcr": {"timestamp": "2021-01-29T08:33:51.428387+00:00", "ray_id": "3cc9dec5-e9e5-48b4-8c5c-ba2b48460c92", "peephole": null, "data": "This is a test", "project_id": "testing"}}
+    {"type": "info", "jcr": {"timestamp": "2021-01-29T08:33:51.428387+00:00", "ray_id": "3cc9dec5-e9e5-48b4-8c5c-ba2b48460c92", "ref": null, "data": "This is a test", "project_id": "testing"}}
     """
     line = json.loads(lines[1])
     assert line["type"] == "data"
@@ -54,12 +54,12 @@ def test_textfile(tmp_path, monkeypatch, secret_file):
     pendulum.parse(jcr["timestamp"])
     uuid.UUID(jcr["ray_id"], version=4)
     assert jcr["data"]["params"]["data"]["a"] == "b"
-    assert jcr["peephole"] == "a-test"
+    assert jcr["ref"] == "a-test"
     assert jcr["project_id"] == PROJECT_NAME
 
     # 3rd line --tags
     """
-    {"type": "tags", "jcr": {"timestamp": "2021-01-29T08:33:51.473413+00:00", "ray_id": "3cc9dec5-e9e5-48b4-8c5c-ba2b48460c92", "peephole": null, "data": [{"name": "my-tag", "value": "my_value", "type": "label", "group": "mygroup"}], "project_id": "testing"}}
+    {"type": "tags", "jcr": {"timestamp": "2021-01-29T08:33:51.473413+00:00", "ray_id": "3cc9dec5-e9e5-48b4-8c5c-ba2b48460c92", "ref": null, "data": [{"name": "my-tag", "value": "my_value", "type": "label", "group": "mygroup"}], "project_id": "testing"}}
     """
     line = json.loads(lines[2])
     assert line["type"] == "tags"
@@ -73,7 +73,7 @@ def test_textfile(tmp_path, monkeypatch, secret_file):
         assert tag_orig["type"] == tag_log["type"]
         assert tag_orig["group"] == tag_log["group"]
 
-    assert jcr["peephole"] is None
+    assert jcr["ref"] is None
     assert jcr["project_id"] == PROJECT_NAME
 
 
@@ -81,9 +81,9 @@ def test_2_textloggers(tmp_path):
 
     fpath = tmp_path  # Path(".")
     logger = RaymonFileLogger(path=fpath, project_id=PROJECT_NAME, reset_file=True)
-    ray = Ray(logger=logger)
+    ray = Trace(logger=logger)
     ray.info("This is a test")
-    ray.log(peephole="a-test", data=rt.Native({"a": "b"}))
+    ray.log(ref="a-test", data=rt.Native({"a": "b"}))
     ray.tag(tags=tags)
 
     # load log file
@@ -92,9 +92,9 @@ def test_2_textloggers(tmp_path):
         assert len(lines) == 3
 
     logger2 = RaymonFileLogger(path=fpath, project_id=PROJECT_NAME, reset_file=True)
-    ray = Ray(logger=logger2)
+    ray = Trace(logger=logger2)
     ray.info("This is a test")
-    ray.log(peephole="a-test", data=rt.Native({"a": "b"}))
+    ray.log(ref="a-test", data=rt.Native({"a": "b"}))
     ray.tag(tags=tags)
     ray.info("This is a test too")
 
@@ -115,14 +115,14 @@ def test_api_logger_info(monkeypatch, secret_file):
         pendulum.parse(jcr["timestamp"])
         uuid.UUID(jcr["ray_id"], version=4)
         assert jcr["data"] == "This is a test"
-        assert jcr["peephole"] is None
+        assert jcr["ref"] is None
         assert jcr["project_id"] == PROJECT_NAME
         return Dummyreponse()
 
     monkeypatch.setattr(RaymonAPI, "login", dummylogin)
     monkeypatch.setattr(RaymonAPI, "post", test_info_post)
     apilogger = RaymonAPILogger(url="willnotbeused", project_id=PROJECT_NAME, auth_path=secret_file)
-    ray = Ray(logger=apilogger)
+    ray = Trace(logger=apilogger)
     ray.info("This is a test")
 
 
@@ -136,15 +136,15 @@ def test_api_logger_data(monkeypatch, secret_file):
         pendulum.parse(jcr["timestamp"])
         uuid.UUID(jcr["ray_id"], version=4)
         assert jcr["data"]["params"]["data"]["a"] == "b"
-        assert jcr["peephole"] == "a-test"
+        assert jcr["ref"] == "a-test"
         assert jcr["project_id"] == PROJECT_NAME
         return Dummyreponse()
 
     monkeypatch.setattr(RaymonAPI, "login", dummylogin)
     monkeypatch.setattr(RaymonAPI, "post", test_data_post)
     apilogger = RaymonAPILogger(url="willnotbeused", project_id=PROJECT_NAME, auth_path=secret_file)
-    ray = Ray(logger=apilogger)
-    ray.log(peephole="a-test", data=rt.Native({"a": "b"}))
+    ray = Trace(logger=apilogger)
+    ray.log(ref="a-test", data=rt.Native({"a": "b"}))
 
 
 def test_api_logger_tags(monkeypatch, secret_file):
@@ -166,5 +166,5 @@ def test_api_logger_tags(monkeypatch, secret_file):
     monkeypatch.setattr(RaymonAPI, "login", dummylogin)
     monkeypatch.setattr(RaymonAPI, "post", test_tags_post)
     apilogger = RaymonAPILogger(url="willnotbeused", project_id=PROJECT_NAME, auth_path=secret_file)
-    ray = Ray(logger=apilogger)
+    ray = Trace(logger=apilogger)
     ray.tag(tags=tags)
