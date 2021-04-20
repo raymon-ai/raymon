@@ -129,8 +129,8 @@ class RaymonAPI:
         params = {"begin": begin, "end": end, "slicestr": slicestr, "lim": limit}
         return self.get(route=f"projects/{project_id}/rays", params=params)
 
-    def ray_get(self, project_id, ray_id):
-        return self.get(route=f"projects/{project_id}/rays/{ray_id}")
+    def ray_get(self, project_id, trace_id):
+        return self.get(route=f"projects/{project_id}/rays/{trace_id}")
 
     def object_ls(self, project_id, ref, slicestr, begin, end, limit=250):
         params = {"begin": begin, "end": end, "slicestr": slicestr, "lim": limit, "ref": ref}
@@ -139,9 +139,9 @@ class RaymonAPI:
     def object_get(self, project_id, object_id):
         return self.get(route=f"projects/{project_id}/objects/{object_id}")
 
-    def object_search(self, project_id, ray_id, ref):
+    def object_search(self, project_id, trace_id, ref):
         params = {
-            "ray_id": ray_id,
+            "trace_id": trace_id,
             "ref": ref,
         }
         return self.get(route=f"projects/{project_id}/objects/search", params=params)
@@ -153,5 +153,5 @@ class RaymonAPI:
     def tags_ls(self, project_id):
         return self.get(route=f"projects/{project_id}/tags")
 
-    def tags_get(self, project_id, ray_id):
-        return self.get(route=f"projects/{project_id}/rays/{ray_id}/tags")
+    def tags_get(self, project_id, trace_id):
+        return self.get(route=f"projects/{project_id}/rays/{trace_id}/tags")

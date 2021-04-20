@@ -23,8 +23,4 @@ setuptools.setup(
     ],
     python_requires=">=3.6",
     install_requires=REQUIREMENTS,
-    # entry_points="""
-    #     [console_scripts]
-    #     rayctl=raymon.cli.rayctl:cli
-    # """,
 )
