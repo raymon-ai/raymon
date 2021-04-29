@@ -65,7 +65,7 @@ class Buildable(ABC):
     @abstractmethod
     def is_built(self):
         """
-        Check whether the object has been built. Typically, this method checks whether the required references for the object is set. If your WatcherExtractor does not use any references, simply return True.
+        Check whether the object has been built. Typically, this method checks whether the required references for the object is set. If your ComponentExtractor does not use any references, simply return True.
 
         Returns
         -------

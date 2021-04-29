@@ -12,13 +12,13 @@ from raymon.globals import (
     DataException,
     ProfileStateException,
 )
-from raymon.profiles.stats import CategoricStats, NumericStats, equalize_domains
+from raymon.profiling.stats import CategoricStats, NumericStats, equalize_domains
 from raymon.tags import Tag, PROFILE_ERROR, PROFILE_FEATURE
 
 HIST_N_SAMPLES = 1000
 
 
-class Watcher(Serializable, Buildable, ABC):
+class Component(Serializable, Buildable, ABC):
     def __init__(self, name="default_name", extractor=None, importance=None, domain=None):
         self._name = None
         self._importance = None
@@ -35,7 +35,7 @@ class Watcher(Serializable, Buildable, ABC):
     @name.setter
     def name(self, value):
         if not isinstance(value, str):
-            raise ValueError(f"Watcher name should be a string")
+            raise ValueError(f"Component name should be a string")
         self._name = value.lower()
 
     @property
@@ -90,7 +90,7 @@ class Watcher(Serializable, Buildable, ABC):
             features = self.extractor.extract(loaded_data)
         elif isinstance(loaded_data, Iterable):
             for data in loaded_data:
-                features.append(self.extractor.extract_feature(data))
+                features.append(self.extractor.extract(data))
         else:
             raise DataException("loaded_data should be a DataFrame or Iterable")
         return features
@@ -127,7 +127,7 @@ class Watcher(Serializable, Buildable, ABC):
         return str(self)
 
 
-class FloatWatcher(Watcher):
+class FloatComponent(Component):
     def __init__(self, name="default_name", extractor=None, importance=None, stats=None):
         super().__init__(name=name, extractor=extractor, importance=importance)
         self._stats = None
@@ -183,10 +183,10 @@ class FloatWatcher(Watcher):
         return cls(name=name, extractor=extractor, importance=importance, stats=stats)
 
     def __str__(self):
-        return f"FloatWatcher(name={self.name}, extractor={self.extractor})"
+        return f"FloatComponent(name={self.name}, extractor={self.extractor})"
 
 
-class IntWatcher(Watcher):
+class IntComponent(Component):
     def __init__(self, name="default_name", extractor=None, importance=None, stats=None):
         super().__init__(name=name, extractor=extractor, importance=importance)
         self._stats = None
@@ -244,10 +244,10 @@ class IntWatcher(Watcher):
         return cls(name=name, extractor=extractor, importance=importance, stats=stats)
 
     def __str__(self):
-        return f"IntWatcher(name={self.name}, extractor={self.extractor})"
+        return f"IntComponent(name={self.name}, extractor={self.extractor})"
 
 
-class CategoricWatcher(Watcher):
+class CategoricComponent(Component):
 
     # Domain, domain distribution
     def __init__(self, name="default_name", extractor=None, importance=None, stats=None):
@@ -304,4 +304,4 @@ class CategoricWatcher(Watcher):
         return cls(name=name, extractor=extractor, importance=importance, stats=stats)
 
     def __str__(self):
-        return f"CategoricWatcher(name={self.name}, extractor={self.extractor})"
+        return f"CategoricComponent(name={self.name}, extractor={self.extractor})"

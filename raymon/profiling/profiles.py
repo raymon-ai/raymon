@@ -12,28 +12,28 @@ from pathlib import Path
 import raymon
 from raymon.globals import Buildable, ProfileStateException, Serializable
 from raymon.tags import PROFILE_FEATURE
-from raymon.profiles.watcher import Watcher
+from raymon.profiling.components import Component
 from raymon.out import NoOutput, nullcontext
 
 
 class DataProfile(Serializable, Buildable):
-    _attrs = ["name", "version", "watchers"]
+    _attrs = ["name", "version", "components"]
 
     def __init__(
         self,
         name="default",
         version="0.0.0",
-        watchers={},
+        components={},
         summaries={},
     ):
 
         self._name = None
         self._version = None
-        self._watchers = {}
+        self._components = {}
 
         self.name = str(name)
         self.version = str(version)
-        self.watchers = watchers
+        self.components = components
 
     """Serializable interface"""
 
@@ -58,18 +58,18 @@ class DataProfile(Serializable, Buildable):
         self._version = value
 
     @property
-    def watchers(self):
-        return self._watchers
+    def components(self):
+        return self._components
 
-    @watchers.setter
-    def watchers(self, value):
-        if isinstance(value, list) and all(isinstance(watcher, Watcher) for watcher in value):
+    @components.setter
+    def components(self, value):
+        if isinstance(value, list) and all(isinstance(component, Component) for component in value):
             # Convert to dict
-            self._watchers = {c.name: c for c in value}
-        elif isinstance(value, dict) and all(isinstance(watcher, Watcher) for watcher in value.values()):
-            self._watchers = value
+            self._components = {c.name: c for c in value}
+        elif isinstance(value, dict) and all(isinstance(component, Component) for component in value.values()):
+            self._components = value
         else:
-            raise ValueError(f"watchers must be a list[Watcher] or dict[str, Watcher]")
+            raise ValueError(f"components must be a list[Component] or dict[str, Component]")
 
     @property
     def group_idfr(self):
@@ -79,24 +79,24 @@ class DataProfile(Serializable, Buildable):
         jcr = {
             "name": self.name,
             "version": self.version,
-            "watchers": None,
+            "components": None,
         }
-        watchers = {}
-        for watcher in self.watchers.values():
-            watchers[watcher.name] = watcher.to_jcr()
-        jcr["watchers"] = watchers
+        components = {}
+        for component in self.components.values():
+            components[component.name] = component.to_jcr()
+        jcr["components"] = components
         return jcr
 
     @classmethod
     def from_jcr(cls, jcr):
         name = jcr["name"]
         version = jcr["version"]
-        watchers = {}
-        for comp_dict in jcr["watchers"].values():
-            watcher = Watcher.from_jcr(comp_dict)
-            watchers[watcher.name] = watcher
+        components = {}
+        for comp_dict in jcr["components"].values():
+            component = Component.from_jcr(comp_dict)
+            components[component.name] = component
 
-        return cls(name=name, version=version, watchers=watchers)
+        return cls(name=name, version=version, components=components)
 
     def save(self, fpath):
         with open(fpath, "w") as f:
@@ -117,12 +117,12 @@ class DataProfile(Serializable, Buildable):
             ctx_mgr = nullcontext()
         # Build the schema
         with ctx_mgr:
-            for name, watcher in self.watchers.items():
+            for name, component in self.components.items():
                 # Compile stats
-                watcher.build(inputs=inputs, outputs=outputs, actuals=actuals)
+                component.build(inputs=inputs, outputs=outputs, actuals=actuals)
 
     def is_built(self):
-        return all(watcher.is_built() for watcher in self.watchers.values())
+        return all(component.is_built() for component in self.components.values())
 
     """Other Methods"""
 
@@ -130,28 +130,28 @@ class DataProfile(Serializable, Buildable):
         return f'DataProfile(name="{self.name}", version="{self.version}"'
 
     def set_group(self, tags):
-        for watcher_tag in tags:
-            watcher_tag.group = self.group_idfr
+        for component_tag in tags:
+            component_tag.group = self.group_idfr
 
     def check(self, data, convert_json=True):
         tags = []
         if self.is_built():
-            for watcher in self.watchers.values():
-                watcher_tags = watcher.check(data)
-                self.set_group(watcher_tags)
-                tags.extend(watcher_tags)
+            for component in self.components.values():
+                component_tags = component.check(data)
+                self.set_group(component_tags)
+                tags.extend(component_tags)
         else:
             raise ProfileStateException(
-                f"Cannot check data on an unbuilt schema. Check whether all watchers are built."
+                f"Cannot check data on an unbuilt schema. Check whether all components are built."
             )
         if convert_json:
             tags = [t.to_jcr() for t in tags]
         return tags
 
-    def drop_watcher(self, name):
-        self.watchers = [c for c in self.watchers.values() if c.name != name]
+    def drop_component(self, name):
+        self.components = [c for c in self.components.values() if c.name != name]
 
-    def tags2watchervalue(self, tags):
+    def flatten_tags(self, tags):
         tags_dict = {}
         for tag in tags:
             if tag["type"] == PROFILE_FEATURE:
@@ -179,7 +179,7 @@ class DataProfile(Serializable, Buildable):
         # Build the schema
         with ctx_mgr:
             if poi is not None:
-                poi_dict = self.tags2watchervalue(self.check(poi))
+                poi_dict = self.flatten_tags(self.check(poi))
             else:
                 poi_dict = {}
             jsonescaped = html.escape(json.dumps(self.to_jcr()))
@@ -201,16 +201,16 @@ class DataProfile(Serializable, Buildable):
         stats = {}
         drift_alerts = 0
         pinv_alerts = 0
-        for watchername in self.watchers:
-            print(watchername)
-            drift, drift_idx, alert_drift, pinvdiff, alert_inv = self.watchers[watchername].stats.test_drift(
-                other.watchers[watchername].stats, thresh_drift=thresh_drift, thresh_inv=thresh_inv
+        for componentname in self.components:
+            print(componentname)
+            drift, drift_idx, alert_drift, pinvdiff, alert_inv = self.components[componentname].stats.test_drift(
+                other.components[componentname].stats, thresh_drift=thresh_drift, thresh_inv=thresh_inv
             )
-            stats[watchername] = {
+            stats[componentname] = {
                 "alert_drift": str(alert_drift),
                 "drift": float(drift),
                 "drift_idx": drift_idx,
-                "impact": float(self.watchers[watchername].importance * drift),
+                "impact": float(self.components[componentname].importance * drift),
                 "pinvdiff": float(pinvdiff),
                 "alert_inv": str(alert_inv),
             }
@@ -219,8 +219,8 @@ class DataProfile(Serializable, Buildable):
             if alert_inv:
                 pinv_alerts += 1
 
-        jcr["watcher_drift"] = stats
-        jcr["health"] = {"drift_alerts": drift_alerts, "invalid_alerts": pinv_alerts, "total": len(self.watchers)}
+        jcr["component_drift"] = stats
+        jcr["health"] = {"drift_alerts": drift_alerts, "invalid_alerts": pinv_alerts, "total": len(self.components)}
 
         return jcr
 

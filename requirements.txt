@@ -5,3 +5,6 @@ click
 pandas
 requests
 Pillow
+torch
+torchvision
+sklearn
