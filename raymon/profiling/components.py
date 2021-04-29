@@ -19,13 +19,12 @@ HIST_N_SAMPLES = 1000
 
 
 class Component(Serializable, Buildable, ABC):
-    def __init__(self, name="default_name", extractor=None, importance=None, domain=None):
+    def __init__(self, name="default_name", extractor=None, importance=None):
         self._name = None
         self._importance = None
         self.name = name
         self.importance = importance
         self.extractor = extractor
-
         self.stats = None
 
     @property
@@ -76,36 +75,25 @@ class Component(Serializable, Buildable, ABC):
         feature = compclass.from_jcr(comp_jcr)
         return feature
 
-    def build_extractor(self, loaded_data):
-        self.extractor.build(loaded_data)
+    def build_extractor(self, input, output, actual):
+        self.extractor.build(input, output, actual)
 
-    def build_stats(self, loaded_data):
+    def build_stats(self, input, output, actual):
         print(f"Compiling stats for {self.name}")
-        features = self.extract_all(loaded_data)
-        self.stats.build(features, domain=self.domain)
+        features = self.extractor.extract_multiple(input, output, actual)
+        self.stats.build(features)
 
-    def extract_all(self, loaded_data):
-        features = []
-        if isinstance(loaded_data, pd.DataFrame) or isinstance(loaded_data, np.ndarray):
-            features = self.extractor.extract(loaded_data)
-        elif isinstance(loaded_data, Iterable):
-            for data in loaded_data:
-                features.append(self.extractor.extract(data))
-        else:
-            raise DataException("loaded_data should be a DataFrame or Iterable")
-        return features
-
-    def build(self, data):
+    def build(self, input, output, actual):
         # Compile extractor
-        self.build_extractor(data)
+        self.build_extractor(input, output, actual)
         # Configure stats
-        self.build_stats(data)
+        self.build_stats(input, output, actual)
 
     def is_built(self):
         return self.extractor.is_built() and self.stats.is_built()
 
-    def check(self, data):
-        feature = self.extractor.extract(data)
+    def validate(self, input, output, actual):
+        feature = self.extractor.extract(input, output, actual)
         # Make a tag from the feature
         feat_tag = self.feature2tag(feature)
         # Check min, max, nan or None and raise data error

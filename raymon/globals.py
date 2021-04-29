@@ -12,6 +12,10 @@ class ProfileStateException(Exception):
     pass
 
 
+class ExtractorException(Exception):
+    pass
+
+
 class DataException(Exception):
     pass
 
@@ -49,7 +53,7 @@ class Serializable(ABC):
 
 class Buildable(ABC):
     @abstractmethod
-    def build(self, data):
+    def build(self, input, output, actual):
         """Your feature extractor must be Buildable. This means that it may use data to set some reference values, used to calculate the feature to be extracted from a data sample. A good example for this is the `rdv.extractors.structured.KMeansOutlierScorer` extractor, which clusters the data at building time and saves those clusters as reference in the objects state. If you dont require and buildabe state, like the `rdv.extractors.structured.ElementExtractor`, don't do anything in this function.
 
         Parameters

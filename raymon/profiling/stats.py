@@ -5,6 +5,7 @@ import pandas as pd
 from abc import ABC, abstractmethod
 from scipy.interpolate import interp1d
 
+from scipy.stats import ks_2samp
 
 from raymon.globals import (
     Buildable,
@@ -21,7 +22,7 @@ class Stats(Serializable, Buildable, ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def test_drift(self, other):
+    def contrast(self, other):
         raise NotImplementedError
 
 
@@ -189,7 +190,7 @@ class NumericStats(Stats):
 
     """Testing and sampling functions"""
 
-    def test_drift(self, other, thresh_drift=0.05, thresh_inv=0.05):
+    def contrast(self, other):
         # KS distance
         p1 = self.percentiles
         p2 = other.percentiles
@@ -204,14 +205,14 @@ class NumericStats(Stats):
         interpolated_2 = interpolator_2(data_all)
         drift = np.max(np.abs(interpolated_1 - interpolated_2)) / 100
         drift_idx = int(np.argmax(np.abs(interpolated_1 - interpolated_2)))
-        alert_drift = drift > thresh_drift
+        # alert_drift = drift > thresh_drift
 
         pinv1 = self.pinv
         pinv2 = other.pinv
         pinvdiff = pinv2 - pinv1
-        alert_inv = pinvdiff > thresh_inv
+        # alert_inv = pinvdiff > thresh_inv
 
-        return drift, drift_idx, alert_drift, pinvdiff, alert_inv
+        return drift, drift_idx, pinvdiff
 
     def sample(self, n=N_SAMPLES, dtype="float"):
         # Sample floats in range 0 - len(percentiles)
@@ -318,7 +319,6 @@ class CategoricStats(Stats):
             valid = data.isin(domain)
             n_invalids = len(data[~valid])
             data = data[valid]
-
         else:
             n_invalids = 0
         self.frequencies = data.value_counts(normalize=True).to_dict()
@@ -329,7 +329,7 @@ class CategoricStats(Stats):
 
     """Testing and sampling functions"""
 
-    def test_drift(self, other, thresh_drift=0.05, thresh_inv=0.05):
+    def contrast(self, other):
         self_f, other_f, full_domain = equalize_domains(self.frequencies, other.frequencies)
         f_sorted_self = []
         f_sorted_other = []
@@ -341,14 +341,14 @@ class CategoricStats(Stats):
         # Chebyshev
         drift = np.max(np.abs(f_sorted_self - f_sorted_other))
         drift_idx = full_domain[np.argmax(np.abs(f_sorted_self - f_sorted_other))]
-        alert_drift = drift > thresh_drift
+        # alert_drift = drift > thresh_drift
 
         pinv1 = self.pinv
         pinv2 = other.pinv
         pinvdiff = pinv2 - pinv1
-        alert_inv = pinvdiff > thresh_inv
+        # alert_inv = pinvdiff > thresh_inv
 
-        return drift, drift_idx, alert_drift, pinvdiff, alert_inv
+        return drift, drift_idx, pinvdiff
 
     def sample(self, n):
         domain = sorted(list(self.frequencies.keys()))

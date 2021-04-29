@@ -30,8 +30,8 @@ class ImageDataset(Dataset):
 
 
 class DN2AnomalyScorer(KMeansOutlierScorer):
-    def __init__(self, k=16, size=None, clusters=None, dist="euclidean"):
-        super().__init__(k=k, clusters=clusters, dist=dist)
+    def __init__(self, name, k=16, size=None, clusters=None, dist="euclidean", path="input"):
+        super().__init__(name=name, path=path, k=k, clusters=clusters, dist=dist)
         self.mobilenet = models.mobilenet_v2(pretrained=True).eval()
         self.size = size
         tfs = [
@@ -44,7 +44,8 @@ class DN2AnomalyScorer(KMeansOutlierScorer):
             )
         self.tfs = transforms.Compose(tfs)
 
-    def extract(self, data):
+    def extract(self, input, output, actual):
+        data = self.parse_params(input=input, output=output, actual=actual)
         if not isinstance(data, Image.Image):
             raise ValueError(f"data must be of type PIL.Image.Image, not {data.shape}")
         batchtf = self.tfs(data)[None, :]

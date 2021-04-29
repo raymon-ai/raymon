@@ -110,7 +110,7 @@ class DataProfile(Serializable, Buildable):
 
     """Buildable Interface"""
 
-    def build(self, inputs, outputs, actuals, silent=True):
+    def build(self, input=None, output=None, actual=None, silent=True):
         if silent:
             ctx_mgr = NoOutput()
         else:
@@ -119,7 +119,7 @@ class DataProfile(Serializable, Buildable):
         with ctx_mgr:
             for name, component in self.components.items():
                 # Compile stats
-                component.build(inputs=inputs, outputs=outputs, actuals=actuals)
+                component.build(input=input, output=output, actual=actual)
 
     def is_built(self):
         return all(component.is_built() for component in self.components.values())
@@ -132,21 +132,6 @@ class DataProfile(Serializable, Buildable):
     def set_group(self, tags):
         for component_tag in tags:
             component_tag.group = self.group_idfr
-
-    def check(self, data, convert_json=True):
-        tags = []
-        if self.is_built():
-            for component in self.components.values():
-                component_tags = component.check(data)
-                self.set_group(component_tags)
-                tags.extend(component_tags)
-        else:
-            raise ProfileStateException(
-                f"Cannot check data on an unbuilt schema. Check whether all components are built."
-            )
-        if convert_json:
-            tags = [t.to_jcr() for t in tags]
-        return tags
 
     def drop_component(self, name):
         self.components = [c for c in self.components.values() if c.name != name]
@@ -171,6 +156,49 @@ class DataProfile(Serializable, Buildable):
 
         return html_file
 
+    def validate(self, input=None, output=None, actual=None, convert_json=True):
+        tags = []
+        if self.is_built():
+            for component in self.components.values():
+                component_tags = component.validate(input, output, actual)
+                self.set_group(component_tags)
+                tags.extend(component_tags)
+        else:
+            raise ProfileStateException(
+                f"Cannot check data on an unbuilt profile. Check whether all components are built."
+            )
+        if convert_json:
+            tags = [t.to_jcr() for t in tags]
+        return tags
+
+    def contrast(self, other):
+        if not self.is_built():
+            raise ProfileStateException("Profile 'self' is not built.")
+        if not other.is_built():
+            raise ProfileStateException("Profile 'other' is not built.")
+        report = {}
+        for componentname in self.components:
+            print(componentname)
+            ref_stats = self.components[componentname].stats
+            other_stats = other.components[componentname].stats
+            drift, drift_idx, pinvdiff = ref_stats.contrast(other_stats)
+            drift_report = {
+                "drift": float(drift),
+                "drift_idx": drift_idx,
+                "weight": float(self.components[componentname].importance * drift),
+            }
+            integrity_report = {
+                "weight": float(self.components[componentname].importance * pinvdiff),
+                "integrity": float(pinvdiff),
+            }
+            report[componentname] = {"drift": drift_report, "integrity": integrity_report}
+
+        jcr = {}
+        jcr["reference"] = self.to_jcr()
+        jcr["other"] = other.to_jcr()
+        jcr["report"] = report
+        return jcr
+
     def view(self, poi=None, mode="iframe", outdir=None, silent=True):
         if silent:
             ctx_mgr = NoOutput()
@@ -179,7 +207,7 @@ class DataProfile(Serializable, Buildable):
         # Build the schema
         with ctx_mgr:
             if poi is not None:
-                poi_dict = self.flatten_tags(self.check(poi))
+                poi_dict = self.flatten_tags(self.validate(poi))
             else:
                 poi_dict = {}
             jsonescaped = html.escape(json.dumps(self.to_jcr()))
@@ -194,44 +222,14 @@ class DataProfile(Serializable, Buildable):
                     """
             return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
 
-    def test_drift(self, other, thresh_drift=0.05, thresh_inv=0.05):
-        jcr = {}
-        jcr["self"] = self.to_jcr()
-        jcr["other"] = other.to_jcr()
-        stats = {}
-        drift_alerts = 0
-        pinv_alerts = 0
-        for componentname in self.components:
-            print(componentname)
-            drift, drift_idx, alert_drift, pinvdiff, alert_inv = self.components[componentname].stats.test_drift(
-                other.components[componentname].stats, thresh_drift=thresh_drift, thresh_inv=thresh_inv
-            )
-            stats[componentname] = {
-                "alert_drift": str(alert_drift),
-                "drift": float(drift),
-                "drift_idx": drift_idx,
-                "impact": float(self.components[componentname].importance * drift),
-                "pinvdiff": float(pinvdiff),
-                "alert_inv": str(alert_inv),
-            }
-            if alert_drift:
-                drift_alerts += 1
-            if alert_inv:
-                pinv_alerts += 1
-
-        jcr["component_drift"] = stats
-        jcr["health"] = {"drift_alerts": drift_alerts, "invalid_alerts": pinv_alerts, "total": len(self.components)}
-
-        return jcr
-
-    def compare(self, other, thresh=0.05, mode="iframe", outdir=None, silent=True):
+    def view_contrast(self, other, thresh=0.05, mode="iframe", outdir=None, silent=True):
         if silent:
             ctx_mgr = NoOutput()
         else:
             ctx_mgr = nullcontext()
         # Build the schema
         with ctx_mgr:
-            jcr = self.test_drift(other, thresh=thresh)
+            jcr = self.contrast(other)
             jsonescaped = html.escape(json.dumps(jcr))
             htmlstr = f"""
                 <meta charset="utf-8">
