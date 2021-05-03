@@ -1,12 +1,12 @@
 {
-    "name": "cheap-houses",
+    "name": "houses_cheap",
     "version": "0.0.1",
-    "features": {
+    "input_components": {
         "mssubclass": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "mssubclass",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "MSSubClass"
                 },
@@ -125,10 +125,10 @@
             }
         },
         "mszoning": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "mszoning",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "MSZoning"
                 },
@@ -147,10 +147,10 @@
             }
         },
         "lotfrontage": {
-            "feature_class": "rdv.feature.FloatFeature",
+            "feature_class": "raymon.profiling.components.FloatComponent",
             "feature": {
                 "name": "lotfrontage",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "LotFrontage"
                 },
@@ -269,10 +269,10 @@
             }
         },
         "lotarea": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "lotarea",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "LotArea"
                 },
@@ -391,10 +391,10 @@
             }
         },
         "street": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "street",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Street"
                 },
@@ -410,10 +410,10 @@
             }
         },
         "alley": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "alley",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Alley"
                 },
@@ -429,10 +429,10 @@
             }
         },
         "lotshape": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "lotshape",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "LotShape"
                 },
@@ -450,10 +450,10 @@
             }
         },
         "landcontour": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "landcontour",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "LandContour"
                 },
@@ -471,10 +471,10 @@
             }
         },
         "utilities": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "utilities",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Utilities"
                 },
@@ -490,10 +490,10 @@
             }
         },
         "lotconfig": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "lotconfig",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "LotConfig"
                 },
@@ -512,10 +512,10 @@
             }
         },
         "landslope": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "landslope",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "LandSlope"
                 },
@@ -532,10 +532,10 @@
             }
         },
         "neighborhood": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "neighborhood",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Neighborhood"
                 },
@@ -557,15 +557,15 @@
                         "Crawfor": 0.02721774193548387,
                         "SWISU": 0.02217741935483871,
                         "MeadowV": 0.017137096774193547,
-                        "Timber": 0.016129032258064516,
                         "BrDale": 0.016129032258064516,
+                        "Timber": 0.016129032258064516,
                         "ClearCr": 0.014112903225806451,
                         "NridgHt": 0.012096774193548387,
                         "NPkVill": 0.009072580645161291,
                         "Blmngtn": 0.007056451612903226,
                         "Veenker": 0.005040322580645161,
-                        "Blueste": 0.0020161290322580645,
                         "StoneBr": 0.0020161290322580645,
+                        "Blueste": 0.0020161290322580645,
                         "NoRidge": 0.0020161290322580645
                     },
                     "pinv": 0.0,
@@ -574,10 +574,10 @@
             }
         },
         "condition1": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "condition1",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Condition1"
                 },
@@ -600,10 +600,10 @@
             }
         },
         "condition2": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "condition2",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Condition2"
                 },
@@ -622,10 +622,10 @@
             }
         },
         "bldgtype": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "bldgtype",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "BldgType"
                 },
@@ -644,10 +644,10 @@
             }
         },
         "housestyle": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "housestyle",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "HouseStyle"
                 },
@@ -669,10 +669,10 @@
             }
         },
         "overallqual": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "overallqual",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "OverallQual"
                 },
@@ -791,10 +791,10 @@
             }
         },
         "overallcond": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "overallcond",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "OverallCond"
                 },
@@ -913,10 +913,10 @@
             }
         },
         "yearbuilt": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "yearbuilt",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "YearBuilt"
                 },
@@ -1035,10 +1035,10 @@
             }
         },
         "yearremodadd": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "yearremodadd",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "YearRemodAdd"
                 },
@@ -1157,10 +1157,10 @@
             }
         },
         "roofstyle": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "roofstyle",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "RoofStyle"
                 },
@@ -1179,10 +1179,10 @@
             }
         },
         "roofmatl": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "roofmatl",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "RoofMatl"
                 },
@@ -1192,11 +1192,11 @@
                         "CompShg": 0.9868951612903226,
                         "Tar&Grv": 0.006048387096774193,
                         "WdShake": 0.0020161290322580645,
-                        "WdShngl": 0.0010080645161290322,
+                        "Membran": 0.0010080645161290322,
                         "Roll": 0.0010080645161290322,
                         "ClyTile": 0.0010080645161290322,
                         "Metal": 0.0010080645161290322,
-                        "Membran": 0.0010080645161290322
+                        "WdShngl": 0.0010080645161290322
                     },
                     "pinv": 0.0,
                     "samplesize": 992
@@ -1204,10 +1204,10 @@
             }
         },
         "exterior1st": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "exterior1st",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Exterior1st"
                 },
@@ -1234,10 +1234,10 @@
             }
         },
         "exterior2nd": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "exterior2nd",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Exterior2nd"
                 },
@@ -1250,14 +1250,14 @@
                         "HdBoard": 0.16330645161290322,
                         "Plywood": 0.10383064516129033,
                         "Wd Shng": 0.03225806451612903,
-                        "Stucco": 0.02217741935483871,
                         "CmentBd": 0.02217741935483871,
+                        "Stucco": 0.02217741935483871,
                         "AsbShng": 0.019153225806451613,
                         "BrkFace": 0.015120967741935484,
                         "Brk Cmn": 0.007056451612903226,
                         "ImStucc": 0.005040322580645161,
-                        "Stone": 0.0030241935483870967,
                         "AsphShn": 0.0030241935483870967,
+                        "Stone": 0.0030241935483870967,
                         "CBlock": 0.0010080645161290322
                     },
                     "pinv": 0.0,
@@ -1266,10 +1266,10 @@
             }
         },
         "masvnrtype": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "masvnrtype",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "MasVnrType"
                 },
@@ -1287,10 +1287,10 @@
             }
         },
         "masvnrarea": {
-            "feature_class": "rdv.feature.FloatFeature",
+            "feature_class": "raymon.profiling.components.FloatComponent",
             "feature": {
                 "name": "masvnrarea",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "MasVnrArea"
                 },
@@ -1409,10 +1409,10 @@
             }
         },
         "exterqual": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "exterqual",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "ExterQual"
                 },
@@ -1430,10 +1430,10 @@
             }
         },
         "extercond": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "extercond",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "ExterCond"
                 },
@@ -1452,10 +1452,10 @@
             }
         },
         "foundation": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "foundation",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Foundation"
                 },
@@ -1475,10 +1475,10 @@
             }
         },
         "bsmtqual": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "bsmtqual",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "BsmtQual"
                 },
@@ -1496,10 +1496,10 @@
             }
         },
         "bsmtcond": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "bsmtcond",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "BsmtCond"
                 },
@@ -1517,10 +1517,10 @@
             }
         },
         "bsmtexposure": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "bsmtexposure",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "BsmtExposure"
                 },
@@ -1538,10 +1538,10 @@
             }
         },
         "bsmtfintype1": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "bsmtfintype1",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "BsmtFinType1"
                 },
@@ -1561,10 +1561,10 @@
             }
         },
         "bsmtfinsf1": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "bsmtfinsf1",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "BsmtFinSF1"
                 },
@@ -1683,10 +1683,10 @@
             }
         },
         "bsmtfintype2": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "bsmtfintype2",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "BsmtFinType2"
                 },
@@ -1706,10 +1706,10 @@
             }
         },
         "bsmtfinsf2": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "bsmtfinsf2",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "BsmtFinSF2"
                 },
@@ -1828,10 +1828,10 @@
             }
         },
         "bsmtunfsf": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "bsmtunfsf",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "BsmtUnfSF"
                 },
@@ -1950,10 +1950,10 @@
             }
         },
         "totalbsmtsf": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "totalbsmtsf",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "TotalBsmtSF"
                 },
@@ -2072,10 +2072,10 @@
             }
         },
         "heating": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "heating",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Heating"
                 },
@@ -2095,10 +2095,10 @@
             }
         },
         "heatingqc": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "heatingqc",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "HeatingQC"
                 },
@@ -2117,10 +2117,10 @@
             }
         },
         "centralair": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "centralair",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "CentralAir"
                 },
@@ -2136,10 +2136,10 @@
             }
         },
         "electrical": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "electrical",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Electrical"
                 },
@@ -2158,10 +2158,10 @@
             }
         },
         "1stflrsf": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "1stflrsf",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "1stFlrSF"
                 },
@@ -2280,10 +2280,10 @@
             }
         },
         "2ndflrsf": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "2ndflrsf",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "2ndFlrSF"
                 },
@@ -2402,10 +2402,10 @@
             }
         },
         "lowqualfinsf": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "lowqualfinsf",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "LowQualFinSF"
                 },
@@ -2524,10 +2524,10 @@
             }
         },
         "grlivarea": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "grlivarea",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "GrLivArea"
                 },
@@ -2646,10 +2646,10 @@
             }
         },
         "bsmtfullbath": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "bsmtfullbath",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "BsmtFullBath"
                 },
@@ -2768,10 +2768,10 @@
             }
         },
         "bsmthalfbath": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "bsmthalfbath",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "BsmtHalfBath"
                 },
@@ -2890,10 +2890,10 @@
             }
         },
         "fullbath": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "fullbath",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "FullBath"
                 },
@@ -3012,10 +3012,10 @@
             }
         },
         "halfbath": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "halfbath",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "HalfBath"
                 },
@@ -3134,10 +3134,10 @@
             }
         },
         "bedroomabvgr": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "bedroomabvgr",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "BedroomAbvGr"
                 },
@@ -3256,10 +3256,10 @@
             }
         },
         "kitchenabvgr": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "kitchenabvgr",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "KitchenAbvGr"
                 },
@@ -3378,10 +3378,10 @@
             }
         },
         "kitchenqual": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "kitchenqual",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "KitchenQual"
                 },
@@ -3399,10 +3399,10 @@
             }
         },
         "totrmsabvgrd": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "totrmsabvgrd",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "TotRmsAbvGrd"
                 },
@@ -3521,10 +3521,10 @@
             }
         },
         "functional": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "functional",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Functional"
                 },
@@ -3545,10 +3545,10 @@
             }
         },
         "fireplaces": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "fireplaces",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Fireplaces"
                 },
@@ -3667,10 +3667,10 @@
             }
         },
         "fireplacequ": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "fireplacequ",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "FireplaceQu"
                 },
@@ -3689,10 +3689,10 @@
             }
         },
         "garagetype": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "garagetype",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "GarageType"
                 },
@@ -3712,10 +3712,10 @@
             }
         },
         "garageyrblt": {
-            "feature_class": "rdv.feature.FloatFeature",
+            "feature_class": "raymon.profiling.components.FloatComponent",
             "feature": {
                 "name": "garageyrblt",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "GarageYrBlt"
                 },
@@ -3834,10 +3834,10 @@
             }
         },
         "garagefinish": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "garagefinish",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "GarageFinish"
                 },
@@ -3854,10 +3854,10 @@
             }
         },
         "garagecars": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "garagecars",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "GarageCars"
                 },
@@ -3976,10 +3976,10 @@
             }
         },
         "garagearea": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "garagearea",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "GarageArea"
                 },
@@ -4098,10 +4098,10 @@
             }
         },
         "garagequal": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "garagequal",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "GarageQual"
                 },
@@ -4120,10 +4120,10 @@
             }
         },
         "garagecond": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "garagecond",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "GarageCond"
                 },
@@ -4142,10 +4142,10 @@
             }
         },
         "paveddrive": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "paveddrive",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "PavedDrive"
                 },
@@ -4162,10 +4162,10 @@
             }
         },
         "wooddecksf": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "wooddecksf",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "WoodDeckSF"
                 },
@@ -4284,10 +4284,10 @@
             }
         },
         "openporchsf": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "openporchsf",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "OpenPorchSF"
                 },
@@ -4406,10 +4406,10 @@
             }
         },
         "enclosedporch": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "enclosedporch",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "EnclosedPorch"
                 },
@@ -4528,10 +4528,10 @@
             }
         },
         "3ssnporch": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "3ssnporch",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "3SsnPorch"
                 },
@@ -4650,10 +4650,10 @@
             }
         },
         "screenporch": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "screenporch",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "ScreenPorch"
                 },
@@ -4772,10 +4772,10 @@
             }
         },
         "poolarea": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "poolarea",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "PoolArea"
                 },
@@ -4894,19 +4894,19 @@
             }
         },
         "poolqc": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "poolqc",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "PoolQC"
                 },
                 "importance": 0,
                 "stats": {
                     "frequencies": {
-                        "Fa": 0.3333333333333333,
+                        "Gd": 0.3333333333333333,
                         "Ex": 0.3333333333333333,
-                        "Gd": 0.3333333333333333
+                        "Fa": 0.3333333333333333
                     },
                     "pinv": 0.9969758064516129,
                     "samplesize": 992
@@ -4914,10 +4914,10 @@
             }
         },
         "fence": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "fence",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "Fence"
                 },
@@ -4935,10 +4935,10 @@
             }
         },
         "miscfeature": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "miscfeature",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "MiscFeature"
                 },
@@ -4955,10 +4955,10 @@
             }
         },
         "miscval": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "miscval",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "MiscVal"
                 },
@@ -5077,10 +5077,10 @@
             }
         },
         "mosold": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "mosold",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "MoSold"
                 },
@@ -5199,10 +5199,10 @@
             }
         },
         "yrsold": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "yrsold",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "YrSold"
                 },
@@ -5321,10 +5321,10 @@
             }
         },
         "saletype": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "saletype",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "SaleType"
                 },
@@ -5335,8 +5335,8 @@
                         "COD": 0.036290322580645164,
                         "New": 0.034274193548387094,
                         "ConLD": 0.009072580645161291,
-                        "ConLI": 0.004032258064516129,
                         "ConLw": 0.004032258064516129,
+                        "ConLI": 0.004032258064516129,
                         "CWD": 0.0030241935483870967,
                         "Oth": 0.0030241935483870967,
                         "Con": 0.0010080645161290322
@@ -5347,10 +5347,10 @@
             }
         },
         "salecondition": {
-            "feature_class": "rdv.feature.CategoricFeature",
+            "feature_class": "raymon.profiling.components.CategoricComponent",
             "feature": {
                 "name": "salecondition",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "SaleCondition"
                 },
@@ -5370,10 +5370,10 @@
             }
         },
         "saleprice": {
-            "feature_class": "rdv.feature.IntFeature",
+            "feature_class": "raymon.profiling.components.IntComponent",
             "feature": {
                 "name": "saleprice",
-                "extractor_class": "rdv.extractors.structured.element.ElementExtractor",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
                     "element": "SalePrice"
                 },
@@ -5492,5 +5492,7 @@
             }
         }
     },
-    "importances": {}
+    "output_components": {},
+    "actual_components": {},
+    "score_components": {}
 }

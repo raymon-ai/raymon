@@ -13,7 +13,7 @@
         class="schemaDiv pl-2"
         :style="{'border-left-color': red}"
       >
-        <h2 class="pt-0"> Schema: <span class="codeLike">
+        <h2 class="pt-0"> Profile: <span class="codeLike">
             {{otherDef.name}}</span>
         </h2>
         <h5>Version: <span class="codeLike">
@@ -24,7 +24,7 @@
         class="schemaDiv pl-2"
         :style="{'border-left-color': blue}"
       >
-        <h2 class="pt-0"> Schema: <span class="codeLike">
+        <h2 class="pt-0"> Profile: <span class="codeLike">
             {{schemaDef.name}}</span>
         </h2>
         <h5>Version: <span class="codeLike">

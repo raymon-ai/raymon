@@ -59,7 +59,7 @@ import VuePlotly from "@statnett/vue-plotly";
 import { red, green, blue, yellow } from "@/colors.js";
 export default {
   components: { VuePlotly },
-  props: ["schemaDef", "poi", "featureName"],
+  props: ["schemaDef", "poi", "componentType", "featureName"],
   data: function () {
     return {
       plotOptions: {
@@ -91,7 +91,7 @@ export default {
       };
     },
     featureData() {
-      return this.schemaDef.features[this.featureName];
+      return this.schemaDef[this.componentType][this.featureName];
     },
     featureType() {
       const splits = this.featureData.feature_class.split(".");
@@ -105,8 +105,8 @@ export default {
     },
     isNumeric() {
       return (
-        this.featureType.toLowerCase() === "intfeature" ||
-        this.featureType.toLowerCase() === "floatfeature"
+        this.featureType.toLowerCase() === "intcomponent" ||
+        this.featureType.toLowerCase() === "floatcomponent"
       );
     },
     min() {
@@ -145,7 +145,7 @@ export default {
     },
     domain() {
       if (!this.isNumeric) {
-        return Object.keys(this.stats.domain_counts);
+        return Object.keys(this.stats.frequencies);
       } else {
         return "NA";
       }
@@ -210,8 +210,8 @@ export default {
       return plots;
     },
     getCategoricPlotData() {
-      let domain = Object.keys(this.stats.domain_counts);
-      let counts = Object.values(this.stats.domain_counts);
+      let domain = Object.keys(this.stats.frequencies);
+      let counts = Object.values(this.stats.frequencies);
 
       let plots = [
         {

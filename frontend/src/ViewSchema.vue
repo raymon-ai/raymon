@@ -11,11 +11,17 @@
         :poi="poiLoaded"
         @setPage="setPage"
       />
+      <ComponentTypeNav
+        v-if="showNav"
+        :types="Object.keys(componentTypes)"
+        @componentType="updateComponentType"
+      />
       <component
         :is="pageToShow"
         :schemaDef="schemaLoaded"
         :poi="poiLoaded"
         :featureName="featureName"
+        :componentType="componentPage"
         @setPage="setPage"
       />
 
@@ -26,23 +32,36 @@
 
 <script>
 import Header from "@/components/Header.vue";
-import FeatureOverview from "@/components/compare/FeatureOverview.vue";
-import FeatureDetailView from "@/components/compare/FeatureDetailView.vue";
+import ComponentTypeNav from "@/components/ComponentTypeNav.vue";
+
+import FeatureOverview from "@/components/view/FeatureOverview.vue";
+import FeatureDetailView from "@/components/view/FeatureDetailView.vue";
 export default {
   name: "SchemaView",
   props: ["schema", "poi"],
   components: {
     Header,
+    ComponentTypeNav,
   },
   data() {
     return {
       featureName: undefined,
+      componentTypes: {
+        Inputs: "input_components",
+        Outputs: "output_components",
+        Actuals: "actual_components",
+        Scores: "score_components",
+      },
+      componentPage: "input_components",
     };
   },
   methods: {
     setPage(page) {
       console.log("setting page to: ", page);
       this.featureName = page;
+    },
+    updateComponentType(type) {
+      this.componentPage = this.componentTypes[type];
     },
   },
   computed: {
@@ -58,6 +77,9 @@ export default {
       } else {
         return FeatureOverview;
       }
+    },
+    showNav() {
+      return this.pageToShow === FeatureOverview;
     },
   },
 };

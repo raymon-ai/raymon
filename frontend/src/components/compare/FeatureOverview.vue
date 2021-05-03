@@ -48,15 +48,14 @@
               />
 
             </th>
-            <th class="raytablehead valueColumn px-2">
+            <!-- <th class="raytablehead valueColumn px-2">
               <label>Impact </label>
               <SortArrows
                 field="impact"
                 :active="activeSortObj"
                 @activeSortChanged="setActiveSort"
               />
-
-            </th>
+            </th> -->
             <th class="raytablehead valueColumn px-2">
               <label>Invalids </label>
               <SortArrows
@@ -77,7 +76,7 @@
             v-for="(feature, name) in schemaSelection"
             :featureData="feature"
             :otherFeatureData="otherSelection[name]"
-            :compareStats="compareStats[name]"
+            :compareStats="reportComponents[name]"
             :key="name"
           />
         </tbody>
@@ -102,7 +101,7 @@ import SortArrows from "@/components/SortArrows.vue";
 const octicons = require("@primer/octicons");
 const PPP = 10; // Plots per page
 export default {
-  props: ["schemaDef", "otherDef", "compareStats"],
+  props: ["schemaDef", "otherDef", "compareStats", "componentType"],
   components: {
     Pagination,
     FeatureRow,
@@ -133,7 +132,7 @@ export default {
     },
     getSortFunc() {
       let func = undefined;
-      let featureData = this.schemaDef.features;
+      let featureData = this.profileComponents;
       if (this.activeSortField === "name") {
         func = (firstEl, secondEl) => {
           if (firstEl == secondEl) {
@@ -241,12 +240,21 @@ export default {
     },
     getPinvDiff(featName) {
       return Math.abs(
-        this.schemaDef.features[featName].feature.stats.pinv -
-          this.otherDef.features[featName].feature.stats.pinv
+        this.profileComponents.features[featName].feature.stats.pinv -
+          this.otherProfileComponents.features[featName].feature.stats.pinv
       );
     },
   },
   computed: {
+    profileComponents() {
+      return this.schemaDef[this.componentType];
+    },
+    otherProfileComponents() {
+      return this.otherDef[this.componentType];
+    },
+    reportComponents() {
+      return this.compareStats[this.componentType];
+    },
     activeSortObj() {
       return {
         activeSortField: this.activeSortField,
@@ -254,7 +262,7 @@ export default {
       };
     },
     schemaMatchedKeys() {
-      let allKeys = Object.keys(this.schemaDef.features);
+      let allKeys = Object.keys(this.profileComponents);
       let selectedKeys = allKeys;
       // filter
       if (this.featureFilter.length > 0) {
@@ -283,7 +291,7 @@ export default {
       const selectedKeys = this.schemaPageKeys;
       let schemaObj = {};
       for (const key of selectedKeys) {
-        schemaObj[key] = this.schemaDef.features[key];
+        schemaObj[key] = this.profileComponents[key];
       }
       return schemaObj;
     },
@@ -291,7 +299,7 @@ export default {
       const selectedKeys = this.schemaPageKeys;
       let otherObj = {};
       for (const key of selectedKeys) {
-        otherObj[key] = this.otherDef.features[key];
+        otherObj[key] = this.otherProfileComponents[key];
       }
       return otherObj;
     },

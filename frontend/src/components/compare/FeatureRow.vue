@@ -14,16 +14,14 @@
     </td>
 
     <td class="px-2 codeLikeContent pvalueColumn">
-      <!-- {{min}} -->
       <span :class="{'Label mr-1 Label--red': isDrift, 'Label mr-1 Label--green': !isDrift}">
-        {{compareStats.drift.toFixed(2)}}
+        {{compareStats.drift.drift.toFixed(2)}}
       </span>
     </td>
-    <td class="px-2 codeLikeContent">
-      <!-- {{max}} -->
+    <!-- <td class="px-2 codeLikeContent">
       {{compareStats.impact.toFixed(2)}}
 
-    </td>
+    </td> -->
     <td class="px-2">
       <div class="d-flex flex-column flex-items-center">
         <p>
@@ -32,7 +30,7 @@
             v-html="octicons['arrow-right'].toSVG()"
             class="mx-1"
           ></span>
-          <span class="red f6"> {{this.otherStats.pinv.toFixed(2)}}</span>
+          <span class="red f6"> {{compareStats.integrity.integrity.toFixed(2)}}</span>
         </p>
         <p class="f4">
           {{pinvDiffStr}}
@@ -112,7 +110,7 @@ export default {
     },
     featureType() {
       const splits = this.featureData.feature_class.split(".");
-      return splits.slice(-1)[0].replace("Feature", "");
+      return splits.slice(-1)[0].replace("Component", "");
     },
     featureImportance() {
       return this.featureData.feature.importance;

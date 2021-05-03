@@ -12,9 +12,9 @@
     <td class="px-2 codeLikeContent">
       {{ featureType }}
     </td>
-    <td class="px-2 codeLikeContent">
+    <!-- <td class="px-2 codeLikeContent">
       {{ featureImportance }}
-    </td>
+    </td> -->
     <td class="px-2 codeLikeContent">
       {{min}}
     </td>
@@ -49,7 +49,7 @@ export default {
     return {
       plotLayout: {
         autosize: false,
-        width: 350,
+        width: 400,
         height: 100,
         margin: {
           l: 20,
@@ -98,7 +98,7 @@ export default {
     },
     featureType() {
       const splits = this.featureData.feature_class.split(".");
-      return splits.slice(-1)[0].replace("Feature", "");
+      return splits.slice(-1)[0].replace("Component", "");
     },
     featureImportance() {
       return this.featureData.feature.importance;

@@ -10,12 +10,18 @@
         :otherDef="otherLoaded"
         @setPage="setPage"
       />
+      <ComponentTypeNav
+        v-if="showNav"
+        :types="Object.keys(componentTypes)"
+        @componentType="updateComponentType"
+      />
       <component
         :is="pageToShow"
         :schemaDef="schemaLoaded"
         :otherDef="otherLoaded"
-        :compareStats="compareStatsLoaded"
+        :compareStats="compareLoaded"
         :featureName="featureName"
+        :componentType="componentPage"
         @setPage="setPage"
       />
     </div>
@@ -24,6 +30,8 @@
 
 <script>
 import Header from "@/components/Header.vue";
+import ComponentTypeNav from "@/components/ComponentTypeNav.vue";
+
 import FeatureOverview from "@/components/compare/FeatureOverview.vue";
 import FeatureDetailView from "@/components/compare/FeatureDetailView.vue";
 export default {
@@ -33,10 +41,18 @@ export default {
     Header,
     FeatureDetailView,
     FeatureOverview,
+    ComponentTypeNav,
   },
   data() {
     return {
       featureName: undefined,
+      componentTypes: {
+        Inputs: "input_components",
+        Outputs: "output_components",
+        Actuals: "actual_components",
+        Scores: "score_components",
+      },
+      componentPage: "input_components",
     };
   },
   methods: {
@@ -44,19 +60,22 @@ export default {
       console.log("setting page to: ", page);
       this.featureName = page;
     },
+    updateComponentType(type) {
+      this.componentPage = this.componentTypes[type];
+    },
   },
   computed: {
     loadedJSON() {
       return JSON.parse(this.comparison);
     },
     schemaLoaded() {
-      return this.loadedJSON.self;
+      return this.loadedJSON.reference;
     },
     otherLoaded() {
       return this.loadedJSON.other;
     },
-    compareStatsLoaded() {
-      return this.loadedJSON.feature_drift;
+    compareLoaded() {
+      return this.loadedJSON.report;
     },
     pageToShow() {
       if (this.featureName !== undefined) {
@@ -64,6 +83,9 @@ export default {
       } else {
         return FeatureOverview;
       }
+    },
+    showNav() {
+      return this.pageToShow === FeatureOverview;
     },
   },
 };

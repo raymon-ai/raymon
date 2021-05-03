@@ -22,7 +22,7 @@
         <thead>
           <tr>
             <th class="raytablehead nameColumn px-2">
-              <label>Feature </label>
+              <label>Component </label>
               <SortArrows
                 field="name"
                 :active="activeSortObj"
@@ -39,14 +39,14 @@
                 @activeSortChanged="setActiveSort"
               />
             </th>
-            <th class="raytablehead typeColumn px-2">
+            <!-- <th class="raytablehead typeColumn px-2">
               <label>Imp. </label>
               <SortArrows
                 field="importance"
                 :active="activeSortObj"
                 @activeSortChanged="setActiveSort"
               />
-            </th>
+            </th> -->
 
             <th class="raytablehead valueColumn px-2">
               <label>Min </label>
@@ -110,7 +110,7 @@ import SortArrows from "@/components/SortArrows.vue";
 const octicons = require("@primer/octicons");
 const PPP = 10; // Plots per page
 export default {
-  props: ["schemaDef", "poi"],
+  props: ["schemaDef", "poi", "componentType"],
   components: {
     Pagination,
     FeatureRow,
@@ -141,7 +141,7 @@ export default {
     },
     getSortFunc() {
       let func = undefined;
-      let featureData = this.schemaDef.features;
+      let featureData = this.profileComponents;
       if (this.activeSortField === "name") {
         func = (firstEl, secondEl) => {
           if (firstEl == secondEl) {
@@ -248,6 +248,9 @@ export default {
     },
   },
   computed: {
+    profileComponents() {
+      return this.schemaDef[this.componentType];
+    },
     activeSortObj() {
       return {
         activeSortField: this.activeSortField,
@@ -255,7 +258,7 @@ export default {
       };
     },
     schemaMatchedKeys() {
-      let allKeys = Object.keys(this.schemaDef.features);
+      let allKeys = Object.keys(this.profileComponents);
       let selectedKeys = allKeys;
       // filter
       if (this.featureFilter.length > 0) {
@@ -284,7 +287,7 @@ export default {
       const selectedKeys = this.schemaPageKeys;
       let newObj = {};
       for (const key of selectedKeys) {
-        newObj[key] = this.schemaDef.features[key];
+        newObj[key] = this.profileComponents[key];
       }
       return newObj;
     },
