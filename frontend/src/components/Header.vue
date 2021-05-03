@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import Logo from "@/schemaFrontend/components/Logo.vue";
-import { red, green, blue } from "@/schemaFrontend/colors.js";
+import Logo from "@/components/Logo.vue";
+import { red, green, blue } from "@/colors.js";
 export default {
   props: ["schemaDef", "otherDef", "poi"],
   components: { Logo },

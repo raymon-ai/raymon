@@ -39,19 +39,28 @@
                 @activeSortChanged="setActiveSort"
               />
             </th>
-            <th class="raytablehead valueColumn px-2">
-              <label>Drift </label>
+            <th class="raytablehead typeColumn px-2">
+              <label>Imp. </label>
               <SortArrows
-                field="drift"
+                field="importance"
+                :active="activeSortObj"
+                @activeSortChanged="setActiveSort"
+              />
+            </th>
+
+            <th class="raytablehead valueColumn px-2">
+              <label>Min </label>
+              <SortArrows
+                field="min"
                 :active="activeSortObj"
                 @activeSortChanged="setActiveSort"
               />
 
             </th>
             <th class="raytablehead valueColumn px-2">
-              <label>Impact </label>
+              <label>Max </label>
               <SortArrows
-                field="impact"
+                field="max"
                 :active="activeSortObj"
                 @activeSortChanged="setActiveSort"
               />
@@ -67,7 +76,7 @@
 
             </th>
             <th class="raytablehead px-2 plotColumn">
-              <label>Distribution </label>
+              <label>Plot </label>
 
             </th>
           </tr>
@@ -76,8 +85,7 @@
           <FeatureRow
             v-for="(feature, name) in schemaSelection"
             :featureData="feature"
-            :otherFeatureData="otherSelection[name]"
-            :compareStats="compareStats[name]"
+            :poi="poi[name]"
             :key="name"
           />
         </tbody>
@@ -96,13 +104,13 @@
 
 <script>
 // import { Plotly } from "vue-plotly";
-import Pagination from "@/schemaFrontend/components/Pagination.vue";
-import FeatureRow from "@/schemaFrontend/components/compare/FeatureRow.vue";
-import SortArrows from "@/schemaFrontend/components/SortArrows.vue";
+import Pagination from "@/components/Pagination.vue";
+import FeatureRow from "@/components/view/FeatureRow.vue";
+import SortArrows from "@/components/SortArrows.vue";
 const octicons = require("@primer/octicons");
 const PPP = 10; // Plots per page
 export default {
-  props: ["schemaDef", "otherDef", "compareStats"],
+  props: ["schemaDef", "poi"],
   components: {
     Pagination,
     FeatureRow,
@@ -176,47 +184,40 @@ export default {
             return 1;
           }
         };
-      } else if (this.activeSortField === "pvalue") {
+      } else if (this.activeSortField === "min") {
         func = (firstEl, secondEl) => {
           if (
-            this.compareStats[firstEl].pvalue ===
-            this.compareStats[secondEl].pvalue
+            featureData[firstEl].feature.stats.min ===
+            featureData[secondEl].feature.stats.min
           ) {
             return 0;
           } else if (
-            this.compareStats[firstEl].pvalue <
-            this.compareStats[secondEl].pvalue
+            typeof featureData[firstEl].feature.stats.min === "undefined"
+          ) {
+            return -1;
+          } else if (
+            featureData[firstEl].feature.stats.min <
+            featureData[secondEl].feature.stats.min
           ) {
             return -1;
           } else {
             return 1;
           }
         };
-      } else if (this.activeSortField === "drift") {
+      } else if (this.activeSortField === "max") {
         func = (firstEl, secondEl) => {
           if (
-            this.compareStats[firstEl].drift ===
-            this.compareStats[secondEl].drift
+            featureData[firstEl].feature.stats.max ==
+            featureData[secondEl].feature.stats.max
           ) {
             return 0;
           } else if (
-            this.compareStats[firstEl].drift < this.compareStats[secondEl].drift
+            typeof featureData[firstEl].feature.stats.max === "undefined"
           ) {
             return -1;
-          } else {
-            return 1;
-          }
-        };
-      } else if (this.activeSortField === "impact") {
-        func = (firstEl, secondEl) => {
-          if (
-            this.compareStats[firstEl].impact ===
-            this.compareStats[secondEl].impct
-          ) {
-            return 0;
           } else if (
-            this.compareStats[firstEl].impact <
-            this.compareStats[secondEl].impact
+            featureData[firstEl].feature.stats.max <
+            featureData[secondEl].feature.stats.max
           ) {
             return -1;
           } else {
@@ -225,25 +226,25 @@ export default {
         };
       } else if (this.activeSortField === "pinv") {
         func = (firstEl, secondEl) => {
-          console.log("Using pinvdiff function");
-          if (this.getPinvDiff(firstEl) === this.getPinvDiff(secondEl)) {
+          console.log("Using pinv function");
+          if (
+            featureData[firstEl].feature.stats.pinv ==
+            featureData[secondEl].feature.stats.pinv
+          ) {
             return 0;
-          } else if (this.getPinvDiff(firstEl) < this.getPinvDiff(secondEl)) {
+          } else if (
+            featureData[firstEl].feature.stats.pinv <
+            featureData[secondEl].feature.stats.pinv
+          ) {
             return -1;
           } else {
             return 1;
           }
         };
       } else {
-        console.log("Unknown sort function", this.activeSortField);
+        console.log("Unknown sort function");
       }
       return func;
-    },
-    getPinvDiff(featName) {
-      return Math.abs(
-        this.schemaDef.features[featName].feature.stats.pinv -
-          this.otherDef.features[featName].feature.stats.pinv
-      );
     },
   },
   computed: {
@@ -281,19 +282,11 @@ export default {
     },
     schemaSelection() {
       const selectedKeys = this.schemaPageKeys;
-      let schemaObj = {};
+      let newObj = {};
       for (const key of selectedKeys) {
-        schemaObj[key] = this.schemaDef.features[key];
+        newObj[key] = this.schemaDef.features[key];
       }
-      return schemaObj;
-    },
-    otherSelection() {
-      const selectedKeys = this.schemaPageKeys;
-      let otherObj = {};
-      for (const key of selectedKeys) {
-        otherObj[key] = this.otherDef.features[key];
-      }
-      return otherObj;
+      return newObj;
     },
   },
 };
@@ -329,10 +322,8 @@ export default {
   width: 200px;
   height: 30px;
 }
+
 .typeColumn {
-  width: 100px;
-}
-.pvalueColumn {
   width: 150px;
 }
 .valueColumn {
@@ -347,7 +338,6 @@ export default {
   border-collapse: collapse;
   font-size: 14px;
   white-space: nowrap;
-
   /*border-spacing: 1px;*/
   /* border: 2px; */
 }
@@ -367,15 +357,12 @@ tr.tableRayContentRow:hover > td {
 
 .raytablehead {
   text-align: left;
-  /* font-family: Helvetica; */
   font-style: normal;
   font-weight: 300;
   font-size: 12px;
   line-height: 40px;
-  /* text-indent: 5px; */
   text-transform: uppercase;
   white-space: nowrap;
   border-bottom: 1px solid #e1e4e8;
-  /* height: 5em; */
 }
 </style>

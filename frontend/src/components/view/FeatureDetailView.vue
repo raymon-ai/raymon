@@ -56,7 +56,7 @@
 <script>
 const octicons = require("@primer/octicons");
 import VuePlotly from "@statnett/vue-plotly";
-import { red, green, blue, yellow } from "@/schemaFrontend/colors.js";
+import { red, green, blue, yellow } from "@/colors.js";
 export default {
   components: { VuePlotly },
   props: ["schemaDef", "poi", "featureName"],

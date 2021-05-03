@@ -1,39 +1,38 @@
 <template>
 
   <body>
+
     <div
       id="app"
       class="mainWindow m-2 p-2 white"
     >
       <Header
         :schemaDef="schemaLoaded"
-        :otherDef="otherLoaded"
+        :poi="poiLoaded"
         @setPage="setPage"
       />
       <component
         :is="pageToShow"
         :schemaDef="schemaLoaded"
-        :otherDef="otherLoaded"
-        :compareStats="compareStatsLoaded"
+        :poi="poiLoaded"
         :featureName="featureName"
         @setPage="setPage"
       />
+
     </div>
   </body>
+
 </template>
 
 <script>
-import Header from "@/schemaFrontend/components/Header.vue";
-import FeatureOverview from "@/schemaFrontend/components/compare/FeatureOverview.vue";
-import FeatureDetailView from "@/schemaFrontend/components/compare/FeatureDetailView.vue";
-// import store from "./store";
+import Header from "@/components/Header.vue";
+import FeatureOverview from "@/components/compare/FeatureOverview.vue";
+import FeatureDetailView from "@/components/compare/FeatureDetailView.vue";
 export default {
-  name: "SchemaCompare",
-  props: ["comparison"],
+  name: "SchemaView",
+  props: ["schema", "poi"],
   components: {
     Header,
-    FeatureDetailView,
-    FeatureOverview,
   },
   data() {
     return {
@@ -47,17 +46,11 @@ export default {
     },
   },
   computed: {
-    loadedJSON() {
-      return JSON.parse(this.comparison);
-    },
     schemaLoaded() {
-      return this.loadedJSON.self;
+      return JSON.parse(this.schema);
     },
-    otherLoaded() {
-      return this.loadedJSON.other;
-    },
-    compareStatsLoaded() {
-      return this.loadedJSON.feature_drift;
+    poiLoaded() {
+      return JSON.parse(this.poi);
     },
     pageToShow() {
       if (this.featureName !== undefined) {

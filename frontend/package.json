@@ -1,0 +1,41 @@
+{
+  "name": "raymon-schema-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
+    "build:wc": "vue-cli-service build --target wc --name raymon src/ViewSchema.vue,src/CompareSchema.vue --inline-vue",
+    "build:libview": "vue-cli-service build --target lib --name schemaViewLib src/ViewSchema.vue --inline-vue",
+    "build:libcompare": "vue-cli-service build --target lib --name schemaCompareLib src/CompareSchema.vue --inline-vue",
+    "test:unit": "vue-cli-service test:unit",
+    "test:e2e": "vue-cli-service test:e2e",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@primer/css": "^15.2.0",
+    "@statnett/vue-plotly": "^0.3.2",
+    "axios": "^0.21.1",
+    "core-js": "^3.6.5",
+    "node-sass": "^5.0.0",
+    "plotly.js": "^1.58.4",
+    "sass-loader": "^10.1.1",
+    "vue": "^2.6.11",
+    "vue-router": "^3.2.0",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-e2e-cypress": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-unit-jest": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/test-utils": "^1.0.3",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "vue-template-compiler": "^2.6.11"
+  }
+}
