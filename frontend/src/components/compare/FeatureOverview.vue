@@ -194,12 +194,13 @@ export default {
       } else if (this.activeSortField === "drift") {
         func = (firstEl, secondEl) => {
           if (
-            this.compareStats[firstEl].drift ===
-            this.compareStats[secondEl].drift
+            this.reportComponents[firstEl].drift.drift ===
+            this.reportComponents[secondEl].drift.drift
           ) {
             return 0;
           } else if (
-            this.compareStats[firstEl].drift < this.compareStats[secondEl].drift
+            this.reportComponents[firstEl].drift.drift <
+            this.reportComponents[secondEl].drift.drift
           ) {
             return -1;
           } else {
@@ -210,7 +211,7 @@ export default {
         func = (firstEl, secondEl) => {
           if (
             this.compareStats[firstEl].impact ===
-            this.compareStats[secondEl].impct
+            this.compareStats[secondEl].impact
           ) {
             return 0;
           } else if (
@@ -224,10 +225,15 @@ export default {
         };
       } else if (this.activeSortField === "pinv") {
         func = (firstEl, secondEl) => {
-          console.log("Using pinvdiff function");
-          if (this.getPinvDiff(firstEl) === this.getPinvDiff(secondEl)) {
+          if (
+            this.reportComponents[firstEl].integrity.integrity ===
+            this.reportComponents[secondEl].integrity.integrity
+          ) {
             return 0;
-          } else if (this.getPinvDiff(firstEl) < this.getPinvDiff(secondEl)) {
+          } else if (
+            this.reportComponents[firstEl].integrity.integrity <
+            this.reportComponents[secondEl].integrity.integrity
+          ) {
             return -1;
           } else {
             return 1;
@@ -340,11 +346,10 @@ export default {
 .typeColumn {
   width: 100px;
 }
-.pvalueColumn {
-  width: 150px;
-}
+
 .valueColumn {
-  width: 50px;
+  min-width: 150px;
+  text-align: left;
 }
 .plotColumn {
   width: 100%;

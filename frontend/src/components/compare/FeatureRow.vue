@@ -14,23 +14,27 @@
     </td>
 
     <td class="px-2 codeLikeContent pvalueColumn">
-      <span :class="{'Label mr-1 Label--red': isDrift, 'Label mr-1 Label--green': !isDrift}">
+      <p
+        class="h3"
+        :class="{'red': isDrift, 'green': !isDrift}"
+      > {{compareStats.drift.drift.toFixed(2)}}</p>
+      <!-- <span :class="{'Label mr-1 Label--red': isDrift, 'Label mr-1 Label--green': !isDrift}">
         {{compareStats.drift.drift.toFixed(2)}}
-      </span>
+      </span> -->
     </td>
     <!-- <td class="px-2 codeLikeContent">
       {{compareStats.impact.toFixed(2)}}
 
     </td> -->
     <td class="px-2">
-      <div class="d-flex flex-column flex-items-center">
+      <div class="d-flex flex-column flex-items-begin">
         <p>
           <span class="blue f6">{{this.stats.pinv.toFixed(2)}}</span>
           <span
             v-html="octicons['arrow-right'].toSVG()"
             class="mx-1"
           ></span>
-          <span class="red f6"> {{compareStats.integrity.integrity.toFixed(2)}}</span>
+          <span class="red f6"> {{this.otherStats.pinv.toFixed(2)}}</span>
         </p>
         <p class="f4">
           {{pinvDiffStr}}
@@ -96,14 +100,7 @@ export default {
       return diff;
     },
     pinvDiffStr() {
-      let diff = this.pinvDiff;
-      let diffstr = null;
-      if (diff >= 0) {
-        diffstr = `+${diff.toFixed(2)}`;
-      } else {
-        diffstr = `${diff.toFixed(2)}`;
-      }
-      return diffstr;
+      return this.compareStats.integrity.integrity.toFixed(2);
     },
     featureName() {
       return this.featureData.feature.name;
@@ -192,10 +189,15 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@primer/css/index.scss";
+
 .red {
   color: #d73a49;
 }
 .blue {
   color: #0366d6;
+}
+.green {
+  color: #28a745;
 }
 </style>
