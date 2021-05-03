@@ -10,11 +10,8 @@ from raymon.globals import ExtractorException
 
 
 class Extractor(Serializable, Buildable, ABC):
-    def __init__(self, name):
-        self.name = name
-
     def __str__(self):
-        return f"{self.__class__.__name__}({self.name})"
+        return f"{self.__class__.__name__}"
 
     def __repr__(self):
         return str(self)

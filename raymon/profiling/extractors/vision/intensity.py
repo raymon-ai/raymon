@@ -11,9 +11,6 @@ class AvgIntensity(SimpleExtractor):
     _ccable_deps = []
     _attrs = _config_attrs + _compile_attrs + _ccable_deps
 
-    def __init__(self, name, path="input"):
-        super().__init__(name=name, path=path)
-
     def extract(self, data):
         img = data.convert("L")
         return float(np.array(img).mean())

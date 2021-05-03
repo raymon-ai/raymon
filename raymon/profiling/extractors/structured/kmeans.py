@@ -12,8 +12,7 @@ class KMeansOutlierScorer(SimpleExtractor):
 
     dist_choices = {"euclidean": euclidean_distances, "cosine": cosine_distances}
 
-    def __init__(self, name, k=16, clusters=None, dist="euclidean", path="input"):
-        super().__init__(name=name, path=path)
+    def __init__(self, k=16, clusters=None, dist="euclidean"):
         self._k = None
         self._clusters = None
         self._dist = None

@@ -7,4 +7,5 @@ requests
 Pillow
 torch
 torchvision
+imagehash
 sklearn

@@ -20,7 +20,7 @@ HIST_N_SAMPLES = 1000
 
 
 class Component(Serializable, Buildable, ABC):
-    def __init__(self, name="default_name", extractor=None, importance=None):
+    def __init__(self, name, extractor, importance=None):
         self._name = None
         self._importance = None
         self.name = name

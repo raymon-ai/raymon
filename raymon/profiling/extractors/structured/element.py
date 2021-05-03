@@ -10,8 +10,7 @@ class ElementExtractor(SimpleExtractor):
     Extract one element from a vector
     """
 
-    def __init__(self, name, element):
-        super().__init__(name=name)
+    def __init__(self, element):
         self.element = element
 
     """ELEMENT"""
@@ -57,7 +56,7 @@ def generate_components(dtypes):
     components = []
     for key in dtypes.index:
         # Check type: Numeric or categoric
-        extractor = ElementExtractor(name=key, element=key)
+        extractor = ElementExtractor(element=key)
         if np.issubdtype(dtypes[key], np.floating):
             component = FloatComponent(name=key, extractor=extractor)
         elif np.issubdtype(dtypes[key], np.integer):

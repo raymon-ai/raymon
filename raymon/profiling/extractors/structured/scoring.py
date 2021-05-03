@@ -1,56 +1,84 @@
-from raymon.types import load_jcr
+# from raymon.types import load_jcr
+from raymon.profiling.extractors import ScoringExtractor
 
 
-def class_error_type(pred, gt, pos=1):
-    """[summary]
-    This function takes a model prediction, a ground truth value and a pointer to what should be considered the positive class and determines the classification error type: a True Positive, True Negative, False Positice or False Negative.
-    :param pred: The prediction you want to score. This is the model output.
-    :type pred: dict, JSON compatible representation of rt.Native
-    :param gt: the ground truth of the prediction you want to score.
-    :type gt: dict, JSON compatible representation of rt.Native
-    :param pos: The value that should be considered a positive value, defaults to 1
-    :type pos: int, str
-    :return: TP, TN, FP or FN
-    :rtype: str
-    """
-    pred = load_jcr(pred).data
-    gt = load_jcr(gt).data
-    if gt == pos and pred == pos:
-        err = "TP"
-    elif gt == pos and pred != pos:
-        err = "FN"
-    elif gt != pos and pred == pos:
-        err = "FP"
-    else:
-        err = "TN"
-    return err
+class ClassificationErrorType(ScoringExtractor):
+    def __init__(self, positive=1):
+        self.positive = positive
+
+    def extract(self, output, actual):
+        if actual == self.positive and output == self.positive:
+            err = "TP"
+        elif actual == self.positive and output != self.positive:
+            err = "FN"
+        elif actual != self.positive and output == self.positive:
+            err = "FP"
+        else:
+            err = "TN"
+        return err
+
+    """Serializable interface """
+
+    def to_jcr(self):
+        data = {
+            "positive": self.positive,
+        }
+        return data
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        return cls(**jcr)
+
+    """Buildable interface"""
+
+    def build(self, data):
+        pass
+
+    def is_built(self):
+        return True
 
 
-def abs_err(pred, gt):
-    """Take a regression prediction and a ground truth value and determine the absolute error.
+class AbsoluteError(ScoringExtractor):
+    def extract(self, output, actual):
+        abs(output - actual)
 
-    :param pred: The predicted value
-    :type pred: dict, JSON compatible representation of rt.Native
-    :param gt: The ground truth value
-    :type gt: dict, JSON compatible representation of rt.Native
-    :return: Absolute error
-    :rtype: float
-    """
-    pred = load_jcr(pred).data
-    gt = load_jcr(gt).data
-    return abs(pred - gt)
+    """Serializable interface """
+
+    def to_jcr(self):
+        data = {}
+        return data
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        return cls(**jcr)
+
+    """Buildable interface"""
+
+    def build(self, data):
+        pass
+
+    def is_built(self):
+        return True
 
 
-def sq_err(pred, gt):
-    """Take a regression prediction and a ground truth value and determine the absolute error.
+class SquaredError(ScoringExtractor):
+    def extract(self, output, actual):
+        pow(output - actual, 2)
 
-    :param pred: The predicted value
-    :type pred: dict, JSON compatible representation of rt.Native
-    :param gt: The ground truth value
-    :type gt: dict, JSON compatible representation of rt.Native
-    :return: Squared error
-    :rtype: float
-    """
-    pred = load_jcr(pred).data
-    gt = load_jcr(gt).data
-    return pow(pred - gt, 2)
+    """Serializable interface """
+
+    def to_jcr(self):
+        data = {}
+        return data
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        return cls(**jcr)
+
+    """Buildable interface"""
+
+    def build(self, data):
+        pass
+
+    def is_built(self):
+        return True
