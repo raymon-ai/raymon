@@ -1,5 +1,5 @@
 #%%
-from raymon.ray import Ray
+from raymon.trace import Trace
 
 
 class MockLogger:
@@ -37,8 +37,8 @@ def test_merge():
 
     for child in children:
         assert len(child.trace_id) == 2
-    merged_a = Ray.merge(raylist=children[:5], suffix="head")
-    merged_b = Ray.merge(raylist=children[:5], suffix="tail")
+    merged_a = Trace.merge(raylist=children[:5], suffix="head")
+    merged_b = Trace.merge(raylist=children[:5], suffix="tail")
 
     for i, pred in enumerate(merged_a.pred):
         pred == children[i]

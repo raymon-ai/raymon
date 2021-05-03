@@ -13,7 +13,8 @@ from raymon.globals import (
     ProfileStateException,
 )
 from raymon.profiling.stats import CategoricStats, NumericStats, equalize_domains
-from raymon.tags import Tag, PROFILE_ERROR, PROFILE_FEATURE
+from raymon.tags import Tag, CGROUP_TAGTYPES
+from raymon.profiling.extractors import SimpleExtractor, ScoringExtractor
 
 HIST_N_SAMPLES = 1000
 
@@ -75,40 +76,51 @@ class Component(Serializable, Buildable, ABC):
         feature = compclass.from_jcr(comp_jcr)
         return feature
 
-    def build_extractor(self, input, output, actual):
-        self.extractor.build(input, output, actual)
+    def build_extractor(self, data):
+        self.extractor.build(data)
 
-    def build_stats(self, input, output, actual):
-        print(f"Compiling stats for {self.name}")
-        features = self.extractor.extract_multiple(input, output, actual)
+    def build_stats(self, data):
+        if isinstance(self.extractor, SimpleExtractor):
+            features = self.extractor.extract_multiple(data)
+        elif isinstance(self.extractor, ScoringExtractor):
+            output, actual = data
+            features = self.extractor.extract_multiple(output=output, actual=actual)
+        else:
+            raise ProfileStateException(f"Unknown Extractor type for {self}: {type(self.extractor)}")
         self.stats.build(features)
 
-    def build(self, input, output, actual):
+    def build(self, data):
         # Compile extractor
-        self.build_extractor(input, output, actual)
+        self.build_extractor(data)
         # Configure stats
-        self.build_stats(input, output, actual)
+        self.build_stats(data)
 
     def is_built(self):
         return self.extractor.is_built() and self.stats.is_built()
 
-    def validate(self, input, output, actual):
-        feature = self.extractor.extract(input, output, actual)
+    def validate(self, data, cgroup):
+        if isinstance(self.extractor, SimpleExtractor):
+            feature = self.extractor.extract(data)
+        elif isinstance(self.extractor, ScoringExtractor):
+            output, actual = data
+            feature = self.extractor.extract(output=output, actual=actual)
+        else:
+            raise ProfileStateException(f"Unknown Extractor type 'type(self.extractor)' for component {self.name}")
         # Make a tag from the feature
-        feat_tag = self.feature2tag(feature)
+        feat_tag = self.feature2tag(feature, cgroup=cgroup)
         # Check min, max, nan or None and raise data error
-        err_tag = self.check_invalid(feature)
+        err_tag = self.check_invalid(feature, cgroup=cgroup)
         tags = [feat_tag, err_tag]
         # Filter Nones
         tags = [tag for tag in tags if tag is not None]
         return tags
 
     @abstractmethod
-    def feature2tag(self, feature):
+    def feature2tag(self, feature, cgroup):
         pass
 
     @abstractmethod
-    def check_invalid(self, feature):
+    def check_invalid(self, feature, cgroup):
         pass
 
     def __repr__(self):
@@ -138,22 +150,22 @@ class FloatComponent(Component):
         else:
             raise DataException(f"stats for a NumericComponant should be of type NumericStats, not {type(value)}")
 
-    def feature2tag(self, feature):
+    def feature2tag(self, feature, cgroup):
         if not np.isnan(feature):
-            return Tag(name=self.name, value=float(feature), type=PROFILE_FEATURE)
+            return Tag(name=self.name, value=float(feature), type=CGROUP_TAGTYPES[cgroup]["tagtype"])
         else:
             return None
 
-    def check_invalid(self, feature):
+    def check_invalid(self, feature, cgroup):
         tagname = f"{self.name}-error"
         if feature is None:
-            return Tag(name=tagname, value="Value None", type=PROFILE_ERROR)
+            return Tag(name=tagname, value="Value None", type=CGROUP_TAGTYPES[cgroup]["errortype"])
         elif np.isnan(feature):
-            return Tag(name=tagname, value="Value NaN", type=PROFILE_ERROR)
+            return Tag(name=tagname, value="Value NaN", type=CGROUP_TAGTYPES[cgroup]["errortype"])
         elif feature > self.stats.max:
-            return Tag(name=tagname, value="Value > max", type=PROFILE_ERROR)
+            return Tag(name=tagname, value="UpperBoundError", type=CGROUP_TAGTYPES[cgroup]["errortype"])
         elif feature < self.stats.min:
-            return Tag(name=tagname, value="Value < min", type=PROFILE_ERROR)
+            return Tag(name=tagname, value="LowerBoundError", type=CGROUP_TAGTYPES[cgroup]["errortype"])
         else:
             return None
 
@@ -197,22 +209,22 @@ class IntComponent(Component):
         else:
             raise DataException(f"stats for a NumericComponant should be of type NumericStats, not {type(value)}")
 
-    def feature2tag(self, feature):
+    def feature2tag(self, feature, cgroup):
         if not np.isnan(feature):
-            return Tag(name=self.name, value=float(feature), type=PROFILE_FEATURE)
+            return Tag(name=self.name, value=int(feature), type=CGROUP_TAGTYPES[cgroup]["tagtype"])
         else:
             return None
 
-    def check_invalid(self, feature):
+    def check_invalid(self, feature, cgroup):
         tagname = f"{self.name}-error"
         if feature is None:
-            return Tag(name=tagname, value="Value None", type=PROFILE_ERROR)
+            return Tag(name=tagname, value="Value None", type=CGROUP_TAGTYPES[cgroup]["errortype"])
         elif np.isnan(feature):
-            return Tag(name=tagname, value="Value NaN", type=PROFILE_ERROR)
+            return Tag(name=tagname, value="Value NaN", type=CGROUP_TAGTYPES[cgroup]["errortype"])
         elif feature > self.stats.max:
-            return Tag(name=tagname, value="Value > max", type=PROFILE_ERROR)
+            return Tag(name=tagname, value="UpperBoundError", type=CGROUP_TAGTYPES[cgroup]["errortype"])
         elif feature < self.stats.min:
-            return Tag(name=tagname, value="Value < min", type=PROFILE_ERROR)
+            return Tag(name=tagname, value="LowerBoundError", type=CGROUP_TAGTYPES[cgroup]["errortype"])
         else:
             return None
 
@@ -260,20 +272,20 @@ class CategoricComponent(Component):
         else:
             raise DataException(f"stats for a NumericComponant should be of type CategoricStats, not {type(value)}")
 
-    def feature2tag(self, feature):
+    def feature2tag(self, feature, cgroup):
         if isinstance(feature, str) or not np.isnan(feature):
-            return Tag(name=self.name, value=feature, type=PROFILE_FEATURE)
+            return Tag(name=self.name, value=feature, type=CGROUP_TAGTYPES[cgroup]["tagtype"])
         else:
             return None
 
-    def check_invalid(self, feature):
+    def check_invalid(self, feature, cgroup):
         tagname = f"{self.name}-err"
         if feature is None:
-            return Tag(name=tagname, value="Value None", type=PROFILE_ERROR)
+            return Tag(name=tagname, value="Value None", type=CGROUP_TAGTYPES[cgroup]["errortype"])
         elif pd.isnull(feature):
-            return Tag(name=tagname, value="Value NaN", type=PROFILE_ERROR)
+            return Tag(name=tagname, value="Value NaN", type=CGROUP_TAGTYPES[cgroup]["errortype"])
         elif feature not in self.stats.frequencies:
-            return Tag(name=tagname, value="Domain Error", type=PROFILE_ERROR)
+            return Tag(name=tagname, value="Domain Error", type=CGROUP_TAGTYPES[cgroup]["errortype"])
         else:
             return None
 

@@ -5,10 +5,10 @@ import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.metrics.pairwise import cosine_distances, euclidean_distances
 
-from raymon.profiling.extractors import Extractor
+from raymon.profiling.extractors import SimpleExtractor
 
 
-class KMeansOutlierScorer(Extractor):
+class KMeansOutlierScorer(SimpleExtractor):
 
     dist_choices = {"euclidean": euclidean_distances, "cosine": cosine_distances}
 
@@ -72,9 +72,7 @@ class KMeansOutlierScorer(Extractor):
     def dim(self):
         return self.clusters.shape[1]
 
-    def extract(self, input, output, actual):
-        data = self.parse_params(input=input, output=output, actual=actual)
-
+    def extract(self, data):
         def sum_2closest(distances):
             return np.sort(distances, axis=1)[:, :2].sum(axis=1)
 
@@ -89,7 +87,7 @@ class KMeansOutlierScorer(Extractor):
 
     """Buildable interface"""
 
-    def build(self, input, output, actual):
+    def build(self, data):
         data = np.array(data).astype(np.float64)
         km = KMeans(n_clusters=self.k)
         km.fit(data)

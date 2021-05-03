@@ -11,29 +11,39 @@ from pathlib import Path
 
 import raymon
 from raymon.globals import Buildable, ProfileStateException, Serializable
-from raymon.tags import PROFILE_FEATURE
 from raymon.profiling.components import Component
 from raymon.out import NoOutput, nullcontext
 
+COMPONENT_TYPES = ["input_components", "output_components", "actual_components", "score_components"]
 
-class DataProfile(Serializable, Buildable):
+
+class ModelProfile(Serializable, Buildable):
     _attrs = ["name", "version", "components"]
 
     def __init__(
         self,
         name="default",
         version="0.0.0",
-        components={},
+        input_components={},
+        output_components={},
+        actual_components={},
+        score_components={},
         summaries={},
     ):
 
         self._name = None
         self._version = None
-        self._components = {}
+        self._input_components = {}
+        self._output_components = {}
+        self._actual_components = {}
+        self._scoreing_components = {}
 
         self.name = str(name)
         self.version = str(version)
-        self.components = components
+        self.input_components = input_components
+        self.output_components = output_components
+        self.actual_components = actual_components
+        self.score_components = score_components
 
     """Serializable interface"""
 
@@ -58,16 +68,58 @@ class DataProfile(Serializable, Buildable):
         self._version = value
 
     @property
-    def components(self):
-        return self._components
+    def input_components(self):
+        return self._input_components
 
-    @components.setter
-    def components(self, value):
+    @input_components.setter
+    def input_components(self, value):
         if isinstance(value, list) and all(isinstance(component, Component) for component in value):
             # Convert to dict
-            self._components = {c.name: c for c in value}
+            self._input_components = {c.name: c for c in value}
         elif isinstance(value, dict) and all(isinstance(component, Component) for component in value.values()):
-            self._components = value
+            self._input_components = value
+        else:
+            raise ValueError(f"components must be a list[Component] or dict[str, Component]")
+
+    @property
+    def output_components(self):
+        return self._output_components
+
+    @output_components.setter
+    def output_components(self, value):
+        if isinstance(value, list) and all(isinstance(component, Component) for component in value):
+            # Convert to dict
+            self._output_components = {c.name: c for c in value}
+        elif isinstance(value, dict) and all(isinstance(component, Component) for component in value.values()):
+            self._output_components = value
+        else:
+            raise ValueError(f"components must be a list[Component] or dict[str, Component]")
+
+    @property
+    def actual_components(self):
+        return self._actual_components
+
+    @actual_components.setter
+    def actual_components(self, value):
+        if isinstance(value, list) and all(isinstance(component, Component) for component in value):
+            # Convert to dict
+            self._actual_components = {c.name: c for c in value}
+        elif isinstance(value, dict) and all(isinstance(component, Component) for component in value.values()):
+            self._actual_components = value
+        else:
+            raise ValueError(f"components must be a list[Component] or dict[str, Component]")
+
+    @property
+    def score_components(self):
+        return self._score_components
+
+    @score_components.setter
+    def score_components(self, value):
+        if isinstance(value, list) and all(isinstance(component, Component) for component in value):
+            # Convert to dict
+            self._score_components = {c.name: c for c in value}
+        elif isinstance(value, dict) and all(isinstance(component, Component) for component in value.values()):
+            self._score_components = value
         else:
             raise ValueError(f"components must be a list[Component] or dict[str, Component]")
 
@@ -79,24 +131,27 @@ class DataProfile(Serializable, Buildable):
         jcr = {
             "name": self.name,
             "version": self.version,
-            "components": None,
         }
-        components = {}
-        for component in self.components.values():
-            components[component.name] = component.to_jcr()
-        jcr["components"] = components
+        for idfr in COMPONENT_TYPES:
+            self_components = getattr(self, idfr)
+            ser_components = {}
+            for component in self_components.values():
+                ser_components[component.name] = component.to_jcr()
+            jcr[idfr] = ser_components
         return jcr
 
     @classmethod
     def from_jcr(cls, jcr):
         name = jcr["name"]
         version = jcr["version"]
-        components = {}
-        for comp_dict in jcr["components"].values():
-            component = Component.from_jcr(comp_dict)
-            components[component.name] = component
-
-        return cls(name=name, version=version, components=components)
+        comp_types = {}
+        for idfr in COMPONENT_TYPES:
+            components = {}
+            for comp_dict in jcr[idfr].values():
+                component = Component.from_jcr(comp_dict)
+                components[component.name] = component
+            comp_types[idfr] = components
+        return cls(name=name, version=version, **comp_types)
 
     def save(self, fpath):
         with open(fpath, "w") as f:
@@ -117,30 +172,41 @@ class DataProfile(Serializable, Buildable):
             ctx_mgr = nullcontext()
         # Build the schema
         with ctx_mgr:
-            for name, component in self.components.items():
-                # Compile stats
-                component.build(input=input, output=output, actual=actual)
+            for comp_type in COMPONENT_TYPES:
+                for component in getattr(self, comp_type).values():
+                    if comp_type == "input_components":
+                        component.build(data=input)
+                    elif comp_type == "output_components":
+                        component.build(data=output)
+                    elif comp_type == "actual_components":
+                        component.build(data=actual)
+                    else:
+                        component.build(data=[output, actual])
 
     def is_built(self):
-        return all(component.is_built() for component in self.components.values())
+        # Check all components built
+        type_checks = []
+        for comp_type in COMPONENT_TYPES:
+            type_checks.append(all(component.is_built() for component in getattr(self, comp_type).values()))
+        return all(type_checks)
 
     """Other Methods"""
 
     def __str__(self):
-        return f'DataProfile(name="{self.name}", version="{self.version}"'
+        return f'ModelProfile(name="{self.name}", version="{self.version}"'
 
     def set_group(self, tags):
         for component_tag in tags:
             component_tag.group = self.group_idfr
 
-    def drop_component(self, name):
-        self.components = [c for c in self.components.values() if c.name != name]
+    def drop_component(self, name, comp_type="input_component"):
+        new_components = [c for c in getattr(self, comp_type).values() if c.name != name]
+        setattr(self, comp_type, new_components)
 
     def flatten_tags(self, tags):
         tags_dict = {}
         for tag in tags:
-            if tag["type"] == PROFILE_FEATURE:
-                tags_dict[tag["name"]] = tag["value"]
+            tags_dict[tag["name"]] = tag["value"]
         return tags_dict
 
     def _build_page(self, htmlstr, mode="iframe", outdir=None):
@@ -156,11 +222,41 @@ class DataProfile(Serializable, Buildable):
 
         return html_file
 
-    def validate(self, input=None, output=None, actual=None, convert_json=True):
+    def _validate_simple(self, data, components, cgroup, convert_json=True):
         tags = []
         if self.is_built():
-            for component in self.components.values():
-                component_tags = component.validate(input, output, actual)
+            for component in components.values():
+                component_tags = component.validate(data=data, cgroup=cgroup)
+                self.set_group(component_tags)
+                tags.extend(component_tags)
+        else:
+            raise ProfileStateException(
+                f"Cannot check data on an unbuilt profile. Check whether all components are built."
+            )
+        if convert_json:
+            tags = [t.to_jcr() for t in tags]
+        return tags
+
+    def validate_input(self, input, convert_json=True):
+        return self._validate_simple(
+            data=input, components=self.input_components, cgroup="input_components", convert_json=convert_json
+        )
+
+    def validate_output(self, output, convert_json=True):
+        return self._validate_simple(
+            data=output, components=self.output_components, cgroup="output_components", convert_json=convert_json
+        )
+
+    def validate_actual(self, actual, convert_json=True):
+        return self._validate_simple(
+            data=actual, components=self.actual_components, cgroup="actual_components", convert_json=convert_json
+        )
+
+    def validate_score(self, output, actual, convert_json=True):
+        tags = []
+        if self.is_built():
+            for component in self.score_components.values():
+                component_tags = component.validate(data=(output, actual), cgroup="score_components")
                 self.set_group(component_tags)
                 tags.extend(component_tags)
         else:
@@ -177,21 +273,26 @@ class DataProfile(Serializable, Buildable):
         if not other.is_built():
             raise ProfileStateException("Profile 'other' is not built.")
         report = {}
-        for componentname in self.components:
-            print(componentname)
-            ref_stats = self.components[componentname].stats
-            other_stats = other.components[componentname].stats
-            drift, drift_idx, pinvdiff = ref_stats.contrast(other_stats)
-            drift_report = {
-                "drift": float(drift),
-                "drift_idx": drift_idx,
-                "weight": float(self.components[componentname].importance * drift),
-            }
-            integrity_report = {
-                "weight": float(self.components[componentname].importance * pinvdiff),
-                "integrity": float(pinvdiff),
-            }
-            report[componentname] = {"drift": drift_report, "integrity": integrity_report}
+        for comp_type in COMPONENT_TYPES:
+            self_components = getattr(self, comp_type)
+            other_components = getattr(other, comp_type)
+            type_report = {}
+            for component in self_components.values():
+                print(component.name)
+                ref_stats = self_components[component.name].stats
+                other_stats = other_components[component.name].stats
+                drift, drift_idx, pinvdiff = ref_stats.contrast(other_stats)
+                drift_report = {
+                    "drift": float(drift),
+                    "drift_idx": drift_idx,
+                    "weight": float(self_components[component.name].importance * drift),
+                }
+                integrity_report = {
+                    "weight": float(self_components[component.name].importance * pinvdiff),
+                    "integrity": float(pinvdiff),
+                }
+                type_report[component.name] = {"drift": drift_report, "integrity": integrity_report}
+            report[comp_type] = type_report
 
         jcr = {}
         jcr["reference"] = self.to_jcr()

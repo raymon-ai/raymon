@@ -44,8 +44,7 @@ class DN2AnomalyScorer(KMeansOutlierScorer):
             )
         self.tfs = transforms.Compose(tfs)
 
-    def extract(self, input, output, actual):
-        data = self.parse_params(input=input, output=output, actual=actual)
+    def extract(self, data):
         if not isinstance(data, Image.Image):
             raise ValueError(f"data must be of type PIL.Image.Image, not {data.shape}")
         batchtf = self.tfs(data)[None, :]

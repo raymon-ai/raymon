@@ -3,7 +3,7 @@ import pytest
 import json
 import pendulum
 import uuid
-from raymon import Ray, RaymonAPI, RaymonAPILogger, RaymonFileLogger
+from raymon import Trace, RaymonAPI, RaymonAPILogger, RaymonFileLogger
 from raymon import types as rt
 from raymon.tests.conftest import PROJECT_NAME
 

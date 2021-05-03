@@ -2,15 +2,26 @@ from enum import Enum
 
 from raymon.globals import Serializable
 
+PROFILE_INPUT = "profile-input"
+PROFILE_OUTPUT = "profile-output"
+PROFILE_ACTUAL = "profile-actual"
+PROFILE_SCORE = "profile-score"
+PROFILE_INPUT_ERROR = "profile-input-error"
+PROFILE_OUTPUT_ERROR = "profile-output-error"
+PROFILE_ACTUAL_ERROR = "profile-actual-error"
+PROFILE_SCORE_ERROR = "profile-score-error"
 
-PROFILE_ERROR = "profile-error"
-PROFILE_FEATURE = "profile-feature"
-PROFILE_FEATURE_LH = "profile-feature-lh"
-PROFILE_GLOBAL_LH = "profile-global-lh"
 LABEL = "label"
 METRIC = "metric"
 VECTOR = "vector"
 ERROR = "error"
+
+CGROUP_TAGTYPES = {
+    "input_components": {"tagtype": PROFILE_INPUT, "errortype": PROFILE_INPUT_ERROR},
+    "output_components": {"tagtype": PROFILE_OUTPUT, "errortype": PROFILE_OUTPUT_ERROR},
+    "actual_components": {"tagtype": PROFILE_ACTUAL, "errortype": PROFILE_ACTUAL_ERROR},
+    "score_components": {"tagtype": PROFILE_SCORE, "errortype": PROFILE_SCORE_ERROR},
+}
 
 
 class Tag(Serializable):

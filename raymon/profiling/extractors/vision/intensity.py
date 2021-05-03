@@ -1,10 +1,10 @@
 from PIL import Image, ImageFilter
 import numpy as np
 
-from raymon.profiling.extractors import Extractor
+from raymon.profiling.extractors import SimpleExtractor
 
 
-class AvgIntensity(Extractor):
+class AvgIntensity(SimpleExtractor):
 
     _config_attrs = []
     _compile_attrs = []
@@ -14,8 +14,7 @@ class AvgIntensity(Extractor):
     def __init__(self, name, path="input"):
         super().__init__(name=name, path=path)
 
-    def extract(self, input, output, actual):
-        data = self.parse_params(input=input, output=output, actual=actual)
+    def extract(self, data):
         img = data.convert("L")
         return float(np.array(img).mean())
 
@@ -30,7 +29,7 @@ class AvgIntensity(Extractor):
 
     """Buildable interface"""
 
-    def build(self, input, output, actual):
+    def build(self, data):
         pass
 
     def is_built(self):

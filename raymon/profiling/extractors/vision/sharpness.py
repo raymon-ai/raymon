@@ -1,10 +1,10 @@
 from PIL import ImageFilter
 import numpy as np
 
-from raymon.profiling.extractors import Extractor
+from raymon.profiling.extractors import SimpleExtractor
 
 
-class Sharpness(Extractor):
+class Sharpness(SimpleExtractor):
     """Measures the blurryness or sharpness of an iamge. Based on
     https://www.pyimagesearch.com/2015/09/07/blur-detection-with-opencv/
     """
@@ -12,8 +12,7 @@ class Sharpness(Extractor):
     def __init__(self, name, path="input"):
         super().__init__(name=name, path=path)
 
-    def extract(self, input, output, actual):
-        data = self.parse_params(input=input, output=output, actual=actual)
+    def extract(self, data):
         img = data.convert("L")
         filtered = img.filter(ImageFilter.Kernel((3, 3), (0, 1, 0, 1, -4, 1, 0, 1, 0), scale=1, offset=0))
         return float(np.array(filtered).mean())  # .var())
@@ -29,7 +28,7 @@ class Sharpness(Extractor):
 
     """Buildable interface"""
 
-    def build(self, input, output, actual):
+    def build(self, data):
         pass
 
     def is_built(self):

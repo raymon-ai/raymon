@@ -1,17 +1,17 @@
 import numpy as np
 
 from raymon.globals import DataException, ExtractorException
-from raymon.profiling.extractors import Extractor
+from raymon.profiling.extractors import SimpleExtractor
 from raymon.profiling.components import FloatComponent, IntComponent, CategoricComponent
 
 
-class ElementExtractor(Extractor):
+class ElementExtractor(SimpleExtractor):
     """
     Extract one element from a vector
     """
 
-    def __init__(self, name, element, path="input"):
-        super().__init__(name=name, path=path)
+    def __init__(self, name, element):
+        super().__init__(name=name)
         self.element = element
 
     """ELEMENT"""
@@ -26,8 +26,7 @@ class ElementExtractor(Extractor):
             raise DataException("element to extract must be int or str")
         self._element = value
 
-    def extract(self, input, output, actual):
-        data = self.parse_params(input=input, output=output, actual=actual)
+    def extract(self, data):
         return data[self.element]
 
     """Serializable interface """
@@ -44,7 +43,7 @@ class ElementExtractor(Extractor):
 
     """Buildable interface"""
 
-    def build(self, input, output, actual):
+    def build(self, data):
         pass
 
     def is_built(self):
@@ -54,11 +53,11 @@ class ElementExtractor(Extractor):
         return f"{self.__class__.__name__}(element={self.element})"
 
 
-def generate_components(dtypes, path):
+def generate_components(dtypes):
     components = []
     for key in dtypes.index:
         # Check type: Numeric or categoric
-        extractor = ElementExtractor(name=key, element=key, path=path)
+        extractor = ElementExtractor(name=key, element=key)
         if np.issubdtype(dtypes[key], np.floating):
             component = FloatComponent(name=key, extractor=extractor)
         elif np.issubdtype(dtypes[key], np.integer):
