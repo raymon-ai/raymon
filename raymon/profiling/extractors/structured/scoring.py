@@ -40,7 +40,7 @@ class ClassificationErrorType(ScoringExtractor):
 
 class AbsoluteError(ScoringExtractor):
     def extract(self, output, actual):
-        abs(output - actual)
+        return abs(output - actual)
 
     """Serializable interface """
 
@@ -63,7 +63,7 @@ class AbsoluteError(ScoringExtractor):
 
 class SquaredError(ScoringExtractor):
     def extract(self, output, actual):
-        pow(output - actual, 2)
+        return pow(output - actual, 2)
 
     """Serializable interface """
 

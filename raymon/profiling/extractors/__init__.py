@@ -32,7 +32,7 @@ class SimpleExtractor(Extractor):
 
     def extract_multiple(self, data):
         if data is None:
-            raise DataException(f"{self.name}: Data is None")
+            raise DataException(f"Data is None")
         features = []
         if isinstance(data, pd.DataFrame) or isinstance(data, np.ndarray):
             features = self.extract(data)
@@ -59,20 +59,20 @@ class ScoringExtractor(Extractor):
 
     def extract_multiple(self, output, actual):
         if output is None:
-            raise DataException(f"{self.name}: output is None")
+            raise DataException("output is None")
         if actual is None:
-            raise DataException(f"{self.name}: actual is None")
+            raise DataException("actual is None")
         if type(output) != type(actual):
-            raise DataException(f"{self.name}: output and actual not of same type")
+            raise DataException("output and actual not of same type")
         if len(output) != len(actual):
-            raise DataException(f"{self.name}: output and actual not of same length")
+            raise DataException("output and actual not of same length")
 
         features = []
         if isinstance(output, pd.DataFrame) or isinstance(output, np.ndarray):
             features = self.extract(output, actual)
         elif isinstance(output, Iterable):
-            for data in output:
-                features.append(self.extract(output, actual))
+            for out, act in zip(output, actual):
+                features.append(self.extract(out, act))
         else:
             raise DataException("Data should be a DataFrame or Iterable")
         return features
