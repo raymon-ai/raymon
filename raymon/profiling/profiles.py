@@ -209,19 +209,6 @@ class ModelProfile(Serializable, Buildable):
             tags_dict[tag["name"]] = tag["value"]
         return tags_dict
 
-    def _build_page(self, htmlstr, mode="iframe", outdir=None):
-        frontend_src = (Path(raymon.__file__) / "../frontend/").resolve()
-        tmp_dir = Path(tempfile.mkdtemp(dir=outdir, prefix=".tmp")) / "view"
-        shutil.copytree(src=frontend_src, dst=tmp_dir)
-        html_file = tmp_dir / "schema.html"
-
-        with open(html_file, "w") as f:
-            f.write(htmlstr)
-        if mode == "external":
-            webbrowser.open_new_tab("file://" + str(html_file))
-
-        return html_file
-
     def _validate_simple(self, data, components, cgroup, convert_json=True):
         tags = []
         if self.is_built():
@@ -339,3 +326,17 @@ class ModelProfile(Serializable, Buildable):
                 <raymon-compare-schema comparison="{jsonescaped}"></raymon-compare-schema>
                 """
         return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
+
+    def _build_page(self, htmlstr, mode="iframe", outdir=None):
+        frontend_src = (Path(raymon.__file__) / "../frontend/").resolve()
+        print(f"Frontend src: {frontend_src}")
+        tmp_dir = Path(tempfile.mkdtemp(dir=outdir, prefix=".tmp")) / "view"
+        shutil.copytree(src=frontend_src, dst=tmp_dir)
+        html_file = tmp_dir / "schema.html"
+
+        with open(html_file, "w") as f:
+            f.write(htmlstr)
+        if mode == "external":
+            webbrowser.open_new_tab("file://" + str(html_file))
+
+        return html_file
