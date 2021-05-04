@@ -254,7 +254,7 @@ class ModelProfile(Serializable, Buildable):
             tags = [t.to_jcr() for t in tags]
         return tags
 
-    def contrast(self, other):
+    def contrast(self, other, thresholds={}):
         if not self.is_built():
             raise ProfileStateException("Profile 'self' is not built.")
         if not other.is_built():
@@ -263,20 +263,26 @@ class ModelProfile(Serializable, Buildable):
         for comp_type in COMPONENT_TYPES:
             self_components = getattr(self, comp_type)
             other_components = getattr(other, comp_type)
+            comp_type_thresholds = thresholds.get(comp_type, {})
             type_report = {}
             for component in self_components.values():
                 print(component.name)
                 ref_stats = self_components[component.name].stats
                 other_stats = other_components[component.name].stats
+                comp_thresholds = comp_type_thresholds.get(component.name, {})
+                int_threshold = comp_thresholds.get("integrity", 0.01)
+                drift_threshold = comp_thresholds.get("drift", 0.05)
                 drift, drift_idx, pinvdiff = ref_stats.contrast(other_stats)
                 drift_report = {
                     "drift": float(drift),
                     "drift_idx": drift_idx,
                     "weight": float(self_components[component.name].importance * drift),
+                    "alert": drift >= drift_threshold,
                 }
                 integrity_report = {
                     "weight": float(self_components[component.name].importance * pinvdiff),
                     "integrity": float(pinvdiff),
+                    "alert": pinvdiff >= int_threshold,
                 }
                 type_report[component.name] = {"drift": drift_report, "integrity": integrity_report}
             report[comp_type] = type_report
@@ -295,7 +301,7 @@ class ModelProfile(Serializable, Buildable):
         # Build the schema
         with ctx_mgr:
             if poi is not None:
-                poi_dict = self.flatten_tags(self.validate(poi))
+                poi_dict = self.flatten_tags(self.validate_input(poi))
             else:
                 poi_dict = {}
             jsonescaped = html.escape(json.dumps(self.to_jcr()))
@@ -310,14 +316,14 @@ class ModelProfile(Serializable, Buildable):
                     """
             return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
 
-    def view_contrast(self, other, thresh=0.05, mode="iframe", outdir=None, silent=True):
+    def view_contrast(self, other, mode="iframe", thresholds={}, outdir=None, silent=True):
         if silent:
             ctx_mgr = NoOutput()
         else:
             ctx_mgr = nullcontext()
         # Build the schema
         with ctx_mgr:
-            jcr = self.contrast(other)
+            jcr = self.contrast(other, thresholds=thresholds)
             jsonescaped = html.escape(json.dumps(jcr))
             htmlstr = f"""
                 <meta charset="utf-8">
