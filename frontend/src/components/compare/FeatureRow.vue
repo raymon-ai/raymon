@@ -15,7 +15,7 @@
 
     <td class="px-2 codeLikeContent pvalueColumn">
       <p
-        class="h3"
+        class="f3"
         :class="{'red': isDrift, 'green': !isDrift}"
       > {{compareStats.drift.drift.toFixed(2)}}</p>
       <!-- <span :class="{'Label mr-1 Label--red': isDrift, 'Label mr-1 Label--green': !isDrift}">
@@ -36,7 +36,10 @@
           ></span>
           <span class="red f6"> {{this.otherStats.pinv.toFixed(2)}}</span>
         </p>
-        <p class="f4">
+        <p
+          class="f4"
+          :class="{'red': isPinvAlert, 'green': !isPinvAlert}"
+        >
           {{pinvDiffStr}}
         </p>
       </div>
@@ -113,13 +116,10 @@ export default {
       return this.componentData.component.importance;
     },
     isDrift() {
-      return this.compareStats.alert_drift === "True";
-    },
-    isNotDrift() {
-      return !this.isDrift;
+      return this.compareStats.drift.alert === 1;
     },
     isPinvAlert() {
-      return this.compareStats.alert_inv === "True";
+      return this.compareStats.integrity.alert === 1;
     },
     plotData() {
       if (this.isNumeric) {
