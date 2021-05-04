@@ -172,7 +172,6 @@ def load_jcr(jcr):
     type_class = locate(dtype)
     if type_class is None:
         raise NameError(f"Could not locate {dtype}")
-
     loaded = type_class.from_jcr(params)
     return loaded
 

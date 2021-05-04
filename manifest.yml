@@ -2,15 +2,15 @@
 version: draft
 pipelines:
   - name: show_input
-    input: 
-      peephole: network_input_img
+    input:
+      ref: network_input_img
       visualize: img
     map:
       function: null
       fparams: null
       visualize: null
       vparams: null
-    reduce: 
+    reduce:
       - function: null
         fparams: null
         visualize: null
@@ -19,7 +19,7 @@ pipelines:
 
   - name: intesity_hist
     input:
-      peephole: network_input_img
+      ref: network_input_img
     map:
       function: img2hist
       fparams:
@@ -28,7 +28,3 @@ pipelines:
       - function: weighted_avg
         interval: 10s
         name: wavg
-
-
-
-
