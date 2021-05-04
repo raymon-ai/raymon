@@ -20,12 +20,12 @@ class Extractor(Serializable, Buildable, ABC):
 class SimpleExtractor(Extractor):
     @abstractmethod
     def extract(self, data):
-        """Extracts a feature from a data instance.
+        """Extracts a component from a data instance.
 
         Parameters
         ----------
         data : any
-            The data instance you want to extract a feature from. The type is up to you.
+            The data instance you want to extract a component from. The type is up to you.
 
         """
         raise NotImplementedError
@@ -33,26 +33,26 @@ class SimpleExtractor(Extractor):
     def extract_multiple(self, data):
         if data is None:
             raise DataException(f"Data is None")
-        features = []
+        components = []
         if isinstance(data, pd.DataFrame) or isinstance(data, np.ndarray):
-            features = self.extract(data)
+            components = self.extract(data)
         elif isinstance(data, Iterable):
             for data in data:
-                features.append(self.extract(data))
+                components.append(self.extract(data))
         else:
             raise DataException("Data should be a DataFrame or Iterable")
-        return features
+        return components
 
 
 class ScoringExtractor(Extractor):
     @abstractmethod
     def extract(self, output, actual):
-        """Extracts a feature from a data instance.
+        """Extracts a component from a data instance.
 
         Parameters
         ----------
         data : any
-            The data instance you want to extract a feature from. The type is up to you.
+            The data instance you want to extract a component from. The type is up to you.
 
         """
         raise NotImplementedError
@@ -67,12 +67,12 @@ class ScoringExtractor(Extractor):
         if len(output) != len(actual):
             raise DataException("output and actual not of same length")
 
-        features = []
+        components = []
         if isinstance(output, pd.DataFrame) or isinstance(output, np.ndarray):
-            features = self.extract(output, actual)
+            components = self.extract(output, actual)
         elif isinstance(output, Iterable):
             for out, act in zip(output, actual):
-                features.append(self.extract(out, act))
+                components.append(self.extract(out, act))
         else:
             raise DataException("Data should be a DataFrame or Iterable")
-        return features
+        return components

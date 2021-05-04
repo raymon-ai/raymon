@@ -71,7 +71,7 @@ def test_subpatchsimilarity_extractor_buildable():
     assert extractor.is_built()
 
 
-def test_feature_buildable():
+def test_component_buildable():
     extractor = FixedSubpatchSimilarity(
         patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, refs=["adf8d224cb8786cc"], nrefs=1
     )

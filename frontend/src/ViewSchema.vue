@@ -20,7 +20,7 @@
         :is="pageToShow"
         :schemaDef="schemaLoaded"
         :poi="poiLoaded"
-        :featureName="featureName"
+        :componentName="componentName"
         :componentType="componentPage"
         @setPage="setPage"
       />
@@ -45,7 +45,7 @@ export default {
   },
   data() {
     return {
-      featureName: undefined,
+      componentName: undefined,
       componentTypes: {
         Inputs: "input_components",
         Outputs: "output_components",
@@ -58,7 +58,7 @@ export default {
   methods: {
     setPage(page) {
       console.log("setting page to: ", page);
-      this.featureName = page;
+      this.componentName = page;
     },
     updateComponentType(type) {
       this.componentPage = this.componentTypes[type];
@@ -72,7 +72,7 @@ export default {
       return JSON.parse(this.poi);
     },
     pageToShow() {
-      if (this.featureName !== undefined) {
+      if (this.componentName !== undefined) {
         return FeatureDetailView;
       } else {
         return FeatureOverview;

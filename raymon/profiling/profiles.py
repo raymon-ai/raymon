@@ -278,12 +278,12 @@ class ModelProfile(Serializable, Buildable):
                     "drift": float(drift),
                     "drift_idx": drift_idx,
                     "weight": float(self_components[component.name].importance * drift),
-                    "alert": drift >= drift_threshold,
+                    "alert": int(drift >= drift_threshold),
                 }
                 integrity_report = {
                     "weight": float(self_components[component.name].importance * pinvdiff),
                     "integrity": float(pinvdiff),
-                    "alert": pinvdiff >= int_threshold,
+                    "alert": int(pinvdiff >= int_threshold),
                 }
                 type_report[component.name] = {"drift": drift_report, "integrity": integrity_report}
             report[comp_type] = type_report

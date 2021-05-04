@@ -8,9 +8,9 @@
         <input
           class="form-control"
           type="text"
-          placeholder="type a feature name here..."
-          id="featurefilter"
-          v-model="featureFilter"
+          placeholder="type a component name here..."
+          id="componentfilter"
+          v-model="componentFilter"
           @input="changePage(0)"
         />
       </dl>
@@ -83,8 +83,8 @@
         </thead>
         <tbody>
           <FeatureRow
-            v-for="(feature, name) in schemaSelection"
-            :featureData="feature"
+            v-for="(component, name) in schemaSelection"
+            :componentData="component"
             :poi="poi[name]"
             :key="name"
           />
@@ -118,7 +118,7 @@ export default {
   },
   data: function () {
     return {
-      featureFilter: "",
+      componentFilter: "",
       page: 0,
       ppp: PPP,
       octicons,
@@ -141,7 +141,7 @@ export default {
     },
     getSortFunc() {
       let func = undefined;
-      let featureData = this.profileComponents;
+      let componentData = this.profileComponents;
       if (this.activeSortField === "name") {
         func = (firstEl, secondEl) => {
           if (firstEl == secondEl) {
@@ -155,13 +155,13 @@ export default {
       } else if (this.activeSortField === "type") {
         func = (firstEl, secondEl) => {
           if (
-            featureData[firstEl].feature_class ===
-            featureData[secondEl].feature_class
+            componentData[firstEl].component_class ===
+            componentData[secondEl].component_class
           ) {
             return 0;
           } else if (
-            featureData[firstEl].feature_class <
-            featureData[secondEl].feature_class
+            componentData[firstEl].component_class <
+            componentData[secondEl].component_class
           ) {
             return -1;
           } else {
@@ -171,13 +171,13 @@ export default {
       } else if (this.activeSortField === "importance") {
         func = (firstEl, secondEl) => {
           if (
-            featureData[firstEl].feature.importance ===
-            featureData[secondEl].feature.importance
+            componentData[firstEl].component.importance ===
+            componentData[secondEl].component.importance
           ) {
             return 0;
           } else if (
-            featureData[firstEl].feature.importance <
-            featureData[secondEl].feature.importance
+            componentData[firstEl].component.importance <
+            componentData[secondEl].component.importance
           ) {
             return -1;
           } else {
@@ -187,17 +187,17 @@ export default {
       } else if (this.activeSortField === "min") {
         func = (firstEl, secondEl) => {
           if (
-            featureData[firstEl].feature.stats.min ===
-            featureData[secondEl].feature.stats.min
+            componentData[firstEl].component.stats.min ===
+            componentData[secondEl].component.stats.min
           ) {
             return 0;
           } else if (
-            typeof featureData[firstEl].feature.stats.min === "undefined"
+            typeof componentData[firstEl].component.stats.min === "undefined"
           ) {
             return -1;
           } else if (
-            featureData[firstEl].feature.stats.min <
-            featureData[secondEl].feature.stats.min
+            componentData[firstEl].component.stats.min <
+            componentData[secondEl].component.stats.min
           ) {
             return -1;
           } else {
@@ -207,17 +207,17 @@ export default {
       } else if (this.activeSortField === "max") {
         func = (firstEl, secondEl) => {
           if (
-            featureData[firstEl].feature.stats.max ==
-            featureData[secondEl].feature.stats.max
+            componentData[firstEl].component.stats.max ==
+            componentData[secondEl].component.stats.max
           ) {
             return 0;
           } else if (
-            typeof featureData[firstEl].feature.stats.max === "undefined"
+            typeof componentData[firstEl].component.stats.max === "undefined"
           ) {
             return -1;
           } else if (
-            featureData[firstEl].feature.stats.max <
-            featureData[secondEl].feature.stats.max
+            componentData[firstEl].component.stats.max <
+            componentData[secondEl].component.stats.max
           ) {
             return -1;
           } else {
@@ -228,13 +228,13 @@ export default {
         func = (firstEl, secondEl) => {
           console.log("Using pinv function");
           if (
-            featureData[firstEl].feature.stats.pinv ==
-            featureData[secondEl].feature.stats.pinv
+            componentData[firstEl].component.stats.pinv ==
+            componentData[secondEl].component.stats.pinv
           ) {
             return 0;
           } else if (
-            featureData[firstEl].feature.stats.pinv <
-            featureData[secondEl].feature.stats.pinv
+            componentData[firstEl].component.stats.pinv <
+            componentData[secondEl].component.stats.pinv
           ) {
             return -1;
           } else {
@@ -261,22 +261,22 @@ export default {
       let allKeys = Object.keys(this.profileComponents);
       let selectedKeys = allKeys;
       // filter
-      if (this.featureFilter.length > 0) {
+      if (this.componentFilter.length > 0) {
         selectedKeys = allKeys.filter((key) =>
-          key.startsWith(this.featureFilter)
+          key.startsWith(this.componentFilter)
         );
       }
       return selectedKeys;
     },
     schemaSortedKeys() {
       let func = this.getSortFunc();
-      let featureKeys = this.schemaMatchedKeys;
+      let componentKeys = this.schemaMatchedKeys;
 
-      featureKeys.sort(func);
+      componentKeys.sort(func);
       if (this.activeSortDirection === "down") {
-        featureKeys.reverse();
+        componentKeys.reverse();
       }
-      return featureKeys;
+      return componentKeys;
     },
     schemaPageKeys() {
       let selectedKeys = this.schemaSortedKeys;

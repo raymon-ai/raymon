@@ -8,9 +8,9 @@
         <input
           class="form-control"
           type="text"
-          placeholder="type a feature name here..."
-          id="featurefilter"
-          v-model="featureFilter"
+          placeholder="type a component name here..."
+          id="componentfilter"
+          v-model="componentFilter"
           @input="changePage(0)"
         />
       </dl>
@@ -73,8 +73,8 @@
         </thead>
         <tbody>
           <FeatureRow
-            v-for="(feature, name) in schemaSelection"
-            :featureData="feature"
+            v-for="(component, name) in schemaSelection"
+            :componentData="component"
             :otherFeatureData="otherSelection[name]"
             :compareStats="reportComponents[name]"
             :key="name"
@@ -109,7 +109,7 @@ export default {
   },
   data: function () {
     return {
-      featureFilter: "",
+      componentFilter: "",
       page: 0,
       ppp: PPP,
       octicons,
@@ -132,7 +132,7 @@ export default {
     },
     getSortFunc() {
       let func = undefined;
-      let featureData = this.profileComponents;
+      let componentData = this.profileComponents;
       if (this.activeSortField === "name") {
         func = (firstEl, secondEl) => {
           if (firstEl == secondEl) {
@@ -146,13 +146,13 @@ export default {
       } else if (this.activeSortField === "type") {
         func = (firstEl, secondEl) => {
           if (
-            featureData[firstEl].feature_class ===
-            featureData[secondEl].feature_class
+            componentData[firstEl].component_class ===
+            componentData[secondEl].component_class
           ) {
             return 0;
           } else if (
-            featureData[firstEl].feature_class <
-            featureData[secondEl].feature_class
+            componentData[firstEl].component_class <
+            componentData[secondEl].component_class
           ) {
             return -1;
           } else {
@@ -162,13 +162,13 @@ export default {
       } else if (this.activeSortField === "importance") {
         func = (firstEl, secondEl) => {
           if (
-            featureData[firstEl].feature.importance ===
-            featureData[secondEl].feature.importance
+            componentData[firstEl].component.importance ===
+            componentData[secondEl].component.importance
           ) {
             return 0;
           } else if (
-            featureData[firstEl].feature.importance <
-            featureData[secondEl].feature.importance
+            componentData[firstEl].component.importance <
+            componentData[secondEl].component.importance
           ) {
             return -1;
           } else {
@@ -246,8 +246,8 @@ export default {
     },
     getPinvDiff(featName) {
       return Math.abs(
-        this.profileComponents.features[featName].feature.stats.pinv -
-          this.otherProfileComponents.features[featName].feature.stats.pinv
+        this.profileComponents.components[featName].component.stats.pinv -
+          this.otherProfileComponents.components[featName].component.stats.pinv
       );
     },
   },
@@ -271,22 +271,22 @@ export default {
       let allKeys = Object.keys(this.profileComponents);
       let selectedKeys = allKeys;
       // filter
-      if (this.featureFilter.length > 0) {
+      if (this.componentFilter.length > 0) {
         selectedKeys = allKeys.filter((key) =>
-          key.startsWith(this.featureFilter)
+          key.startsWith(this.componentFilter)
         );
       }
       return selectedKeys;
     },
     schemaSortedKeys() {
       let func = this.getSortFunc();
-      let featureKeys = this.schemaMatchedKeys;
+      let componentKeys = this.schemaMatchedKeys;
 
-      featureKeys.sort(func);
+      componentKeys.sort(func);
       if (this.activeSortDirection === "down") {
-        featureKeys.reverse();
+        componentKeys.reverse();
       }
-      return featureKeys;
+      return componentKeys;
     },
     schemaPageKeys() {
       let selectedKeys = this.schemaSortedKeys;

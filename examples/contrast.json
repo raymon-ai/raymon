@@ -4,8 +4,8 @@
         "version": "0.0.1",
         "input_components": {
             "mssubclass": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "mssubclass",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -126,8 +126,8 @@
                 }
             },
             "mszoning": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "mszoning",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -148,8 +148,8 @@
                 }
             },
             "lotfrontage": {
-                "feature_class": "raymon.profiling.components.FloatComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.FloatComponent",
+                "component": {
                     "name": "lotfrontage",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -270,8 +270,8 @@
                 }
             },
             "lotarea": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "lotarea",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -392,8 +392,8 @@
                 }
             },
             "street": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "street",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -411,8 +411,8 @@
                 }
             },
             "alley": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "alley",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -430,8 +430,8 @@
                 }
             },
             "lotshape": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "lotshape",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -451,8 +451,8 @@
                 }
             },
             "landcontour": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "landcontour",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -472,8 +472,8 @@
                 }
             },
             "utilities": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "utilities",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -491,8 +491,8 @@
                 }
             },
             "lotconfig": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "lotconfig",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -513,8 +513,8 @@
                 }
             },
             "landslope": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "landslope",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -533,8 +533,8 @@
                 }
             },
             "neighborhood": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "neighborhood",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -558,16 +558,16 @@
                             "Crawfor": 0.02721774193548387,
                             "SWISU": 0.02217741935483871,
                             "MeadowV": 0.017137096774193547,
-                            "BrDale": 0.016129032258064516,
                             "Timber": 0.016129032258064516,
+                            "BrDale": 0.016129032258064516,
                             "ClearCr": 0.014112903225806451,
                             "NridgHt": 0.012096774193548387,
                             "NPkVill": 0.009072580645161291,
                             "Blmngtn": 0.007056451612903226,
                             "Veenker": 0.005040322580645161,
+                            "StoneBr": 0.0020161290322580645,
                             "Blueste": 0.0020161290322580645,
-                            "NoRidge": 0.0020161290322580645,
-                            "StoneBr": 0.0020161290322580645
+                            "NoRidge": 0.0020161290322580645
                         },
                         "pinv": 0.0,
                         "samplesize": 992
@@ -575,8 +575,8 @@
                 }
             },
             "condition1": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "condition1",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -601,8 +601,8 @@
                 }
             },
             "condition2": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "condition2",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -626,8 +626,8 @@
                 }
             },
             "bldgtype": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "bldgtype",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -648,8 +648,8 @@
                 }
             },
             "housestyle": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "housestyle",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -673,8 +673,8 @@
                 }
             },
             "overallqual": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "overallqual",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -795,8 +795,8 @@
                 }
             },
             "overallcond": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "overallcond",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -917,8 +917,8 @@
                 }
             },
             "yearbuilt": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "yearbuilt",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1039,8 +1039,8 @@
                 }
             },
             "yearremodadd": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "yearremodadd",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1161,8 +1161,8 @@
                 }
             },
             "roofstyle": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "roofstyle",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1184,8 +1184,8 @@
                 }
             },
             "roofmatl": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "roofmatl",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1197,11 +1197,11 @@
                             "CompShg": 0.9868951612903226,
                             "Tar&Grv": 0.006048387096774193,
                             "WdShake": 0.0020161290322580645,
-                            "ClyTile": 0.0010080645161290322,
                             "Roll": 0.0010080645161290322,
+                            "WdShngl": 0.0010080645161290322,
+                            "ClyTile": 0.0010080645161290322,
                             "Membran": 0.0010080645161290322,
-                            "Metal": 0.0010080645161290322,
-                            "WdShngl": 0.0010080645161290322
+                            "Metal": 0.0010080645161290322
                         },
                         "pinv": 0.0,
                         "samplesize": 992
@@ -1209,8 +1209,8 @@
                 }
             },
             "exterior1st": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "exterior1st",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1230,8 +1230,8 @@
                             "Stucco": 0.021169354838709676,
                             "AsbShng": 0.020161290322580645,
                             "BrkComm": 0.0020161290322580645,
-                            "AsphShn": 0.0010080645161290322,
                             "CBlock": 0.0010080645161290322,
+                            "AsphShn": 0.0010080645161290322,
                             "ImStucc": 0,
                             "Stone": 0
                         },
@@ -1241,8 +1241,8 @@
                 }
             },
             "exterior2nd": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "exterior2nd",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1263,8 +1263,8 @@
                             "BrkFace": 0.015120967741935484,
                             "Brk Cmn": 0.007056451612903226,
                             "ImStucc": 0.005040322580645161,
-                            "AsphShn": 0.0030241935483870967,
                             "Stone": 0.0030241935483870967,
+                            "AsphShn": 0.0030241935483870967,
                             "CBlock": 0.0010080645161290322,
                             "Other": 0
                         },
@@ -1274,8 +1274,8 @@
                 }
             },
             "masvnrtype": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "masvnrtype",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1295,8 +1295,8 @@
                 }
             },
             "masvnrarea": {
-                "feature_class": "raymon.profiling.components.FloatComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.FloatComponent",
+                "component": {
                     "name": "masvnrarea",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1417,8 +1417,8 @@
                 }
             },
             "exterqual": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "exterqual",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1438,8 +1438,8 @@
                 }
             },
             "extercond": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "extercond",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1460,8 +1460,8 @@
                 }
             },
             "foundation": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "foundation",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1483,8 +1483,8 @@
                 }
             },
             "bsmtqual": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "bsmtqual",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1504,8 +1504,8 @@
                 }
             },
             "bsmtcond": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "bsmtcond",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1525,8 +1525,8 @@
                 }
             },
             "bsmtexposure": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "bsmtexposure",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1546,8 +1546,8 @@
                 }
             },
             "bsmtfintype1": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "bsmtfintype1",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1557,8 +1557,8 @@
                     "stats": {
                         "frequencies": {
                             "Unf": 0.3148535564853556,
-                            "GLQ": 0.18514644351464435,
                             "ALQ": 0.18514644351464435,
+                            "GLQ": 0.18514644351464435,
                             "BLQ": 0.1297071129707113,
                             "Rec": 0.12133891213389121,
                             "LwQ": 0.06380753138075314
@@ -1569,8 +1569,8 @@
                 }
             },
             "bsmtfinsf1": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "bsmtfinsf1",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1691,8 +1691,8 @@
                 }
             },
             "bsmtfintype2": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "bsmtfintype2",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1714,8 +1714,8 @@
                 }
             },
             "bsmtfinsf2": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "bsmtfinsf2",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1836,8 +1836,8 @@
                 }
             },
             "bsmtunfsf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "bsmtunfsf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -1958,8 +1958,8 @@
                 }
             },
             "totalbsmtsf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "totalbsmtsf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -2080,8 +2080,8 @@
                 }
             },
             "heating": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "heating",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -2103,8 +2103,8 @@
                 }
             },
             "heatingqc": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "heatingqc",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -2125,8 +2125,8 @@
                 }
             },
             "centralair": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "centralair",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -2144,8 +2144,8 @@
                 }
             },
             "electrical": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "electrical",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -2166,8 +2166,8 @@
                 }
             },
             "1stflrsf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "1stflrsf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -2288,8 +2288,8 @@
                 }
             },
             "2ndflrsf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "2ndflrsf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -2410,8 +2410,8 @@
                 }
             },
             "lowqualfinsf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "lowqualfinsf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -2532,8 +2532,8 @@
                 }
             },
             "grlivarea": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "grlivarea",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -2654,8 +2654,8 @@
                 }
             },
             "bsmtfullbath": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "bsmtfullbath",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -2776,8 +2776,8 @@
                 }
             },
             "bsmthalfbath": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "bsmthalfbath",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -2898,8 +2898,8 @@
                 }
             },
             "fullbath": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "fullbath",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3020,8 +3020,8 @@
                 }
             },
             "halfbath": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "halfbath",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3142,8 +3142,8 @@
                 }
             },
             "bedroomabvgr": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "bedroomabvgr",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3264,8 +3264,8 @@
                 }
             },
             "kitchenabvgr": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "kitchenabvgr",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3386,8 +3386,8 @@
                 }
             },
             "kitchenqual": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "kitchenqual",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3407,8 +3407,8 @@
                 }
             },
             "totrmsabvgrd": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "totrmsabvgrd",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3529,8 +3529,8 @@
                 }
             },
             "functional": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "functional",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3542,8 +3542,8 @@
                             "Typ": 0.9173387096774194,
                             "Min2": 0.029233870967741934,
                             "Min1": 0.023185483870967742,
-                            "Mod": 0.012096774193548387,
                             "Maj1": 0.012096774193548387,
+                            "Mod": 0.012096774193548387,
                             "Maj2": 0.005040322580645161,
                             "Sev": 0.0010080645161290322
                         },
@@ -3553,8 +3553,8 @@
                 }
             },
             "fireplaces": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "fireplaces",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3675,8 +3675,8 @@
                 }
             },
             "fireplacequ": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "fireplacequ",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3697,8 +3697,8 @@
                 }
             },
             "garagetype": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "garagetype",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3720,8 +3720,8 @@
                 }
             },
             "garageyrblt": {
-                "feature_class": "raymon.profiling.components.FloatComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.FloatComponent",
+                "component": {
                     "name": "garageyrblt",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3842,8 +3842,8 @@
                 }
             },
             "garagefinish": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "garagefinish",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3862,8 +3862,8 @@
                 }
             },
             "garagecars": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "garagecars",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -3984,8 +3984,8 @@
                 }
             },
             "garagearea": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "garagearea",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4106,8 +4106,8 @@
                 }
             },
             "garagequal": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "garagequal",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4128,8 +4128,8 @@
                 }
             },
             "garagecond": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "garagecond",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4150,8 +4150,8 @@
                 }
             },
             "paveddrive": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "paveddrive",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4170,8 +4170,8 @@
                 }
             },
             "wooddecksf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "wooddecksf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4292,8 +4292,8 @@
                 }
             },
             "openporchsf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "openporchsf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4414,8 +4414,8 @@
                 }
             },
             "enclosedporch": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "enclosedporch",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4536,8 +4536,8 @@
                 }
             },
             "3ssnporch": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "3ssnporch",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4658,8 +4658,8 @@
                 }
             },
             "screenporch": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "screenporch",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4780,8 +4780,8 @@
                 }
             },
             "poolarea": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "poolarea",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4902,8 +4902,8 @@
                 }
             },
             "poolqc": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "poolqc",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4912,9 +4912,9 @@
                     "importance": 0,
                     "stats": {
                         "frequencies": {
+                            "Fa": 0.3333333333333333,
                             "Ex": 0.3333333333333333,
-                            "Gd": 0.3333333333333333,
-                            "Fa": 0.3333333333333333
+                            "Gd": 0.3333333333333333
                         },
                         "pinv": 0.9969758064516129,
                         "samplesize": 992
@@ -4922,8 +4922,8 @@
                 }
             },
             "fence": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "fence",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4943,8 +4943,8 @@
                 }
             },
             "miscfeature": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "miscfeature",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -4964,8 +4964,8 @@
                 }
             },
             "miscval": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "miscval",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5086,8 +5086,8 @@
                 }
             },
             "mosold": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "mosold",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5208,8 +5208,8 @@
                 }
             },
             "yrsold": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "yrsold",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5330,8 +5330,8 @@
                 }
             },
             "saletype": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "saletype",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5356,8 +5356,8 @@
                 }
             },
             "salecondition": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "salecondition",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5379,8 +5379,8 @@
                 }
             },
             "saleprice": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "saleprice",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5510,8 +5510,8 @@
         "version": "0.0.1",
         "input_components": {
             "mssubclass": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "mssubclass",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5632,8 +5632,8 @@
                 }
             },
             "mszoning": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "mszoning",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5654,8 +5654,8 @@
                 }
             },
             "lotfrontage": {
-                "feature_class": "raymon.profiling.components.FloatComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.FloatComponent",
+                "component": {
                     "name": "lotfrontage",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5776,8 +5776,8 @@
                 }
             },
             "lotarea": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "lotarea",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5898,8 +5898,8 @@
                 }
             },
             "street": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "street",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5917,8 +5917,8 @@
                 }
             },
             "alley": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "alley",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5936,8 +5936,8 @@
                 }
             },
             "lotshape": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "lotshape",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5957,8 +5957,8 @@
                 }
             },
             "landcontour": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "landcontour",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5978,8 +5978,8 @@
                 }
             },
             "utilities": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "utilities",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -5997,8 +5997,8 @@
                 }
             },
             "lotconfig": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "lotconfig",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6019,8 +6019,8 @@
                 }
             },
             "landslope": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "landslope",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6039,8 +6039,8 @@
                 }
             },
             "neighborhood": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "neighborhood",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6081,8 +6081,8 @@
                 }
             },
             "condition1": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "condition1",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6107,8 +6107,8 @@
                 }
             },
             "condition2": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "condition2",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6119,9 +6119,9 @@
                         "frequencies": {
                             "Norm": 0.9893162393162394,
                             "PosN": 0.004273504273504274,
-                            "PosA": 0.002136752136752137,
                             "Feedr": 0.002136752136752137,
                             "RRAe": 0.002136752136752137,
+                            "PosA": 0.002136752136752137,
                             "Artery": 0,
                             "RRAn": 0,
                             "RRNn": 0
@@ -6132,8 +6132,8 @@
                 }
             },
             "bldgtype": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "bldgtype",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6154,8 +6154,8 @@
                 }
             },
             "housestyle": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "housestyle",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6179,8 +6179,8 @@
                 }
             },
             "overallqual": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "overallqual",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6301,8 +6301,8 @@
                 }
             },
             "overallcond": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "overallcond",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6423,8 +6423,8 @@
                 }
             },
             "yearbuilt": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "yearbuilt",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6545,8 +6545,8 @@
                 }
             },
             "yearremodadd": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "yearremodadd",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6667,8 +6667,8 @@
                 }
             },
             "roofstyle": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "roofstyle",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6680,8 +6680,8 @@
                             "Gable": 0.717948717948718,
                             "Hip": 0.25854700854700857,
                             "Flat": 0.010683760683760684,
-                            "Shed": 0.004273504273504274,
                             "Gambrel": 0.004273504273504274,
+                            "Shed": 0.004273504273504274,
                             "Mansard": 0.004273504273504274
                         },
                         "pinv": 0.0,
@@ -6690,8 +6690,8 @@
                 }
             },
             "roofmatl": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "roofmatl",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6701,8 +6701,8 @@
                     "stats": {
                         "frequencies": {
                             "CompShg": 0.9722222222222222,
-                            "WdShngl": 0.010683760683760684,
                             "Tar&Grv": 0.010683760683760684,
+                            "WdShngl": 0.010683760683760684,
                             "WdShake": 0.00641025641025641,
                             "ClyTile": 0,
                             "Membran": 0,
@@ -6715,8 +6715,8 @@
                 }
             },
             "exterior1st": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "exterior1st",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6732,8 +6732,8 @@
                             "Wd Sdng": 0.07264957264957266,
                             "Plywood": 0.06837606837606838,
                             "BrkFace": 0.049145299145299144,
-                            "Stucco": 0.008547008547008548,
                             "WdShing": 0.008547008547008548,
+                            "Stucco": 0.008547008547008548,
                             "Stone": 0.004273504273504274,
                             "ImStucc": 0.002136752136752137,
                             "AsbShng": 0,
@@ -6747,8 +6747,8 @@
                 }
             },
             "exterior2nd": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "exterior2nd",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6768,8 +6768,8 @@
                             "ImStucc": 0.010683760683760684,
                             "Stucco": 0.008547008547008548,
                             "Stone": 0.004273504273504274,
-                            "Other": 0.002136752136752137,
                             "AsbShng": 0.002136752136752137,
+                            "Other": 0.002136752136752137,
                             "AsphShn": 0,
                             "Brk Cmn": 0,
                             "CBlock": 0
@@ -6780,8 +6780,8 @@
                 }
             },
             "masvnrtype": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "masvnrtype",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6801,8 +6801,8 @@
                 }
             },
             "masvnrarea": {
-                "feature_class": "raymon.profiling.components.FloatComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.FloatComponent",
+                "component": {
                     "name": "masvnrarea",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6923,8 +6923,8 @@
                 }
             },
             "exterqual": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "exterqual",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6944,8 +6944,8 @@
                 }
             },
             "extercond": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "extercond",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6956,8 +6956,8 @@
                         "frequencies": {
                             "TA": 0.9188034188034188,
                             "Gd": 0.07692307692307693,
-                            "Ex": 0.002136752136752137,
                             "Fa": 0.002136752136752137,
+                            "Ex": 0.002136752136752137,
                             "Po": 0
                         },
                         "pinv": 0.0,
@@ -6966,8 +6966,8 @@
                 }
             },
             "foundation": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "foundation",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -6989,8 +6989,8 @@
                 }
             },
             "bsmtqual": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "bsmtqual",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7010,8 +7010,8 @@
                 }
             },
             "bsmtcond": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "bsmtcond",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7031,8 +7031,8 @@
                 }
             },
             "bsmtexposure": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "bsmtexposure",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7052,8 +7052,8 @@
                 }
             },
             "bsmtfintype1": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "bsmtfintype1",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7075,8 +7075,8 @@
                 }
             },
             "bsmtfinsf1": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "bsmtfinsf1",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7197,8 +7197,8 @@
                 }
             },
             "bsmtfintype2": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "bsmtfintype2",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7220,8 +7220,8 @@
                 }
             },
             "bsmtfinsf2": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "bsmtfinsf2",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7342,8 +7342,8 @@
                 }
             },
             "bsmtunfsf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "bsmtunfsf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7464,8 +7464,8 @@
                 }
             },
             "totalbsmtsf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "totalbsmtsf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7586,8 +7586,8 @@
                 }
             },
             "heating": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "heating",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7609,8 +7609,8 @@
                 }
             },
             "heatingqc": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "heatingqc",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7631,8 +7631,8 @@
                 }
             },
             "centralair": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "centralair",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7650,8 +7650,8 @@
                 }
             },
             "electrical": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "electrical",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7672,8 +7672,8 @@
                 }
             },
             "1stflrsf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "1stflrsf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7794,8 +7794,8 @@
                 }
             },
             "2ndflrsf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "2ndflrsf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -7916,8 +7916,8 @@
                 }
             },
             "lowqualfinsf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "lowqualfinsf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -8038,8 +8038,8 @@
                 }
             },
             "grlivarea": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "grlivarea",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -8160,8 +8160,8 @@
                 }
             },
             "bsmtfullbath": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "bsmtfullbath",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -8282,8 +8282,8 @@
                 }
             },
             "bsmthalfbath": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "bsmthalfbath",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -8404,8 +8404,8 @@
                 }
             },
             "fullbath": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "fullbath",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -8526,8 +8526,8 @@
                 }
             },
             "halfbath": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "halfbath",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -8648,8 +8648,8 @@
                 }
             },
             "bedroomabvgr": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "bedroomabvgr",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -8770,8 +8770,8 @@
                 }
             },
             "kitchenabvgr": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "kitchenabvgr",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -8892,8 +8892,8 @@
                 }
             },
             "kitchenqual": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "kitchenqual",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -8913,8 +8913,8 @@
                 }
             },
             "totrmsabvgrd": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "totrmsabvgrd",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9035,8 +9035,8 @@
                 }
             },
             "functional": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "functional",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9059,8 +9059,8 @@
                 }
             },
             "fireplaces": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "fireplaces",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9181,8 +9181,8 @@
                 }
             },
             "fireplacequ": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "fireplacequ",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9203,8 +9203,8 @@
                 }
             },
             "garagetype": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "garagetype",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9217,8 +9217,8 @@
                             "BuiltIn": 0.11538461538461539,
                             "Detchd": 0.06196581196581197,
                             "Basment": 0.004273504273504274,
-                            "CarPort": 0.002136752136752137,
-                            "2Types": 0.002136752136752137
+                            "2Types": 0.002136752136752137,
+                            "CarPort": 0.002136752136752137
                         },
                         "pinv": 0.0,
                         "samplesize": 468
@@ -9226,8 +9226,8 @@
                 }
             },
             "garageyrblt": {
-                "feature_class": "raymon.profiling.components.FloatComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.FloatComponent",
+                "component": {
                     "name": "garageyrblt",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9348,8 +9348,8 @@
                 }
             },
             "garagefinish": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "garagefinish",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9368,8 +9368,8 @@
                 }
             },
             "garagecars": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "garagecars",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9490,8 +9490,8 @@
                 }
             },
             "garagearea": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "garagearea",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9612,8 +9612,8 @@
                 }
             },
             "garagequal": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "garagequal",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9634,8 +9634,8 @@
                 }
             },
             "garagecond": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "garagecond",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9656,8 +9656,8 @@
                 }
             },
             "paveddrive": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "paveddrive",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9676,8 +9676,8 @@
                 }
             },
             "wooddecksf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "wooddecksf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9798,8 +9798,8 @@
                 }
             },
             "openporchsf": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "openporchsf",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -9920,8 +9920,8 @@
                 }
             },
             "enclosedporch": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "enclosedporch",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -10042,8 +10042,8 @@
                 }
             },
             "3ssnporch": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "3ssnporch",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -10164,8 +10164,8 @@
                 }
             },
             "screenporch": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "screenporch",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -10286,8 +10286,8 @@
                 }
             },
             "poolarea": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "poolarea",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -10408,8 +10408,8 @@
                 }
             },
             "poolqc": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "poolqc",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -10419,8 +10419,8 @@
                     "stats": {
                         "frequencies": {
                             "Gd": 0.5,
-                            "Ex": 0.25,
-                            "Fa": 0.25
+                            "Fa": 0.25,
+                            "Ex": 0.25
                         },
                         "pinv": 0.9914529914529915,
                         "samplesize": 468
@@ -10428,8 +10428,8 @@
                 }
             },
             "fence": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "fence",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -10449,8 +10449,8 @@
                 }
             },
             "miscfeature": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "miscfeature",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -10460,8 +10460,8 @@
                     "stats": {
                         "frequencies": {
                             "Shed": 0.8571428571428571,
-                            "Gar2": 0.07142857142857142,
                             "TenC": 0.07142857142857142,
+                            "Gar2": 0.07142857142857142,
                             "Othr": 0
                         },
                         "pinv": 0.9700854700854701,
@@ -10470,8 +10470,8 @@
                 }
             },
             "miscval": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "miscval",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -10592,8 +10592,8 @@
                 }
             },
             "mosold": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "mosold",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -10714,8 +10714,8 @@
                 }
             },
             "yrsold": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "yrsold",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -10836,8 +10836,8 @@
                 }
             },
             "saletype": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "saletype",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -10849,10 +10849,10 @@
                             "WD": 0.7884615384615384,
                             "New": 0.18803418803418803,
                             "COD": 0.014957264957264958,
-                            "ConLw": 0.002136752136752137,
-                            "ConLI": 0.002136752136752137,
                             "Con": 0.002136752136752137,
+                            "ConLw": 0.002136752136752137,
                             "CWD": 0.002136752136752137,
+                            "ConLI": 0.002136752136752137,
                             "ConLD": 0,
                             "Oth": 0
                         },
@@ -10862,8 +10862,8 @@
                 }
             },
             "salecondition": {
-                "feature_class": "raymon.profiling.components.CategoricComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.CategoricComponent",
+                "component": {
                     "name": "salecondition",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -10875,8 +10875,8 @@
                             "Normal": 0.7670940170940171,
                             "Partial": 0.18803418803418803,
                             "Abnorml": 0.03632478632478633,
-                            "Alloca": 0.004273504273504274,
                             "Family": 0.004273504273504274,
+                            "Alloca": 0.004273504273504274,
                             "AdjLand": 0
                         },
                         "pinv": 0.0,
@@ -10885,8 +10885,8 @@
                 }
             },
             "saleprice": {
-                "feature_class": "raymon.profiling.components.IntComponent",
-                "feature": {
+                "component_class": "raymon.profiling.components.IntComponent",
+                "component": {
                     "name": "saleprice",
                     "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                     "extractor_state": {
@@ -11017,880 +11017,1040 @@
                 "drift": {
                     "drift": 0.16,
                     "drift_idx": 45,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "mszoning": {
                 "drift": {
                     "drift": 0.18830989798731734,
                     "drift_idx": "RM",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "lotfrontage": {
                 "drift": {
                     "drift": 0.27,
                     "drift_idx": 58,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.012510339123242342
+                    "integrity": 0.012510339123242342,
+                    "alert": 1
                 }
             },
             "lotarea": {
                 "drift": {
                     "drift": 0.2899137931034483,
                     "drift_idx": 67,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "street": {
                 "drift": {
                     "drift": 0.002903570443893024,
                     "drift_idx": "Grvl",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "alley": {
                 "drift": {
                     "drift": 0.3385964912280702,
                     "drift_idx": "Grvl",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.044561621174524446
+                    "integrity": 0.044561621174524446,
+                    "alert": 1
                 }
             },
             "lotshape": {
                 "drift": {
                     "drift": 0.2217311138682106,
                     "drift_idx": "Reg",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "landcontour": {
                 "drift": {
                     "drift": 0.03520471464019851,
                     "drift_idx": "Bnk",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "utilities": {
                 "drift": {
                     "drift": 0.0010080645161290322,
                     "drift_idx": "NoSeWa",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "lotconfig": {
                 "drift": {
                     "drift": 0.043613868210642406,
                     "drift_idx": "CulDSac",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "landslope": {
                 "drift": {
                     "drift": 0.031439550592776366,
                     "drift_idx": "Gtl",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "neighborhood": {
                 "drift": {
                     "drift": 0.14190446650124067,
                     "drift_idx": "NAmes",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "condition1": {
                 "drift": {
                     "drift": 0.06638578715191623,
                     "drift_idx": "Norm",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "condition2": {
                 "drift": {
                     "drift": 0.004273504273504274,
                     "drift_idx": "PosN",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "bldgtype": {
                 "drift": {
                     "drift": 0.07840501792114696,
                     "drift_idx": "1Fam",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "housestyle": {
                 "drift": {
                     "drift": 0.21811242073338846,
                     "drift_idx": "2Story",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "overallqual": {
                 "drift": {
                     "drift": 0.59,
                     "drift_idx": 52,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "overallcond": {
                 "drift": {
                     "drift": 0.23,
                     "drift_idx": 9,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "yearbuilt": {
                 "drift": {
                     "drift": 0.515,
                     "drift_idx": 75,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "yearremodadd": {
                 "drift": {
                     "drift": 0.43,
                     "drift_idx": 56,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "roofstyle": {
                 "drift": {
                     "drift": 0.09354321753515304,
                     "drift_idx": "Gable",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "roofmatl": {
                 "drift": {
                     "drift": 0.01467293906810041,
                     "drift_idx": "CompShg",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "exterior1st": {
                 "drift": {
                     "drift": 0.2701957540667218,
                     "drift_idx": "VinylSd",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "exterior2nd": {
                 "drift": {
                     "drift": 0.27185001378549767,
                     "drift_idx": "VinylSd",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "masvnrtype": {
                 "drift": {
                     "drift": 0.2806867009156158,
                     "drift_idx": "None",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.013949200441135925
+                    "integrity": 0.013949200441135925,
+                    "alert": 1
                 }
             },
             "masvnrarea": {
                 "drift": {
                     "drift": 0.28,
                     "drift_idx": 0,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.013949200441135925
+                    "integrity": 0.013949200441135925,
+                    "alert": 1
                 }
             },
             "exterqual": {
                 "drift": {
                     "drift": 0.5516525365315688,
                     "drift_idx": "TA",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "extercond": {
                 "drift": {
                     "drift": 0.05993245106148326,
                     "drift_idx": "TA",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "foundation": {
                 "drift": {
                     "drift": 0.4484680865729253,
                     "drift_idx": "PConc",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "bsmtqual": {
                 "drift": {
                     "drift": 0.4589429546737387,
                     "drift_idx": "TA",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.03415357044389303
+                    "integrity": -0.03415357044389303,
+                    "alert": 0
                 }
             },
             "bsmtcond": {
                 "drift": {
                     "drift": 0.04037836094361767,
                     "drift_idx": "Gd",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.03415357044389303
+                    "integrity": -0.03415357044389303,
+                    "alert": 0
                 }
             },
             "bsmtexposure": {
                 "drift": {
                     "drift": 0.24037028390827309,
                     "drift_idx": "No",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.03201681830714089
+                    "integrity": -0.03201681830714089,
+                    "alert": 0
                 }
             },
             "bsmtfintype1": {
                 "drift": {
                     "drift": 0.33091351365880317,
                     "drift_idx": "GLQ",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.03415357044389303
+                    "integrity": -0.03415357044389303,
+                    "alert": 0
                 }
             },
             "bsmtfinsf1": {
                 "drift": {
                     "drift": 0.24826086956521734,
                     "drift_idx": 168,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "bsmtfintype2": {
                 "drift": {
                     "drift": 0.042770305457288105,
                     "drift_idx": "Unf",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.03201681830714089
+                    "integrity": -0.03201681830714089,
+                    "alert": 0
                 }
             },
             "bsmtfinsf2": {
                 "drift": {
                     "drift": 0.04,
                     "drift_idx": 0,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "bsmtunfsf": {
                 "drift": {
                     "drift": 0.1621428571428571,
                     "drift_idx": 90,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "totalbsmtsf": {
                 "drift": {
                     "drift": 0.4461111111111111,
                     "drift_idx": 81,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "heating": {
                 "drift": {
                     "drift": 0.013389164598842096,
                     "drift_idx": "GasA",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "heatingqc": {
                 "drift": {
                     "drift": 0.3694341053212021,
                     "drift_idx": "Ex",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "centralair": {
                 "drift": {
                     "drift": 0.08318686242073339,
                     "drift_idx": "N",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "electrical": {
                 "drift": {
                     "drift": 0.11669771533545503,
                     "drift_idx": "SBrkr",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.0010080645161290322
+                    "integrity": -0.0010080645161290322,
+                    "alert": 0
                 }
             },
             "1stflrsf": {
                 "drift": {
                     "drift": 0.41,
                     "drift_idx": 72,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "2ndflrsf": {
                 "drift": {
                     "drift": 0.2685714285714286,
                     "drift_idx": 155,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "lowqualfinsf": {
                 "drift": {
                     "drift": 0.02,
                     "drift_idx": 0,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "grlivarea": {
                 "drift": {
                     "drift": 0.5308333333333333,
                     "drift_idx": 112,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "bsmtfullbath": {
                 "drift": {
                     "drift": 0.15,
                     "drift_idx": 0,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "bsmthalfbath": {
                 "drift": {
                     "drift": 0.02,
                     "drift_idx": 0,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "fullbath": {
                 "drift": {
                     "drift": 0.48,
                     "drift_idx": 1,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "halfbath": {
                 "drift": {
                     "drift": 0.24,
                     "drift_idx": 0,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "bedroomabvgr": {
                 "drift": {
                     "drift": 0.1,
                     "drift_idx": 4,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "kitchenabvgr": {
                 "drift": {
                     "drift": 0.06,
                     "drift_idx": 1,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "kitchenqual": {
                 "drift": {
                     "drift": 0.5082109870416323,
                     "drift_idx": "TA",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "totrmsabvgrd": {
                 "drift": {
                     "drift": 0.38,
                     "drift_idx": 35,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "functional": {
                 "drift": {
                     "drift": 0.04419975186104219,
                     "drift_idx": "Typ",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "fireplaces": {
                 "drift": {
                     "drift": 0.39,
                     "drift_idx": 0,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "fireplacequ": {
                 "drift": {
                     "drift": 0.12435037068575178,
                     "drift_idx": "Gd",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.38422766749379655
+                    "integrity": -0.38422766749379655,
+                    "alert": 0
                 }
             },
             "garagetype": {
                 "drift": {
                     "drift": 0.33100894105284884,
                     "drift_idx": "Detchd",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.08165322580645161
+                    "integrity": -0.08165322580645161,
+                    "alert": 0
                 }
             },
             "garageyrblt": {
                 "drift": {
                     "drift": 0.47,
                     "drift_idx": 72,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.08165322580645161
+                    "integrity": -0.08165322580645161,
+                    "alert": 0
                 }
             },
             "garagefinish": {
                 "drift": {
                     "drift": 0.453866325161605,
                     "drift_idx": "Unf",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.08165322580645161
+                    "integrity": -0.08165322580645161,
+                    "alert": 0
                 }
             },
             "garagecars": {
                 "drift": {
                     "drift": 0.4,
                     "drift_idx": 9,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "garagearea": {
                 "drift": {
                     "drift": 0.45,
                     "drift_idx": 76,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "garagequal": {
                 "drift": {
                     "drift": 0.039751564449698365,
                     "drift_idx": "Fa",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.08165322580645161
+                    "integrity": -0.08165322580645161,
+                    "alert": 0
                 }
             },
             "garagecond": {
                 "drift": {
                     "drift": 0.04524003865386961,
                     "drift_idx": "TA",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.08165322580645161
+                    "integrity": -0.08165322580645161,
+                    "alert": 0
                 }
             },
             "paveddrive": {
                 "drift": {
                     "drift": 0.0895195754066721,
                     "drift_idx": "Y",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "wooddecksf": {
                 "drift": {
                     "drift": 0.28,
                     "drift_idx": 71,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "openporchsf": {
                 "drift": {
                     "drift": 0.41,
                     "drift_idx": 59,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "enclosedporch": {
                 "drift": {
                     "drift": 0.13,
                     "drift_idx": 0,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "3ssnporch": {
                 "drift": {
                     "drift": 0.011503267973856169,
                     "drift_idx": 99,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "screenporch": {
                 "drift": {
                     "drift": 0.05529411764705884,
                     "drift_idx": 191,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "poolarea": {
                 "drift": {
                     "drift": 0.01,
                     "drift_idx": 201,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "poolqc": {
                 "drift": {
                     "drift": 0.16666666666666669,
                     "drift_idx": "Gd",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": -0.0,
-                    "integrity": -0.005522814998621395
+                    "integrity": -0.005522814998621395,
+                    "alert": 0
                 }
             },
             "fence": {
                 "drift": {
                     "drift": 0.2215767634854772,
                     "drift_idx": "GdPrv",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.15747346291701125
+                    "integrity": 0.15747346291701125,
+                    "alert": 1
                 }
             },
             "miscfeature": {
                 "drift": {
                     "drift": 0.07142857142857142,
                     "drift_idx": "TenC",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.010408050730631335
+                    "integrity": 0.010408050730631335,
+                    "alert": 1
                 }
             },
             "miscval": {
                 "drift": {
                     "drift": 0.01,
                     "drift_idx": 0,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "mosold": {
                 "drift": {
                     "drift": 0.07,
                     "drift_idx": 40,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "yrsold": {
                 "drift": {
                     "drift": 0.01,
                     "drift_idx": 22,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 0
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "saletype": {
                 "drift": {
                     "drift": 0.15375999448580094,
                     "drift_idx": "New",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "salecondition": {
                 "drift": {
                     "drift": 0.15073580093741384,
                     "drift_idx": "Partial",
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             },
             "saleprice": {
                 "drift": {
                     "drift": 0.75,
                     "drift_idx": 74,
-                    "weight": 0.0
+                    "weight": 0.0,
+                    "alert": 1
                 },
                 "integrity": {
                     "weight": 0.0,
-                    "integrity": 0.0
+                    "integrity": 0.0,
+                    "alert": 0
                 }
             }
         },
