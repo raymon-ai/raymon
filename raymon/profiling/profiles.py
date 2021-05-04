@@ -165,7 +165,7 @@ class ModelProfile(Serializable, Buildable):
 
     """Buildable Interface"""
 
-    def build(self, input=None, output=None, actual=None, silent=True):
+    def build(self, input=None, output=None, actual=None, domains={}, silent=True):
         if silent:
             ctx_mgr = NoOutput()
         else:
@@ -174,12 +174,13 @@ class ModelProfile(Serializable, Buildable):
         with ctx_mgr:
             for comp_type in COMPONENT_TYPES:
                 for component in getattr(self, comp_type).values():
+                    comp_domain = domains.get(comp_type, {}).get(component.name, None)
                     if comp_type == "input_components":
-                        component.build(data=input)
+                        component.build(data=input, domain=comp_domain)
                     elif comp_type == "output_components":
-                        component.build(data=output)
+                        component.build(data=output, domain=comp_domain)
                     elif comp_type == "actual_components":
-                        component.build(data=actual)
+                        component.build(data=actual, domain=comp_domain)
                     else:
                         component.build(data=[output, actual])
 

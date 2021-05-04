@@ -161,13 +161,11 @@ class NumericStats(Stats):
 
         if domain and domain[0] is not None:
             self.min = domain[0]
-
         else:
             self.min = float(np.min(data))
 
         if domain and domain[1] is not None:
             self.max = domain[1]
-
         else:
             self.max = float(np.max(data))
         valid = (self.min <= data) & (self.max >= data)

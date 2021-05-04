@@ -49,14 +49,14 @@ class Component(Serializable, Buildable, ABC):
         elif value is None:
             self._importance = 0
         else:
-            raise ValueError(f"feature importance for {self.name} must be a dict[str, Number]")
+            raise ValueError(f"Component importance for {self.name} must be a dict[str, Number]")
 
     """Serializable interface """
 
     def to_jcr(self):
         data = {
-            "feature_class": self.class2str(),
-            "feature": {
+            "component_class": self.class2str(),
+            "component": {
                 "name": self.name,
                 "extractor_class": self.extractor.class2str(),
                 "extractor_state": self.extractor.to_jcr(),
@@ -68,8 +68,8 @@ class Component(Serializable, Buildable, ABC):
 
     @classmethod
     def from_jcr(cls, jcr):
-        classpath = jcr["feature_class"]
-        comp_jcr = jcr["feature"]
+        classpath = jcr["component_class"]
+        comp_jcr = jcr["component"]
         compclass = locate(classpath)
         if compclass is None:
             raise NameError(f"Could not locate classpath {compclass}")
@@ -79,7 +79,7 @@ class Component(Serializable, Buildable, ABC):
     def build_extractor(self, data):
         self.extractor.build(data)
 
-    def build_stats(self, data):
+    def build_stats(self, data, domain=None):
         if isinstance(self.extractor, SimpleExtractor):
             features = self.extractor.extract_multiple(data)
         elif isinstance(self.extractor, ScoringExtractor):
@@ -87,13 +87,13 @@ class Component(Serializable, Buildable, ABC):
             features = self.extractor.extract_multiple(output=output, actual=actual)
         else:
             raise ProfileStateException(f"Unknown Extractor type for {self}: {type(self.extractor)}")
-        self.stats.build(features)
+        self.stats.build(features, domain=domain)
 
-    def build(self, data):
+    def build(self, data, domain=None):
         # Compile extractor
         self.build_extractor(data)
         # Configure stats
-        self.build_stats(data)
+        self.build_stats(data, domain=domain)
 
     def is_built(self):
         return self.extractor.is_built() and self.stats.is_built()
