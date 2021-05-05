@@ -46,15 +46,15 @@ class Trace:
     def tag(self, tags):
         self.logger.tag(trace_id=str(self), tags=tags)
 
-    def log_input(self, profile, data):
+    def log_profile_input(self, profile, data):
         ref = f"#{profile.name}@{profile.version}-input"
         self.logger.log(trace_id=str(self), ref=ref, data=data)
 
-    def log_output(self, profile, data):
+    def log_profile_output(self, profile, data):
         ref = f"#{profile.name}@{profile.version}-output"
         self.logger.log(trace_id=str(self), ref=ref, data=data)
 
-    def log_actual(self, profile, data):
+    def log_profile_actual(self, profile, data):
         ref = f"#{profile.name}@{profile.version}-actual"
         self.logger.log(trace_id=str(self), ref=ref, data=data)
 

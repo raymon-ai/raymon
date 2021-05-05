@@ -1,6 +1,6 @@
 <template>
   <div class="schemaView mt-3">
-    <h1> Feature: <span class="codeLike">{{featureName}} </span> </h1>
+    <h1> Feature: <span class="codeLike">{{componentName}} </span> </h1>
     <VuePlotly
       :data="plotData"
       :layout="plotLayout"
@@ -71,7 +71,7 @@ import VuePlotly from "@statnett/vue-plotly";
 import { red, green, blue, yellow } from "@/colors.js";
 export default {
   components: { VuePlotly },
-  props: ["schemaDef", "otherDef", "componentType", "featureName"],
+  props: ["schemaDef", "otherDef", "componentType", "componentName"],
   data: function () {
     return {
       red,
@@ -98,7 +98,7 @@ export default {
           pad: 0,
         },
         xaxis: {
-          title: this.featureName,
+          title: this.componentName,
         },
         yaxis: {
           title: "cdf",
@@ -106,27 +106,27 @@ export default {
       };
     },
 
-    featureData() {
-      return this.schemaDef[this.componentType][this.featureName];
+    componentData() {
+      return this.schemaDef[this.componentType][this.componentName];
     },
     otherFeatureData() {
-      return this.otherDef[this.componentType][this.featureName];
+      return this.otherDef[this.componentType][this.componentName];
     },
-    featureType() {
-      const splits = this.featureData.feature_class.split(".");
+    componentDataType() {
+      const splits = this.componentData.component_class.split(".");
       return splits.slice(-1)[0];
     },
 
     stats() {
-      return this.featureData.feature.stats;
+      return this.componentData.component.stats;
     },
     otherStats() {
-      return this.otherFeatureData.feature.stats;
+      return this.otherFeatureData.component.stats;
     },
     isNumeric() {
       return (
-        this.featureType.toLowerCase() === "intcomponent" ||
-        this.featureType.toLowerCase() === "floatcomponent"
+        this.componentDataType.toLowerCase() === "intcomponent" ||
+        this.componentDataType.toLowerCase() === "floatcomponent"
       );
     },
     min() {

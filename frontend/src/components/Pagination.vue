@@ -27,7 +27,7 @@ export default {
   data: function () {
     return {
       // alltraces: [],
-      featureFilter: "",
+      componentFilter: "",
     };
   },
   methods: {

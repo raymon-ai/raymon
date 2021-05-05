@@ -13,7 +13,7 @@ jobs:
       TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
       TWINE_PASSWORD: ""
       TWINE_REPOSITORY_URL: ${{ secrets.TWINE_REPOSITORY_URL }}
-      MIN_COVERAGE: 85
+      MIN_COVERAGE: 70
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}

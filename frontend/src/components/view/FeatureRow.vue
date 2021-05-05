@@ -6,14 +6,14 @@
       <a
         href="#"
         @click="goToDetailView"
-      >{{ featureName }}</a>
+      >{{ componentName }}</a>
 
     </td>
     <td class="px-2 codeLikeContent">
-      {{ featureType }}
+      {{ componentType }}
     </td>
     <!-- <td class="px-2 codeLikeContent">
-      {{ featureImportance }}
+      {{ componentImportance }}
     </td> -->
     <td class="px-2 codeLikeContent">
       {{min}}
@@ -44,7 +44,7 @@ import VuePlotly from "@statnett/vue-plotly";
 import { red, green, blue, yellow } from "@/colors.js";
 export default {
   components: { VuePlotly },
-  props: ["featureData", "poi"],
+  props: ["componentData", "poi"],
   data: function () {
     return {
       plotLayout: {
@@ -68,12 +68,12 @@ export default {
   },
   computed: {
     stats() {
-      return this.featureData.feature.stats;
+      return this.componentData.component.stats;
     },
     isNumeric() {
       return (
-        this.featureType.toLowerCase() === "int" ||
-        this.featureType.toLowerCase() === "float"
+        this.componentType.toLowerCase() === "int" ||
+        this.componentType.toLowerCase() === "float"
       );
     },
     min() {
@@ -93,15 +93,15 @@ export default {
     pinv() {
       return this.stats.pinv.toFixed(2);
     },
-    featureName() {
-      return this.featureData.feature.name;
+    componentName() {
+      return this.componentData.component.name;
     },
-    featureType() {
-      const splits = this.featureData.feature_class.split(".");
+    componentType() {
+      const splits = this.componentData.component_class.split(".");
       return splits.slice(-1)[0].replace("Component", "");
     },
-    featureImportance() {
-      return this.featureData.feature.importance;
+    componentImportance() {
+      return this.componentData.component.importance;
     },
     plotData() {
       if (this.isNumeric) {
@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     goToDetailView() {
-      this.$parent.$emit("setPage", this.featureName);
+      this.$parent.$emit("setPage", this.componentName);
     },
     getNumberPlotData() {
       let plots = [

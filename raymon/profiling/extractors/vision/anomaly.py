@@ -58,10 +58,10 @@ class DN2AnomalyScorer(KMeansOutlierScorer):
         embeddings = torch.zeros(size=(len(data), 1000))
         for batchidx, batchtf in enumerate(dataloader):
             # batchtf = self.tfs(batch)
-            features = self.mobilenet(batchtf).detach()  # .numpy()
+            components = self.mobilenet(batchtf).detach()  # .numpy()
             startidx = batchidx * batch_size
-            stopidx = startidx + len(features)
-            embeddings[startidx:stopidx, :] = features
+            stopidx = startidx + len(components)
+            embeddings[startidx:stopidx, :] = components
 
         embeddings = embeddings[embeddings.abs().sum(axis=1) != 0]
         embeddings = embeddings.numpy()
