@@ -1,4 +1,5 @@
 -r requirements.txt
+-r docs/requirements.txt
 twine
 coverage
 coverage-badge  # Required for github actions
@@ -10,5 +11,4 @@ pip-licenses
 pylint
 bump2version
 sphinx  # Docs
-furo  # Sphinx theme
-myst-parser  # markdown parser for Sphinx
+
