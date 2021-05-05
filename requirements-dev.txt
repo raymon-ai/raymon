@@ -9,3 +9,6 @@ black
 pip-licenses
 pylint
 bump2version
+sphinx  # Docs
+furo  # Sphinx theme
+myst-parser  # markdown parser for Sphinx
