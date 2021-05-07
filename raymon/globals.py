@@ -1,10 +1,3 @@
-import json
-
-import tempfile
-import time
-import webbrowser
-from multiprocessing import Process
-
 from abc import ABC, abstractmethod
 
 
@@ -44,8 +37,7 @@ class Serializable(ABC):
 
         Returns
         -------
-        obj : this
-            An object with type of your extractor.
+        obj : type(this)
         """
         # Load a json-compatible representation
         raise NotImplementedError()

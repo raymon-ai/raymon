@@ -8,7 +8,9 @@ import pendulum
 import os
 from pathlib import Path
 
-from raymon.api import RaymonAPI
+from raymon.tags import Tag
+from raymon.globals import DataException
+from raymon import RaymonAPI
 
 MB = 1000000
 
@@ -19,6 +21,12 @@ class RaymonLoggerBase(ABC):
         self.setup_logger(stdout=True)
 
     def structure(self, trace_id, ref, data):
+        if isinstance(data, list):
+            data = [d.to_jcr() for d in data]
+        elif isinstance(data, str):
+            data = data
+        else:
+            data = data.to_jcr()
         return {
             "timestamp": str(pendulum.now("utc")),
             "trace_id": str(trace_id),
@@ -53,6 +61,18 @@ class RaymonLoggerBase(ABC):
     @abstractmethod
     def tag(self, trace_id, tags):
         pass
+
+    def parse_tags(self, tags):
+        parsed_tags = []
+        for tag in tags:
+            if isinstance(tag, Tag):
+                parsed_tags.append(tag)
+            elif isinstance(tag, dict):
+                parsed = Tag.from_jcr(tag)
+                parsed_tags.append(parsed)
+            else:
+                raise DataException(f"{type(tag)} not supported as Tag")
+        return parsed_tags
 
 
 class RaymonFileLogger(RaymonLoggerBase):
@@ -99,6 +119,7 @@ class RaymonFileLogger(RaymonLoggerBase):
         self.logger.info(f"Logged ref {ref} data to textfile.", extra=jcr)
 
     def tag(self, trace_id, tags):
+        tags = self.parse_tags(tags)
         jcr = self.structure(trace_id=trace_id, ref=None, data=tags)
         kafka_msg = {"type": "tags", "jcr": jcr}
         self.data_logger.info(json.dumps(kafka_msg))
@@ -137,7 +158,7 @@ class RaymonAPILogger(RaymonLoggerBase):
         self.logger.info(f"Data logged at {ref}. Status: {status}", extra=jcr)
 
     def tag(self, trace_id, tags):
-        # TODO validate tags
+        tags = self.parse_tags(tags)
         jcr = self.structure(trace_id=trace_id, ref=None, data=tags)
         resp = self.api.post(
             route=f"projects/{self.project_id}/rays/{trace_id}/tags",

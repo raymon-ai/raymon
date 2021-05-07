@@ -3,47 +3,68 @@ import numpy as np
 
 
 def _parse_trace_id(trace_id):
-    # rayid is a tuple, with an element per level
     if isinstance(trace_id, str):
         return (trace_id,)
-    elif isinstance(trace_id, tuple):
-        return trace_id
-    elif trace_id is None:
+    # elif isinstance(trace_id, tuple):
+    #     return trace_id
+    else:
         return (str(uuid.uuid4()),)
 
 
-def _match_prefix(raylist):
-    ids = [str(ray) for ray in raylist]
-    shortest_idx = np.argmin(len(idstr) for idstr in ids)
-    shortest = ids[shortest_idx]
-
-    for i in range(len(shortest) - 1):
-        if not all(idstr.startswith(shortest[: i + 1]) for idstr in ids):
-            if i == 1:
-                raise Exception(f"No common prefix found for rays: {raylist}")
-            break
-    match_len = i
-    prefix = tuple(shortest[:match_len].split(":"))
-    return prefix
-
-
 class Trace:
-    def __init__(self, logger, trace_id=None, pred=None):
+
+    """The Trace class can be used to trace data trough your system. You can use a Trace object to log text just like any other logger, but you can also use it to log data and tag the traces with metadata.
+
+    Parameters
+    ----------
+
+    logger : :class:`RaymonLoggerBase`
+        The logger to use. Can be either :class:`RaymonFileLogger` for logging to a text file, or :class:`RaymonAPILogger` for user direct API calls to the backend.
+    trace_id : str
+        The id for the trace. If None, a uuid will be auto-generated.
+
+    """
+
+    def __init__(self, logger, trace_id=None):
+
         self.trace_id = _parse_trace_id(trace_id)
         self.logger = logger
-        self.pred = pred
 
     """
     Methods related to data logging
     """
 
     def info(self, text):
+        """
+        Log a text message.
+
+        Parameters
+        ----------
+        text : str
+            The string you want to log to the backend.
+        """
         self.logger.info(trace_id=str(self), text=text)
 
     def log(self, ref, data):
+        """Log a data artefact to the backend.
+
+        Parameters
+        ----------
+        ref : str
+            A reference name to refer to this artefact later. This reference name, in combination with the trace id should be unique.
+        data : raymon.types.RaymonDataType
+            The data you want to log to the backend.
+        """
         self.logger.log(trace_id=str(self), ref=ref, data=data)
 
     def tag(self, tags):
+        """Tag the trace with given tags.
+
+        Parameters
+        ----------
+        tags : list of dicts or list of :class:`raymon.Tag`
+             A
+        """
         self.logger.tag(trace_id=str(self), tags=tags)
 
     def log_profile_input(self, profile, data):
@@ -57,28 +78,3 @@ class Trace:
     def log_profile_actual(self, profile, data):
         ref = f"#{profile.name}@{profile.version}-actual"
         self.logger.log(trace_id=str(self), ref=ref, data=data)
-
-    """
-    Methods related to splitting and merging
-    """
-
-    def split(self, suffix=None):
-        if suffix is None:
-            suffix = uuid.uuid4()
-        new_id = self.trace_id + (suffix,)
-        return Trace(self.logger, trace_id=new_id, pred=self)
-
-    @classmethod
-    def merge(cls, raylist, suffix):
-        # Check whether it is a list
-        if not isinstance(raylist, list):
-            raise ValueError("Input type should be a list of Rays")
-        # Find prefix that matches all rays
-        prefix = _match_prefix(raylist)
-        ref_logger = raylist[0].logger
-        # Add suffix
-        new_id = prefix + (suffix,)
-        return Trace(ref_logger, trace_id=new_id, pred=raylist)
-
-    def __str__(self):
-        return ":".join(self.trace_id)

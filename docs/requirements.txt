@@ -1,1 +1,1 @@
-sphinx-press-theme  # Sphinx theme
+furo  # Sphinx theme
