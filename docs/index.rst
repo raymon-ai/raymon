@@ -74,6 +74,7 @@ Table of Contents
 
    install_deploy
    logging_tracing
+   profiling
 
 
 Indices and tables
