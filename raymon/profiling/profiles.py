@@ -171,7 +171,9 @@ class ModelProfile(Serializable, Buildable):
             comp_types[idfr] = components
         return cls(name=name, version=version, **comp_types)
 
-    def save(self, fpath):
+    def save(self, dir):
+        dir = Path(dir)
+        fpath = dir / f"{self.name}@{self.version}.json"
         with open(fpath, "w") as f:
             json.dump(self.to_jcr(), f, indent=4)
 

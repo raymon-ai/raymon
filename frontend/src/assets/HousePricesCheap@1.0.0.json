@@ -1,6 +1,6 @@
 {
-    "name": "houses_cheap",
-    "version": "0.0.1",
+    "name": "HousePricesCheap",
+    "version": "1.0.0",
     "input_components": {
         "mssubclass": {
             "component_class": "raymon.profiling.components.IntComponent",
@@ -14,8 +14,8 @@
                 "stats": {
                     "min": 20.0,
                     "max": 190.0,
-                    "mean": 58.457661290322584,
-                    "std": 45.54929337309747,
+                    "mean": 60.839416058394164,
+                    "std": 48.4977587828374,
                     "pinv": 0.0,
                     "percentiles": [
                         20.0,
@@ -55,9 +55,8 @@
                         20.0,
                         20.0,
                         20.0,
-                        30.0,
-                        30.0,
-                        30.0,
+                        20.0,
+                        20.0,
                         30.0,
                         30.0,
                         30.0,
@@ -75,7 +74,6 @@
                         50.0,
                         50.0,
                         50.0,
-                        50.0,
                         60.0,
                         60.0,
                         60.0,
@@ -87,7 +85,7 @@
                         60.0,
                         60.0,
                         60.0,
-                        70.0,
+                        60.0,
                         70.0,
                         70.0,
                         70.0,
@@ -97,10 +95,9 @@
                         80.0,
                         80.0,
                         80.0,
-                        80.0,
                         85.0,
                         85.0,
-                        90.0,
+                        85.0,
                         90.0,
                         90.0,
                         90.0,
@@ -109,162 +106,21 @@
                         120.0,
                         120.0,
                         120.0,
-                        160.0,
+                        120.0,
+                        120.0,
                         160.0,
                         160.0,
                         160.0,
                         160.0,
                         160.0,
                         180.0,
+                        180.0,
+                        190.0,
                         190.0,
                         190.0,
                         190.0
                     ],
-                    "samplesize": 992
-                }
-            }
-        },
-        "mszoning": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "mszoning",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "MSZoning"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "RL": 0.7389112903225806,
-                        "RM": 0.20967741935483872,
-                        "FV": 0.02620967741935484,
-                        "RH": 0.015120967741935484,
-                        "C (all)": 0.010080645161290322
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "lotfrontage": {
-            "component_class": "raymon.profiling.components.FloatComponent",
-            "component": {
-                "name": "lotfrontage",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "LotFrontage"
-                },
-                "importance": 0,
-                "stats": {
-                    "min": 21.0,
-                    "max": 313.0,
-                    "mean": 66.39024390243902,
-                    "std": 23.978067263576712,
-                    "pinv": 0.17338709677419356,
-                    "percentiles": [
-                        21.0,
-                        21.0,
-                        21.0,
-                        24.0,
-                        24.0,
-                        30.0,
-                        34.0,
-                        35.0,
-                        36.0,
-                        40.0,
-                        40.0,
-                        43.0,
-                        45.0,
-                        49.0,
-                        50.0,
-                        50.0,
-                        50.0,
-                        50.0,
-                        50.0,
-                        50.0,
-                        51.0,
-                        51.0,
-                        52.0,
-                        53.0,
-                        55.0,
-                        55.0,
-                        56.0,
-                        57.0,
-                        58.0,
-                        59.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        60.0,
-                        62.0,
-                        63.0,
-                        64.0,
-                        64.0,
-                        65.0,
-                        65.0,
-                        65.0,
-                        66.0,
-                        67.0,
-                        67.0,
-                        68.0,
-                        69.0,
-                        70.0,
-                        70.0,
-                        70.0,
-                        70.0,
-                        70.0,
-                        70.0,
-                        70.0,
-                        71.0,
-                        72.0,
-                        73.0,
-                        73.0,
-                        74.0,
-                        75.0,
-                        75.0,
-                        75.0,
-                        75.0,
-                        76.0,
-                        78.0,
-                        78.0,
-                        79.0,
-                        80.0,
-                        80.0,
-                        80.0,
-                        80.0,
-                        80.0,
-                        80.0,
-                        81.0,
-                        82.0,
-                        84.0,
-                        85.0,
-                        85.0,
-                        88.0,
-                        90.0,
-                        90.0,
-                        92.0,
-                        94.0,
-                        97.0,
-                        100.0,
-                        105.0,
-                        114.0,
-                        120.0,
-                        134.0,
-                        313.0
-                    ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -278,393 +134,115 @@
                 },
                 "importance": 0,
                 "stats": {
-                    "min": 1300.0,
+                    "min": 1491.0,
                     "max": 63887.0,
-                    "mean": 9250.120967741936,
-                    "std": 4855.737395776029,
+                    "mean": 9024.978102189782,
+                    "std": 5419.362297129588,
                     "pinv": 0.0,
                     "percentiles": [
-                        1300.0,
+                        1491.0,
                         1680.0,
-                        1920.0,
+                        1890.0,
                         2268.0,
-                        2522.0,
-                        2665.0,
+                        2308.0,
+                        2628.0,
                         3182.0,
-                        3636.0,
+                        3363.0,
+                        3675.0,
                         4043.0,
-                        4280.0,
-                        4435.0,
-                        4608.0,
+                        4282.0,
+                        4438.0,
+                        4590.0,
                         5000.0,
-                        5381.0,
-                        5586.0,
-                        5825.0,
-                        6000.0,
+                        5395.0,
+                        5436.0,
+                        5600.0,
+                        5700.0,
                         6000.0,
                         6120.0,
                         6240.0,
-                        6305.0,
+                        6402.0,
                         6600.0,
-                        6897.0,
-                        6993.0,
-                        7024.0,
-                        7128.0,
+                        6780.0,
+                        7018.0,
+                        7175.0,
                         7200.0,
                         7200.0,
                         7200.0,
-                        7388.0,
-                        7472.0,
-                        7560.0,
-                        7677.0,
-                        7750.0,
+                        7252.0,
+                        7350.0,
+                        7420.0,
+                        7500.0,
+                        7588.0,
+                        7681.0,
                         7804.0,
-                        7917.0,
+                        7931.0,
                         7950.0,
-                        8072.0,
-                        8160.0,
+                        8000.0,
+                        8172.0,
                         8244.0,
-                        8314.0,
+                        8250.0,
+                        8335.0,
+                        8400.0,
                         8400.0,
                         8405.0,
-                        8470.0,
-                        8500.0,
-                        8544.0,
-                        8640.0,
-                        8741.0,
-                        8777.0,
-                        8816.0,
-                        8892.0,
-                        8960.0,
+                        8450.0,
+                        8480.0,
+                        8556.0,
+                        8658.0,
+                        8750.0,
+                        8791.0,
+                        8814.0,
+                        8885.0,
+                        8973.0,
                         9000.0,
-                        9056.0,
+                        9000.0,
+                        9042.0,
                         9100.0,
-                        9142.0,
-                        9230.0,
-                        9303.0,
-                        9400.0,
-                        9500.0,
-                        9590.0,
+                        9101.0,
+                        9170.0,
+                        9206.0,
+                        9248.0,
+                        9291.0,
+                        9405.0,
+                        9477.0,
+                        9560.0,
+                        9571.0,
                         9600.0,
                         9600.0,
                         9750.0,
-                        9800.0,
                         9858.0,
                         9945.0,
-                        10005.0,
-                        10125.0,
-                        10186.0,
-                        10246.0,
-                        10356.0,
-                        10420.0,
-                        10496.0,
-                        10624.0,
-                        10708.0,
+                        10012.0,
+                        10205.0,
+                        10261.0,
+                        10530.0,
+                        10690.0,
+                        10762.0,
+                        10780.0,
                         10800.0,
-                        10800.0,
-                        10921.0,
-                        11103.0,
-                        11235.0,
-                        11344.0,
-                        11500.0,
-                        11625.0,
-                        11782.0,
-                        11957.0,
-                        12150.0,
-                        12328.0,
-                        12508.0,
-                        12735.0,
+                        10920.0,
+                        11120.0,
+                        11333.0,
+                        11425.0,
+                        11584.0,
+                        11616.0,
+                        11664.0,
+                        11900.0,
+                        12358.0,
+                        12702.0,
+                        13000.0,
                         13072.0,
-                        13400.0,
-                        13650.0,
-                        13837.0,
-                        14375.0,
-                        15750.0,
-                        16669.0,
-                        18000.0,
-                        21750.0,
-                        27650.0,
+                        13517.0,
+                        13680.0,
+                        14112.0,
+                        14850.0,
+                        16466.0,
+                        21286.0,
+                        34650.0,
                         63887.0
                     ],
-                    "samplesize": 992
-                }
-            }
-        },
-        "street": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "street",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Street"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Pave": 0.9949596774193549,
-                        "Grvl": 0.005040322580645161
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "alley": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "alley",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Alley"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Grvl": 0.6052631578947368,
-                        "Pave": 0.39473684210526316
-                    },
-                    "pinv": 0.9233870967741935,
-                    "samplesize": 992
-                }
-            }
-        },
-        "lotshape": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "lotshape",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "LotShape"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Reg": 0.7046370967741935,
-                        "IR1": 0.2701612903225806,
-                        "IR2": 0.020161290322580645,
-                        "IR3": 0.005040322580645161
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "landcontour": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "landcontour",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "LandContour"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Lvl": 0.9012096774193549,
-                        "Bnk": 0.05443548387096774,
-                        "HLS": 0.02721774193548387,
-                        "Low": 0.017137096774193547
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "utilities": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "utilities",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Utilities"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "AllPub": 0.998991935483871,
-                        "NoSeWa": 0.0010080645161290322
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "lotconfig": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "lotconfig",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "LotConfig"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Inside": 0.7237903225806451,
-                        "Corner": 0.18548387096774194,
-                        "CulDSac": 0.05040322580645161,
-                        "FR2": 0.037298387096774195,
-                        "FR3": 0.0030241935483870967
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "landslope": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "landslope",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "LandSlope"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Gtl": 0.9566532258064516,
-                        "Mod": 0.03528225806451613,
-                        "Sev": 0.008064516129032258
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "neighborhood": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "neighborhood",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Neighborhood"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "NAmes": 0.19959677419354838,
-                        "OldTown": 0.10584677419354839,
-                        "Edwards": 0.09475806451612903,
-                        "CollgCr": 0.07560483870967742,
-                        "Sawyer": 0.0715725806451613,
-                        "BrkSide": 0.05342741935483871,
-                        "NWAmes": 0.047379032258064516,
-                        "Gilbert": 0.046370967741935484,
-                        "Mitchel": 0.04233870967741935,
-                        "SawyerW": 0.04032258064516129,
-                        "IDOTRR": 0.037298387096774195,
-                        "Somerst": 0.03326612903225806,
-                        "Crawfor": 0.02721774193548387,
-                        "SWISU": 0.02217741935483871,
-                        "MeadowV": 0.017137096774193547,
-                        "BrDale": 0.016129032258064516,
-                        "Timber": 0.016129032258064516,
-                        "ClearCr": 0.014112903225806451,
-                        "NridgHt": 0.012096774193548387,
-                        "NPkVill": 0.009072580645161291,
-                        "Blmngtn": 0.007056451612903226,
-                        "Veenker": 0.005040322580645161,
-                        "Blueste": 0.0020161290322580645,
-                        "NoRidge": 0.0020161290322580645,
-                        "StoneBr": 0.0020161290322580645
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "condition1": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "condition1",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Condition1"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Norm": 0.8417338709677419,
-                        "Feedr": 0.06955645161290322,
-                        "Artery": 0.04334677419354839,
-                        "RRAn": 0.018145161290322582,
-                        "RRAe": 0.011088709677419355,
-                        "PosN": 0.009072580645161291,
-                        "PosA": 0.0030241935483870967,
-                        "RRNn": 0.0030241935483870967,
-                        "RRNe": 0.0010080645161290322
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "condition2": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "condition2",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Condition2"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Norm": 0.9899193548387096,
-                        "Feedr": 0.005040322580645161,
-                        "Artery": 0.0020161290322580645,
-                        "RRNn": 0.0020161290322580645,
-                        "RRAn": 0.0010080645161290322
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "bldgtype": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "bldgtype",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "BldgType"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "1Fam": 0.8104838709677419,
-                        "TwnhsE": 0.0715725806451613,
-                        "Duplex": 0.05141129032258065,
-                        "Twnhs": 0.037298387096774195,
-                        "2fmCon": 0.029233870967741934
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "housestyle": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "housestyle",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "HouseStyle"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "1Story": 0.5131048387096774,
-                        "2Story": 0.23487903225806453,
-                        "1.5Fin": 0.13306451612903225,
-                        "SLvl": 0.05342741935483871,
-                        "SFoyer": 0.036290322580645164,
-                        "1.5Unf": 0.014112903225806451,
-                        "2.5Unf": 0.010080645161290322,
-                        "2.5Fin": 0.005040322580645161
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -680,13 +258,11 @@
                 "stats": {
                     "min": 1.0,
                     "max": 10.0,
-                    "mean": 5.536290322580645,
-                    "std": 1.096499906404491,
+                    "mean": 5.507299270072993,
+                    "std": 1.0915825942513282,
                     "pinv": 0.0,
                     "percentiles": [
                         1.0,
-                        3.0,
-                        3.0,
                         4.0,
                         4.0,
                         4.0,
@@ -698,6 +274,7 @@
                         4.0,
                         4.0,
                         4.0,
+                        4.0,
                         5.0,
                         5.0,
                         5.0,
@@ -736,9 +313,11 @@
                         5.0,
                         5.0,
                         5.0,
-                        6.0,
-                        6.0,
-                        6.0,
+                        5.0,
+                        5.0,
+                        5.0,
+                        5.0,
+                        5.0,
                         6.0,
                         6.0,
                         6.0,
@@ -781,12 +360,11 @@
                         7.0,
                         7.0,
                         7.0,
-                        8.0,
                         8.0,
                         8.0,
                         10.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -800,21 +378,18 @@
                 },
                 "importance": 0,
                 "stats": {
-                    "min": 1.0,
+                    "min": 3.0,
                     "max": 9.0,
-                    "mean": 5.649193548387097,
-                    "std": 1.1708486009770818,
+                    "mean": 5.718978102189781,
+                    "std": 1.176660674360361,
                     "pinv": 0.0,
                     "percentiles": [
-                        1.0,
+                        3.0,
+                        3.0,
                         3.0,
                         3.0,
                         4.0,
                         4.0,
-                        4.0,
-                        4.0,
-                        4.0,
-                        4.0,
                         5.0,
                         5.0,
                         5.0,
@@ -861,6 +436,8 @@
                         5.0,
                         5.0,
                         5.0,
+                        5.0,
+                        6.0,
                         6.0,
                         6.0,
                         6.0,
@@ -899,7 +476,8 @@
                         7.0,
                         7.0,
                         7.0,
-                        7.0,
+                        8.0,
+                        8.0,
                         8.0,
                         8.0,
                         8.0,
@@ -908,7 +486,7 @@
                         9.0,
                         9.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -922,70 +500,66 @@
                 },
                 "importance": 0,
                 "stats": {
-                    "min": 1872.0,
-                    "max": 2009.0,
-                    "mean": 1962.3629032258063,
-                    "std": 28.655478471140377,
+                    "min": 1880.0,
+                    "max": 2008.0,
+                    "mean": 1965.007299270073,
+                    "std": 27.44217446598185,
                     "pinv": 0.0,
                     "percentiles": [
-                        1872.0,
+                        1880.0,
                         1900.0,
-                        1904.0,
                         1910.0,
                         1910.0,
-                        1914.0,
-                        1915.0,
-                        1917.0,
-                        1920.0,
+                        1912.0,
                         1920.0,
                         1920.0,
                         1921.0,
-                        1923.0,
+                        1922.0,
                         1924.0,
                         1925.0,
                         1926.0,
-                        1928.0,
+                        1927.0,
                         1930.0,
-                        1931.0,
+                        1932.0,
                         1936.0,
-                        1937.0,
+                        1938.0,
                         1939.0,
                         1940.0,
                         1941.0,
-                        1941.0,
-                        1946.0,
+                        1942.0,
+                        1945.0,
                         1947.0,
                         1948.0,
                         1949.0,
                         1950.0,
-                        1950.0,
-                        1952.0,
+                        1951.0,
                         1953.0,
                         1954.0,
-                        1954.0,
+                        1955.0,
                         1955.0,
                         1955.0,
                         1956.0,
                         1957.0,
                         1957.0,
+                        1957.0,
+                        1958.0,
                         1958.0,
                         1958.0,
                         1959.0,
                         1959.0,
-                        1960.0,
-                        1960.0,
+                        1959.0,
+                        1959.0,
+                        1961.0,
                         1961.0,
                         1962.0,
-                        1963.0,
                         1963.0,
                         1964.0,
                         1965.0,
                         1965.0,
                         1966.0,
-                        1966.0,
-                        1967.0,
                         1968.0,
                         1968.0,
+                        1969.0,
                         1969.0,
                         1970.0,
                         1970.0,
@@ -1001,24 +575,28 @@
                         1977.0,
                         1977.0,
                         1977.0,
+                        1977.0,
                         1978.0,
                         1979.0,
                         1980.0,
+                        1982.0,
                         1983.0,
+                        1983.0,
+                        1984.0,
                         1985.0,
                         1988.0,
-                        1990.0,
                         1993.0,
                         1994.0,
                         1995.0,
                         1996.0,
+                        1997.0,
                         1998.0,
-                        1999.0,
                         2000.0,
-                        2000.0,
-                        2002.0,
                         2003.0,
                         2003.0,
+                        2003.0,
+                        2004.0,
+                        2004.0,
                         2004.0,
                         2004.0,
                         2004.0,
@@ -1026,11 +604,11 @@
                         2005.0,
                         2005.0,
                         2006.0,
+                        2006.0,
                         2007.0,
-                        2007.0,
-                        2009.0
+                        2008.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -1045,12 +623,11 @@
                 "importance": 0,
                 "stats": {
                     "min": 1950.0,
-                    "max": 2010.0,
-                    "mean": 1978.975806451613,
-                    "std": 20.813481870543484,
+                    "max": 2008.0,
+                    "mean": 1978.9233576642337,
+                    "std": 20.811930754228246,
                     "pinv": 0.0,
                     "percentiles": [
-                        1950.0,
                         1950.0,
                         1950.0,
                         1950.0,
@@ -1068,72 +645,73 @@
                         1950.0,
                         1950.0,
                         1951.0,
-                        1953.0,
                         1954.0,
                         1955.0,
+                        1955.0,
                         1956.0,
+                        1957.0,
                         1957.0,
                         1958.0,
                         1958.0,
                         1959.0,
-                        1960.0,
+                        1959.0,
+                        1959.0,
+                        1961.0,
                         1961.0,
                         1962.0,
                         1963.0,
-                        1963.0,
                         1965.0,
                         1965.0,
                         1966.0,
-                        1966.0,
-                        1967.0,
                         1968.0,
                         1969.0,
+                        1969.0,
+                        1969.0,
                         1970.0,
-                        1970.0,
-                        1970.0,
+                        1971.0,
                         1971.0,
                         1972.0,
                         1972.0,
                         1973.0,
                         1974.0,
-                        1975.0,
+                        1976.0,
                         1976.0,
                         1976.0,
                         1977.0,
                         1977.0,
                         1978.0,
                         1978.0,
-                        1980.0,
+                        1979.0,
                         1981.0,
-                        1982.0,
-                        1984.0,
+                        1983.0,
+                        1983.0,
+                        1985.0,
                         1987.0,
-                        1988.0,
+                        1989.0,
                         1990.0,
-                        1991.0,
                         1992.0,
                         1993.0,
-                        1994.0,
+                        1995.0,
                         1995.0,
                         1995.0,
                         1996.0,
                         1996.0,
                         1996.0,
                         1997.0,
+                        1997.0,
                         1998.0,
                         1998.0,
-                        1999.0,
-                        1999.0,
+                        2000.0,
                         2000.0,
                         2000.0,
                         2000.0,
                         2001.0,
-                        2001.0,
-                        2002.0,
                         2002.0,
                         2003.0,
                         2003.0,
                         2003.0,
+                        2003.0,
+                        2004.0,
                         2004.0,
                         2004.0,
                         2004.0,
@@ -1150,139 +728,9 @@
                         2007.0,
                         2008.0,
                         2008.0,
-                        2010.0
+                        2008.0
                     ],
-                    "samplesize": 992
-                }
-            }
-        },
-        "roofstyle": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "roofstyle",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "RoofStyle"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Gable": 0.811491935483871,
-                        "Hip": 0.1663306451612903,
-                        "Gambrel": 0.009072580645161291,
-                        "Flat": 0.008064516129032258,
-                        "Mansard": 0.005040322580645161
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "roofmatl": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "roofmatl",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "RoofMatl"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "CompShg": 0.9868951612903226,
-                        "Tar&Grv": 0.006048387096774193,
-                        "WdShake": 0.0020161290322580645,
-                        "ClyTile": 0.0010080645161290322,
-                        "Metal": 0.0010080645161290322,
-                        "Membran": 0.0010080645161290322,
-                        "Roll": 0.0010080645161290322,
-                        "WdShngl": 0.0010080645161290322
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "exterior1st": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "exterior1st",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Exterior1st"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "VinylSd": 0.2661290322580645,
-                        "MetalSd": 0.18346774193548387,
-                        "HdBoard": 0.18245967741935484,
-                        "Wd Sdng": 0.17338709677419356,
-                        "Plywood": 0.07661290322580645,
-                        "BrkFace": 0.02721774193548387,
-                        "CemntBd": 0.023185483870967742,
-                        "WdShing": 0.02217741935483871,
-                        "Stucco": 0.021169354838709676,
-                        "AsbShng": 0.020161290322580645,
-                        "BrkComm": 0.0020161290322580645,
-                        "AsphShn": 0.0010080645161290322,
-                        "CBlock": 0.0010080645161290322
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "exterior2nd": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "exterior2nd",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Exterior2nd"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "VinylSd": 0.25806451612903225,
-                        "MetalSd": 0.17943548387096775,
-                        "Wd Sdng": 0.16532258064516128,
-                        "HdBoard": 0.16330645161290322,
-                        "Plywood": 0.10383064516129033,
-                        "Wd Shng": 0.03225806451612903,
-                        "CmentBd": 0.02217741935483871,
-                        "Stucco": 0.02217741935483871,
-                        "AsbShng": 0.019153225806451613,
-                        "BrkFace": 0.015120967741935484,
-                        "Brk Cmn": 0.007056451612903226,
-                        "ImStucc": 0.005040322580645161,
-                        "Stone": 0.0030241935483870967,
-                        "AsphShn": 0.0030241935483870967,
-                        "CBlock": 0.0010080645161290322
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "masvnrtype": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "masvnrtype",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "MasVnrType"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "None": 0.6841574167507568,
-                        "BrkFace": 0.26437941473259335,
-                        "Stone": 0.039354187689202826,
-                        "BrkCmn": 0.012108980827447022
-                    },
-                    "pinv": 0.0010080645161290322,
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -1297,10 +745,10 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 1600.0,
-                    "mean": 65.81735620585268,
-                    "std": 134.27252113091092,
-                    "pinv": 0.0010080645161290322,
+                    "max": 796.0,
+                    "mean": 54.89377289377289,
+                    "std": 118.45918478274129,
+                    "pinv": 0.0036496350364963502,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -1371,192 +819,40 @@
                         0.0,
                         0.0,
                         0.0,
-                        27.0,
-                        44.0,
-                        53.0,
-                        70.0,
-                        80.0,
-                        84.0,
-                        90.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        14.0,
+                        46.0,
+                        57.0,
+                        65.0,
+                        76.0,
+                        81.0,
+                        86.0,
+                        95.0,
                         101.0,
                         106.0,
-                        115.0,
-                        120.0,
-                        132.0,
-                        142.0,
-                        149.0,
-                        163.0,
-                        170.0,
-                        176.0,
-                        182.0,
-                        196.0,
-                        207.0,
+                        108.0,
+                        117.0,
+                        140.0,
+                        148.0,
+                        168.0,
+                        169.0,
+                        183.0,
+                        206.0,
+                        212.0,
                         220.0,
                         240.0,
-                        255.0,
-                        266.0,
-                        288.0,
-                        310.0,
+                        256.0,
+                        263.0,
+                        297.0,
+                        318.0,
                         328.0,
-                        360.0,
-                        415.0,
-                        443.0,
-                        567.0,
-                        1600.0
+                        376.0,
+                        604.0,
+                        796.0
                     ],
-                    "samplesize": 992
-                }
-            }
-        },
-        "exterqual": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "exterqual",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "ExterQual"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "TA": 0.7973790322580645,
-                        "Gd": 0.1875,
-                        "Fa": 0.014112903225806451,
-                        "Ex": 0.0010080645161290322
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "extercond": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "extercond",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "ExterCond"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "TA": 0.8588709677419355,
-                        "Gd": 0.11088709677419355,
-                        "Fa": 0.02721774193548387,
-                        "Ex": 0.0020161290322580645,
-                        "Po": 0.0010080645161290322
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "foundation": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "foundation",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Foundation"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "CBlock": 0.5413306451612904,
-                        "PConc": 0.29939516129032256,
-                        "BrkTil": 0.13004032258064516,
-                        "Slab": 0.023185483870967742,
-                        "Stone": 0.004032258064516129,
-                        "Wood": 0.0020161290322580645
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "bsmtqual": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "bsmtqual",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "BsmtQual"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "TA": 0.606694560669456,
-                        "Gd": 0.34309623430962344,
-                        "Fa": 0.034518828451882845,
-                        "Ex": 0.015690376569037656
-                    },
-                    "pinv": 0.036290322580645164,
-                    "samplesize": 992
-                }
-            }
-        },
-        "bsmtcond": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "bsmtcond",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "BsmtCond"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "TA": 0.9225941422594143,
-                        "Fa": 0.04288702928870293,
-                        "Gd": 0.032426778242677826,
-                        "Po": 0.0020920502092050207
-                    },
-                    "pinv": 0.036290322580645164,
-                    "samplesize": 992
-                }
-            }
-        },
-        "bsmtexposure": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "bsmtexposure",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "BsmtExposure"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "No": 0.7489539748953975,
-                        "Av": 0.12238493723849372,
-                        "Mn": 0.07531380753138076,
-                        "Gd": 0.053347280334728034
-                    },
-                    "pinv": 0.036290322580645164,
-                    "samplesize": 992
-                }
-            }
-        },
-        "bsmtfintype1": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "bsmtfintype1",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "BsmtFinType1"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Unf": 0.3148535564853556,
-                        "ALQ": 0.18514644351464435,
-                        "GLQ": 0.18514644351464435,
-                        "BLQ": 0.1297071129707113,
-                        "Rec": 0.12133891213389121,
-                        "LwQ": 0.06380753138075314
-                    },
-                    "pinv": 0.036290322580645164,
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -1572,8 +868,8 @@
                 "stats": {
                     "min": 0.0,
                     "max": 5644.0,
-                    "mean": 372.60887096774195,
-                    "std": 391.5756120103829,
+                    "mean": 406.11678832116786,
+                    "std": 480.5668651789606,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -1608,100 +904,77 @@
                         0.0,
                         0.0,
                         0.0,
-                        0.0,
-                        0.0,
-                        16.0,
+                        20.0,
                         24.0,
                         50.0,
-                        111.0,
-                        138.0,
-                        168.0,
-                        185.0,
-                        197.0,
-                        213.0,
-                        231.0,
-                        250.0,
-                        264.0,
-                        285.0,
-                        299.0,
-                        312.0,
-                        328.0,
-                        338.0,
-                        351.0,
+                        150.0,
+                        180.0,
+                        189.0,
+                        196.0,
+                        210.0,
+                        218.0,
+                        234.0,
+                        288.0,
+                        308.0,
+                        322.0,
+                        330.0,
+                        336.0,
+                        340.0,
+                        358.0,
                         360.0,
-                        375.0,
-                        384.0,
-                        392.0,
+                        377.0,
+                        388.0,
+                        398.0,
                         403.0,
-                        415.0,
-                        427.0,
-                        442.0,
+                        426.0,
                         456.0,
-                        477.0,
-                        493.0,
-                        504.0,
-                        512.0,
-                        532.0,
-                        543.0,
-                        550.0,
+                        462.0,
+                        483.0,
+                        490.0,
+                        495.0,
+                        503.0,
+                        507.0,
+                        533.0,
+                        539.0,
+                        547.0,
+                        554.0,
                         560.0,
-                        570.0,
-                        586.0,
+                        565.0,
+                        567.0,
                         595.0,
-                        605.0,
-                        616.0,
-                        626.0,
-                        641.0,
+                        600.0,
+                        604.0,
+                        619.0,
+                        623.0,
+                        643.0,
                         648.0,
-                        658.0,
+                        655.0,
+                        659.0,
                         662.0,
-                        672.0,
-                        685.0,
-                        695.0,
-                        704.0,
-                        731.0,
-                        738.0,
-                        751.0,
+                        678.0,
+                        686.0,
+                        699.0,
+                        733.0,
+                        739.0,
                         773.0,
-                        786.0,
-                        814.0,
+                        783.0,
+                        784.0,
+                        816.0,
+                        824.0,
                         828.0,
-                        841.0,
-                        883.0,
-                        906.0,
+                        851.0,
+                        885.0,
+                        903.0,
+                        915.0,
                         936.0,
-                        969.0,
-                        1002.0,
-                        1046.0,
-                        1086.0,
-                        1200.0,
-                        1302.0,
+                        975.0,
+                        1014.0,
+                        1084.0,
+                        1138.0,
+                        1606.0,
                         5644.0
                     ],
-                    "samplesize": 992
-                }
-            }
-        },
-        "bsmtfintype2": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "bsmtfintype2",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "BsmtFinType2"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Unf": 0.8692468619246861,
-                        "Rec": 0.04288702928870293,
-                        "LwQ": 0.03765690376569038,
-                        "BLQ": 0.028242677824267783,
-                        "ALQ": 0.012552301255230125,
-                        "GLQ": 0.009414225941422594
-                    },
-                    "pinv": 0.036290322580645164,
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -1716,9 +989,9 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 1063.0,
-                    "mean": 47.57459677419355,
-                    "std": 149.63566128724017,
+                    "max": 692.0,
+                    "mean": 39.60948905109489,
+                    "std": 130.85428480399008,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -1809,21 +1082,21 @@
                         0.0,
                         0.0,
                         0.0,
-                        81.0,
-                        119.0,
-                        165.0,
-                        182.0,
-                        264.0,
-                        306.0,
-                        374.0,
+                        0.0,
+                        28.0,
+                        110.0,
+                        139.0,
+                        168.0,
+                        180.0,
+                        311.0,
                         438.0,
-                        486.0,
-                        546.0,
-                        627.0,
-                        712.0,
-                        1063.0
+                        480.0,
+                        506.0,
+                        551.0,
+                        661.0,
+                        692.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -1838,9 +1111,9 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 1907.0,
-                    "mean": 507.21875,
-                    "std": 396.04554042683765,
+                    "max": 1800.0,
+                    "mean": 465.95255474452557,
+                    "std": 378.369428939822,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -1854,98 +1127,98 @@
                         0.0,
                         0.0,
                         0.0,
-                        35.0,
-                        60.0,
-                        76.0,
-                        90.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        14.0,
+                        38.0,
+                        81.0,
                         100.0,
-                        108.0,
+                        114.0,
                         115.0,
-                        125.0,
-                        134.0,
-                        143.0,
-                        160.0,
-                        163.0,
-                        172.0,
-                        179.0,
-                        188.0,
-                        192.0,
-                        200.0,
-                        210.0,
-                        218.0,
-                        239.0,
-                        250.0,
-                        264.0,
-                        273.0,
-                        279.0,
+                        122.0,
+                        126.0,
+                        135.0,
+                        140.0,
+                        153.0,
+                        161.0,
+                        173.0,
+                        186.0,
+                        190.0,
+                        197.0,
+                        198.0,
+                        212.0,
+                        217.0,
+                        224.0,
+                        234.0,
+                        244.0,
+                        252.0,
+                        270.0,
+                        280.0,
                         289.0,
-                        300.0,
-                        310.0,
-                        319.0,
-                        324.0,
-                        338.0,
-                        348.0,
+                        299.0,
+                        305.0,
+                        317.0,
+                        326.0,
+                        342.0,
+                        349.0,
                         357.0,
-                        374.0,
-                        384.0,
+                        363.0,
                         390.0,
-                        398.0,
-                        406.0,
+                        405.0,
                         414.0,
-                        424.0,
-                        440.0,
-                        450.0,
-                        465.0,
-                        476.0,
+                        428.0,
+                        441.0,
+                        461.0,
+                        467.0,
+                        485.0,
                         490.0,
-                        504.0,
-                        516.0,
-                        525.0,
-                        544.0,
-                        551.0,
+                        510.0,
+                        522.0,
+                        530.0,
+                        536.0,
+                        546.0,
+                        560.0,
                         570.0,
-                        580.0,
-                        599.0,
+                        576.0,
+                        598.0,
                         604.0,
+                        611.0,
                         622.0,
-                        630.0,
-                        648.0,
-                        660.0,
-                        672.0,
-                        680.0,
-                        691.0,
+                        636.0,
+                        641.0,
+                        658.0,
+                        661.0,
+                        678.0,
+                        698.0,
                         702.0,
-                        710.0,
-                        725.0,
-                        735.0,
-                        746.0,
-                        758.0,
-                        776.0,
-                        785.0,
-                        799.0,
-                        815.0,
-                        833.0,
-                        849.0,
-                        876.0,
-                        893.0,
-                        907.0,
-                        924.0,
-                        939.0,
-                        961.0,
-                        978.0,
+                        718.0,
+                        721.0,
+                        731.0,
+                        748.0,
+                        762.0,
+                        777.0,
+                        780.0,
+                        806.0,
+                        816.0,
+                        840.0,
+                        847.0,
+                        878.0,
+                        896.0,
+                        914.0,
+                        936.0,
+                        976.0,
                         1008.0,
-                        1064.0,
-                        1097.0,
-                        1141.0,
+                        1072.0,
+                        1164.0,
                         1252.0,
+                        1286.0,
                         1342.0,
-                        1368.0,
-                        1424.0,
-                        1550.0,
-                        1656.0,
-                        1907.0
+                        1375.0,
+                        1584.0,
+                        1800.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -1961,199 +1234,113 @@
                 "stats": {
                     "min": 0.0,
                     "max": 6110.0,
-                    "mean": 927.4022177419355,
-                    "std": 375.5110664190153,
+                    "mean": 911.6788321167883,
+                    "std": 479.32113542570744,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
                         0.0,
                         0.0,
-                        264.0,
-                        384.0,
+                        0.0,
+                        190.0,
                         480.0,
-                        504.0,
-                        536.0,
-                        547.0,
-                        576.0,
-                        600.0,
+                        483.0,
+                        506.0,
+                        530.0,
+                        546.0,
+                        560.0,
+                        560.0,
+                        588.0,
                         616.0,
+                        626.0,
                         630.0,
-                        641.0,
-                        655.0,
+                        651.0,
+                        660.0,
+                        661.0,
                         672.0,
-                        672.0,
-                        683.0,
                         686.0,
-                        696.0,
-                        707.0,
+                        691.0,
+                        702.0,
                         720.0,
-                        725.0,
-                        731.0,
-                        742.0,
+                        720.0,
+                        723.0,
+                        729.0,
+                        740.0,
                         755.0,
                         764.0,
                         768.0,
-                        773.0,
+                        777.0,
                         780.0,
-                        789.0,
-                        796.0,
-                        804.0,
-                        815.0,
+                        784.0,
+                        793.0,
+                        798.0,
+                        806.0,
+                        813.0,
                         816.0,
-                        828.0,
-                        836.0,
-                        846.0,
+                        832.0,
+                        840.0,
+                        845.0,
                         848.0,
                         858.0,
-                        862.0,
+                        858.0,
                         864.0,
                         864.0,
                         864.0,
-                        876.0,
-                        882.0,
-                        888.0,
+                        864.0,
+                        866.0,
+                        880.0,
                         894.0,
+                        896.0,
                         907.0,
                         912.0,
-                        915.0,
-                        924.0,
+                        912.0,
+                        925.0,
                         928.0,
-                        936.0,
                         940.0,
-                        948.0,
-                        953.0,
-                        960.0,
+                        952.0,
                         970.0,
-                        978.0,
-                        983.0,
-                        991.0,
-                        999.0,
+                        975.0,
+                        980.0,
+                        988.0,
+                        993.0,
                         1008.0,
-                        1012.0,
-                        1026.0,
+                        1008.0,
+                        1029.0,
                         1040.0,
-                        1040.0,
+                        1041.0,
                         1050.0,
-                        1056.0,
+                        1054.0,
                         1060.0,
-                        1069.0,
-                        1079.0,
-                        1090.0,
-                        1097.0,
-                        1109.0,
-                        1121.0,
-                        1128.0,
-                        1144.0,
+                        1082.0,
+                        1088.0,
+                        1092.0,
+                        1114.0,
+                        1120.0,
+                        1126.0,
+                        1142.0,
                         1152.0,
-                        1164.0,
-                        1196.0,
-                        1204.0,
-                        1216.0,
+                        1158.0,
+                        1200.0,
+                        1228.0,
                         1240.0,
+                        1248.0,
                         1256.0,
+                        1262.0,
                         1269.0,
-                        1298.0,
-                        1349.0,
+                        1291.0,
+                        1337.0,
+                        1360.0,
                         1362.0,
-                        1383.0,
-                        1394.0,
-                        1425.0,
-                        1461.0,
-                        1494.0,
-                        1571.0,
-                        1617.0,
-                        1682.0,
-                        1800.0,
+                        1391.0,
+                        1416.0,
+                        1440.0,
+                        1478.0,
+                        1728.0,
+                        2035.0,
                         6110.0
                     ],
-                    "samplesize": 992
-                }
-            }
-        },
-        "heating": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "heating",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Heating"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "GasA": 0.9737903225806451,
-                        "GasW": 0.012096774193548387,
-                        "Grav": 0.007056451612903226,
-                        "Wall": 0.004032258064516129,
-                        "OthW": 0.0020161290322580645,
-                        "Floor": 0.0010080645161290322
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "heatingqc": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "heatingqc",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "HeatingQC"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Ex": 0.38911290322580644,
-                        "TA": 0.38205645161290325,
-                        "Gd": 0.18649193548387097,
-                        "Fa": 0.04133064516129032,
-                        "Po": 0.0010080645161290322
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "centralair": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "centralair",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "CentralAir"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Y": 0.9082661290322581,
-                        "N": 0.09173387096774194
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
-                }
-            }
-        },
-        "electrical": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "electrical",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Electrical"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "SBrkr": 0.8768920282542886,
-                        "FuseA": 0.09182643794147326,
-                        "FuseF": 0.027245206861755803,
-                        "FuseP": 0.0030272452068617556,
-                        "Mix": 0.0010090817356205853
-                    },
-                    "pinv": 0.0010080645161290322,
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -2169,113 +1356,113 @@
                 "stats": {
                     "min": 334.0,
                     "max": 4692.0,
-                    "mean": 1050.4808467741937,
-                    "std": 318.04191375878037,
+                    "mean": 1024.2591240875913,
+                    "std": 380.2509380927293,
                     "pinv": 0.0,
                     "percentiles": [
                         334.0,
                         483.0,
-                        546.0,
-                        596.0,
-                        624.0,
+                        520.0,
+                        572.0,
+                        581.0,
+                        616.0,
                         630.0,
+                        661.0,
+                        664.0,
                         672.0,
-                        679.0,
-                        693.0,
                         698.0,
+                        707.0,
                         720.0,
                         729.0,
-                        742.0,
-                        757.0,
-                        767.0,
-                        774.0,
+                        753.0,
+                        764.0,
+                        768.0,
                         780.0,
-                        789.0,
+                        792.0,
                         796.0,
+                        798.0,
                         804.0,
-                        811.0,
+                        810.0,
                         816.0,
-                        827.0,
-                        833.0,
+                        825.0,
+                        832.0,
+                        840.0,
                         842.0,
                         848.0,
+                        848.0,
                         855.0,
-                        860.0,
+                        858.0,
                         864.0,
                         864.0,
+                        864.0,
+                        872.0,
                         874.0,
-                        882.0,
+                        884.0,
                         888.0,
                         894.0,
-                        896.0,
                         901.0,
-                        910.0,
+                        902.0,
+                        909.0,
                         912.0,
-                        918.0,
+                        923.0,
+                        925.0,
                         928.0,
-                        936.0,
                         943.0,
-                        950.0,
-                        955.0,
-                        960.0,
-                        964.0,
+                        952.0,
+                        954.0,
+                        962.0,
                         970.0,
-                        979.0,
-                        984.0,
+                        977.0,
+                        985.0,
                         990.0,
-                        998.0,
-                        1004.0,
-                        1012.0,
-                        1024.0,
-                        1035.0,
+                        1002.0,
+                        1006.0,
+                        1021.0,
+                        1029.0,
                         1040.0,
-                        1041.0,
+                        1040.0,
                         1050.0,
-                        1056.0,
+                        1053.0,
+                        1054.0,
                         1060.0,
-                        1069.0,
-                        1077.0,
+                        1072.0,
                         1080.0,
-                        1090.0,
-                        1097.0,
+                        1086.0,
+                        1092.0,
                         1110.0,
                         1120.0,
-                        1126.0,
-                        1134.0,
-                        1142.0,
-                        1148.0,
-                        1159.0,
-                        1166.0,
-                        1186.0,
-                        1199.0,
-                        1214.0,
-                        1221.0,
+                        1125.0,
+                        1138.0,
+                        1144.0,
+                        1152.0,
+                        1158.0,
+                        1173.0,
+                        1182.0,
+                        1192.0,
+                        1212.0,
                         1232.0,
                         1244.0,
+                        1252.0,
                         1258.0,
-                        1272.0,
+                        1269.0,
+                        1276.0,
                         1291.0,
-                        1306.0,
                         1327.0,
+                        1337.0,
                         1340.0,
-                        1357.0,
-                        1368.0,
-                        1389.0,
-                        1414.0,
-                        1432.0,
-                        1445.0,
-                        1479.0,
-                        1507.0,
-                        1555.0,
-                        1584.0,
-                        1636.0,
+                        1362.0,
+                        1392.0,
+                        1431.0,
+                        1436.0,
+                        1504.0,
+                        1547.0,
+                        1632.0,
                         1679.0,
-                        1701.0,
-                        1766.0,
-                        1872.0,
+                        1768.0,
+                        2515.0,
                         4692.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -2290,9 +1477,9 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 1440.0,
-                    "mean": 273.6975806451613,
-                    "std": 367.1441266753579,
+                    "max": 1538.0,
+                    "mean": 261.014598540146,
+                    "std": 363.61814183502196,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -2356,48 +1543,48 @@
                         0.0,
                         0.0,
                         0.0,
-                        110.0,
-                        299.0,
-                        358.0,
-                        408.0,
-                        448.0,
-                        472.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        336.0,
+                        403.0,
+                        462.0,
                         504.0,
-                        520.0,
-                        539.0,
+                        518.0,
+                        530.0,
                         546.0,
+                        551.0,
                         560.0,
-                        576.0,
-                        591.0,
+                        589.0,
+                        596.0,
                         600.0,
                         622.0,
-                        649.0,
-                        661.0,
-                        672.0,
-                        678.0,
-                        688.0,
-                        702.0,
-                        716.0,
-                        728.0,
-                        739.0,
-                        745.0,
-                        764.0,
-                        780.0,
-                        795.0,
+                        650.0,
+                        660.0,
+                        670.0,
+                        682.0,
+                        686.0,
+                        689.0,
+                        717.0,
+                        720.0,
+                        732.0,
+                        741.0,
+                        755.0,
+                        766.0,
                         807.0,
-                        840.0,
+                        828.0,
+                        832.0,
                         858.0,
-                        871.0,
-                        885.0,
-                        896.0,
-                        925.0,
-                        975.0,
-                        998.0,
+                        862.0,
+                        880.0,
+                        902.0,
+                        929.0,
+                        960.0,
                         1044.0,
-                        1169.0,
-                        1440.0
+                        1120.0,
+                        1538.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -2413,8 +1600,8 @@
                 "stats": {
                     "min": 0.0,
                     "max": 528.0,
-                    "mean": 7.584677419354839,
-                    "std": 54.668436881119746,
+                    "mean": 7.7226277372262775,
+                    "std": 54.05285733239018,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -2516,10 +1703,10 @@
                         0.0,
                         0.0,
                         120.0,
-                        392.0,
+                        390.0,
                         528.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -2535,113 +1722,113 @@
                 "stats": {
                     "min": 334.0,
                     "max": 5642.0,
-                    "mean": 1331.7631048387098,
-                    "std": 424.5693564509033,
+                    "mean": 1292.9963503649635,
+                    "std": 502.68522386603877,
                     "pinv": 0.0,
                     "percentiles": [
                         334.0,
                         630.0,
-                        720.0,
+                        698.0,
+                        754.0,
                         768.0,
-                        789.0,
+                        788.0,
                         816.0,
-                        833.0,
+                        827.0,
+                        841.0,
                         848.0,
                         858.0,
                         864.0,
                         864.0,
-                        874.0,
-                        892.0,
+                        864.0,
+                        882.0,
+                        884.0,
                         894.0,
-                        904.0,
+                        901.0,
                         912.0,
-                        924.0,
-                        936.0,
+                        912.0,
+                        925.0,
                         952.0,
                         960.0,
-                        970.0,
+                        980.0,
                         987.0,
                         988.0,
-                        999.0,
-                        1012.0,
-                        1034.0,
+                        990.0,
+                        1004.0,
+                        1015.0,
+                        1039.0,
                         1040.0,
-                        1048.0,
-                        1056.0,
+                        1050.0,
+                        1053.0,
+                        1057.0,
                         1062.0,
-                        1073.0,
-                        1080.0,
+                        1072.0,
+                        1082.0,
                         1092.0,
-                        1098.0,
-                        1111.0,
-                        1118.0,
-                        1126.0,
-                        1134.0,
-                        1144.0,
-                        1152.0,
+                        1110.0,
+                        1114.0,
+                        1125.0,
+                        1130.0,
+                        1138.0,
+                        1142.0,
+                        1150.0,
+                        1154.0,
                         1164.0,
-                        1180.0,
-                        1194.0,
+                        1178.0,
+                        1192.0,
                         1200.0,
                         1214.0,
-                        1218.0,
-                        1224.0,
-                        1232.0,
+                        1228.0,
+                        1236.0,
                         1248.0,
+                        1253.0,
                         1258.0,
-                        1269.0,
-                        1287.0,
-                        1302.0,
-                        1314.0,
-                        1327.0,
-                        1340.0,
+                        1268.0,
+                        1271.0,
+                        1285.0,
+                        1316.0,
+                        1324.0,
+                        1337.0,
+                        1343.0,
                         1344.0,
                         1352.0,
-                        1362.0,
-                        1368.0,
-                        1381.0,
+                        1363.0,
+                        1375.0,
+                        1386.0,
                         1392.0,
-                        1405.0,
-                        1416.0,
-                        1428.0,
-                        1440.0,
-                        1456.0,
-                        1469.0,
-                        1478.0,
-                        1484.0,
-                        1498.0,
-                        1510.0,
-                        1526.0,
+                        1426.0,
+                        1436.0,
+                        1446.0,
+                        1474.0,
+                        1487.0,
+                        1496.0,
+                        1504.0,
+                        1524.0,
                         1548.0,
-                        1567.0,
-                        1576.0,
+                        1572.0,
                         1600.0,
-                        1616.0,
+                        1621.0,
                         1632.0,
-                        1647.0,
-                        1661.0,
-                        1679.0,
+                        1638.0,
+                        1644.0,
+                        1668.0,
                         1691.0,
                         1709.0,
-                        1717.0,
-                        1733.0,
-                        1752.0,
-                        1774.0,
-                        1800.0,
-                        1824.0,
-                        1855.0,
-                        1889.0,
-                        1922.0,
-                        1959.0,
-                        2002.0,
-                        2080.0,
-                        2119.0,
-                        2192.0,
-                        2290.0,
-                        2521.0,
+                        1716.0,
+                        1725.0,
+                        1728.0,
+                        1739.0,
+                        1768.0,
+                        1792.0,
+                        1802.0,
+                        1895.0,
+                        1981.0,
+                        2142.0,
+                        2229.0,
+                        2320.0,
+                        2634.0,
                         5642.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -2656,9 +1843,9 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 3.0,
-                    "mean": 0.37600806451612906,
-                    "std": 0.5087431064123232,
+                    "max": 2.0,
+                    "mean": 0.3978102189781022,
+                    "std": 0.5041386602916721,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -2722,9 +1909,6 @@
                         0.0,
                         0.0,
                         0.0,
-                        0.0,
-                        0.0,
-                        0.0,
                         1.0,
                         1.0,
                         1.0,
@@ -2760,10 +1944,13 @@
                         1.0,
                         1.0,
                         1.0,
-                        2.0,
-                        3.0
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0,
+                        2.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -2778,9 +1965,9 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 2.0,
-                    "mean": 0.06350806451612903,
-                    "std": 0.247973626198034,
+                    "max": 1.0,
+                    "mean": 0.05474452554744526,
+                    "std": 0.22748090572623975,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -2877,15 +2064,15 @@
                         0.0,
                         0.0,
                         0.0,
+                        0.0,
                         1.0,
                         1.0,
                         1.0,
                         1.0,
                         1.0,
-                        1.0,
-                        2.0
+                        1.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -2901,8 +2088,8 @@
                 "stats": {
                     "min": 0.0,
                     "max": 3.0,
-                    "mean": 1.3971774193548387,
-                    "std": 0.5173522236939572,
+                    "mean": 1.354014598540146,
+                    "std": 0.5078241259063772,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -2966,10 +2153,10 @@
                         1.0,
                         1.0,
                         1.0,
-                        2.0,
-                        2.0,
-                        2.0,
-                        2.0,
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0,
                         2.0,
                         2.0,
                         2.0,
@@ -3007,7 +2194,7 @@
                         2.0,
                         3.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -3023,8 +2210,8 @@
                 "stats": {
                     "min": 0.0,
                     "max": 2.0,
-                    "mean": 0.3074596774193548,
-                    "std": 0.478599264979174,
+                    "mean": 0.30656934306569344,
+                    "std": 0.48423381870429155,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -3126,10 +2313,10 @@
                         1.0,
                         1.0,
                         1.0,
-                        1.0,
+                        2.0,
                         2.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -3144,15 +2331,16 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 8.0,
-                    "mean": 2.811491935483871,
-                    "std": 0.8167531312179455,
+                    "max": 6.0,
+                    "mean": 2.7481751824817517,
+                    "std": 0.8449594807182316,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
                         1.0,
                         1.0,
                         1.0,
+                        1.0,
                         2.0,
                         2.0,
                         2.0,
@@ -3181,6 +2369,9 @@
                         2.0,
                         2.0,
                         2.0,
+                        2.0,
+                        2.0,
+                        2.0,
                         3.0,
                         3.0,
                         3.0,
@@ -3234,10 +2425,6 @@
                         3.0,
                         3.0,
                         3.0,
-                        3.0,
-                        3.0,
-                        4.0,
-                        4.0,
                         4.0,
                         4.0,
                         4.0,
@@ -3248,10 +2435,10 @@
                         4.0,
                         4.0,
                         5.0,
-                        5.0,
-                        8.0
+                        6.0,
+                        6.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -3265,13 +2452,14 @@
                 },
                 "importance": 0,
                 "stats": {
-                    "min": 0.0,
-                    "max": 3.0,
-                    "mean": 1.0675403225806452,
-                    "std": 0.2627299269271046,
+                    "min": 1.0,
+                    "max": 2.0,
+                    "mean": 1.051094890510949,
+                    "std": 0.22019128655472056,
                     "pinv": 0.0,
                     "percentiles": [
-                        0.0,
+                        1.0,
+                        1.0,
                         1.0,
                         1.0,
                         1.0,
@@ -3370,31 +2558,9 @@
                         2.0,
                         2.0,
                         2.0,
-                        2.0,
-                        3.0
+                        2.0
                     ],
-                    "samplesize": 992
-                }
-            }
-        },
-        "kitchenqual": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "kitchenqual",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "KitchenQual"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "TA": 0.6663306451612904,
-                        "Gd": 0.28225806451612906,
-                        "Fa": 0.038306451612903226,
-                        "Ex": 0.01310483870967742
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -3409,12 +2575,13 @@
                 "importance": 0,
                 "stats": {
                     "min": 2.0,
-                    "max": 14.0,
-                    "mean": 6.099798387096774,
-                    "std": 1.4712020402457322,
+                    "max": 12.0,
+                    "mean": 5.9489051094890515,
+                    "std": 1.525075888422719,
                     "pinv": 0.0,
                     "percentiles": [
                         2.0,
+                        3.0,
                         3.0,
                         4.0,
                         4.0,
@@ -3425,6 +2592,7 @@
                         4.0,
                         4.0,
                         4.0,
+                        4.0,
                         5.0,
                         5.0,
                         5.0,
@@ -3449,7 +2617,10 @@
                         5.0,
                         5.0,
                         5.0,
-                        6.0,
+                        5.0,
+                        5.0,
+                        5.0,
+                        5.0,
                         6.0,
                         6.0,
                         6.0,
@@ -3497,11 +2668,6 @@
                         7.0,
                         7.0,
                         7.0,
-                        7.0,
-                        7.0,
-                        7.0,
-                        8.0,
-                        8.0,
                         8.0,
                         8.0,
                         8.0,
@@ -3513,34 +2679,10 @@
                         9.0,
                         9.0,
                         10.0,
-                        11.0,
-                        14.0
+                        12.0,
+                        12.0
                     ],
-                    "samplesize": 992
-                }
-            }
-        },
-        "functional": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "functional",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Functional"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Typ": 0.9173387096774194,
-                        "Min2": 0.029233870967741934,
-                        "Min1": 0.023185483870967742,
-                        "Maj1": 0.012096774193548387,
-                        "Mod": 0.012096774193548387,
-                        "Maj2": 0.005040322580645161,
-                        "Sev": 0.0010080645161290322
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -3556,8 +2698,8 @@
                 "stats": {
                     "min": 0.0,
                     "max": 3.0,
-                    "mean": 0.46975806451612906,
-                    "std": 0.621435595642652,
+                    "mean": 0.42700729927007297,
+                    "std": 0.625025973140321,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -3620,11 +2762,11 @@
                         0.0,
                         0.0,
                         0.0,
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
                         1.0,
                         1.0,
                         1.0,
@@ -3662,194 +2804,7 @@
                         2.0,
                         3.0
                     ],
-                    "samplesize": 992
-                }
-            }
-        },
-        "fireplacequ": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "fireplacequ",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "FireplaceQu"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "TA": 0.4463840399002494,
-                        "Gd": 0.4339152119700748,
-                        "Fa": 0.06982543640897755,
-                        "Po": 0.04239401496259352,
-                        "Ex": 0.007481296758104738
-                    },
-                    "pinv": 0.5957661290322581,
-                    "samplesize": 992
-                }
-            }
-        },
-        "garagetype": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "garagetype",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "GarageType"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Attchd": 0.5367727771679474,
-                        "Detchd": 0.3929747530186608,
-                        "BuiltIn": 0.03732162458836443,
-                        "Basment": 0.018660812294182216,
-                        "CarPort": 0.008781558726673985,
-                        "2Types": 0.005488474204171241
-                    },
-                    "pinv": 0.08165322580645161,
-                    "samplesize": 992
-                }
-            }
-        },
-        "garageyrblt": {
-            "component_class": "raymon.profiling.components.FloatComponent",
-            "component": {
-                "name": "garageyrblt",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "GarageYrBlt"
-                },
-                "importance": 0,
-                "stats": {
-                    "min": 1900.0,
-                    "max": 2010.0,
-                    "mean": 1971.231613611416,
-                    "std": 24.031540963129245,
-                    "pinv": 0.08165322580645161,
-                    "percentiles": [
-                        1900.0,
-                        1916.0,
-                        1920.0,
-                        1920.0,
-                        1923.0,
-                        1925.0,
-                        1928.0,
-                        1930.0,
-                        1932.0,
-                        1936.0,
-                        1939.0,
-                        1940.0,
-                        1941.0,
-                        1945.0,
-                        1948.0,
-                        1949.0,
-                        1950.0,
-                        1950.0,
-                        1950.0,
-                        1953.0,
-                        1953.0,
-                        1954.0,
-                        1955.0,
-                        1955.0,
-                        1956.0,
-                        1957.0,
-                        1957.0,
-                        1958.0,
-                        1958.0,
-                        1958.0,
-                        1959.0,
-                        1960.0,
-                        1960.0,
-                        1961.0,
-                        1962.0,
-                        1962.0,
-                        1963.0,
-                        1963.0,
-                        1964.0,
-                        1965.0,
-                        1965.0,
-                        1966.0,
-                        1966.0,
-                        1967.0,
-                        1967.0,
-                        1968.0,
-                        1968.0,
-                        1969.0,
-                        1970.0,
-                        1970.0,
-                        1971.0,
-                        1972.0,
-                        1973.0,
-                        1973.0,
-                        1974.0,
-                        1975.0,
-                        1976.0,
-                        1976.0,
-                        1976.0,
-                        1977.0,
-                        1977.0,
-                        1977.0,
-                        1978.0,
-                        1978.0,
-                        1979.0,
-                        1980.0,
-                        1981.0,
-                        1982.0,
-                        1984.0,
-                        1985.0,
-                        1987.0,
-                        1988.0,
-                        1989.0,
-                        1990.0,
-                        1991.0,
-                        1993.0,
-                        1994.0,
-                        1995.0,
-                        1996.0,
-                        1996.0,
-                        1997.0,
-                        1998.0,
-                        1999.0,
-                        1999.0,
-                        2000.0,
-                        2000.0,
-                        2002.0,
-                        2002.0,
-                        2003.0,
-                        2003.0,
-                        2004.0,
-                        2004.0,
-                        2004.0,
-                        2005.0,
-                        2005.0,
-                        2005.0,
-                        2006.0,
-                        2006.0,
-                        2007.0,
-                        2008.0,
-                        2010.0
-                    ],
-                    "samplesize": 992
-                }
-            }
-        },
-        "garagefinish": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "garagefinish",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "GarageFinish"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Unf": 0.5927552140504939,
-                        "RFn": 0.25686059275521406,
-                        "Fin": 0.150384193194292
-                    },
-                    "pinv": 0.08165322580645161,
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -3865,8 +2820,8 @@
                 "stats": {
                     "min": 0.0,
                     "max": 4.0,
-                    "mean": 1.5211693548387097,
-                    "std": 0.7024980222882757,
+                    "mean": 1.489051094890511,
+                    "std": 0.7005398160602027,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -3913,6 +2868,8 @@
                         1.0,
                         1.0,
                         1.0,
+                        1.0,
+                        1.0,
                         2.0,
                         2.0,
                         2.0,
@@ -3965,13 +2922,11 @@
                         2.0,
                         2.0,
                         2.0,
-                        2.0,
-                        3.0,
                         3.0,
                         3.0,
                         4.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -3987,8 +2942,8 @@
                 "stats": {
                     "min": 0.0,
                     "max": 1418.0,
-                    "mean": 404.03225806451616,
-                    "std": 191.87409495358145,
+                    "mean": 406.73722627737226,
+                    "std": 202.240742214037,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -4001,49 +2956,48 @@
                         0.0,
                         0.0,
                         180.0,
-                        205.0,
-                        216.0,
+                        200.0,
+                        213.0,
                         220.0,
                         240.0,
                         240.0,
                         240.0,
                         240.0,
                         252.0,
+                        255.0,
                         264.0,
                         264.0,
                         264.0,
-                        271.0,
+                        270.0,
+                        275.0,
                         280.0,
-                        280.0,
-                        284.0,
-                        287.0,
+                        283.0,
                         288.0,
                         288.0,
                         294.0,
+                        297.0,
                         299.0,
                         300.0,
-                        305.0,
+                        308.0,
                         308.0,
                         308.0,
                         312.0,
                         326.0,
-                        336.0,
-                        343.0,
-                        352.0,
+                        338.0,
+                        350.0,
                         360.0,
-                        367.0,
+                        364.0,
+                        368.0,
                         380.0,
-                        384.0,
                         392.0,
-                        398.0,
                         400.0,
                         400.0,
-                        408.0,
+                        406.0,
+                        416.0,
                         420.0,
-                        420.0,
+                        426.0,
                         430.0,
-                        433.0,
-                        440.0,
+                        437.0,
                         440.0,
                         440.0,
                         440.0,
@@ -4053,111 +3007,48 @@
                         460.0,
                         462.0,
                         468.0,
-                        474.0,
-                        478.0,
+                        472.0,
+                        475.0,
                         480.0,
                         480.0,
                         484.0,
                         484.0,
                         484.0,
                         490.0,
-                        495.0,
-                        502.0,
                         504.0,
-                        508.0,
-                        516.0,
+                        504.0,
+                        506.0,
+                        512.0,
                         525.0,
                         528.0,
                         528.0,
                         528.0,
-                        534.0,
-                        540.0,
-                        543.0,
-                        551.0,
-                        564.0,
+                        530.0,
+                        539.0,
+                        544.0,
+                        552.0,
+                        560.0,
                         572.0,
+                        575.0,
                         576.0,
                         576.0,
                         576.0,
-                        576.0,
-                        588.0,
-                        602.0,
+                        578.0,
+                        595.0,
+                        600.0,
+                        603.0,
                         624.0,
-                        632.0,
+                        627.0,
                         660.0,
                         672.0,
-                        684.0,
                         720.0,
-                        786.0,
-                        839.0,
-                        898.0,
+                        750.0,
+                        826.0,
+                        888.0,
+                        924.0,
                         1418.0
                     ],
-                    "samplesize": 992
-                }
-            }
-        },
-        "garagequal": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "garagequal",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "GarageQual"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "TA": 0.9396267837541163,
-                        "Fa": 0.048298572996706916,
-                        "Gd": 0.006586169045005488,
-                        "Po": 0.003293084522502744,
-                        "Ex": 0.0021953896816684962
-                    },
-                    "pinv": 0.08165322580645161,
-                    "samplesize": 992
-                }
-            }
-        },
-        "garagecond": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "garagecond",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "GarageCond"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "TA": 0.9462129527991219,
-                        "Fa": 0.03732162458836443,
-                        "Po": 0.007683863885839737,
-                        "Gd": 0.006586169045005488,
-                        "Ex": 0.0021953896816684962
-                    },
-                    "pinv": 0.08165322580645161,
-                    "samplesize": 992
-                }
-            }
-        },
-        "paveddrive": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "paveddrive",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "PavedDrive"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Y": 0.8891129032258065,
-                        "N": 0.0846774193548387,
-                        "P": 0.02620967741935484
-                    },
-                    "pinv": 0.0,
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -4172,15 +3063,11 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 736.0,
-                    "mean": 73.17338709677419,
-                    "std": 112.59513977712714,
+                    "max": 536.0,
+                    "mean": 80.7919708029197,
+                    "std": 111.88235385178132,
                     "pinv": 0.0,
                     "percentiles": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
                         0.0,
                         0.0,
                         0.0,
@@ -4239,47 +3126,51 @@
                         0.0,
                         0.0,
                         32.0,
-                        40.0,
-                        49.0,
-                        66.0,
-                        80.0,
+                        48.0,
+                        53.0,
+                        64.0,
+                        87.0,
+                        92.0,
                         96.0,
                         100.0,
-                        100.0,
-                        105.0,
+                        104.0,
                         114.0,
+                        116.0,
                         120.0,
                         120.0,
                         120.0,
-                        132.0,
+                        138.0,
                         140.0,
-                        142.0,
+                        143.0,
                         144.0,
-                        146.0,
-                        150.0,
-                        160.0,
+                        144.0,
+                        154.0,
+                        156.0,
+                        164.0,
                         168.0,
-                        168.0,
-                        178.0,
-                        188.0,
+                        180.0,
                         192.0,
                         192.0,
                         208.0,
+                        214.0,
                         216.0,
                         224.0,
-                        238.0,
-                        243.0,
-                        261.0,
-                        268.0,
-                        289.0,
-                        303.0,
-                        333.0,
-                        356.0,
-                        390.0,
-                        448.0,
-                        736.0
+                        224.0,
+                        237.0,
+                        240.0,
+                        252.0,
+                        262.0,
+                        264.0,
+                        280.0,
+                        292.0,
+                        307.0,
+                        335.0,
+                        335.0,
+                        379.0,
+                        406.0,
+                        536.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -4295,8 +3186,8 @@
                 "stats": {
                     "min": 0.0,
                     "max": 523.0,
-                    "mean": 34.23084677419355,
-                    "std": 59.42646017931965,
+                    "mean": 34.75182481751825,
+                    "std": 66.05961486148813,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -4357,51 +3248,51 @@
                         0.0,
                         0.0,
                         0.0,
-                        10.0,
-                        16.0,
+                        0.0,
+                        12.0,
                         20.0,
                         22.0,
                         24.0,
+                        24.0,
                         25.0,
+                        27.0,
                         28.0,
                         28.0,
-                        30.0,
-                        32.0,
                         34.0,
                         36.0,
-                        36.0,
+                        38.0,
                         39.0,
                         40.0,
+                        40.0,
+                        44.0,
                         44.0,
                         45.0,
-                        48.0,
+                        46.0,
                         48.0,
                         50.0,
-                        54.0,
-                        58.0,
-                        61.0,
+                        55.0,
+                        57.0,
                         64.0,
-                        66.0,
                         70.0,
-                        78.0,
-                        82.0,
+                        72.0,
+                        84.0,
                         88.0,
-                        96.0,
-                        100.0,
-                        105.0,
-                        113.0,
-                        116.0,
-                        124.0,
-                        130.0,
-                        144.0,
+                        93.0,
+                        98.0,
+                        102.0,
+                        114.0,
+                        120.0,
+                        128.0,
+                        138.0,
                         158.0,
-                        176.0,
-                        199.0,
-                        235.0,
-                        285.0,
+                        162.0,
+                        180.0,
+                        198.0,
+                        238.0,
+                        319.0,
                         523.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -4416,9 +3307,9 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 552.0,
-                    "mean": 26.931451612903224,
-                    "std": 65.24650326427769,
+                    "max": 293.0,
+                    "mean": 27.098540145985403,
+                    "std": 62.702470277419884,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -4502,28 +3393,28 @@
                         0.0,
                         0.0,
                         0.0,
-                        0.0,
-                        20.0,
-                        39.0,
-                        64.0,
+                        24.0,
+                        32.0,
+                        56.0,
+                        80.0,
                         87.0,
-                        98.0,
+                        102.0,
                         112.0,
-                        112.0,
+                        115.0,
                         116.0,
                         126.0,
-                        137.0,
-                        150.0,
-                        164.0,
-                        180.0,
-                        192.0,
-                        208.0,
-                        224.0,
-                        240.0,
-                        259.0,
-                        552.0
+                        144.0,
+                        158.0,
+                        176.0,
+                        185.0,
+                        190.0,
+                        196.0,
+                        216.0,
+                        236.0,
+                        242.0,
+                        293.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -4538,9 +3429,9 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 407.0,
-                    "mean": 2.125,
-                    "std": 22.4427250408248,
+                    "max": 216.0,
+                    "mean": 2.7153284671532845,
+                    "std": 22.41445991348614,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -4642,10 +3533,10 @@
                         0.0,
                         0.0,
                         0.0,
-                        130.0,
-                        407.0
+                        180.0,
+                        216.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -4660,9 +3551,9 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 385.0,
-                    "mean": 11.440524193548388,
-                    "std": 46.150530469632166,
+                    "max": 265.0,
+                    "mean": 10.10948905109489,
+                    "std": 42.98984412950432,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -4759,15 +3650,15 @@
                         0.0,
                         0.0,
                         0.0,
-                        90.0,
-                        122.0,
-                        156.0,
-                        182.0,
-                        197.0,
-                        259.0,
-                        385.0
+                        0.0,
+                        120.0,
+                        126.0,
+                        168.0,
+                        200.0,
+                        252.0,
+                        265.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -4782,9 +3673,9 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 648.0,
-                    "mean": 1.653225806451613,
-                    "std": 30.28321805960829,
+                    "max": 480.0,
+                    "mean": 1.7518248175182483,
+                    "std": 28.94489630690506,
                     "pinv": 0.0,
                     "percentiles": [
                         0.0,
@@ -4887,70 +3778,9 @@
                         0.0,
                         0.0,
                         0.0,
-                        648.0
+                        480.0
                     ],
-                    "samplesize": 992
-                }
-            }
-        },
-        "poolqc": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "poolqc",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "PoolQC"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Fa": 0.3333333333333333,
-                        "Ex": 0.3333333333333333,
-                        "Gd": 0.3333333333333333
-                    },
-                    "pinv": 0.9969758064516129,
-                    "samplesize": 992
-                }
-            }
-        },
-        "fence": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "fence",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "Fence"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "MnPrv": 0.5767634854771784,
-                        "GdWo": 0.1991701244813278,
-                        "GdPrv": 0.17842323651452283,
-                        "MnWw": 0.04564315352697095
-                    },
-                    "pinv": 0.7570564516129032,
-                    "samplesize": 992
-                }
-            }
-        },
-        "miscfeature": {
-            "component_class": "raymon.profiling.components.CategoricComponent",
-            "component": {
-                "name": "miscfeature",
-                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
-                "extractor_state": {
-                    "element": "MiscFeature"
-                },
-                "importance": 0,
-                "stats": {
-                    "frequencies": {
-                        "Shed": 0.925,
-                        "Othr": 0.05,
-                        "Gar2": 0.025
-                    },
-                    "pinv": 0.9596774193548387,
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -4965,12 +3795,11 @@
                 "importance": 0,
                 "stats": {
                     "min": 0.0,
-                    "max": 15500.0,
-                    "mean": 42.0,
-                    "std": 521.4298038303724,
+                    "max": 3500.0,
+                    "mean": 37.846715328467155,
+                    "std": 249.55748838185383,
                     "pinv": 0.0,
                     "percentiles": [
-                        0.0,
                         0.0,
                         0.0,
                         0.0,
@@ -5068,11 +3897,12 @@
                         0.0,
                         0.0,
                         400.0,
-                        500.0,
-                        700.0,
-                        15500.0
+                        400.0,
+                        600.0,
+                        1200.0,
+                        3500.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -5088,26 +3918,18 @@
                 "stats": {
                     "min": 1.0,
                     "max": 12.0,
-                    "mean": 6.226814516129032,
-                    "std": 2.689954193359048,
+                    "mean": 6.521897810218978,
+                    "std": 2.5231545349176487,
                     "pinv": 0.0,
                     "percentiles": [
                         1.0,
                         1.0,
                         1.0,
-                        1.0,
-                        1.0,
-                        2.0,
-                        2.0,
                         2.0,
                         3.0,
                         3.0,
                         3.0,
                         3.0,
-                        3.0,
-                        3.0,
-                        3.0,
-                        3.0,
                         4.0,
                         4.0,
                         4.0,
@@ -5118,6 +3940,9 @@
                         4.0,
                         4.0,
                         4.0,
+                        4.0,
+                        4.0,
+                        4.0,
                         5.0,
                         5.0,
                         5.0,
@@ -5150,6 +3975,9 @@
                         6.0,
                         6.0,
                         6.0,
+                        6.0,
+                        6.0,
+                        7.0,
                         7.0,
                         7.0,
                         7.0,
@@ -5177,6 +4005,9 @@
                         9.0,
                         9.0,
                         9.0,
+                        9.0,
+                        9.0,
+                        10.0,
                         10.0,
                         10.0,
                         10.0,
@@ -5187,14 +4018,13 @@
                         11.0,
                         11.0,
                         11.0,
-                        11.0,
-                        11.0,
+                        12.0,
                         12.0,
                         12.0,
                         12.0,
                         12.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -5210,8 +4040,8 @@
                 "stats": {
                     "min": 2006.0,
                     "max": 2010.0,
-                    "mean": 2007.8306451612902,
-                    "std": 1.329544999745234,
+                    "mean": 2007.7700729927008,
+                    "std": 1.318751066059895,
                     "pinv": 0.0,
                     "percentiles": [
                         2006.0,
@@ -5258,6 +4088,7 @@
                         2007.0,
                         2007.0,
                         2007.0,
+                        2007.0,
                         2008.0,
                         2008.0,
                         2008.0,
@@ -5279,6 +4110,8 @@
                         2008.0,
                         2008.0,
                         2008.0,
+                        2008.0,
+                        2008.0,
                         2009.0,
                         2009.0,
                         2009.0,
@@ -5300,9 +4133,6 @@
                         2009.0,
                         2009.0,
                         2009.0,
-                        2009.0,
-                        2009.0,
-                        2010.0,
                         2010.0,
                         2010.0,
                         2010.0,
@@ -5316,7 +4146,551 @@
                         2010.0,
                         2010.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
+                }
+            }
+        },
+        "mszoning": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "mszoning",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "MSZoning"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "RL": 0.7445255474452555,
+                        "RM": 0.21897810218978103,
+                        "FV": 0.01824817518248175,
+                        "RH": 0.010948905109489052,
+                        "C (all)": 0.0072992700729927005
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "street": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "street",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "Street"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "Pave": 1.0
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "lotshape": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "lotshape",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "LotShape"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "Reg": 0.708029197080292,
+                        "IR1": 0.2591240875912409,
+                        "IR2": 0.029197080291970802,
+                        "IR3": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "landcontour": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "landcontour",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "LandContour"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "Lvl": 0.9051094890510949,
+                        "Bnk": 0.04744525547445255,
+                        "HLS": 0.032846715328467155,
+                        "Low": 0.014598540145985401
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "lotconfig": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "lotconfig",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "LotConfig"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "Inside": 0.7299270072992701,
+                        "Corner": 0.19708029197080293,
+                        "CulDSac": 0.043795620437956206,
+                        "FR2": 0.029197080291970802
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "landslope": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "landslope",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "LandSlope"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "Gtl": 0.9708029197080292,
+                        "Mod": 0.025547445255474453,
+                        "Sev": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "neighborhood": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "neighborhood",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "Neighborhood"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "NAmes": 0.2116788321167883,
+                        "OldTown": 0.11313868613138686,
+                        "Edwards": 0.09124087591240876,
+                        "CollgCr": 0.08029197080291971,
+                        "Sawyer": 0.06934306569343066,
+                        "Mitchel": 0.05474452554744526,
+                        "Gilbert": 0.051094890510948905,
+                        "SawyerW": 0.051094890510948905,
+                        "IDOTRR": 0.040145985401459854,
+                        "NWAmes": 0.0364963503649635,
+                        "BrkSide": 0.032846715328467155,
+                        "SWISU": 0.029197080291970802,
+                        "MeadowV": 0.021897810218978103,
+                        "Crawfor": 0.01824817518248175,
+                        "Somerst": 0.01824817518248175,
+                        "NridgHt": 0.01824817518248175,
+                        "BrDale": 0.014598540145985401,
+                        "Blmngtn": 0.010948905109489052,
+                        "NPkVill": 0.010948905109489052,
+                        "Veenker": 0.0072992700729927005,
+                        "ClearCr": 0.0072992700729927005,
+                        "StoneBr": 0.0072992700729927005,
+                        "Timber": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "condition1": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "condition1",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "Condition1"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "Norm": 0.8467153284671532,
+                        "Feedr": 0.072992700729927,
+                        "Artery": 0.04744525547445255,
+                        "RRAe": 0.014598540145985401,
+                        "RRAn": 0.0072992700729927005,
+                        "PosN": 0.0072992700729927005,
+                        "RRNe": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "condition2": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "condition2",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "Condition2"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "Norm": 0.9854014598540146,
+                        "RRNn": 0.0072992700729927005,
+                        "PosN": 0.0036496350364963502,
+                        "Artery": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "bldgtype": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "bldgtype",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "BldgType"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "1Fam": 0.8029197080291971,
+                        "TwnhsE": 0.08759124087591241,
+                        "Twnhs": 0.043795620437956206,
+                        "2fmCon": 0.032846715328467155,
+                        "Duplex": 0.032846715328467155
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "housestyle": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "housestyle",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "HouseStyle"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "1Story": 0.5145985401459854,
+                        "2Story": 0.23722627737226276,
+                        "1.5Fin": 0.11678832116788321,
+                        "SFoyer": 0.05474452554744526,
+                        "SLvl": 0.05474452554744526,
+                        "1.5Unf": 0.010948905109489052,
+                        "2.5Fin": 0.0072992700729927005,
+                        "2.5Unf": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "roofstyle": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "roofstyle",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "RoofStyle"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "Gable": 0.8175182481751825,
+                        "Hip": 0.17518248175182483,
+                        "Gambrel": 0.0036496350364963502,
+                        "Mansard": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "exterior1st": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "exterior1st",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "Exterior1st"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "VinylSd": 0.291970802919708,
+                        "HdBoard": 0.17883211678832117,
+                        "MetalSd": 0.16423357664233576,
+                        "Wd Sdng": 0.15693430656934307,
+                        "Plywood": 0.07664233576642336,
+                        "BrkFace": 0.040145985401459854,
+                        "WdShing": 0.029197080291970802,
+                        "CemntBd": 0.025547445255474453,
+                        "AsbShng": 0.01824817518248175,
+                        "Stucco": 0.014598540145985401,
+                        "BrkComm": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "exterior2nd": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "exterior2nd",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "Exterior2nd"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "VinylSd": 0.2737226277372263,
+                        "HdBoard": 0.1678832116788321,
+                        "MetalSd": 0.16423357664233576,
+                        "Wd Sdng": 0.145985401459854,
+                        "Plywood": 0.09854014598540146,
+                        "Wd Shng": 0.0364963503649635,
+                        "CmentBd": 0.025547445255474453,
+                        "AsbShng": 0.025547445255474453,
+                        "BrkFace": 0.025547445255474453,
+                        "Stucco": 0.01824817518248175,
+                        "Brk Cmn": 0.010948905109489052,
+                        "Stone": 0.0036496350364963502,
+                        "ImStucc": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "masvnrtype": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "masvnrtype",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "MasVnrType"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "None": 0.717948717948718,
+                        "BrkFace": 0.21611721611721613,
+                        "Stone": 0.054945054945054944,
+                        "BrkCmn": 0.01098901098901099
+                    },
+                    "pinv": 0.0036496350364963502,
+                    "samplesize": 274
+                }
+            }
+        },
+        "exterqual": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "exterqual",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "ExterQual"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "TA": 0.791970802919708,
+                        "Gd": 0.1897810218978102,
+                        "Fa": 0.010948905109489052,
+                        "Ex": 0.0072992700729927005
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "extercond": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "extercond",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "ExterCond"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "TA": 0.864963503649635,
+                        "Gd": 0.10218978102189781,
+                        "Fa": 0.029197080291970802,
+                        "Ex": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "foundation": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "foundation",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "Foundation"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "CBlock": 0.5364963503649635,
+                        "PConc": 0.3284671532846715,
+                        "BrkTil": 0.09124087591240876,
+                        "Slab": 0.040145985401459854,
+                        "Stone": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "heatingqc": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "heatingqc",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "HeatingQC"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "Ex": 0.39416058394160586,
+                        "TA": 0.38321167883211676,
+                        "Gd": 0.19343065693430658,
+                        "Fa": 0.029197080291970802
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "centralair": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "centralair",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "CentralAir"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "Y": 0.9197080291970803,
+                        "N": 0.08029197080291971
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "electrical": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "electrical",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "Electrical"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "SBrkr": 0.8905109489051095,
+                        "FuseA": 0.0948905109489051,
+                        "FuseF": 0.010948905109489052,
+                        "FuseP": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "kitchenqual": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "kitchenqual",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "KitchenQual"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "TA": 0.6532846715328468,
+                        "Gd": 0.29927007299270075,
+                        "Fa": 0.029197080291970802,
+                        "Ex": 0.01824817518248175
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "functional": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "functional",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "Functional"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "Typ": 0.9197080291970803,
+                        "Min2": 0.032846715328467155,
+                        "Mod": 0.01824817518248175,
+                        "Min1": 0.014598540145985401,
+                        "Maj1": 0.010948905109489052,
+                        "Maj2": 0.0036496350364963502
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
+                }
+            }
+        },
+        "paveddrive": {
+            "component_class": "raymon.profiling.components.CategoricComponent",
+            "component": {
+                "name": "paveddrive",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": "PavedDrive"
+                },
+                "importance": 0,
+                "stats": {
+                    "frequencies": {
+                        "Y": 0.9051094890510949,
+                        "N": 0.06934306569343066,
+                        "P": 0.025547445255474453
+                    },
+                    "pinv": 0.0,
+                    "samplesize": 274
                 }
             }
         },
@@ -5331,18 +4705,13 @@
                 "importance": 0,
                 "stats": {
                     "frequencies": {
-                        "WD": 0.905241935483871,
-                        "COD": 0.036290322580645164,
-                        "New": 0.034274193548387094,
-                        "ConLD": 0.009072580645161291,
-                        "ConLI": 0.004032258064516129,
-                        "ConLw": 0.004032258064516129,
-                        "Oth": 0.0030241935483870967,
-                        "CWD": 0.0030241935483870967,
-                        "Con": 0.0010080645161290322
+                        "WD": 0.927007299270073,
+                        "New": 0.040145985401459854,
+                        "COD": 0.029197080291970802,
+                        "ConLD": 0.0036496350364963502
                     },
                     "pinv": 0.0,
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         },
@@ -5357,79 +4726,206 @@
                 "importance": 0,
                 "stats": {
                     "frequencies": {
-                        "Normal": 0.8457661290322581,
-                        "Abnorml": 0.0846774193548387,
-                        "Partial": 0.037298387096774195,
-                        "Family": 0.018145161290322582,
-                        "Alloca": 0.010080645161290322,
-                        "AdjLand": 0.004032258064516129
+                        "Normal": 0.8503649635036497,
+                        "Abnorml": 0.08029197080291971,
+                        "Partial": 0.040145985401459854,
+                        "Family": 0.01824817518248175,
+                        "Alloca": 0.010948905109489052
                     },
                     "pinv": 0.0,
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
-        },
-        "saleprice": {
-            "component_class": "raymon.profiling.components.IntComponent",
+        }
+    },
+    "output_components": {
+        "prediction": {
+            "component_class": "raymon.profiling.components.FloatComponent",
             "component": {
-                "name": "saleprice",
+                "name": "prediction",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
                 "extractor_state": {
-                    "element": "SalePrice"
+                    "element": 0
+                },
+                "importance": 0,
+                "stats": {
+                    "min": 66700.0,
+                    "max": 199587.6,
+                    "mean": 139577.40739659365,
+                    "std": 28207.261041111335,
+                    "pinv": 0.0,
+                    "percentiles": [
+                        66700.0,
+                        78442.0,
+                        83166.0,
+                        88336.0,
+                        89372.0,
+                        93128.0,
+                        95464.16,
+                        98414.0,
+                        99591.92,
+                        103082.56,
+                        105580.0,
+                        107368.0,
+                        107862.0,
+                        109314.32,
+                        111370.0,
+                        112094.0,
+                        113004.4,
+                        114976.0,
+                        115736.0,
+                        116690.84,
+                        117172.0,
+                        118554.0,
+                        120684.0,
+                        120995.36,
+                        121820.16,
+                        122236.0,
+                        122974.0,
+                        124676.0,
+                        125222.4,
+                        125428.0,
+                        125585.6,
+                        126280.0,
+                        126898.0,
+                        127912.0,
+                        128600.0,
+                        129286.4,
+                        129804.0,
+                        131078.32,
+                        131666.0,
+                        132269.0,
+                        132635.48,
+                        133032.8,
+                        133296.0,
+                        133884.0,
+                        134184.0,
+                        134394.0,
+                        134596.4,
+                        135374.4,
+                        136301.6,
+                        136544.16,
+                        137324.0,
+                        138000.0,
+                        138244.0,
+                        138550.0,
+                        140536.0,
+                        141818.2,
+                        142232.0,
+                        142466.08,
+                        143150.0,
+                        143304.0,
+                        144317.4,
+                        144710.16,
+                        144872.0,
+                        145512.48,
+                        146690.0,
+                        146930.0,
+                        147740.0,
+                        148088.0,
+                        148624.0,
+                        150020.0,
+                        150242.0,
+                        150492.0,
+                        150915.0,
+                        152220.0,
+                        153064.0,
+                        153879.0,
+                        157387.48,
+                        160960.0,
+                        161700.0,
+                        163758.0,
+                        166701.48,
+                        169728.0,
+                        171304.4,
+                        172319.12,
+                        172574.0,
+                        173218.88,
+                        174330.8,
+                        176462.8,
+                        179433.8,
+                        182043.2,
+                        182634.08,
+                        182936.56,
+                        185897.0,
+                        186626.0,
+                        188342.0,
+                        188515.6,
+                        190057.0,
+                        191164.44,
+                        195516.4,
+                        197933.6,
+                        199587.6
+                    ],
+                    "samplesize": 274
+                }
+            }
+        }
+    },
+    "actual_components": {
+        "actual": {
+            "component_class": "raymon.profiling.components.FloatComponent",
+            "component": {
+                "name": "actual",
+                "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_state": {
+                    "element": 0
                 },
                 "importance": 0,
                 "stats": {
                     "min": 34900.0,
-                    "max": 248900.0,
-                    "mean": 144006.72379032258,
-                    "std": 39740.93183613024,
+                    "max": 212000.0,
+                    "mean": 139557.57664233577,
+                    "std": 34077.03039106141,
                     "pinv": 0.0,
                     "percentiles": [
                         34900.0,
-                        58500.0,
-                        68400.0,
-                        79000.0,
-                        81000.0,
-                        83000.0,
-                        85000.0,
-                        87500.0,
-                        90000.0,
-                        92900.0,
-                        95000.0,
-                        98300.0,
+                        55000.0,
+                        66500.0,
+                        78000.0,
+                        80500.0,
+                        82500.0,
+                        87000.0,
+                        89500.0,
+                        91000.0,
+                        94500.0,
+                        97000.0,
                         100000.0,
-                        103000.0,
+                        102000.0,
                         105000.0,
-                        107000.0,
-                        108000.0,
+                        107500.0,
+                        109000.0,
                         109500.0,
                         110000.0,
-                        110500.0,
-                        112500.0,
-                        114504.0,
-                        115000.0,
+                        110000.0,
+                        110000.0,
+                        112000.0,
+                        113000.0,
+                        116900.0,
                         117000.0,
                         118000.0,
-                        119000.0,
-                        119500.0,
+                        119200.0,
                         120000.0,
-                        122000.0,
-                        123600.0,
-                        124500.0,
+                        120500.0,
+                        123000.0,
+                        124000.0,
+                        124900.0,
                         125000.0,
-                        126175.0,
-                        127000.0,
-                        128000.0,
-                        128900.0,
-                        129500.0,
+                        125500.0,
+                        128500.0,
+                        128500.0,
+                        129000.0,
+                        129900.0,
                         130000.0,
                         130500.0,
-                        132000.0,
+                        131500.0,
                         132500.0,
-                        133700.0,
-                        134800.0,
+                        133000.0,
+                        134000.0,
                         135000.0,
-                        135500.0,
+                        135000.0,
+                        135000.0,
+                        135750.0,
                         136500.0,
                         137000.0,
                         138000.0,
@@ -5438,61 +4934,298 @@
                         140000.0,
                         140000.0,
                         141000.0,
-                        142500.0,
-                        143000.0,
-                        144000.0,
+                        142000.0,
+                        142953.0,
+                        143500.0,
                         144500.0,
                         145000.0,
-                        146000.0,
+                        145000.0,
+                        145500.0,
                         147000.0,
-                        148000.0,
-                        149000.0,
+                        147000.0,
+                        148500.0,
                         150000.0,
                         151000.0,
-                        153000.0,
+                        151000.0,
                         154000.0,
                         155000.0,
                         155000.0,
-                        156932.0,
-                        157900.0,
-                        159000.0,
-                        160000.0,
+                        156000.0,
+                        157000.0,
+                        158900.0,
+                        159500.0,
                         160000.0,
                         162000.0,
-                        163900.0,
-                        165000.0,
-                        168500.0,
-                        170000.0,
-                        172500.0,
+                        164990.0,
+                        167000.0,
+                        169000.0,
+                        171000.0,
                         173000.0,
-                        175000.0,
-                        176000.0,
-                        179000.0,
+                        173000.0,
+                        175500.0,
+                        178000.0,
+                        179665.0,
                         180000.0,
-                        181000.0,
+                        183000.0,
                         185000.0,
-                        187100.0,
-                        190000.0,
+                        185850.0,
+                        187500.0,
+                        191000.0,
+                        192000.0,
+                        193500.0,
                         194000.0,
-                        197000.0,
+                        195000.0,
                         200000.0,
-                        203000.0,
-                        207000.0,
-                        214000.0,
-                        219500.0,
-                        224900.0,
-                        227680.0,
-                        232000.0,
-                        239000.0,
-                        241500.0,
-                        248900.0
+                        200000.0,
+                        202500.0,
+                        209500.0,
+                        212000.0
                     ],
-                    "samplesize": 992
+                    "samplesize": 274
                 }
             }
         }
     },
-    "output_components": {},
-    "actual_components": {},
-    "score_components": {}
+    "score_components": {
+        "abs_error": {
+            "component_class": "raymon.profiling.components.FloatComponent",
+            "component": {
+                "name": "abs_error",
+                "extractor_class": "raymon.profiling.extractors.structured.scoring.AbsoluteError",
+                "extractor_state": {},
+                "importance": 0,
+                "stats": {
+                    "min": 4.399999999994179,
+                    "max": 88886.4,
+                    "mean": 11711.657712895378,
+                    "std": 12283.621299141383,
+                    "pinv": 0.0,
+                    "percentiles": [
+                        4.399999999994179,
+                        190.0,
+                        273.4400000000023,
+                        426.0,
+                        771.333333333343,
+                        1052.0,
+                        1319.7200000000012,
+                        1536.0,
+                        1626.0,
+                        1708.0,
+                        1850.0,
+                        1905.9200000000128,
+                        2026.0,
+                        2096.399999999994,
+                        2184.0,
+                        2365.920000000013,
+                        2621.0,
+                        2756.0,
+                        2835.5599999999977,
+                        3051.4800000000105,
+                        3218.0,
+                        3304.0,
+                        3492.0,
+                        3514.7999999999884,
+                        3704.0,
+                        3748.0,
+                        3862.279999999999,
+                        3921.679999999993,
+                        4166.0,
+                        4433.600000000006,
+                        4540.0,
+                        4677.600000000006,
+                        4870.039999999994,
+                        4943.0,
+                        5000.0,
+                        5018.8399999999965,
+                        5052.0,
+                        5213.600000000006,
+                        5450.0,
+                        5569.279999999999,
+                        5702.0,
+                        5798.5199999999895,
+                        6176.0,
+                        6494.600000000006,
+                        6762.880000000005,
+                        7006.720000000001,
+                        7128.0,
+                        7262.399999999994,
+                        7596.0,
+                        7731.0,
+                        8088.0,
+                        8287.200000000012,
+                        8556.0,
+                        8624.0,
+                        8968.399999999994,
+                        9112.0,
+                        9182.0,
+                        9316.0,
+                        9786.0,
+                        10167.0,
+                        10412.399999999994,
+                        10736.320000000007,
+                        10856.200000000012,
+                        11064.0,
+                        11512.48000000001,
+                        11645.119999999995,
+                        11915.0,
+                        12058.279999999999,
+                        12698.399999999994,
+                        13289.839999999997,
+                        13460.0,
+                        13668.200000000012,
+                        13942.839999999997,
+                        14399.600000000006,
+                        14579.200000000012,
+                        14882.839999999997,
+                        15516.0,
+                        15857.039999999994,
+                        16334.720000000001,
+                        16708.320000000007,
+                        17268.0,
+                        17669.20000000001,
+                        18004.64,
+                        18991.679999999993,
+                        20042.0,
+                        20654.0,
+                        22201.600000000006,
+                        22901.20000000001,
+                        23578.839999999997,
+                        25394.0,
+                        27400.0,
+                        29190.040000000008,
+                        30084.0,
+                        30570.0,
+                        33044.0,
+                        37374.0,
+                        44394.0,
+                        45613.0,
+                        48037.04000000001,
+                        62293.0,
+                        88886.4
+                    ],
+                    "samplesize": 1
+                }
+            }
+        },
+        "sq_error": {
+            "component_class": "raymon.profiling.components.FloatComponent",
+            "component": {
+                "name": "sq_error",
+                "extractor_class": "raymon.profiling.extractors.structured.scoring.SquaredError",
+                "extractor_state": {},
+                "importance": 0,
+                "stats": {
+                    "min": 19.359999999948776,
+                    "max": 7900792104.959999,
+                    "mean": 288050278.60474163,
+                    "std": 723790184.1854541,
+                    "pinv": 0.0,
+                    "percentiles": [
+                        19.359999999948776,
+                        36100.0,
+                        74769.43360000127,
+                        181476.0,
+                        594955.111111126,
+                        1106704.0,
+                        1741660.878400003,
+                        2359296.0,
+                        2643876.0,
+                        2917264.0,
+                        3422500.0,
+                        3632531.046400049,
+                        4104676.0,
+                        4394892.959999976,
+                        4769856.0,
+                        5597577.44640006,
+                        6869641.0,
+                        7595536.0,
+                        8040400.513599987,
+                        9311530.190400064,
+                        10355524.0,
+                        10916416.0,
+                        12194064.0,
+                        12353819.039999919,
+                        13719616.0,
+                        14047504.0,
+                        14917206.79839999,
+                        15379574.022399945,
+                        17355556.0,
+                        19656808.960000053,
+                        20611600.0,
+                        21879941.760000054,
+                        23717289.60159994,
+                        24433249.0,
+                        25000000.0,
+                        25188754.945599966,
+                        25522704.0,
+                        27181624.96000006,
+                        29702500.0,
+                        31016879.718399987,
+                        32512804.0,
+                        33622834.19039988,
+                        38142976.0,
+                        42179829.16000008,
+                        45736545.89440006,
+                        49094125.158400014,
+                        50808384.0,
+                        52742453.759999916,
+                        57699216.0,
+                        59768361.0,
+                        65415744.0,
+                        68677683.8400002,
+                        73205136.0,
+                        74373376.0,
+                        80432198.5599999,
+                        83028544.0,
+                        84309124.0,
+                        86787856.0,
+                        95765796.0,
+                        103367889.0,
+                        108418073.75999989,
+                        115268567.14240015,
+                        117857078.44000025,
+                        122412096.0,
+                        132537195.75040025,
+                        135608819.8143999,
+                        141967225.0,
+                        145402116.55839998,
+                        161249362.55999985,
+                        176619847.2255999,
+                        181171600.0,
+                        186819691.2400003,
+                        194402787.2655999,
+                        207348480.16000018,
+                        212553072.64000034,
+                        221498926.4655999,
+                        240746256.0,
+                        251445717.5615998,
+                        266823077.47840005,
+                        279167957.22240025,
+                        298183824.0,
+                        312200628.6400004,
+                        324167061.52959996,
+                        360683909.2223997,
+                        401681764.0,
+                        426587716.0,
+                        492911042.56000024,
+                        524464961.44000053,
+                        555961695.7455999,
+                        644855236.0,
+                        750760000.0,
+                        852058435.2016004,
+                        905047056.0,
+                        934524900.0,
+                        1091905936.0,
+                        1396815876.0,
+                        1970827236.0,
+                        2080545769.0,
+                        2307557211.961601,
+                        3880417849.0,
+                        7900792104.959999
+                    ],
+                    "samplesize": 1
+                }
+            }
+        }
+    }
 }

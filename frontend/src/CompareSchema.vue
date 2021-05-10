@@ -65,17 +65,14 @@ export default {
     },
   },
   computed: {
-    loadedJSON() {
-      return JSON.parse(this.comparison);
-    },
     schemaLoaded() {
-      return this.loadedJSON.reference;
+      return this.comparison.reference;
     },
     otherLoaded() {
-      return this.loadedJSON.other;
+      return this.comparison.other;
     },
     compareLoaded() {
-      return this.loadedJSON.report;
+      return this.comparison.report;
     },
     pageToShow() {
       if (this.componentName !== undefined) {

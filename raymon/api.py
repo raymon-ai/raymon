@@ -109,28 +109,28 @@ class RaymonAPI:
         data = {"user_id": user_id}
         return self.delete(route=f"orgs/{org_id}/users", json=data)
 
-    def schema_create(self, project_id, schema):
-        schema_jcr = schema.to_jcr()
-        schema_name = schema.name
-        schema_version = schema.version
-        return self.post(route=f"projects/{project_id}/schemas/{schema_name}/{schema_version}", json=schema_jcr)
+    def profile_create(self, project_id, profile):
+        profile_jcr = profile.to_jcr()
+        profile_name = profile.name
+        profile_version = profile.version
+        return self.post(route=f"projects/{project_id}/profiles/{profile_name}/{profile_version}", json=profile_jcr)
 
-    def schema_ls(self, project_id):
-        return self.get(route=f"projects/{project_id}/schemas")
+    def profile_ls(self, project_id):
+        return self.get(route=f"projects/{project_id}/profiles")
 
-    def schema_get(self, project_id, schema_name, schema_version):
-        return self.get(route=f"projects/{project_id}/schemas/{schema_name}/{schema_version}")
+    def profile_get(self, project_id, profile_name, profile_version):
+        return self.get(route=f"projects/{project_id}/profiles/{profile_name}/{profile_version}")
 
-    def schema_reduce(self, project_id, schema_name, schema_version, begin, end, slicestr):
+    def profile_reduce(self, project_id, profile_name, profile_version, begin, end, slicestr):
         params = {"begin": begin, "end": end, "slicestr": slicestr}
-        return self.get(route=f"projects/{project_id}/schemas/{schema_name}/{schema_version}/reduce", params=params)
+        return self.get(route=f"projects/{project_id}/profiles/{profile_name}/{profile_version}/reduce", params=params)
 
     def ray_ls(self, project_id, slicestr, begin, end, limit=250):
         params = {"begin": begin, "end": end, "slicestr": slicestr, "lim": limit}
-        return self.get(route=f"projects/{project_id}/rays", params=params)
+        return self.get(route=f"projects/{project_id}/traces", params=params)
 
     def ray_get(self, project_id, trace_id):
-        return self.get(route=f"projects/{project_id}/rays/{trace_id}")
+        return self.get(route=f"projects/{project_id}/traces/{trace_id}")
 
     def object_ls(self, project_id, ref, slicestr, begin, end, limit=250):
         params = {"begin": begin, "end": end, "slicestr": slicestr, "lim": limit, "ref": ref}
@@ -154,4 +154,4 @@ class RaymonAPI:
         return self.get(route=f"projects/{project_id}/tags")
 
     def tags_get(self, project_id, trace_id):
-        return self.get(route=f"projects/{project_id}/rays/{trace_id}/tags")
+        return self.get(route=f"projects/{project_id}/traces/{trace_id}/tags")

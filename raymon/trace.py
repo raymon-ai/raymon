@@ -4,11 +4,9 @@ import numpy as np
 
 def _parse_trace_id(trace_id):
     if isinstance(trace_id, str):
-        return (trace_id,)
-    # elif isinstance(trace_id, tuple):
-    #     return trace_id
+        return trace_id
     else:
-        return (str(uuid.uuid4()),)
+        return str(uuid.uuid4())
 
 
 class Trace:
@@ -43,7 +41,7 @@ class Trace:
         text : str
             The string you want to log to the backend.
         """
-        self.logger.info(trace_id=str(self), text=text)
+        self.logger.info(trace_id=self.trace_id, text=text)
 
     def log(self, ref, data):
         """Log a data artefact to the backend.
@@ -55,7 +53,7 @@ class Trace:
         data : :class:`raymon.types.RaymonDataType` or :class:`raymon.globals.Serializable`
             The data you want to log to the backend.
         """
-        self.logger.log(trace_id=str(self), ref=ref, data=data)
+        self.logger.log(trace_id=self.trace_id, ref=ref, data=data)
 
     def tag(self, tags):
         """Tag the trace with given tags.
@@ -65,16 +63,19 @@ class Trace:
         tags : list of dicts or list of :class:`raymon.Tag`
              A
         """
-        self.logger.tag(trace_id=str(self), tags=tags)
+        self.logger.tag(trace_id=self.trace_id, tags=tags)
 
     def log_profile_input(self, profile, data):
         ref = f"#{profile.name}@{profile.version}-input"
-        self.logger.log(trace_id=str(self), ref=ref, data=data)
+        self.logger.log(trace_id=self.trace_id, ref=ref, data=data)
 
     def log_profile_output(self, profile, data):
         ref = f"#{profile.name}@{profile.version}-output"
-        self.logger.log(trace_id=str(self), ref=ref, data=data)
+        self.logger.log(trace_id=self.trace_id, ref=ref, data=data)
 
     def log_profile_actual(self, profile, data):
         ref = f"#{profile.name}@{profile.version}-actual"
-        self.logger.log(trace_id=str(self), ref=ref, data=data)
+        self.logger.log(trace_id=self.trace_id, ref=ref, data=data)
+
+    def __str__(self):
+        return self.trace_id

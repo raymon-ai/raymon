@@ -7,8 +7,8 @@
       class="mainWindow m-2 p-2 white"
     >
       <Header
-        :schemaDef="schemaLoaded"
-        :poi="poiLoaded"
+        :schemaDef="profile"
+        :poi="poi"
         @setPage="setPage"
       />
       <ComponentTypeNav
@@ -18,8 +18,8 @@
       />
       <component
         :is="pageToShow"
-        :schemaDef="schemaLoaded"
-        :poi="poiLoaded"
+        :schemaDef="profile"
+        :poi="poi"
         :componentName="componentName"
         :componentType="componentPage"
         @setPage="setPage"
@@ -38,7 +38,7 @@ import FeatureOverview from "@/components/view/FeatureOverview.vue";
 import FeatureDetailView from "@/components/view/FeatureDetailView.vue";
 export default {
   name: "SchemaView",
-  props: ["schema", "poi"],
+  props: ["profile", "poi"],
   components: {
     Header,
     ComponentTypeNav,
@@ -65,12 +65,6 @@ export default {
     },
   },
   computed: {
-    schemaLoaded() {
-      return JSON.parse(this.schema);
-    },
-    poiLoaded() {
-      return JSON.parse(this.poi);
-    },
     pageToShow() {
       if (this.componentName !== undefined) {
         return FeatureDetailView;

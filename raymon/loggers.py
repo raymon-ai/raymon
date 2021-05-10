@@ -1,7 +1,7 @@
 import json
 import uuid
 import logging
-from logging.handlers import RotatingFileHandler
+from logging.handlers import DatagramHandler, RotatingFileHandler
 import sys
 from abc import ABC, abstractmethod
 import pendulum
@@ -9,10 +9,11 @@ import os
 from pathlib import Path
 
 from raymon.tags import Tag
-from raymon.globals import DataException
+from raymon.globals import DataException, Serializable
 from raymon import RaymonAPI
 
-MB = 1000000
+KB = 1000
+MB = KB * 1000
 
 
 class RaymonLoggerBase(ABC):
@@ -20,13 +21,28 @@ class RaymonLoggerBase(ABC):
         self.project_id = project_id
         self.setup_logger(stdout=True)
 
-    def structure(self, trace_id, ref, data):
-        if isinstance(data, list):
-            data = [d.to_jcr() for d in data]
-        elif isinstance(data, str):
+    def to_json_serializable(self, data):
+        """
+        Makes sure all data is JSON serializable
+        """
+
+        if isinstance(data, str):  ## Infor messages are strings
             data = data
-        else:
+        elif isinstance(data, Serializable):
             data = data.to_jcr()
+        elif isinstance(data, list):
+            dc = []
+            for d in data:
+                if isinstance(d, Serializable):
+                    dc.append(d.to_jcr())
+                else:
+                    dc.append(d)  # We assume d is JSON serializable
+            data = dc
+        # Else: assume dat is JSON serializble
+        return data
+
+    def structure(self, trace_id, ref, data):
+        data = self.to_json_serializable(data)
         return {
             "timestamp": str(pendulum.now("utc")),
             "trace_id": str(trace_id),
@@ -76,9 +92,6 @@ class RaymonLoggerBase(ABC):
 
 
 class RaymonFileLogger(RaymonLoggerBase):
-    KB = 1000
-    MB = KB * 1000
-
     def __init__(self, path="/tmp/raymon/", project_id="default", reset_file=False):
         super().__init__(project_id=project_id)
         self.setup_datalogger(path=path, reset_file=reset_file)
@@ -132,7 +145,7 @@ class RaymonAPILogger(RaymonLoggerBase):
         self.api = RaymonAPI(url=url, project_id=project_id, auth_path=auth_path, env=env)
 
     """
-    Functions related to logging of rays
+    Functions related to logging of traces
     """
 
     def info(self, trace_id, text):
@@ -161,8 +174,8 @@ class RaymonAPILogger(RaymonLoggerBase):
         tags = self.parse_tags(tags)
         jcr = self.structure(trace_id=trace_id, ref=None, data=tags)
         resp = self.api.post(
-            route=f"projects/{self.project_id}/rays/{trace_id}/tags",
-            json=tags,
+            route=f"projects/{self.project_id}/traces/{trace_id}/tags",
+            json=jcr,
         )
         status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
         self.logger.info(f"Ray tagged. Status: {status}", extra=jcr)
