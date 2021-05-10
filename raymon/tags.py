@@ -23,20 +23,23 @@ CGROUP_TAGTYPES = {
 
 
 class Tag(Serializable):
-    def __init__(self, name, value, type, group=None):
-        """Represents a tag. Tags are used for monitoring and filtering in the backend.
+    """
+    Represents a tag. Tags are used for monitoring and filtering in the backend.
 
-        Parameters
-        ----------
-        name : str
-            Name of the tag
-        value : str or Number
-            Value of the tag. Can be numeric or string.
-        type : str
-            Type of the tag. Note: some type string have a special meaning like tags assicuiated with data profiles and errors.
-        group : str, optional
-            y setting the group, you can indicate that this tag belongs to a certai nset of tagt. For example, all tags that belong to a certai ndata profile will have the same group.
-        """
+    Parameters
+    ----------
+    name : str
+        Name of the tag
+    value : str or Number
+        Value of the tag. Can be numeric or string.
+    type : str
+        Type of the tag. Note: some type string have a special meaning like tags assicuiated with data profiles and errors.
+    group : str, optional
+        y setting the group, you can indicate that this tag belongs to a certai nset of tagt. For example, all tags that belong to a certai ndata profile will have the same group.
+    """
+
+    def __init__(self, name, value, type, group=None):
+
         self.name = name
         self.value = value
         self.type = type

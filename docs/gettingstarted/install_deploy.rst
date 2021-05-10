@@ -1,6 +1,6 @@
-===========================
-Installation and Deployment
-===========================
+==================================
+Installation, Deployment and Setup
+==================================
 To use
 
 ---------------------------
@@ -16,3 +16,19 @@ Installation from PyPI is the default way to install the raymon client library. 
 Deploying the Raymon backend
 ----------------------------
 The Raymon backend runs on Kubernetes or Docker swarm. See the instructions on the `git repo <https://github.com/raymon-ai/raymon-api>`_ for deploying the backend.
+
+
+----------------------
+Accessing the UI & API
+----------------------
+TODO
+
+-----------------------------------
+Creating Projects and Organizations
+-----------------------------------
+TODO
+
+--------------------
+Transfering Projects
+--------------------
+TODO

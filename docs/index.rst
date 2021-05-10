@@ -71,10 +71,12 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 2
+   
+   gettingstarted/landing
+   api/apilanding
 
-   install_deploy
-   logging_tracing
-   profiling
+
+
 
 
 Indices and tables

@@ -8,13 +8,10 @@ import pandas as pd
 import base64
 import ast
 from PIL import Image as PILImage
+from raymon.globals import Serializable
 
 
-class RaymonDataType(ABC):
-    @abstractmethod
-    def to_jcr(self):
-        pass
-
+class RaymonDataType(Serializable, ABC):
     def to_json(self):
         return json.dumps(self.to_jcr())
 

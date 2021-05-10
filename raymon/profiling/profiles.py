@@ -18,6 +18,7 @@ COMPONENT_TYPES = ["input_components", "output_components", "actual_components",
 
 
 class ModelProfile(Serializable, Buildable):
+
     _attrs = ["name", "version", "components"]
 
     def __init__(
@@ -30,6 +31,23 @@ class ModelProfile(Serializable, Buildable):
         score_components={},
         summaries={},
     ):
+        """ModelProfiles are used to capture and guard input, output, actual and prediction score characteristics for ML models.
+
+        Parameters
+        ----------
+        name : str
+            Name of the profile
+        version : str
+            Version of the profile
+        input_components : dict or list
+            A list of components that will check the inputs of the model.
+        output_components : dict or list
+            A list of components that will check the outputs of the model.
+        actual_components : dict or list
+            A list of components that will check the actuals of the model.
+        score_components : dict or list
+            A list of components that will score the models predictions using the outpus and actuals.
+        """
 
         self._name = None
         self._version = None

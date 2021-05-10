@@ -52,7 +52,7 @@ class Trace:
         ----------
         ref : str
             A reference name to refer to this artefact later. This reference name, in combination with the trace id should be unique.
-        data : raymon.types.RaymonDataType
+        data : :class:`raymon.types.RaymonDataType` or :class:`raymon.globals.Serializable`
             The data you want to log to the backend.
         """
         self.logger.log(trace_id=str(self), ref=ref, data=data)
