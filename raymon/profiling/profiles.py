@@ -72,8 +72,10 @@ class ModelProfile(Serializable, Buildable):
     @name.setter
     def name(self, value):
         if not isinstance(value, str):
-            raise ValueError(f"Schema name should be a string")
-        self._name = value
+            raise ValueError(f"Profile name should be a string")
+        if "@" in value:
+            raise ValueError(f"Profile name should not include '@'")
+        self._name = value.lower()
 
     @property
     def version(self):
@@ -82,7 +84,7 @@ class ModelProfile(Serializable, Buildable):
     @version.setter
     def version(self, value):
         if not isinstance(value, str):
-            raise ValueError(f"Schema version should be a string")
+            raise ValueError(f"Profile version should be a string")
         self._version = value
 
     @property

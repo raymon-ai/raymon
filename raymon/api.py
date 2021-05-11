@@ -94,6 +94,12 @@ class RaymonAPI:
         resp = self.put(route=f"projects/{project_id}", json=data)
         return resp
 
+    def orchestration_get(self, project_id):
+        resp = self.get(route=f"projects/{project_id}")
+        data = resp.json()
+        orchestration = data["config"]
+        return orchestration
+
     def org_create(self, org_id, description):
         org = {"org_id": org_id, "description": description}
         return self.post(route="orgs", json=org)
