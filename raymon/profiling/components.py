@@ -279,7 +279,7 @@ class CategoricComponent(Component):
             return None
 
     def check_invalid(self, component, cgroup):
-        tagname = f"{self.name}-err"
+        tagname = f"{self.name}-error"
         if component is None:
             return Tag(name=tagname, value="Value None", type=CGROUP_TAGTYPES[cgroup]["errortype"])
         elif pd.isnull(component):
