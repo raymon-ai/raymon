@@ -125,11 +125,11 @@ class RaymonAPI:
         params = {"begin": begin, "end": end, "slicestr": slicestr}
         return self.get(route=f"projects/{project_id}/profiles/{profile_name}/{profile_version}/reduce", params=params)
 
-    def ray_ls(self, project_id, slicestr, begin, end, limit=250):
+    def trace_ls(self, project_id, slicestr, begin, end, limit=250):
         params = {"begin": begin, "end": end, "slicestr": slicestr, "lim": limit}
         return self.get(route=f"projects/{project_id}/traces", params=params)
 
-    def ray_get(self, project_id, trace_id):
+    def trace_get(self, project_id, trace_id):
         return self.get(route=f"projects/{project_id}/traces/{trace_id}")
 
     def object_ls(self, project_id, ref, slicestr, begin, end, limit=250):

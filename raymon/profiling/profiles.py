@@ -143,7 +143,7 @@ class ModelProfile(Serializable, Buildable):
 
     @property
     def group_idfr(self):
-        return f"{self.name}@{self.version}"
+        return f"{self.name}@{self.version}".lower()
 
     def to_jcr(self):
         jcr = {
