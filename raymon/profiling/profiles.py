@@ -290,10 +290,11 @@ class ModelProfile(Serializable, Buildable):
                 print(component.name)
                 ref_stats = self_components[component.name].stats
                 other_stats = other_components[component.name].stats
+                drift, drift_idx, pinvdiff = ref_stats.contrast(other_stats)
+
                 comp_thresholds = comp_type_thresholds.get(component.name, {})
                 int_threshold = comp_thresholds.get("integrity", 0.01)
                 drift_threshold = comp_thresholds.get("drift", 0.05)
-                drift, drift_idx, pinvdiff = ref_stats.contrast(other_stats)
                 drift_report = {
                     "drift": float(drift),
                     "drift_idx": drift_idx,

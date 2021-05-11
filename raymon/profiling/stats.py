@@ -1,10 +1,8 @@
 import numpy as np
 import pandas as pd
-
 from abc import ABC, abstractmethod
 from scipy.interpolate import interp1d
 
-from scipy.stats import ks_2samp
 
 from raymon.globals import (
     Buildable,
@@ -189,6 +187,8 @@ class NumericStats(Stats):
 
     def contrast(self, other):
         # KS distance
+        if other.samplesize == 0:
+            return -1, "NA", -1
         p1 = self.percentiles
         p2 = other.percentiles
         data_all = np.concatenate([p1, p2])
@@ -202,12 +202,10 @@ class NumericStats(Stats):
         interpolated_2 = interpolator_2(data_all)
         drift = np.max(np.abs(interpolated_1 - interpolated_2)) / 100
         drift_idx = int(np.argmax(np.abs(interpolated_1 - interpolated_2)))
-        # alert_drift = drift > thresh_drift
 
         pinv1 = self.pinv
         pinv2 = other.pinv
         pinvdiff = pinv2 - pinv1
-        # alert_inv = pinvdiff > thresh_inv
 
         return drift, drift_idx, pinvdiff
 
@@ -327,6 +325,8 @@ class CategoricStats(Stats):
     """Testing and sampling functions"""
 
     def contrast(self, other):
+        if other.samplesize == 0:
+            return -1, "NA", -1
         self_f, other_f, full_domain = equalize_domains(self.frequencies, other.frequencies)
         f_sorted_self = []
         f_sorted_other = []

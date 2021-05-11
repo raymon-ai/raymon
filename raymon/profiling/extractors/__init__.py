@@ -76,3 +76,24 @@ class ScoringExtractor(Extractor):
         else:
             raise DataException("Data should be a DataFrame or Iterable")
         return components
+
+
+class NoneExtractor(SimpleExtractor):
+    def extract(self, data):
+        return 0
+
+    def to_jcr(self):
+        data = {}
+        return data
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        return cls()
+
+    """Buildable interface"""
+
+    def build(self, data):
+        pass
+
+    def is_built(self):
+        return True
