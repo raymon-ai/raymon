@@ -97,7 +97,7 @@ def test_schema_buildable():
     )
     stats = NumericStats(min=0, max=1)
     component = FloatComponent(name="testcomponent", extractor=extractor, stats=stats)
-    schema = ModelProfile(name="Testing", version="1.0.0", input_components=[component])
+    schema = ModelProfile(name="Testing", version="1.0.0", input_comps=[component])
 
     assert not schema.is_built()
 
@@ -106,6 +106,6 @@ def test_schema_buildable():
     )
     stats = NumericStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), pinv=0, samplesize=10)
     component = FloatComponent(name="testcomponent", extractor=extractor, stats=stats)
-    schema = ModelProfile(name="Testing", version="1.0.0", input_components=[component, component])
+    schema = ModelProfile(name="Testing", version="1.0.0", input_comps=[component, component])
 
     assert schema.is_built()

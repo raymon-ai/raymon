@@ -1,7 +1,7 @@
 {
     "name": "HousePricesExpensive",
     "version": "1.0.0",
-    "input_components": {
+    "input_comps": {
         "mssubclass": {
             "component_class": "raymon.profiling.components.IntComponent",
             "component": {
@@ -4714,7 +4714,7 @@
             }
         }
     },
-    "output_components": {
+    "output_comps": {
         "prediction": {
             "component_class": "raymon.profiling.components.FloatComponent",
             "component": {
@@ -4838,7 +4838,7 @@
             }
         }
     },
-    "actual_components": {
+    "actual_comps": {
         "actual": {
             "component_class": "raymon.profiling.components.FloatComponent",
             "component": {
@@ -4962,7 +4962,7 @@
             }
         }
     },
-    "score_components": {
+    "eval_comps": {
         "abs_error": {
             "component_class": "raymon.profiling.components.FloatComponent",
             "component": {

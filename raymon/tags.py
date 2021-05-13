@@ -15,10 +15,10 @@ VECTOR = "vector"
 ERROR = "error"
 
 CGROUP_TAGTYPES = {
-    "input_components": {"tagtype": PROFILE_INPUT, "errortype": PROFILE_INPUT_ERROR},
-    "output_components": {"tagtype": PROFILE_OUTPUT, "errortype": PROFILE_OUTPUT_ERROR},
-    "actual_components": {"tagtype": PROFILE_ACTUAL, "errortype": PROFILE_ACTUAL_ERROR},
-    "score_components": {"tagtype": PROFILE_SCORE, "errortype": PROFILE_SCORE_ERROR},
+    "input_comps": {"tagtype": PROFILE_INPUT, "errortype": PROFILE_INPUT_ERROR},
+    "output_comps": {"tagtype": PROFILE_OUTPUT, "errortype": PROFILE_OUTPUT_ERROR},
+    "actual_comps": {"tagtype": PROFILE_ACTUAL, "errortype": PROFILE_ACTUAL_ERROR},
+    "eval_comps": {"tagtype": PROFILE_SCORE, "errortype": PROFILE_SCORE_ERROR},
 }
 
 

@@ -44,7 +44,7 @@ Example: Vision Data
     profile = ModelProfile(
             name="retinopathy",
             version="1.0.0",
-            input_components=[
+            input_comps=[
                 FloatComponent(name="sharpness", extractor=Sharpness()),
                 FloatComponent(name="intensity", extractor=AvgIntensity()),
                 FloatComponent(name="outlierscore", extractor=DN2AnomalyScorer(k=20, size=(512, 512)))
@@ -69,20 +69,20 @@ Example: Structured Data
     :linenos:
 
     from raymon.profiling import ModelProfile, FloatComponent
-    from raymon.profiling.extractors.structured import generate_components, ElementExtractor
+    from raymon.profiling.extractors.structured import generate_comps, ElementExtractor
     from raymon.profiling.extractors.structured.scoring import AbsoluteError, SquaredError
 
     profile = ModelProfile(
         name="HousePriceModelProfile",
         version="1.0.0",
-        input_components=generate_components(X.dtypes),
-        output_components=[
+        input_comps=generate_comps(X.dtypes),
+        output_comps=[
             FloatComponent(name="prediction", extractor=ElementExtractor(element=0))
         ],
-        actual_components=[
+        actual_comps=[
             FloatComponent(name="actual", extractor=ElementExtractor(element=0))
         ],
-        score_components=[
+        eval_comps=[
             FloatComponent(name="abs_error", extractor=AbsoluteError()),
             FloatComponent(name="sq_error", extractor=SquaredError()),
         ],

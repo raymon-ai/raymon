@@ -52,7 +52,7 @@ class ElementExtractor(SimpleExtractor):
         return f"{self.__class__.__name__}(element={self.element})"
 
 
-def generate_components(dtypes):
+def generate_comps(dtypes):
     components = []
     for key in dtypes.index:
         # Check type: Numeric or categoric

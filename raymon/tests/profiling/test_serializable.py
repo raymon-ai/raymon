@@ -14,13 +14,13 @@ def test_schema_jcr():
     component = FloatComponent(name="testcomponent", extractor=extractor, stats=stats)
     component2 = FloatComponent(name="testcomponent2", extractor=extractor, stats=stats)
 
-    schema = ModelProfile(name="Testing", version="1.0.0", input_components=[component, component2])
+    schema = ModelProfile(name="Testing", version="1.0.0", input_comps=[component, component2])
     schema_jcr = schema.to_jcr()
-    assert len(schema_jcr["input_components"]) == 2
+    assert len(schema_jcr["input_comps"]) == 2
     jsonstr = json.dumps(schema_jcr)  # Should not throw an error
     assert len(jsonstr) > 0
     schema_restored = ModelProfile.from_jcr(schema_jcr)
 
     assert schema.name == schema_restored.name
     assert schema.version == schema_restored.version
-    assert all([c1 == c2 for (c1, c2) in zip(schema.input_components.keys(), schema_restored.input_components.keys())])
+    assert all([c1 == c2 for (c1, c2) in zip(schema.input_comps.keys(), schema_restored.input_comps.keys())])

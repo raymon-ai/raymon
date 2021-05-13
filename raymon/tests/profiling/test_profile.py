@@ -4,7 +4,7 @@ import pytest
 import pandas as pd
 import numpy as np
 
-from raymon.profiling.extractors.structured import generate_components
+from raymon.profiling.extractors.structured import generate_comps
 from raymon import CategoricComponent, FloatComponent, IntComponent
 from raymon import ModelProfile
 from raymon.globals import ProfileStateException, DataException
@@ -12,7 +12,7 @@ from raymon import NumericStats, CategoricStats
 from raymon.profiling.extractors.structured import ElementExtractor
 
 #%%
-def test_constuct_components():
+def test_constuct_comps():
     pass
     # cols = {
     #     "num1": list(range(10)),
@@ -21,7 +21,7 @@ def test_constuct_components():
     #     "num2": [0.2] * 10,
     # }
     # df = pd.DataFrame(data=cols)
-    # components = generate_components(dtypes=df.dtypes)
+    # components = generate_comps(dtypes=df.dtypes)
     # assert len(components) == 4
     # assert isinstance(components[0], IntComponent)
     # assert isinstance(components[1], CategoricComponent)

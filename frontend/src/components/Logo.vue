@@ -2,7 +2,7 @@
   <div class="logo">
     <img
       class="logo-asset"
-      :src="logo"
+      src="./../../public/logo-blue.png"
     />
   </div>
 </template>

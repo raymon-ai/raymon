@@ -1,6 +1,8 @@
 import uuid
 import numpy as np
 
+import raymon
+
 
 def _parse_trace_id(trace_id):
     if isinstance(trace_id, str):
@@ -23,10 +25,12 @@ class Trace:
 
     """
 
-    def __init__(self, logger, trace_id=None):
+    def __init__(self, logger, trace_id=None, set_global=True):
 
         self.trace_id = _parse_trace_id(trace_id)
         self.logger = logger
+        if set_global:
+            raymon.set_current_trace(self)
 
     """
     Methods related to data logging

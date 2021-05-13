@@ -6,3 +6,4 @@ We use bumpversion to manage releases.
 
 # Docstrings
 We use Numpy style.
+

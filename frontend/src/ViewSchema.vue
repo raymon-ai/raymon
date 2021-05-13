@@ -47,12 +47,12 @@ export default {
     return {
       componentName: undefined,
       componentTypes: {
-        Inputs: "input_components",
-        Outputs: "output_components",
-        Actuals: "actual_components",
-        Scores: "score_components",
+        Inputs: "input_comps",
+        Outputs: "output_comps",
+        Actuals: "actual_comps",
+        Scores: "eval_comps",
       },
-      componentPage: "input_components",
+      componentPage: "input_comps",
     };
   },
   methods: {

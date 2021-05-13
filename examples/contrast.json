@@ -2,7 +2,7 @@
     "reference": {
         "name": "houses_cheap",
         "version": "0.0.1",
-        "input_components": {
+        "input_comps": {
             "mssubclass": {
                 "component_class": "raymon.profiling.components.IntComponent",
                 "component": {
@@ -5501,14 +5501,14 @@
                 }
             }
         },
-        "output_components": {},
-        "actual_components": {},
-        "score_components": {}
+        "output_comps": {},
+        "actual_comps": {},
+        "eval_comps": {}
     },
     "other": {
         "name": "houses_exp",
         "version": "0.0.1",
-        "input_components": {
+        "input_comps": {
             "mssubclass": {
                 "component_class": "raymon.profiling.components.IntComponent",
                 "component": {
@@ -11007,12 +11007,12 @@
                 }
             }
         },
-        "output_components": {},
-        "actual_components": {},
-        "score_components": {}
+        "output_comps": {},
+        "actual_comps": {},
+        "eval_comps": {}
     },
     "report": {
-        "input_components": {
+        "input_comps": {
             "mssubclass": {
                 "drift": {
                     "drift": 0.16,
@@ -12054,8 +12054,8 @@
                 }
             }
         },
-        "output_components": {},
-        "actual_components": {},
-        "score_components": {}
+        "output_comps": {},
+        "actual_comps": {},
+        "eval_comps": {}
     }
 }

@@ -1,5 +1,8 @@
 #%%
+import raymon
 from raymon.trace import Trace
+
+import pytest
 
 
 class MockLogger:
@@ -16,32 +19,33 @@ class MockLogger:
         pass
 
 
-def test_split():
+def test_set_global_noneset():
+    raymon.clear_trace()
+    with pytest.raises(raymon.TraceException):
+        trace = raymon.current_trace()
+
+
+def test_set_global():
+    raymon.clear_trace()
     logger = MockLogger()
-    base_ray = Trace(logger=logger, trace_id="base")
-    child = base_ray.split(suffix="a")
-    assert child.trace_id == ("base", "a")
+    trace = Trace(logger=logger)
+    trace2 = raymon.current_trace()
+    assert trace == trace2
 
 
-def test_split_tuple():
+def test_not_set_global():
+    raymon.clear_trace()
     logger = MockLogger()
-    base_ray = Trace(logger=logger, trace_id=("base", "split"))
-    child = base_ray.split(suffix="a")
-    assert child.trace_id == ("base", "split", "a")
+    trace = Trace(logger=logger, set_global=False)
+    with pytest.raises(raymon.TraceException):
+        raymon.current_trace()
 
 
-def test_merge():
+def test_not_set_global_one():
+    raymon.clear_trace()
     logger = MockLogger()
-    base_ray = Trace(logger=logger, trace_id="base")
-    children = [base_ray.split(suffix=str(i)) for i in range(10)]
-
-    for child in children:
-        assert len(child.trace_id) == 2
-    merged_a = Trace.merge(raylist=children[:5], suffix="head")
-    merged_b = Trace.merge(raylist=children[:5], suffix="tail")
-
-    for i, pred in enumerate(merged_a.pred):
-        pred == children[i]
-
-    for i, pred in enumerate(merged_b.pred):
-        pred == children[5 + i]
+    trace1 = Trace(logger=logger, set_global=False)
+    trace2 = Trace(logger=logger)
+    trace3 = raymon.current_trace()
+    assert trace1 != trace2
+    assert trace2 == trace3

@@ -97,6 +97,8 @@ class RaymonAPI:
     def orchestration_get(self, project_id):
         resp = self.get(route=f"projects/{project_id}")
         data = resp.json()
+        if len(data) == 0:
+            raise Exception("No Project Config found")
         orchestration = data["config"]
         return orchestration
 
