@@ -33,4 +33,4 @@ def current_trace():
 
 def clear_trace():
     global __current_trace
-    __current_trace = trace
+    __current_trace = None

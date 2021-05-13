@@ -152,10 +152,11 @@ def test_api_logger_tags(monkeypatch, secret_file):
         pass
 
     def test_tags_post(self, route, json):
-        assert route.startswith(f"projects/{PROJECT_NAME}/rays")
+        assert route.startswith(f"projects/{PROJECT_NAME}/traces")
         assert route.endswith("/tags")
-        jcr = json
+        jcr = json["data"]
         for tag_orig, tag_log in zip(tags, jcr):
+
             assert tag_orig["name"] == tag_log["name"]
             assert tag_orig["value"] == tag_log["value"]
             assert tag_orig["type"] == tag_log["type"]
