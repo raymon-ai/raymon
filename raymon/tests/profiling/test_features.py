@@ -47,7 +47,7 @@ def test_compile():
 
     assert isinstance(components["cat1"].stats, CategoricStats)
     assert sorted(components["cat1"].stats.frequencies.keys()) == sorted(["a", "b"])
-    assert components["cat1"].stats.pinv == 0
+    assert components["cat1"].stats.invalids == 0
     assert components["cat1"].is_built()
 
     assert schema.is_built()

@@ -1,9 +1,10 @@
 # from raymon.types import load_jcr
-from raymon.profiling.extractors import ScoringExtractor
+from raymon.profiling.extractors import ScoreExtractor
 
 
-class ClassificationErrorType(ScoringExtractor):
+class ClassificationErrorType(ScoreExtractor):
     def __init__(self, positive=1):
+        super().__init__(lower_better=True)
         self.positive = positive
 
     def extract(self, output, actual):
@@ -20,9 +21,8 @@ class ClassificationErrorType(ScoringExtractor):
     """Serializable interface """
 
     def to_jcr(self):
-        data = {
-            "positive": self.positive,
-        }
+        data = super().to_jcr()
+        data["positive"] = self.positive
         return data
 
     @classmethod
@@ -38,14 +38,17 @@ class ClassificationErrorType(ScoringExtractor):
         return True
 
 
-class AbsoluteError(ScoringExtractor):
+class AbsoluteError(ScoreExtractor):
+    def __init__(self):
+        super().__init__(lower_better=True)
+
     def extract(self, output, actual):
         return abs(output - actual)
 
     """Serializable interface """
 
     def to_jcr(self):
-        data = {}
+        data = super().to_jcr()
         return data
 
     @classmethod
@@ -61,14 +64,17 @@ class AbsoluteError(ScoringExtractor):
         return True
 
 
-class SquaredError(ScoringExtractor):
+class SquaredError(ScoreExtractor):
+    def __init__(self):
+        super().__init__(lower_better=True)
+
     def extract(self, output, actual):
         return pow(output - actual, 2)
 
     """Serializable interface """
 
     def to_jcr(self):
-        data = {}
+        data = super().to_jcr()
         return data
 
     @classmethod

@@ -81,7 +81,15 @@ export default {
         staticPlot: false,
         displayModeBar: false,
       },
-      statKeys: ["min", "max", "mean", "std", "pinv", "samplesize", "domain"],
+      statKeys: [
+        "min",
+        "max",
+        "mean",
+        "std",
+        "invalids",
+        "samplesize",
+        "domain",
+      ],
     };
   },
   computed: {
@@ -157,8 +165,8 @@ export default {
         return "NA";
       }
     },
-    pinv() {
-      return this.stats.pinv.toFixed(2);
+    invalids() {
+      return this.stats.invalids.toFixed(2);
     },
     samplesize() {
       return this.stats.samplesize;
@@ -199,7 +207,7 @@ export default {
       }
     },
     otherPinv() {
-      return this.otherStats.pinv.toFixed(2);
+      return this.otherStats.invalids.toFixed(2);
     },
     otherSamplesize() {
       return this.otherStats.samplesize;
@@ -228,8 +236,8 @@ export default {
         return this.min;
       } else if (key === "max") {
         return this.max;
-      } else if (key === "pinv") {
-        return this.pinv;
+      } else if (key === "invalids") {
+        return this.invalids;
       } else if (key === "mean") {
         return this.mean;
       } else if (key === "std") {
@@ -247,7 +255,7 @@ export default {
         return this.otherMin;
       } else if (key === "max") {
         return this.otherMax;
-      } else if (key === "pinv") {
+      } else if (key === "invalids") {
         return this.otherPinv;
       } else if (key === "mean") {
         return this.otherMean;

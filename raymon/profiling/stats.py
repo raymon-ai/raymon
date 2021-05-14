@@ -19,21 +19,36 @@ class Stats(Serializable, Buildable, ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def contrast(self, other):
+    def report_drift(self, other, threshold):
         raise NotImplementedError
+
+    @abstractmethod
+    def report_mean_diff(self, other, threshold, use_abs=False):
+        raise NotImplementedError
+
+    def report_invalid_diff(self, other, threshold):
+        if other.samplesize == 0:
+            return {"invalids": "_", "alert": False, "valid": False}
+        invalidsdiff = other.invalids - self.invalids
+        invalids_report = {
+            "invalids": float(invalidsdiff),
+            "alert": bool(invalidsdiff > threshold),
+            "valid": True,
+        }
+        return invalids_report
 
 
 class NumericStats(Stats):
 
-    _attrs = ["min", "max", "mean", "std", "pinv", "percentiles", "samplesize"]
+    _attrs = ["min", "max", "mean", "std", "invalids", "percentiles", "samplesize"]
 
-    def __init__(self, min=None, max=None, mean=None, std=None, pinv=None, percentiles=None, samplesize=None):
+    def __init__(self, min=None, max=None, mean=None, std=None, invalids=None, percentiles=None, samplesize=None):
 
         self.min = min
         self.max = max
         self.mean = mean
         self.std = std
-        self.pinv = pinv
+        self.invalids = invalids
         self.percentiles = percentiles
         self.samplesize = samplesize
 
@@ -88,14 +103,14 @@ class NumericStats(Stats):
     """PINV"""
 
     @property
-    def pinv(self):
-        return self._pinv
+    def invalids(self):
+        return self._invalids
 
-    @pinv.setter
-    def pinv(self, value):
+    @invalids.setter
+    def invalids(self, value):
         if value is np.nan:
-            raise DataException("stats.pinv cannot be NaN")
-        self._pinv = value
+            raise DataException("stats.invalids cannot be NaN")
+        self._invalids = value
 
     """Percentiles"""
 
@@ -178,17 +193,16 @@ class NumericStats(Stats):
         self.percentiles = [float(a) for a in np.percentile(a=data, q=q, interpolation="higher")]
 
         # Check the invalid
-        self.pinv = (n_invalids + n_nans) / self.samplesize
+        self.invalids = (n_invalids + n_nans) / self.samplesize
 
     def is_built(self):
         return all(getattr(self, attr) is not None for attr in self._attrs)
 
     """Testing and sampling functions"""
 
-    def contrast(self, other):
-        # KS distance
+    def report_drift(self, other, threshold):
         if other.samplesize == 0:
-            return -1, "NA", -1
+            return {"drift": "-", "drift_idx": -1, "alert": False, "valid": False}
         p1 = self.percentiles
         p2 = other.percentiles
         data_all = np.concatenate([p1, p2])
@@ -203,11 +217,24 @@ class NumericStats(Stats):
         drift = np.max(np.abs(interpolated_1 - interpolated_2)) / 100
         drift_idx = int(np.argmax(np.abs(interpolated_1 - interpolated_2)))
 
-        pinv1 = self.pinv
-        pinv2 = other.pinv
-        pinvdiff = pinv2 - pinv1
+        drift_report = {"drift": float(drift), "drift_idx": drift_idx, "alert": bool(drift > threshold), "valid": True}
+        return drift_report
 
-        return drift, drift_idx, pinvdiff
+    def report_mean_diff(self, other, threshold, use_abs):
+        if other.samplesize == 0:
+            return {"mean": "-", "alert": False, "valid": False}
+        meandiff = other.mean - self.mean
+        meandiff_perc = meandiff / self.mean
+        if use_abs:
+            alert = bool(abs(meandiff_perc) > abs(threshold))
+        else:
+            alert = bool(meandiff_perc > threshold)
+        invalids_report = {
+            "mean": float(meandiff_perc),
+            "alert": alert,
+            "valid": True,
+        }
+        return invalids_report
 
     def sample(self, n=N_SAMPLES, dtype="float"):
         # Sample floats in range 0 - len(percentiles)
@@ -231,12 +258,12 @@ class NumericStats(Stats):
 
 class CategoricStats(Stats):
 
-    _attrs = ["frequencies", "pinv", "samplesize"]
+    _attrs = ["frequencies", "invalids", "samplesize"]
 
-    def __init__(self, frequencies=None, pinv=None, samplesize=None):
+    def __init__(self, frequencies=None, invalids=None, samplesize=None):
 
         self.frequencies = frequencies
-        self.pinv = pinv
+        self.invalids = invalids
         self.samplesize = samplesize
 
     """frequencies"""
@@ -260,14 +287,14 @@ class CategoricStats(Stats):
     """PINV"""
 
     @property
-    def pinv(self):
-        return self._pinv
+    def invalids(self):
+        return self._invalids
 
-    @pinv.setter
-    def pinv(self, value):
+    @invalids.setter
+    def invalids(self, value):
         if value is np.nan:
-            raise DataException("stats.pinv cannot be NaN")
-        self._pinv = value
+            raise DataException("stats.invalids cannot be NaN")
+        self._invalids = value
 
     @property
     def samplesize(self):
@@ -317,16 +344,16 @@ class CategoricStats(Stats):
         else:
             n_invalids = 0
         self.frequencies = data.value_counts(normalize=True).to_dict()
-        self.pinv = (n_nans + n_invalids) / self.samplesize
+        self.invalids = (n_nans + n_invalids) / self.samplesize
 
     def is_built(self):
         return all(getattr(self, attr) is not None for attr in self._attrs)
 
     """Testing and sampling functions"""
 
-    def contrast(self, other):
+    def report_drift(self, other, threshold):
         if other.samplesize == 0:
-            return -1, "NA", -1
+            return {"drift": "-", "drift_idx": -1, "alert": False, "valid": False}
         self_f, other_f, full_domain = equalize_domains(self.frequencies, other.frequencies)
         f_sorted_self = []
         f_sorted_other = []
@@ -338,14 +365,12 @@ class CategoricStats(Stats):
         # Chebyshev
         drift = np.max(np.abs(f_sorted_self - f_sorted_other))
         drift_idx = full_domain[np.argmax(np.abs(f_sorted_self - f_sorted_other))]
-        # alert_drift = drift > thresh_drift
+        drift_report = {"drift": float(drift), "drift_idx": drift_idx, "alert": bool(drift > threshold), "valid": True}
 
-        pinv1 = self.pinv
-        pinv2 = other.pinv
-        pinvdiff = pinv2 - pinv1
-        # alert_inv = pinvdiff > thresh_inv
+        return drift_report
 
-        return drift, drift_idx, pinvdiff
+    def report_mean_diff(self, other, threshold, use_abs=False):
+        return {"mean": "-", "alert": False, "valid": False}
 
     def sample(self, n):
         domain = sorted(list(self.frequencies.keys()))

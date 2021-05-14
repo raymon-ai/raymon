@@ -23,7 +23,7 @@
 
     </td>
     <td class="px-2 codeLikeContent">
-      {{pinv}}
+      {{invalids}}
 
     </td>
 
@@ -90,8 +90,8 @@ export default {
         return "NA";
       }
     },
-    pinv() {
-      return this.stats.pinv.toFixed(2);
+    invalids() {
+      return this.stats.invalids.toFixed(2);
     },
     componentName() {
       return this.componentData.component.name;

@@ -4,6 +4,7 @@ from raymon import FloatComponent, IntComponent
 from raymon import ModelProfile
 from raymon import NumericStats
 from raymon.profiling.extractors.vision.similarity import FixedSubpatchSimilarity
+from raymon.profiling.extractors.structured.scoring import ClassificationErrorType
 
 
 def test_schema_jcr():
@@ -24,3 +25,11 @@ def test_schema_jcr():
     assert schema.name == schema_restored.name
     assert schema.version == schema_restored.version
     assert all([c1 == c2 for (c1, c2) in zip(schema.input_comps.keys(), schema_restored.input_comps.keys())])
+
+
+def test_score_json():
+    extractor = ClassificationErrorType(positive=1)
+    jcr = extractor.to_jcr()
+    assert "lower_better" in jcr
+    dumped = json.dumps(jcr)
+    assert isinstance(dumped, str)

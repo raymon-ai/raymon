@@ -22,7 +22,7 @@
         <thead>
           <tr>
             <th class="raytablehead nameColumn px-2">
-              <label>Feature </label>
+              <label>Component </label>
               <SortArrows
                 field="name"
                 :active="activeSortObj"
@@ -59,11 +59,19 @@
             <th class="raytablehead valueColumn px-2">
               <label>Invalids </label>
               <SortArrows
-                field="pinv"
+                field="invalids"
                 :active="activeSortObj"
                 @activeSortChanged="setActiveSort"
               />
 
+            </th>
+            <th class="raytablehead valueColumn px-2">
+              <label>Mean </label>
+              <SortArrows
+                field="mean"
+                :active="activeSortObj"
+                @activeSortChanged="setActiveSort"
+              />
             </th>
             <th class="raytablehead px-2 plotColumn">
               <label>Distribution </label>
@@ -159,38 +167,6 @@ export default {
             return 1;
           }
         };
-      } else if (this.activeSortField === "importance") {
-        func = (firstEl, secondEl) => {
-          if (
-            componentData[firstEl].component.importance ===
-            componentData[secondEl].component.importance
-          ) {
-            return 0;
-          } else if (
-            componentData[firstEl].component.importance <
-            componentData[secondEl].component.importance
-          ) {
-            return -1;
-          } else {
-            return 1;
-          }
-        };
-      } else if (this.activeSortField === "pvalue") {
-        func = (firstEl, secondEl) => {
-          if (
-            this.compareStats[firstEl].pvalue ===
-            this.compareStats[secondEl].pvalue
-          ) {
-            return 0;
-          } else if (
-            this.compareStats[firstEl].pvalue <
-            this.compareStats[secondEl].pvalue
-          ) {
-            return -1;
-          } else {
-            return 1;
-          }
-        };
       } else if (this.activeSortField === "drift") {
         func = (firstEl, secondEl) => {
           if (
@@ -207,32 +183,32 @@ export default {
             return 1;
           }
         };
-      } else if (this.activeSortField === "impact") {
+      } else if (this.activeSortField === "invalids") {
         func = (firstEl, secondEl) => {
           if (
-            this.compareStats[firstEl].impact ===
-            this.compareStats[secondEl].impact
+            this.reportComponents[firstEl].invalids.invalids ===
+            this.reportComponents[secondEl].invalids.invalids
           ) {
             return 0;
           } else if (
-            this.compareStats[firstEl].impact <
-            this.compareStats[secondEl].impact
+            this.reportComponents[firstEl].invalids.invalids <
+            this.reportComponents[secondEl].invalids.invalids
           ) {
             return -1;
           } else {
             return 1;
           }
         };
-      } else if (this.activeSortField === "pinv") {
+      } else if (this.activeSortField === "mean") {
         func = (firstEl, secondEl) => {
           if (
-            this.reportComponents[firstEl].integrity.integrity ===
-            this.reportComponents[secondEl].integrity.integrity
+            this.reportComponents[firstEl].mean.mean ===
+            this.reportComponents[secondEl].mean.mean
           ) {
             return 0;
           } else if (
-            this.reportComponents[firstEl].integrity.integrity <
-            this.reportComponents[secondEl].integrity.integrity
+            this.reportComponents[firstEl].mean.mean <
+            this.reportComponents[secondEl].mean.mean
           ) {
             return -1;
           } else {
@@ -246,8 +222,9 @@ export default {
     },
     getPinvDiff(featName) {
       return Math.abs(
-        this.profileComponents.components[featName].component.stats.pinv -
-          this.otherProfileComponents.components[featName].component.stats.pinv
+        this.profileComponents.components[featName].component.stats.invalids -
+          this.otherProfileComponents.components[featName].component.stats
+            .invalids
       );
     },
   },
@@ -308,6 +285,11 @@ export default {
         otherObj[key] = this.otherProfileComponents[key];
       }
       return otherObj;
+    },
+  },
+  watch: {
+    componentType: function (n, o) {
+      this.changePage(0);
     },
   },
 };

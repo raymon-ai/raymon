@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import compareDefFromJson from "@/assets/contrast.json";
+import compareDefFromJson from "@/assets/housepricescheap@1.0.0vshousepricesexpensive@1.0.0.json";
 import CompareSchemaStrJSON from "@/CompareSchemaStrJSON.vue";
 export default {
   name: "CompareSchemaWrapper",

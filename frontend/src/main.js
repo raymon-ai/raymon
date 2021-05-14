@@ -7,5 +7,5 @@ import CompareSchemaWrapper from './CompareSchemaWrapper.vue'
 Vue.config.productionTip = false
 
 new Vue({
-  render: h => h(CompareSchemaWrapper)
+  render: h => h(ViewSchemaWrapper)
 }).$mount('#app')

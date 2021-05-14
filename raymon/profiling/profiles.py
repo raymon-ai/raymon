@@ -290,25 +290,14 @@ class ModelProfile(Serializable, Buildable):
             type_report = {}
             for component in self_comps.values():
                 print(component.name)
-                ref_stats = self_comps[component.name].stats
-                other_stats = other_comps[component.name].stats
-                drift, drift_idx, pinvdiff = ref_stats.contrast(other_stats)
-
                 comp_thresholds = comp_type_thresholds.get(component.name, {})
-                int_threshold = comp_thresholds.get("integrity", 0.01)
-                drift_threshold = comp_thresholds.get("drift", 0.05)
-                drift_report = {
-                    "drift": float(drift),
-                    "drift_idx": drift_idx,
-                    "weight": float(self_comps[component.name].importance * drift),
-                    "alert": int(drift >= drift_threshold),
-                }
-                integrity_report = {
-                    "weight": float(self_comps[component.name].importance * pinvdiff),
-                    "integrity": float(pinvdiff),
-                    "alert": int(pinvdiff >= int_threshold),
-                }
-                type_report[component.name] = {"drift": drift_report, "integrity": integrity_report}
+
+                comp_report = self_comps[component.name].contrast(
+                    other_comps[component.name],
+                    thresholds=comp_thresholds,
+                )
+
+                type_report[component.name] = comp_report
             report[comp_type] = type_report
 
         jcr = {}

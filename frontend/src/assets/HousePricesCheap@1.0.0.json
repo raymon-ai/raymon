@@ -1,5 +1,5 @@
 {
-    "name": "HousePricesCheap",
+    "name": "housepricescheap",
     "version": "1.0.0",
     "input_comps": {
         "mssubclass": {
@@ -7,6 +7,7 @@
             "component": {
                 "name": "mssubclass",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "MSSubClass"
                 },
@@ -16,7 +17,7 @@
                     "max": 190.0,
                     "mean": 60.839416058394164,
                     "std": 48.4977587828374,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         20.0,
                         20.0,
@@ -129,6 +130,7 @@
             "component": {
                 "name": "lotarea",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "LotArea"
                 },
@@ -138,7 +140,7 @@
                     "max": 63887.0,
                     "mean": 9024.978102189782,
                     "std": 5419.362297129588,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         1491.0,
                         1680.0,
@@ -251,6 +253,7 @@
             "component": {
                 "name": "overallqual",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "OverallQual"
                 },
@@ -260,7 +263,7 @@
                     "max": 10.0,
                     "mean": 5.507299270072993,
                     "std": 1.0915825942513282,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         1.0,
                         4.0,
@@ -373,6 +376,7 @@
             "component": {
                 "name": "overallcond",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "OverallCond"
                 },
@@ -382,7 +386,7 @@
                     "max": 9.0,
                     "mean": 5.718978102189781,
                     "std": 1.176660674360361,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         3.0,
                         3.0,
@@ -495,6 +499,7 @@
             "component": {
                 "name": "yearbuilt",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "YearBuilt"
                 },
@@ -504,7 +509,7 @@
                     "max": 2008.0,
                     "mean": 1965.007299270073,
                     "std": 27.44217446598185,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         1880.0,
                         1900.0,
@@ -617,6 +622,7 @@
             "component": {
                 "name": "yearremodadd",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "YearRemodAdd"
                 },
@@ -626,7 +632,7 @@
                     "max": 2008.0,
                     "mean": 1978.9233576642337,
                     "std": 20.811930754228246,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         1950.0,
                         1950.0,
@@ -739,6 +745,7 @@
             "component": {
                 "name": "masvnrarea",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "MasVnrArea"
                 },
@@ -748,7 +755,7 @@
                     "max": 796.0,
                     "mean": 54.89377289377289,
                     "std": 118.45918478274129,
-                    "pinv": 0.0036496350364963502,
+                    "invalids": 0.0036496350364963502,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -861,6 +868,7 @@
             "component": {
                 "name": "bsmtfinsf1",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "BsmtFinSF1"
                 },
@@ -870,7 +878,7 @@
                     "max": 5644.0,
                     "mean": 406.11678832116786,
                     "std": 480.5668651789606,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -983,6 +991,7 @@
             "component": {
                 "name": "bsmtfinsf2",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "BsmtFinSF2"
                 },
@@ -992,7 +1001,7 @@
                     "max": 692.0,
                     "mean": 39.60948905109489,
                     "std": 130.85428480399008,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -1105,6 +1114,7 @@
             "component": {
                 "name": "bsmtunfsf",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "BsmtUnfSF"
                 },
@@ -1114,7 +1124,7 @@
                     "max": 1800.0,
                     "mean": 465.95255474452557,
                     "std": 378.369428939822,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -1227,6 +1237,7 @@
             "component": {
                 "name": "totalbsmtsf",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "TotalBsmtSF"
                 },
@@ -1236,7 +1247,7 @@
                     "max": 6110.0,
                     "mean": 911.6788321167883,
                     "std": 479.32113542570744,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -1349,6 +1360,7 @@
             "component": {
                 "name": "1stflrsf",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "1stFlrSF"
                 },
@@ -1358,7 +1370,7 @@
                     "max": 4692.0,
                     "mean": 1024.2591240875913,
                     "std": 380.2509380927293,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         334.0,
                         483.0,
@@ -1471,6 +1483,7 @@
             "component": {
                 "name": "2ndflrsf",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "2ndFlrSF"
                 },
@@ -1480,7 +1493,7 @@
                     "max": 1538.0,
                     "mean": 261.014598540146,
                     "std": 363.61814183502196,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -1593,6 +1606,7 @@
             "component": {
                 "name": "lowqualfinsf",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "LowQualFinSF"
                 },
@@ -1602,7 +1616,7 @@
                     "max": 528.0,
                     "mean": 7.7226277372262775,
                     "std": 54.05285733239018,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -1715,6 +1729,7 @@
             "component": {
                 "name": "grlivarea",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "GrLivArea"
                 },
@@ -1724,7 +1739,7 @@
                     "max": 5642.0,
                     "mean": 1292.9963503649635,
                     "std": 502.68522386603877,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         334.0,
                         630.0,
@@ -1837,6 +1852,7 @@
             "component": {
                 "name": "bsmtfullbath",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "BsmtFullBath"
                 },
@@ -1846,7 +1862,7 @@
                     "max": 2.0,
                     "mean": 0.3978102189781022,
                     "std": 0.5041386602916721,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -1959,6 +1975,7 @@
             "component": {
                 "name": "bsmthalfbath",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "BsmtHalfBath"
                 },
@@ -1968,7 +1985,7 @@
                     "max": 1.0,
                     "mean": 0.05474452554744526,
                     "std": 0.22748090572623975,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -2081,6 +2098,7 @@
             "component": {
                 "name": "fullbath",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "FullBath"
                 },
@@ -2090,7 +2108,7 @@
                     "max": 3.0,
                     "mean": 1.354014598540146,
                     "std": 0.5078241259063772,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         1.0,
@@ -2203,6 +2221,7 @@
             "component": {
                 "name": "halfbath",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "HalfBath"
                 },
@@ -2212,7 +2231,7 @@
                     "max": 2.0,
                     "mean": 0.30656934306569344,
                     "std": 0.48423381870429155,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -2325,6 +2344,7 @@
             "component": {
                 "name": "bedroomabvgr",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "BedroomAbvGr"
                 },
@@ -2334,7 +2354,7 @@
                     "max": 6.0,
                     "mean": 2.7481751824817517,
                     "std": 0.8449594807182316,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         1.0,
@@ -2447,6 +2467,7 @@
             "component": {
                 "name": "kitchenabvgr",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "KitchenAbvGr"
                 },
@@ -2456,7 +2477,7 @@
                     "max": 2.0,
                     "mean": 1.051094890510949,
                     "std": 0.22019128655472056,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         1.0,
                         1.0,
@@ -2569,6 +2590,7 @@
             "component": {
                 "name": "totrmsabvgrd",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "TotRmsAbvGrd"
                 },
@@ -2578,7 +2600,7 @@
                     "max": 12.0,
                     "mean": 5.9489051094890515,
                     "std": 1.525075888422719,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         2.0,
                         3.0,
@@ -2691,6 +2713,7 @@
             "component": {
                 "name": "fireplaces",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "Fireplaces"
                 },
@@ -2700,7 +2723,7 @@
                     "max": 3.0,
                     "mean": 0.42700729927007297,
                     "std": 0.625025973140321,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -2813,6 +2836,7 @@
             "component": {
                 "name": "garagecars",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "GarageCars"
                 },
@@ -2822,7 +2846,7 @@
                     "max": 4.0,
                     "mean": 1.489051094890511,
                     "std": 0.7005398160602027,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -2935,6 +2959,7 @@
             "component": {
                 "name": "garagearea",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "GarageArea"
                 },
@@ -2944,7 +2969,7 @@
                     "max": 1418.0,
                     "mean": 406.73722627737226,
                     "std": 202.240742214037,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -3057,6 +3082,7 @@
             "component": {
                 "name": "wooddecksf",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "WoodDeckSF"
                 },
@@ -3066,7 +3092,7 @@
                     "max": 536.0,
                     "mean": 80.7919708029197,
                     "std": 111.88235385178132,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -3179,6 +3205,7 @@
             "component": {
                 "name": "openporchsf",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "OpenPorchSF"
                 },
@@ -3188,7 +3215,7 @@
                     "max": 523.0,
                     "mean": 34.75182481751825,
                     "std": 66.05961486148813,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -3301,6 +3328,7 @@
             "component": {
                 "name": "enclosedporch",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "EnclosedPorch"
                 },
@@ -3310,7 +3338,7 @@
                     "max": 293.0,
                     "mean": 27.098540145985403,
                     "std": 62.702470277419884,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -3423,6 +3451,7 @@
             "component": {
                 "name": "3ssnporch",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "3SsnPorch"
                 },
@@ -3432,7 +3461,7 @@
                     "max": 216.0,
                     "mean": 2.7153284671532845,
                     "std": 22.41445991348614,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -3545,6 +3574,7 @@
             "component": {
                 "name": "screenporch",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "ScreenPorch"
                 },
@@ -3554,7 +3584,7 @@
                     "max": 265.0,
                     "mean": 10.10948905109489,
                     "std": 42.98984412950432,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -3667,6 +3697,7 @@
             "component": {
                 "name": "poolarea",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "PoolArea"
                 },
@@ -3676,7 +3707,7 @@
                     "max": 480.0,
                     "mean": 1.7518248175182483,
                     "std": 28.94489630690506,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -3789,6 +3820,7 @@
             "component": {
                 "name": "miscval",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "MiscVal"
                 },
@@ -3798,7 +3830,7 @@
                     "max": 3500.0,
                     "mean": 37.846715328467155,
                     "std": 249.55748838185383,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         0.0,
                         0.0,
@@ -3911,6 +3943,7 @@
             "component": {
                 "name": "mosold",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "MoSold"
                 },
@@ -3920,7 +3953,7 @@
                     "max": 12.0,
                     "mean": 6.521897810218978,
                     "std": 2.5231545349176487,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         1.0,
                         1.0,
@@ -4033,6 +4066,7 @@
             "component": {
                 "name": "yrsold",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "YrSold"
                 },
@@ -4042,7 +4076,7 @@
                     "max": 2010.0,
                     "mean": 2007.7700729927008,
                     "std": 1.318751066059895,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         2006.0,
                         2006.0,
@@ -4155,6 +4189,7 @@
             "component": {
                 "name": "mszoning",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "MSZoning"
                 },
@@ -4167,7 +4202,7 @@
                         "RH": 0.010948905109489052,
                         "C (all)": 0.0072992700729927005
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4177,6 +4212,7 @@
             "component": {
                 "name": "street",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "Street"
                 },
@@ -4185,7 +4221,7 @@
                     "frequencies": {
                         "Pave": 1.0
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4195,6 +4231,7 @@
             "component": {
                 "name": "lotshape",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "LotShape"
                 },
@@ -4206,7 +4243,7 @@
                         "IR2": 0.029197080291970802,
                         "IR3": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4216,6 +4253,7 @@
             "component": {
                 "name": "landcontour",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "LandContour"
                 },
@@ -4227,7 +4265,7 @@
                         "HLS": 0.032846715328467155,
                         "Low": 0.014598540145985401
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4237,6 +4275,7 @@
             "component": {
                 "name": "lotconfig",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "LotConfig"
                 },
@@ -4248,7 +4287,7 @@
                         "CulDSac": 0.043795620437956206,
                         "FR2": 0.029197080291970802
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4258,6 +4297,7 @@
             "component": {
                 "name": "landslope",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "LandSlope"
                 },
@@ -4268,7 +4308,7 @@
                         "Mod": 0.025547445255474453,
                         "Sev": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4278,6 +4318,7 @@
             "component": {
                 "name": "neighborhood",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "Neighborhood"
                 },
@@ -4290,25 +4331,25 @@
                         "CollgCr": 0.08029197080291971,
                         "Sawyer": 0.06934306569343066,
                         "Mitchel": 0.05474452554744526,
-                        "Gilbert": 0.051094890510948905,
                         "SawyerW": 0.051094890510948905,
+                        "Gilbert": 0.051094890510948905,
                         "IDOTRR": 0.040145985401459854,
                         "NWAmes": 0.0364963503649635,
                         "BrkSide": 0.032846715328467155,
                         "SWISU": 0.029197080291970802,
                         "MeadowV": 0.021897810218978103,
                         "Crawfor": 0.01824817518248175,
-                        "Somerst": 0.01824817518248175,
                         "NridgHt": 0.01824817518248175,
+                        "Somerst": 0.01824817518248175,
                         "BrDale": 0.014598540145985401,
                         "Blmngtn": 0.010948905109489052,
                         "NPkVill": 0.010948905109489052,
                         "Veenker": 0.0072992700729927005,
-                        "ClearCr": 0.0072992700729927005,
                         "StoneBr": 0.0072992700729927005,
+                        "ClearCr": 0.0072992700729927005,
                         "Timber": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4318,6 +4359,7 @@
             "component": {
                 "name": "condition1",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "Condition1"
                 },
@@ -4332,7 +4374,7 @@
                         "PosN": 0.0072992700729927005,
                         "RRNe": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4342,6 +4384,7 @@
             "component": {
                 "name": "condition2",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "Condition2"
                 },
@@ -4353,7 +4396,7 @@
                         "PosN": 0.0036496350364963502,
                         "Artery": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4363,6 +4406,7 @@
             "component": {
                 "name": "bldgtype",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "BldgType"
                 },
@@ -4372,10 +4416,10 @@
                         "1Fam": 0.8029197080291971,
                         "TwnhsE": 0.08759124087591241,
                         "Twnhs": 0.043795620437956206,
-                        "2fmCon": 0.032846715328467155,
-                        "Duplex": 0.032846715328467155
+                        "Duplex": 0.032846715328467155,
+                        "2fmCon": 0.032846715328467155
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4385,6 +4429,7 @@
             "component": {
                 "name": "housestyle",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "HouseStyle"
                 },
@@ -4394,13 +4439,13 @@
                         "1Story": 0.5145985401459854,
                         "2Story": 0.23722627737226276,
                         "1.5Fin": 0.11678832116788321,
-                        "SFoyer": 0.05474452554744526,
                         "SLvl": 0.05474452554744526,
+                        "SFoyer": 0.05474452554744526,
                         "1.5Unf": 0.010948905109489052,
                         "2.5Fin": 0.0072992700729927005,
                         "2.5Unf": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4410,6 +4455,7 @@
             "component": {
                 "name": "roofstyle",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "RoofStyle"
                 },
@@ -4421,7 +4467,7 @@
                         "Gambrel": 0.0036496350364963502,
                         "Mansard": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4431,6 +4477,7 @@
             "component": {
                 "name": "exterior1st",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "Exterior1st"
                 },
@@ -4449,7 +4496,7 @@
                         "Stucco": 0.014598540145985401,
                         "BrkComm": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4459,6 +4506,7 @@
             "component": {
                 "name": "exterior2nd",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "Exterior2nd"
                 },
@@ -4479,7 +4527,7 @@
                         "Stone": 0.0036496350364963502,
                         "ImStucc": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4489,6 +4537,7 @@
             "component": {
                 "name": "masvnrtype",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "MasVnrType"
                 },
@@ -4500,7 +4549,7 @@
                         "Stone": 0.054945054945054944,
                         "BrkCmn": 0.01098901098901099
                     },
-                    "pinv": 0.0036496350364963502,
+                    "invalids": 0.0036496350364963502,
                     "samplesize": 274
                 }
             }
@@ -4510,6 +4559,7 @@
             "component": {
                 "name": "exterqual",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "ExterQual"
                 },
@@ -4521,7 +4571,7 @@
                         "Fa": 0.010948905109489052,
                         "Ex": 0.0072992700729927005
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4531,6 +4581,7 @@
             "component": {
                 "name": "extercond",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "ExterCond"
                 },
@@ -4542,7 +4593,7 @@
                         "Fa": 0.029197080291970802,
                         "Ex": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4552,6 +4603,7 @@
             "component": {
                 "name": "foundation",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "Foundation"
                 },
@@ -4564,7 +4616,7 @@
                         "Slab": 0.040145985401459854,
                         "Stone": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4574,6 +4626,7 @@
             "component": {
                 "name": "heatingqc",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "HeatingQC"
                 },
@@ -4585,7 +4638,7 @@
                         "Gd": 0.19343065693430658,
                         "Fa": 0.029197080291970802
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4595,6 +4648,7 @@
             "component": {
                 "name": "centralair",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "CentralAir"
                 },
@@ -4604,7 +4658,7 @@
                         "Y": 0.9197080291970803,
                         "N": 0.08029197080291971
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4614,6 +4668,7 @@
             "component": {
                 "name": "electrical",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "Electrical"
                 },
@@ -4625,7 +4680,7 @@
                         "FuseF": 0.010948905109489052,
                         "FuseP": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4635,6 +4690,7 @@
             "component": {
                 "name": "kitchenqual",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "KitchenQual"
                 },
@@ -4646,7 +4702,7 @@
                         "Fa": 0.029197080291970802,
                         "Ex": 0.01824817518248175
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4656,6 +4712,7 @@
             "component": {
                 "name": "functional",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "Functional"
                 },
@@ -4669,7 +4726,7 @@
                         "Maj1": 0.010948905109489052,
                         "Maj2": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4679,6 +4736,7 @@
             "component": {
                 "name": "paveddrive",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "PavedDrive"
                 },
@@ -4689,7 +4747,7 @@
                         "N": 0.06934306569343066,
                         "P": 0.025547445255474453
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4699,6 +4757,7 @@
             "component": {
                 "name": "saletype",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "SaleType"
                 },
@@ -4710,7 +4769,7 @@
                         "COD": 0.029197080291970802,
                         "ConLD": 0.0036496350364963502
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4720,6 +4779,7 @@
             "component": {
                 "name": "salecondition",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": "SaleCondition"
                 },
@@ -4732,7 +4792,7 @@
                         "Family": 0.01824817518248175,
                         "Alloca": 0.010948905109489052
                     },
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "samplesize": 274
                 }
             }
@@ -4744,118 +4804,119 @@
             "component": {
                 "name": "prediction",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": 0
                 },
                 "importance": 0,
                 "stats": {
-                    "min": 66700.0,
-                    "max": 199587.6,
-                    "mean": 139577.40739659365,
-                    "std": 28207.261041111335,
-                    "pinv": 0.0,
+                    "min": 68492.16,
+                    "max": 199317.6,
+                    "mean": 139685.12505387558,
+                    "std": 28614.10186135303,
+                    "invalids": 0.0,
                     "percentiles": [
-                        66700.0,
-                        78442.0,
-                        83166.0,
-                        88336.0,
-                        89372.0,
-                        93128.0,
-                        95464.16,
-                        98414.0,
-                        99591.92,
-                        103082.56,
-                        105580.0,
-                        107368.0,
-                        107862.0,
-                        109314.32,
-                        111370.0,
-                        112094.0,
-                        113004.4,
-                        114976.0,
-                        115736.0,
-                        116690.84,
-                        117172.0,
-                        118554.0,
-                        120684.0,
-                        120995.36,
-                        121820.16,
-                        122236.0,
-                        122974.0,
-                        124676.0,
-                        125222.4,
-                        125428.0,
-                        125585.6,
-                        126280.0,
-                        126898.0,
-                        127912.0,
-                        128600.0,
-                        129286.4,
-                        129804.0,
-                        131078.32,
-                        131666.0,
-                        132269.0,
-                        132635.48,
-                        133032.8,
-                        133296.0,
-                        133884.0,
-                        134184.0,
-                        134394.0,
-                        134596.4,
-                        135374.4,
-                        136301.6,
-                        136544.16,
-                        137324.0,
-                        138000.0,
-                        138244.0,
-                        138550.0,
-                        140536.0,
-                        141818.2,
-                        142232.0,
-                        142466.08,
-                        143150.0,
-                        143304.0,
-                        144317.4,
-                        144710.16,
-                        144872.0,
-                        145512.48,
-                        146690.0,
-                        146930.0,
-                        147740.0,
-                        148088.0,
-                        148624.0,
-                        150020.0,
-                        150242.0,
-                        150492.0,
-                        150915.0,
-                        152220.0,
-                        153064.0,
-                        153879.0,
-                        157387.48,
-                        160960.0,
-                        161700.0,
-                        163758.0,
-                        166701.48,
-                        169728.0,
-                        171304.4,
-                        172319.12,
-                        172574.0,
-                        173218.88,
-                        174330.8,
-                        176462.8,
-                        179433.8,
-                        182043.2,
-                        182634.08,
-                        182936.56,
-                        185897.0,
-                        186626.0,
-                        188342.0,
-                        188515.6,
-                        190057.0,
-                        191164.44,
-                        195516.4,
-                        197933.6,
-                        199587.6
+                        68492.16,
+                        76768.0,
+                        83552.0,
+                        88060.0,
+                        90448.0,
+                        93069.28,
+                        97275.28,
+                        99228.0,
+                        101771.2,
+                        103228.0,
+                        104248.0,
+                        105716.0,
+                        107092.0,
+                        108464.36,
+                        109944.0,
+                        111002.0,
+                        112455.0,
+                        112735.2,
+                        113930.0,
+                        115262.0,
+                        115902.0,
+                        117696.4,
+                        118116.0,
+                        118881.33333333334,
+                        119924.0,
+                        121007.0,
+                        121700.0,
+                        122279.0,
+                        123097.33333333331,
+                        125137.64,
+                        125286.0,
+                        126088.0,
+                        126588.16,
+                        128339.6,
+                        128934.52,
+                        129874.0,
+                        130498.32,
+                        132014.72,
+                        132668.92,
+                        133420.6,
+                        134401.2,
+                        134579.2,
+                        134838.0,
+                        134956.0,
+                        135246.0,
+                        135716.0,
+                        136516.0,
+                        136739.2,
+                        136890.13333333333,
+                        137760.84,
+                        138510.0,
+                        138934.16,
+                        139068.0,
+                        139434.0,
+                        140241.28,
+                        140725.2,
+                        141126.6,
+                        141673.4,
+                        142036.32,
+                        143554.0,
+                        144051.61904761905,
+                        145257.0,
+                        146126.0,
+                        146416.0,
+                        146964.0,
+                        147624.0,
+                        148020.0,
+                        148668.0,
+                        149068.0,
+                        149970.0,
+                        150308.0,
+                        150690.0,
+                        151542.0,
+                        152516.0,
+                        154088.0,
+                        155329.48,
+                        156382.0,
+                        158122.96,
+                        160372.0,
+                        161451.0,
+                        166466.0,
+                        168485.28,
+                        168766.0,
+                        171276.0,
+                        172819.4,
+                        175302.52,
+                        176096.48,
+                        177250.8,
+                        181724.68,
+                        182028.68,
+                        183994.56,
+                        186408.0,
+                        187582.0,
+                        188152.0,
+                        189663.16,
+                        190910.76,
+                        192560.8,
+                        194970.76,
+                        195459.96,
+                        197168.16,
+                        199317.6
                     ],
                     "samplesize": 274
                 }
@@ -4868,6 +4929,7 @@
             "component": {
                 "name": "actual",
                 "extractor_class": "raymon.profiling.extractors.structured.element.ElementExtractor",
+                "extractor_type": "SimpleExtractor",
                 "extractor_state": {
                     "element": 0
                 },
@@ -4877,7 +4939,7 @@
                     "max": 212000.0,
                     "mean": 139557.57664233577,
                     "std": 34077.03039106141,
-                    "pinv": 0.0,
+                    "invalids": 0.0,
                     "percentiles": [
                         34900.0,
                         55000.0,
@@ -4992,116 +5054,119 @@
             "component": {
                 "name": "abs_error",
                 "extractor_class": "raymon.profiling.extractors.structured.scoring.AbsoluteError",
-                "extractor_state": {},
+                "extractor_type": "SimpleExtractor",
+                "extractor_state": {
+                    "lower_better": true
+                },
                 "importance": 0,
                 "stats": {
-                    "min": 4.399999999994179,
-                    "max": 88886.4,
-                    "mean": 11711.657712895378,
-                    "std": 12283.621299141383,
-                    "pinv": 0.0,
+                    "min": 29.239999999990687,
+                    "max": 86266.0,
+                    "mean": 11855.37236704901,
+                    "std": 12073.275441426165,
+                    "invalids": 0.0,
                     "percentiles": [
-                        4.399999999994179,
-                        190.0,
-                        273.4400000000023,
-                        426.0,
-                        771.333333333343,
-                        1052.0,
-                        1319.7200000000012,
-                        1536.0,
-                        1626.0,
-                        1708.0,
-                        1850.0,
-                        1905.9200000000128,
-                        2026.0,
-                        2096.399999999994,
-                        2184.0,
-                        2365.920000000013,
-                        2621.0,
-                        2756.0,
-                        2835.5599999999977,
-                        3051.4800000000105,
-                        3218.0,
-                        3304.0,
-                        3492.0,
-                        3514.7999999999884,
-                        3704.0,
-                        3748.0,
-                        3862.279999999999,
-                        3921.679999999993,
-                        4166.0,
-                        4433.600000000006,
-                        4540.0,
-                        4677.600000000006,
-                        4870.039999999994,
-                        4943.0,
-                        5000.0,
-                        5018.8399999999965,
-                        5052.0,
-                        5213.600000000006,
-                        5450.0,
-                        5569.279999999999,
-                        5702.0,
-                        5798.5199999999895,
-                        6176.0,
-                        6494.600000000006,
-                        6762.880000000005,
-                        7006.720000000001,
-                        7128.0,
-                        7262.399999999994,
-                        7596.0,
-                        7731.0,
-                        8088.0,
-                        8287.200000000012,
-                        8556.0,
-                        8624.0,
-                        8968.399999999994,
-                        9112.0,
-                        9182.0,
-                        9316.0,
-                        9786.0,
-                        10167.0,
-                        10412.399999999994,
-                        10736.320000000007,
-                        10856.200000000012,
-                        11064.0,
-                        11512.48000000001,
-                        11645.119999999995,
-                        11915.0,
-                        12058.279999999999,
-                        12698.399999999994,
-                        13289.839999999997,
-                        13460.0,
-                        13668.200000000012,
-                        13942.839999999997,
-                        14399.600000000006,
+                        29.239999999990687,
+                        265.0,
+                        454.0,
+                        514.7200000000012,
+                        590.8000000000029,
+                        749.6000000000058,
+                        887.3999999999942,
+                        1086.0,
+                        1126.0,
+                        1214.7999999999884,
+                        1520.0,
+                        1902.666666666686,
+                        2014.3999999999942,
+                        2069.279999999999,
+                        2192.0,
+                        2220.0,
+                        2332.0,
+                        2408.5199999999895,
+                        2552.0,
+                        2646.0,
+                        2828.0,
+                        3118.0,
+                        3412.0,
+                        3484.0,
+                        3555.199999999997,
+                        3632.0,
+                        3743.933333333349,
+                        4088.1600000000035,
+                        4260.799999999988,
+                        4482.5199999999895,
+                        4514.720000000001,
+                        4831.079999999987,
+                        4920.0,
+                        4968.0,
+                        5204.0,
+                        5262.0,
+                        5570.0,
+                        5817.600000000006,
+                        6042.880000000005,
+                        6128.0,
+                        6240.0,
+                        6307.0,
+                        6565.479999999996,
+                        6696.0,
+                        6836.0,
+                        7030.0,
+                        7358.0,
+                        7439.200000000012,
+                        7786.0,
+                        8087.0,
+                        8423.200000000012,
+                        8592.399999999994,
+                        9032.279999999999,
+                        9404.0,
+                        9723.333333333314,
+                        10051.0,
+                        10170.51999999999,
+                        10319.399999999994,
+                        10761.0,
+                        10965.359999999986,
+                        11240.0,
+                        11504.799999999988,
+                        11745.160000000003,
+                        11928.0,
+                        12272.0,
+                        12483.679999999993,
+                        13034.0,
+                        13110.0,
+                        13448.0,
+                        13656.0,
+                        14168.160000000003,
+                        14248.380952380947,
                         14579.200000000012,
-                        14882.839999999997,
-                        15516.0,
-                        15857.039999999994,
-                        16334.720000000001,
-                        16708.320000000007,
-                        17268.0,
-                        17669.20000000001,
-                        18004.64,
-                        18991.679999999993,
-                        20042.0,
-                        20654.0,
-                        22201.600000000006,
-                        22901.20000000001,
-                        23578.839999999997,
-                        25394.0,
-                        27400.0,
-                        29190.040000000008,
-                        30084.0,
-                        30570.0,
-                        33044.0,
-                        37374.0,
-                        44394.0,
-                        45613.0,
-                        48037.04000000001,
-                        62293.0,
-                        88886.4
+                        14854.0,
+                        14994.559999999998,
+                        15300.0,
+                        15836.0,
+                        16210.0,
+                        16400.0,
+                        16860.0,
+                        18120.399999999994,
+                        18607.08,
+                        18951.0,
+                        19823.199999999997,
+                        21328.160000000003,
+                        21934.160000000003,
+                        22224.0,
+                        23094.0,
+                        23334.0,
+                        23952.440000000002,
+                        25159.0,
+                        25956.0,
+                        28436.0,
+                        29468.160000000003,
+                        33200.72,
+                        39246.0,
+                        41284.0,
+                        42992.0,
+                        50239.16,
+                        59270.0,
+                        86266.0
                     ],
                     "samplesize": 1
                 }
@@ -5112,116 +5177,119 @@
             "component": {
                 "name": "sq_error",
                 "extractor_class": "raymon.profiling.extractors.structured.scoring.SquaredError",
-                "extractor_state": {},
+                "extractor_type": "SimpleExtractor",
+                "extractor_state": {
+                    "lower_better": true
+                },
                 "importance": 0,
                 "stats": {
-                    "min": 19.359999999948776,
-                    "max": 7900792104.959999,
-                    "mean": 288050278.60474163,
-                    "std": 723790184.1854541,
-                    "pinv": 0.0,
+                    "min": 854.9775999994554,
+                    "max": 7441822756.0,
+                    "mean": 286313833.8459333,
+                    "std": 688339001.8070251,
+                    "invalids": 0.0,
                     "percentiles": [
-                        19.359999999948776,
-                        36100.0,
-                        74769.43360000127,
-                        181476.0,
-                        594955.111111126,
-                        1106704.0,
-                        1741660.878400003,
-                        2359296.0,
-                        2643876.0,
-                        2917264.0,
-                        3422500.0,
-                        3632531.046400049,
-                        4104676.0,
-                        4394892.959999976,
-                        4769856.0,
-                        5597577.44640006,
-                        6869641.0,
-                        7595536.0,
-                        8040400.513599987,
-                        9311530.190400064,
-                        10355524.0,
-                        10916416.0,
-                        12194064.0,
-                        12353819.039999919,
-                        13719616.0,
-                        14047504.0,
-                        14917206.79839999,
-                        15379574.022399945,
-                        17355556.0,
-                        19656808.960000053,
-                        20611600.0,
-                        21879941.760000054,
-                        23717289.60159994,
-                        24433249.0,
-                        25000000.0,
-                        25188754.945599966,
-                        25522704.0,
-                        27181624.96000006,
-                        29702500.0,
-                        31016879.718399987,
-                        32512804.0,
-                        33622834.19039988,
-                        38142976.0,
-                        42179829.16000008,
-                        45736545.89440006,
-                        49094125.158400014,
-                        50808384.0,
-                        52742453.759999916,
-                        57699216.0,
-                        59768361.0,
-                        65415744.0,
-                        68677683.8400002,
-                        73205136.0,
-                        74373376.0,
-                        80432198.5599999,
-                        83028544.0,
-                        84309124.0,
-                        86787856.0,
-                        95765796.0,
-                        103367889.0,
-                        108418073.75999989,
-                        115268567.14240015,
-                        117857078.44000025,
-                        122412096.0,
-                        132537195.75040025,
-                        135608819.8143999,
-                        141967225.0,
-                        145402116.55839998,
-                        161249362.55999985,
-                        176619847.2255999,
-                        181171600.0,
-                        186819691.2400003,
-                        194402787.2655999,
-                        207348480.16000018,
+                        854.9775999994554,
+                        70225.0,
+                        206116.0,
+                        264936.6784000012,
+                        349044.64000000345,
+                        561900.1600000088,
+                        787478.7599999896,
+                        1179396.0,
+                        1267876.0,
+                        1475739.0399999716,
+                        2310400.0,
+                        3620140.444444518,
+                        4057807.3599999766,
+                        4281919.718399995,
+                        4804864.0,
+                        4928400.0,
+                        5438224.0,
+                        5800968.59039995,
+                        6512704.0,
+                        7001316.0,
+                        7997584.0,
+                        9721924.0,
+                        11641744.0,
+                        12138256.0,
+                        12639447.039999979,
+                        13191424.0,
+                        14017036.80444456,
+                        16713052.18560003,
+                        18154416.6399999,
+                        20092985.550399907,
+                        20382696.67840001,
+                        23339333.966399875,
+                        24206400.0,
+                        24681024.0,
+                        27081616.0,
+                        27688644.0,
+                        31024900.0,
+                        33844469.760000065,
+                        36516398.69440006,
+                        37552384.0,
+                        38937600.0,
+                        39778249.0,
+                        43105527.63039995,
+                        44836416.0,
+                        46730896.0,
+                        49420900.0,
+                        54140164.0,
+                        55341696.64000017,
+                        60621796.0,
+                        65399569.0,
+                        70950298.2400002,
+                        73829337.7599999,
+                        81582081.99839997,
+                        88435216.0,
+                        94543211.11111073,
+                        101022601.0,
+                        103439477.07039979,
+                        106490016.35999988,
+                        115799121.0,
+                        120239119.92959969,
+                        126337600.0,
+                        132360423.03999974,
+                        137948783.42560008,
+                        142277184.0,
+                        150601984.0,
+                        155842266.34239984,
+                        169885156.0,
+                        171872100.0,
+                        180848704.0,
+                        186486336.0,
+                        200736757.7856001,
+                        203016359.76417217,
                         212553072.64000034,
-                        221498926.4655999,
-                        240746256.0,
-                        251445717.5615998,
-                        266823077.47840005,
-                        279167957.22240025,
-                        298183824.0,
-                        312200628.6400004,
-                        324167061.52959996,
-                        360683909.2223997,
-                        401681764.0,
-                        426587716.0,
-                        492911042.56000024,
-                        524464961.44000053,
-                        555961695.7455999,
-                        644855236.0,
-                        750760000.0,
-                        852058435.2016004,
-                        905047056.0,
-                        934524900.0,
-                        1091905936.0,
-                        1396815876.0,
-                        1970827236.0,
-                        2080545769.0,
-                        2307557211.961601,
-                        3880417849.0,
-                        7900792104.959999
+                        220641316.0,
+                        224836829.59359992,
+                        234090000.0,
+                        250778896.0,
+                        262764100.0,
+                        268960000.0,
+                        284259600.0,
+                        328348896.1599998,
+                        346223426.12640005,
+                        359140401.0,
+                        392959258.2399999,
+                        454890408.9856002,
+                        481107374.90560013,
+                        493906176.0,
+                        533332836.0,
+                        544475556.0,
+                        573719381.9536002,
+                        632975281.0,
+                        673713936.0,
+                        808606096.0,
+                        868372453.7856002,
+                        1102287808.5184002,
+                        1540248516.0,
+                        1704368656.0,
+                        1848312064.0,
+                        2523973197.5056005,
+                        3512932900.0,
+                        7441822756.0
                     ],
                     "samplesize": 1
                 }

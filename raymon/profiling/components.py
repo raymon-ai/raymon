@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 import numbers
 import numpy as np
 import pandas as pd
-
+from raymon.profiling.ops import parse_threshold
 
 from raymon.globals import (
     Buildable,
@@ -14,7 +14,7 @@ from raymon.globals import (
 )
 from raymon.profiling.stats import CategoricStats, NumericStats, equalize_domains
 from raymon.tags import Tag, CGROUP_TAGTYPES
-from raymon.profiling.extractors import SimpleExtractor, ScoringExtractor
+from raymon.profiling.extractors import SimpleExtractor, ScoreExtractor
 
 HIST_N_SAMPLES = 1000
 
@@ -54,11 +54,16 @@ class Component(Serializable, Buildable, ABC):
     """Serializable interface """
 
     def to_jcr(self):
+        if isinstance(self, ScoreExtractor):
+            extractor_type = ScoreExtractor.__name__
+        else:
+            extractor_type = SimpleExtractor.__name__
         data = {
             "component_class": self.class2str(),
             "component": {
                 "name": self.name,
                 "extractor_class": self.extractor.class2str(),
+                "extractor_type": extractor_type,
                 "extractor_state": self.extractor.to_jcr(),
                 "importance": self.importance,
                 "stats": self.stats.to_jcr(),
@@ -82,7 +87,7 @@ class Component(Serializable, Buildable, ABC):
     def build_stats(self, data, domain=None):
         if isinstance(self.extractor, SimpleExtractor):
             components = self.extractor.extract_multiple(data)
-        elif isinstance(self.extractor, ScoringExtractor):
+        elif isinstance(self.extractor, ScoreExtractor):
             output, actual = data
             components = self.extractor.extract_multiple(output=output, actual=actual)
         else:
@@ -101,7 +106,7 @@ class Component(Serializable, Buildable, ABC):
     def validate(self, data, cgroup):
         if isinstance(self.extractor, SimpleExtractor):
             component = self.extractor.extract(data)
-        elif isinstance(self.extractor, ScoringExtractor):
+        elif isinstance(self.extractor, ScoreExtractor):
             output, actual = data
             component = self.extractor.extract(output=output, actual=actual)
         else:
@@ -122,6 +127,25 @@ class Component(Serializable, Buildable, ABC):
     @abstractmethod
     def check_invalid(self, component, cgroup):
         pass
+
+    def contrast(self, other, thresholds):
+
+        invalids_threshold = thresholds.get("invalids", 0.01)
+        drift_threshold = thresholds.get("drift", 0.05)
+
+        drift_report = self.stats.report_drift(other.stats, threshold=drift_threshold)
+        invalids_report = self.stats.report_invalid_diff(other.stats, threshold=invalids_threshold)
+        if isinstance(self.extractor, ScoreExtractor):
+            abs = False
+            if self.extractor.lower_better:
+                mean_threshold = thresholds.get("mean", 0.01)
+            else:
+                mean_threshold = thresholds.get("mean", -0.01)
+        else:
+            abs = True
+            mean_threshold = thresholds.get("mean", 0.01)
+        mean_report = self.stats.report_mean_diff(other.stats, threshold=mean_threshold, use_abs=abs)
+        return {"drift": drift_report, "invalids": invalids_report, "mean": mean_report}
 
     def __repr__(self):
         return str(self)

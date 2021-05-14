@@ -69,7 +69,7 @@
             <th class="raytablehead valueColumn px-2">
               <label>Invalids </label>
               <SortArrows
-                field="pinv"
+                field="invalids"
                 :active="activeSortObj"
                 @activeSortChanged="setActiveSort"
               />
@@ -224,17 +224,17 @@ export default {
             return 1;
           }
         };
-      } else if (this.activeSortField === "pinv") {
+      } else if (this.activeSortField === "invalids") {
         func = (firstEl, secondEl) => {
-          console.log("Using pinv function");
+          console.log("Using invalids function");
           if (
-            componentData[firstEl].component.stats.pinv ==
-            componentData[secondEl].component.stats.pinv
+            componentData[firstEl].component.stats.invalids ==
+            componentData[secondEl].component.stats.invalids
           ) {
             return 0;
           } else if (
-            componentData[firstEl].component.stats.pinv <
-            componentData[secondEl].component.stats.pinv
+            componentData[firstEl].component.stats.invalids <
+            componentData[secondEl].component.stats.invalids
           ) {
             return -1;
           } else {
@@ -290,6 +290,11 @@ export default {
         newObj[key] = this.profileComponents[key];
       }
       return newObj;
+    },
+  },
+  watch: {
+    componentType: function (n, o) {
+      this.changePage(0);
     },
   },
 };

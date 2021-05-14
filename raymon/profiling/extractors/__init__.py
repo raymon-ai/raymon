@@ -44,7 +44,10 @@ class SimpleExtractor(Extractor):
         return components
 
 
-class ScoringExtractor(Extractor):
+class ScoreExtractor(Extractor):
+    def __init__(self, lower_better=True):
+        self.lower_better = lower_better
+
     @abstractmethod
     def extract(self, output, actual):
         """Extracts a component from a data instance.
@@ -76,6 +79,10 @@ class ScoringExtractor(Extractor):
         else:
             raise DataException("Data should be a DataFrame or Iterable")
         return components
+
+    def to_jcr(self):
+        data = {"lower_better": self.lower_better}
+        return data
 
 
 class NoneExtractor(SimpleExtractor):

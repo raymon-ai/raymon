@@ -14,7 +14,7 @@ def test_stats_none():
 
 
 def test_stats_partial_none():
-    params = dict(min=0, max=1, mean=0.5, std=0.02, pinv=0.1, percentiles=list(range(101)), samplesize=10)
+    params = dict(min=0, max=1, mean=0.5, std=0.02, invalids=0.1, percentiles=list(range(101)), samplesize=10)
     stats = NumericStats(**params)
     jcr = stats.to_jcr()
     for attr in NumericStats._attrs:
@@ -31,30 +31,30 @@ def test_num_stats_build():
         std=0.02,
     )
     assert not stats.is_built()
-    stats = NumericStats(min=0, max=1, mean=0.5, percentiles=range(101), pinv=0)
+    stats = NumericStats(min=0, max=1, mean=0.5, percentiles=range(101), invalids=0)
     assert not stats.is_built()
-    stats = NumericStats(min=0, max=1, std=0.02, percentiles=range(101), pinv=0)
+    stats = NumericStats(min=0, max=1, std=0.02, percentiles=range(101), invalids=0)
     assert not stats.is_built()
-    stats = NumericStats(min=0, mean=0.5, std=0.02, percentiles=range(101), pinv=0)
+    stats = NumericStats(min=0, mean=0.5, std=0.02, percentiles=range(101), invalids=0)
     assert not stats.is_built()
-    stats = NumericStats(max=1, mean=0.5, std=0.02, percentiles=range(101), pinv=0)
+    stats = NumericStats(max=1, mean=0.5, std=0.02, percentiles=range(101), invalids=0)
     assert not stats.is_built()
     stats = NumericStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101))
     assert not stats.is_built()
-    stats = NumericStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), pinv=0, samplesize=10)
+    stats = NumericStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), invalids=0, samplesize=10)
     assert stats.is_built()
 
 
 def test_cat_stats_build():
     stats = CategoricStats()
     assert not stats.is_built()
-    stats = CategoricStats(frequencies={"a": 0.5, "b": 0.5}, pinv=0.1)
+    stats = CategoricStats(frequencies={"a": 0.5, "b": 0.5}, invalids=0.1)
     assert not stats.is_built()
     stats = CategoricStats(frequencies={"a": 0.5, "b": 0.5}, samplesize=10)
     assert not stats.is_built()
-    stats = CategoricStats(pinv=0.1, samplesize=10)
+    stats = CategoricStats(invalids=0.1, samplesize=10)
     assert not stats.is_built()
-    stats = CategoricStats(frequencies={"a": 0.5, "b": 0.5}, pinv=0.1, samplesize=10)
+    stats = CategoricStats(frequencies={"a": 0.5, "b": 0.5}, invalids=0.1, samplesize=10)
     assert stats.is_built()
 
 
@@ -84,7 +84,7 @@ def test_component_buildable():
     extractor = FixedSubpatchSimilarity(
         patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, refs=["adf8d224cb8786cc"], nrefs=1
     )
-    stats = NumericStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), pinv=0, samplesize=10)
+    stats = NumericStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), invalids=0, samplesize=10)
     component = FloatComponent(name="testcomponent", extractor=extractor, stats=stats)
     assert stats.is_built()
     assert extractor.is_built()
@@ -104,7 +104,7 @@ def test_schema_buildable():
     extractor = FixedSubpatchSimilarity(
         patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, refs=["adf8d224cb8786cc"], nrefs=1
     )
-    stats = NumericStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), pinv=0, samplesize=10)
+    stats = NumericStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), invalids=0, samplesize=10)
     component = FloatComponent(name="testcomponent", extractor=extractor, stats=stats)
     schema = ModelProfile(name="Testing", version="1.0.0", input_comps=[component, component])
 

@@ -17,7 +17,7 @@
       <p
         class="f3"
         :class="{'red': isDrift, 'green': !isDrift}"
-      > {{compareStats.drift.drift.toFixed(2)}}</p>
+      > {{driftStr}}</p>
       <!-- <span :class="{'Label mr-1 Label--red': isDrift, 'Label mr-1 Label--green': !isDrift}">
         {{compareStats.drift.drift.toFixed(2)}}
       </span> -->
@@ -29,20 +29,43 @@
     <td class="px-2">
       <div class="d-flex flex-column flex-items-begin">
         <p>
-          <span class="blue f6">{{this.stats.pinv.toFixed(2)}}</span>
+          <span class="blue f6">{{this.stats.invalids.toFixed(2)}}</span>
           <span
             v-html="octicons['arrow-right'].toSVG()"
             class="mx-1"
           ></span>
-          <span class="red f6"> {{this.otherStats.pinv.toFixed(2)}}</span>
+          <span class="red f6"> {{this.otherStats.invalids.toFixed(2)}}</span>
         </p>
         <p
           class="f4"
           :class="{'red': isPinvAlert, 'green': !isPinvAlert}"
         >
-          {{pinvDiffStr}}
+          {{invalidsDiffStr}}
         </p>
       </div>
+
+    </td>
+    <td class="px-2">
+      <div
+        v-if="'mean' in stats"
+        class="d-flex flex-column flex-items-begin"
+      >
+        <p>
+          <span class="blue f6">{{thisMeanNice}}</span>
+          <span
+            v-html="octicons['arrow-right'].toSVG()"
+            class="mx-1"
+          ></span>
+          <span class="red f6"> {{otherMeanNice}}</span>
+        </p>
+        <p
+          class="f4"
+          :class="{'red': isMeanAlert, 'green': !isMeanAlert}"
+        >
+          {{meanDiffStr}}
+        </p>
+      </div>
+      <div v-else> - </div>
 
     </td>
 
@@ -98,12 +121,24 @@ export default {
         this.componentType.toLowerCase() === "float"
       );
     },
-    pinvDiff() {
-      let diff = this.otherStats.pinv - this.stats.pinv;
+    driftStr() {
+      return `${Math.trunc(this.compareStats.drift.drift * 100)}%`;
+    },
+    invalidsDiff() {
+      let diff = this.otherStats.invalids - this.stats.invalids;
       return diff;
     },
-    pinvDiffStr() {
-      return this.compareStats.integrity.integrity.toFixed(2);
+    invalidsDiffStr() {
+      return `${Math.trunc(this.compareStats.invalids.invalids * 100)}%`;
+    },
+    meanDiffStr() {
+      return `${Math.trunc(this.compareStats.mean.mean * 100)}%`;
+    },
+    thisMeanNice() {
+      return this.stats.mean.toExponential(2);
+    },
+    otherMeanNice() {
+      return this.otherStats.mean.toExponential(2);
     },
     componentName() {
       return this.componentData.component.name;
@@ -116,10 +151,13 @@ export default {
       return this.componentData.component.importance;
     },
     isDrift() {
-      return this.compareStats.drift.alert === 1;
+      return this.compareStats.drift.alert;
     },
     isPinvAlert() {
-      return this.compareStats.integrity.alert === 1;
+      return this.compareStats.invalids.alert;
+    },
+    isMeanAlert() {
+      return this.compareStats.mean.alert;
     },
     plotData() {
       if (this.isNumeric) {
