@@ -4,7 +4,7 @@ import pytest
 import pandas as pd
 import numpy as np
 
-from raymon.profiling.extractors.structured import generate_comps
+from raymon.profiling.extractors.structured import generate_components
 from raymon import CategoricComponent, FloatComponent, IntComponent
 from raymon import ModelProfile
 from raymon.globals import ProfileStateException, DataException
@@ -20,7 +20,7 @@ def test_constuct_comps():
         "num2": [0.2] * 10,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_comps(dtypes=df.dtypes)
+    components = generate_components(dtypes=df.dtypes)
     assert len(components) == 4
     assert isinstance(components[0], IntComponent)
     assert isinstance(components[1], CategoricComponent)
@@ -34,7 +34,7 @@ def test_compile():
         "cat1": ["a"] * 5 + ["b"] * 5,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_comps(dtypes=df.dtypes)
+    components = generate_components(dtypes=df.dtypes)
     schema = ModelProfile(input_comps=components)
     assert not schema.is_built()
     schema.build(input=df)
@@ -75,7 +75,7 @@ def test_all_nan():
         "cat1": [np.nan] * 10,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_comps(dtypes=df.dtypes)
+    components = generate_components(dtypes=df.dtypes)
     schema = ModelProfile(input_comps=components)
     try:
         schema.build(input=df)

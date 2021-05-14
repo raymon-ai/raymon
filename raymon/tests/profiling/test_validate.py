@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from raymon.profiling.components import FloatComponent
 
-from raymon.profiling.extractors.structured import generate_comps
+from raymon.profiling.extractors.structured import generate_components
 from raymon import ModelProfile
 from raymon.profiling.extractors.structured.scoring import AbsoluteError
 
@@ -13,7 +13,7 @@ def test_compile_nan():
         "cat1": ["a"] * 5 + ["b"] * 5,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_comps(dtypes=df.dtypes)
+    components = generate_components(dtypes=df.dtypes)
     schema = ModelProfile(input_comps=components)
     schema.build(input=df)
 
@@ -30,7 +30,7 @@ def test_compile_nan_2():
         "cat1": ["a"] * 5 + ["b"] * 5,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_comps(dtypes=df.dtypes)
+    components = generate_components(dtypes=df.dtypes)
     schema = ModelProfile(input_comps=components)
     schema.build(input=df)
     components = schema.input_comps
@@ -55,7 +55,7 @@ def test_valdiate_output():
         "cat1": ["a"] * 5 + ["b"] * 5,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_comps(dtypes=df.dtypes)
+    components = generate_components(dtypes=df.dtypes)
     schema = ModelProfile(output_comps=components)
     schema.build(output=df)
     components = schema.output_comps
@@ -79,7 +79,7 @@ def test_validate_actual():
         "cat1": ["a"] * 5 + ["b"] * 5,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_comps(dtypes=df.dtypes)
+    components = generate_components(dtypes=df.dtypes)
     schema = ModelProfile(actual_comps=components)
     schema.build(actual=df)
     components = schema.actual_comps
@@ -103,7 +103,7 @@ def test_multiple_component_types():
         "cat1": ["a"] * 5 + ["b"] * 5,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_comps(dtypes=df.dtypes)
+    components = generate_components(dtypes=df.dtypes)
     schema = ModelProfile(input_comps=components, output_comps=components, actual_comps=components)
     schema.build(input=df, output=df, actual=df)
 

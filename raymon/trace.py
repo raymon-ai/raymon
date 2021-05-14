@@ -29,6 +29,7 @@ class Trace:
 
         self.trace_id = _parse_trace_id(trace_id)
         self.logger = logger
+        self.set_global = set_global
         if set_global:
             raymon.set_current_trace(self)
 

@@ -69,13 +69,13 @@ Example: Structured Data
     :linenos:
 
     from raymon.profiling import ModelProfile, FloatComponent
-    from raymon.profiling.extractors.structured import generate_comps, ElementExtractor
+    from raymon.profiling.extractors.structured import generate_components, ElementExtractor
     from raymon.profiling.extractors.structured.scoring import AbsoluteError, SquaredError
 
     profile = ModelProfile(
         name="HousePriceModelProfile",
         version="1.0.0",
-        input_comps=generate_comps(X.dtypes),
+        input_comps=generate_components(X.dtypes),
         output_comps=[
             FloatComponent(name="prediction", extractor=ElementExtractor(element=0))
         ],
