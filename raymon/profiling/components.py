@@ -4,7 +4,6 @@ from abc import ABC, abstractmethod
 import numbers
 import numpy as np
 import pandas as pd
-from raymon.profiling.ops import parse_threshold
 
 from raymon.globals import (
     Buildable,

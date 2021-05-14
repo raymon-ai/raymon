@@ -1,5 +1,5 @@
 <template>
-  <ViewSchemaStrJSON
+  <ViewSchemaStr
     :profile="schemaDefComputed"
     :poi="poiComputed"
   />
@@ -7,14 +7,14 @@
 
 <script>
 import schemaFromJson from "@/assets/HousePricesCheap@1.0.0.json";
-import ViewSchemaStrJSON from "@/ViewSchemaStrJSON.vue";
+import ViewSchemaStr from "@/ViewSchemaStr.vue";
 export default {
   name: "ViewSchemaWrapper",
   data() {
     return {};
   },
   components: {
-    ViewSchemaStrJSON,
+    ViewSchemaStr,
   },
   computed: {
     schemaDefComputed() {

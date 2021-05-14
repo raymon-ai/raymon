@@ -23,8 +23,8 @@ export default {
 
 <style scoped>
 .logo-asset {
-  width: 100%;
-  height: 100%;
+  width: 60px;
+  height: 70px;
 }
 .logo {
   width: 60px;

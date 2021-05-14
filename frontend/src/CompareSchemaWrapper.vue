@@ -1,17 +1,17 @@
 <template>
-  <CompareSchemaStrJSON :comparison="comparisonComputed" />
+  <CompareSchemaStr :comparison="comparisonComputed" />
 </template>
 
 <script>
 import compareDefFromJson from "@/assets/housepricescheap@1.0.0vshousepricesexpensive@1.0.0.json";
-import CompareSchemaStrJSON from "@/CompareSchemaStrJSON.vue";
+import CompareSchemaStr from "@/CompareSchemaStr.vue";
 export default {
   name: "CompareSchemaWrapper",
   data() {
     return {};
   },
   components: {
-    CompareSchemaStrJSON,
+    CompareSchemaStr,
   },
   computed: {
     comparisonComputed() {

@@ -321,10 +321,10 @@ class ModelProfile(Serializable, Buildable):
             poiescaped = html.escape(json.dumps(poi_dict))
             htmlstr = f"""
                     <meta charset="utf-8">
-                    <title>raymon-schema-view demo</title>
+                    <title>Raymon view</title>
                     <script src="./raymon.min.js"></script>
                     <body>
-                    <raymon-view-schema schema="{jsonescaped}" poi="{poiescaped}"></raymon-view-schema>
+                    <raymon-view-schema-str profile="{jsonescaped}" poi="{poiescaped}"></raymon-view-schema-str>
                     </body>
                     """
             return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
@@ -340,9 +340,9 @@ class ModelProfile(Serializable, Buildable):
             jsonescaped = html.escape(json.dumps(jcr))
             htmlstr = f"""
                 <meta charset="utf-8">
-                <title>raymon-schema-view demo</title>
+                <title>Raymon contrast</title>
                 <script src="./raymon.min.js"></script>
-                <raymon-compare-schema comparison="{jsonescaped}"></raymon-compare-schema>
+                <raymon-compare-schema-str comparison="{jsonescaped}"></raymon-compare-schema-str>
                 """
         return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
 
