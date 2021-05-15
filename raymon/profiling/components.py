@@ -13,7 +13,7 @@ from raymon.globals import (
 )
 from raymon.profiling.stats import CategoricStats, NumericStats, equalize_domains
 from raymon.tags import Tag, CGROUP_TAGTYPES
-from raymon.profiling.extractors import SimpleExtractor, ScoreExtractor
+from raymon.profiling.extractors import SimpleExtractor, ScoreExtractor, NoneExtractor, NoneScoreExtractor
 
 HIST_N_SAMPLES = 1000
 
@@ -53,7 +53,7 @@ class Component(Serializable, Buildable, ABC):
     """Serializable interface """
 
     def to_jcr(self):
-        if isinstance(self, ScoreExtractor):
+        if isinstance(self.extractor, ScoreExtractor):
             extractor_type = ScoreExtractor.__name__
         else:
             extractor_type = SimpleExtractor.__name__
@@ -71,13 +71,13 @@ class Component(Serializable, Buildable, ABC):
         return data
 
     @classmethod
-    def from_jcr(cls, jcr):
+    def from_jcr(cls, jcr, mock_extractor=False):
         classpath = jcr["component_class"]
         comp_jcr = jcr["component"]
         compclass = locate(classpath)
         if compclass is None:
             raise NameError(f"Could not locate classpath {classpath}")
-        component = compclass.from_jcr(comp_jcr)
+        component = compclass.from_jcr(comp_jcr, mock_extractor=mock_extractor)
         return component
 
     def build_extractor(self, data):
@@ -193,13 +193,19 @@ class FloatComponent(Component):
             return None
 
     @classmethod
-    def from_jcr(cls, jcr):
-        classpath = jcr["extractor_class"]
-        extr_class = locate(classpath)
-        if extr_class is None:
-            NameError(f"Could not locate {classpath}")
-
-        extractor = extr_class.from_jcr(jcr["extractor_state"])
+    def from_jcr(cls, jcr, mock_extractor=False):
+        if mock_extractor:
+            if jcr["extractor_type"] == ScoreExtractor:
+                lower_better = jcr["extractor_state"]["lower_better"]
+                extractor = NoneScoreExtractor(lower_better=lower_better)
+            else:
+                extractor = NoneExtractor()
+        else:
+            classpath = jcr["extractor_class"]
+            extr_class = locate(classpath)
+            if extr_class is None:
+                raise NameError(f"Could not locate {classpath}")
+            extractor = extr_class.from_jcr(jcr["extractor_state"])
         stats = NumericStats.from_jcr(jcr["stats"])
         importance = jcr["importance"]
         name = jcr["name"]
@@ -252,13 +258,19 @@ class IntComponent(Component):
             return None
 
     @classmethod
-    def from_jcr(cls, jcr):
-        classpath = jcr["extractor_class"]
-        extr_class = locate(classpath)
-        if extr_class is None:
-            NameError(f"Could not locate {classpath}")
-
-        extractor = extr_class.from_jcr(jcr["extractor_state"])
+    def from_jcr(cls, jcr, mock_extractor=False):
+        if mock_extractor:
+            if jcr["extractor_type"] == ScoreExtractor:
+                lower_better = jcr["extractor_state"]["lower_better"]
+                extractor = NoneScoreExtractor(lower_better=lower_better)
+            else:
+                extractor = NoneExtractor()
+        else:
+            classpath = jcr["extractor_class"]
+            extr_class = locate(classpath)
+            if extr_class is None:
+                raise NameError(f"Could not locate {classpath}")
+            extractor = extr_class.from_jcr(jcr["extractor_state"])
         stats = NumericStats.from_jcr(jcr["stats"])
         importance = jcr["importance"]
 
@@ -313,13 +325,20 @@ class CategoricComponent(Component):
             return None
 
     @classmethod
-    def from_jcr(cls, jcr):
-        classpath = jcr["extractor_class"]
-        extr_class = locate(classpath)
-        if extr_class is None:
-            NameError(f"Could not locate {classpath}")
+    def from_jcr(cls, jcr, mock_extractor=False):
+        if mock_extractor:
+            if jcr["extractor_type"] == ScoreExtractor:
+                lower_better = jcr["extractor_state"]["lower_better"]
+                extractor = NoneScoreExtractor(lower_better=lower_better)
+            else:
+                extractor = NoneExtractor()
+        else:
+            classpath = jcr["extractor_class"]
+            extr_class = locate(classpath)
+            if extr_class is None:
+                NameError(f"Could not locate {classpath}")
 
-        extractor = extr_class.from_jcr(jcr["extractor_state"])
+            extractor = extr_class.from_jcr(jcr["extractor_state"])
         stats = CategoricStats.from_jcr(jcr["stats"])
         importance = jcr["importance"]
         name = jcr["name"]

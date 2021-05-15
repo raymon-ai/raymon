@@ -161,14 +161,14 @@ class ModelProfile(Serializable, Buildable):
         return jcr
 
     @classmethod
-    def from_jcr(cls, jcr):
+    def from_jcr(cls, jcr, mock_extractors=False):
         name = jcr["name"]
         version = jcr["version"]
         comp_types = {}
         for idfr in COMPONENT_TYPES:
             components = {}
             for comp_dict in jcr[idfr].values():
-                component = Component.from_jcr(comp_dict)
+                component = Component.from_jcr(comp_dict, mock_extractor=mock_extractors)
                 components[component.name] = component
             comp_types[idfr] = components
         return cls(name=name, version=version, **comp_types)

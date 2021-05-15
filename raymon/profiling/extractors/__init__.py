@@ -104,3 +104,27 @@ class NoneExtractor(SimpleExtractor):
 
     def is_built(self):
         return True
+
+
+class NoneScoreExtractor(ScoreExtractor):
+    def __init__(self, lower_better=True):
+        self.lower_better = lower_better
+
+    def extract(self, output, actual):
+        return 0
+
+    def to_jcr(self):
+        data = {}
+        return data
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        return cls(**jcr)
+
+    """Buildable interface"""
+
+    def build(self, data):
+        pass
+
+    def is_built(self):
+        return True
