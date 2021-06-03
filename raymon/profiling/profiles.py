@@ -306,6 +306,40 @@ class ModelProfile(Serializable, Buildable):
         jcr["report"] = report
         return jcr
 
+    def contrast_alternatives(self, alternativeA, alternativeB, thresholds={}):
+        if not self.is_built():
+            raise ProfileStateException("Profile 'self' is not built.")
+        if not alternativeA.is_built():
+            raise ProfileStateException("Profile 'alternativeA' is not built.")
+        if not alternativeB.is_built():
+            raise ProfileStateException("Profile 'alternativeB' is not built.")
+        report = {}
+        for comp_type in COMPONENT_TYPES:
+            self_comps = getattr(self, comp_type)
+            alternativeA_comps = getattr(alternativeA, comp_type)
+            alternativeB_comps = getattr(alternativeB, comp_type)
+
+            comp_type_thresholds = thresholds.get(comp_type, {})
+            type_report = {}
+            for component in self_comps.values():
+                print(component.name)
+                comp_thresholds = comp_type_thresholds.get(component.name, {})
+
+                comp_report = alternativeA_comps[component.name].contrast(
+                    alternativeB_comps[component.name],
+                    thresholds=comp_thresholds,
+                )
+
+                type_report[component.name] = comp_report
+            report[comp_type] = type_report
+
+        jcr = {}
+        jcr["reference"] = self.to_jcr()
+        jcr["alternativeA"] = alternativeA.to_jcr()
+        jcr["alternativeB"] = alternativeB.to_jcr()
+        jcr["report"] = report
+        return jcr
+
     def view(self, poi=None, mode="iframe", outdir=None, silent=True):
         if silent:
             ctx_mgr = NoOutput()
