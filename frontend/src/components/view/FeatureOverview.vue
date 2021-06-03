@@ -110,7 +110,7 @@ import SortArrows from "@/components/SortArrows.vue";
 const octicons = require("@primer/octicons");
 const PPP = 10; // Plots per page
 export default {
-  props: ["schemaDef", "poi", "componentType"],
+  props: ["refDef", "poi", "componentType"],
   components: {
     Pagination,
     FeatureRow,
@@ -249,7 +249,7 @@ export default {
   },
   computed: {
     profileComponents() {
-      return this.schemaDef[this.componentType];
+      return this.refDef[this.componentType];
     },
     activeSortObj() {
       return {

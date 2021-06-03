@@ -41,7 +41,7 @@
 <script>
 const octicons = require("@primer/octicons");
 import VuePlotly from "@statnett/vue-plotly";
-import { red, green, blue, yellow } from "@/colors.js";
+import { colors } from "@/js/colors.js";
 export default {
   components: { VuePlotly },
   props: ["componentData", "poi"],
@@ -122,7 +122,7 @@ export default {
           y: [...Array(101).keys()],
           type: "scatter",
           marker: {
-            color: blue,
+            color: colors.color_scale_blue_5,
           },
         },
       ];
@@ -132,7 +132,7 @@ export default {
           y: [0, 100],
           mode: "lines",
           line: {
-            color: yellow,
+            color: colors.color_scale_green_5,
             width: 1.5,
           },
         });
@@ -149,7 +149,7 @@ export default {
           y: counts,
           type: "bar",
           marker: {
-            color: blue,
+            color: colors.color_scale_blue_5,
           },
         },
       ];
@@ -159,7 +159,7 @@ export default {
           y: [0, Math.max(...counts)],
           mode: "lines",
           line: {
-            color: yellow,
+            color: colors.color_scale_green_5,
             width: 1.5,
           },
         });

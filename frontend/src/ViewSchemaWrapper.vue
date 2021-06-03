@@ -1,6 +1,6 @@
 <template>
   <ViewSchemaStr
-    :profile="schemaDefComputed"
+    :profile="refDefComputed"
     :poi="poiComputed"
   />
 </template>
@@ -17,13 +17,13 @@ export default {
     ViewSchemaStr,
   },
   computed: {
-    schemaDefComputed() {
+    refDefComputed() {
       // this is to load data for testing
-      let schemaDef = undefined;
+      let refDef = undefined;
 
-      schemaDef = schemaFromJson;
+      refDef = schemaFromJson;
       console.log("Loading schema from json.");
-      return JSON.stringify(schemaDef);
+      return JSON.stringify(refDef);
     },
     poiComputed() {
       return JSON.stringify({

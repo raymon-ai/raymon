@@ -302,7 +302,7 @@ class ModelProfile(Serializable, Buildable):
 
         jcr = {}
         jcr["reference"] = self.to_jcr()
-        jcr["other"] = other.to_jcr()
+        jcr["alternativeA"] = other.to_jcr()
         jcr["report"] = report
         return jcr
 

@@ -82,9 +82,10 @@
         <tbody>
           <FeatureRow
             v-for="(component, name) in schemaSelection"
-            :componentData="component"
-            :otherFeatureData="otherSelection[name]"
-            :compareStats="reportComponents[name]"
+            :refComponentData="component"
+            :alternativeAComponentData="alternativeASelection[name]"
+            :alternativeBComponentData="alternativeBSelection[name]"
+            :reportData="reportComponents[name]"
             :key="name"
           />
         </tbody>
@@ -109,7 +110,13 @@ import SortArrows from "@/components/SortArrows.vue";
 const octicons = require("@primer/octicons");
 const PPP = 10; // Plots per page
 export default {
-  props: ["schemaDef", "otherDef", "compareStats", "componentType"],
+  props: [
+    "refData",
+    "alternativeA",
+    "alternativeB",
+    "reportData",
+    "componentType",
+  ],
   components: {
     Pagination,
     FeatureRow,
@@ -201,15 +208,17 @@ export default {
         };
       } else if (this.activeSortField === "mean") {
         func = (firstEl, secondEl) => {
-          if (
-            this.reportComponents[firstEl].mean.mean ===
-            this.reportComponents[secondEl].mean.mean
-          ) {
+          let firstElMean = this.reportComponents[firstEl].mean.mean;
+          let secondElMean = this.reportComponents[secondEl].mean.mean;
+          if (firstElMean == "-" && secondElMean == "-") {
             return 0;
-          } else if (
-            this.reportComponents[firstEl].mean.mean <
-            this.reportComponents[secondEl].mean.mean
-          ) {
+          } else if (!(firstElMean == "-") && secondElMean == "-") {
+            return 1;
+          } else if (firstElMean == "-" && !(secondElMean == "-")) {
+            return -1;
+          } else if (firstElMean === secondElMean) {
+            return 0;
+          } else if (firstElMean < secondElMean) {
             return -1;
           } else {
             return 1;
@@ -223,20 +232,23 @@ export default {
     getPinvDiff(featName) {
       return Math.abs(
         this.profileComponents.components[featName].component.stats.invalids -
-          this.otherProfileComponents.components[featName].component.stats
-            .invalids
+          this.alternativeAProfileComponents.components[featName].component
+            .stats.invalids
       );
     },
   },
   computed: {
     profileComponents() {
-      return this.schemaDef[this.componentType];
+      return this.refData[this.componentType];
     },
-    otherProfileComponents() {
-      return this.otherDef[this.componentType];
+    alternativeAProfileComponents() {
+      return this.alternativeA[this.componentType];
+    },
+    alternativeBProfileComponents() {
+      return this.alternativeB[this.componentType];
     },
     reportComponents() {
-      return this.compareStats[this.componentType];
+      return this.reportData[this.componentType];
     },
     activeSortObj() {
       return {
@@ -278,11 +290,19 @@ export default {
       }
       return schemaObj;
     },
-    otherSelection() {
+    alternativeASelection() {
       const selectedKeys = this.schemaPageKeys;
       let otherObj = {};
       for (const key of selectedKeys) {
-        otherObj[key] = this.otherProfileComponents[key];
+        otherObj[key] = this.alternativeAProfileComponents[key];
+      }
+      return otherObj;
+    },
+    alternativeBSelection() {
+      const selectedKeys = this.schemaPageKeys;
+      let otherObj = {};
+      for (const key of selectedKeys) {
+        otherObj[key] = this.alternativeBProfileComponents[key];
       }
       return otherObj;
     },

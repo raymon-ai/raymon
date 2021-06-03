@@ -6,8 +6,9 @@
       class="mainWindow m-2 p-2 white"
     >
       <Header
-        :schemaDef="schemaLoaded"
-        :otherDef="otherLoaded"
+        :refDef="refData"
+        :alternativeA="alternativeA"
+        :alternativeB="alternativeB"
         @setPage="setPage"
       />
       <ComponentTypeNav
@@ -17,9 +18,10 @@
       />
       <component
         :is="pageToShow"
-        :schemaDef="schemaLoaded"
-        :otherDef="otherLoaded"
-        :compareStats="compareLoaded"
+        :refData="refData"
+        :alternativeA="alternativeA"
+        :alternativeB="alternativeB"
+        :reportData="reportData"
         :componentName="componentName"
         :componentType="componentPage"
         @setPage="setPage"
@@ -35,7 +37,7 @@ import ComponentTypeNav from "@/components/ComponentTypeNav.vue";
 import FeatureOverview from "@/components/compare/FeatureOverview.vue";
 import FeatureDetailView from "@/components/compare/FeatureDetailView.vue";
 export default {
-  name: "SchemaCompare",
+  name: "CompareSchema",
   props: ["comparison"],
   components: {
     Header,
@@ -65,13 +67,16 @@ export default {
     },
   },
   computed: {
-    schemaLoaded() {
+    refData() {
       return this.comparison.reference;
     },
-    otherLoaded() {
-      return this.comparison.other;
+    alternativeA() {
+      return this.comparison.alternativeA;
     },
-    compareLoaded() {
+    alternativeB() {
+      return this.comparison.alternativeB;
+    },
+    reportData() {
       return this.comparison.report;
     },
     pageToShow() {

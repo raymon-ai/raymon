@@ -7,7 +7,7 @@
       class="mainWindow m-2 p-2 white"
     >
       <Header
-        :schemaDef="profile"
+        :refDef="profile"
         :poi="poi"
         @setPage="setPage"
       />
@@ -18,7 +18,7 @@
       />
       <component
         :is="pageToShow"
-        :schemaDef="profile"
+        :refDef="profile"
         :poi="poi"
         :componentName="componentName"
         :componentType="componentPage"

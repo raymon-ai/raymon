@@ -1,36 +1,49 @@
 <template>
   <div>
-    <div class="d-flex flex-row-reverse flex-justify-between">
-      <a
+    <div class="d-flex flex-row flex-justify-begin">
+      <div
+        class="schemaDiv pl-2 mr-4"
+        :style="{'border-left-color': colors.color_scale_gray_5}"
+      >
+        <h2 class="pt-0"> Profile: <span class="codeLike">
+            {{refDef.name}}</span>
+        </h2>
+        <h5>Version: <span class="codeLike">
+            {{refDef.version}}
+          </span></h5>
+      </div>
+      <div
+        v-if="alternativeA"
+        class="schemaDiv pl-2 mr-4"
+        :style="{'border-left-color': colors.color_scale_blue_5}"
+      >
+        <h2 class="pt-0"> Profile: <span class="codeLike">
+            {{alternativeA.name}}</span>
+        </h2>
+        <h5>Version: <span class="codeLike">
+            {{alternativeA.version}}
+          </span></h5>
+      </div>
+
+      <div
+        v-if="alternativeB"
+        class="schemaDiv pl-2 mr-4"
+        :style="{'border-left-color': colors.color_scale_red_5}"
+      >
+        <h2 class="pt-0"> Profile: <span class="codeLike">
+            {{alternativeA.name}}</span>
+        </h2>
+        <h5>Version: <span class="codeLike">
+            {{alternativeA.version}}
+          </span></h5>
+      </div>
+
+      <!-- <a
         href="#"
         @click="goToMainView"
       >
         <Logo />
-      </a>
-      <!-- <Logo class="mr-2" /> -->
-      <div
-        v-if="otherDef"
-        class="schemaDiv pl-2"
-        :style="{'border-left-color': red}"
-      >
-        <h2 class="pt-0"> Profile: <span class="codeLike">
-            {{otherDef.name}}</span>
-        </h2>
-        <h5>Version: <span class="codeLike">
-            {{otherDef.version}}
-          </span></h5>
-      </div>
-      <div
-        class="schemaDiv pl-2"
-        :style="{'border-left-color': blue}"
-      >
-        <h2 class="pt-0"> Profile: <span class="codeLike">
-            {{schemaDef.name}}</span>
-        </h2>
-        <h5>Version: <span class="codeLike">
-            {{schemaDef.version}}
-          </span></h5>
-      </div>
+      </a> -->
 
     </div>
   </div>
@@ -39,15 +52,13 @@
 
 <script>
 import Logo from "@/components/Logo.vue";
-import { red, green, blue } from "@/colors.js";
+import { colors } from "@/js/colors.js";
 export default {
-  props: ["schemaDef", "otherDef", "poi"],
-  components: { Logo },
+  props: ["refDef", "alternativeA", "alternativeB", "poi"],
+  components: {},
   data: function () {
     return {
-      red,
-      green,
-      blue,
+      colors,
     };
   },
   methods: {

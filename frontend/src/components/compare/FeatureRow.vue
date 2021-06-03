@@ -16,29 +16,35 @@
     <td class="px-2 codeLikeContent pvalueColumn">
       <p
         class="f3"
-        :class="{'red': isDrift, 'green': !isDrift}"
+        :class="{'orange': isDrift, 'green': !isDrift}"
       > {{driftStr}}</p>
       <!-- <span :class="{'Label mr-1 Label--red': isDrift, 'Label mr-1 Label--green': !isDrift}">
-        {{compareStats.drift.drift.toFixed(2)}}
+        {{reportData.drift.drift.toFixed(2)}}
       </span> -->
     </td>
     <!-- <td class="px-2 codeLikeContent">
-      {{compareStats.impact.toFixed(2)}}
+      {{reportData.impact.toFixed(2)}}
 
     </td> -->
     <td class="px-2">
       <div class="d-flex flex-column flex-items-begin">
         <p>
-          <span class="blue f6">{{this.stats.invalids.toFixed(2)}}</span>
+          <span
+            class="f6"
+            :class="leftColorClass"
+          >{{this.leftStats.invalids.toFixed(2)}}</span>
           <span
             v-html="octicons['arrow-right'].toSVG()"
             class="mx-1"
           ></span>
-          <span class="red f6"> {{this.otherStats.invalids.toFixed(2)}}</span>
+          <span
+            class="f6"
+            :class="rightColorClass"
+          > {{this.rightStats.invalids.toFixed(2)}}</span>
         </p>
         <p
           class="f4"
-          :class="{'red': isPinvAlert, 'green': !isPinvAlert}"
+          :class="{'orange': isPinvAlert, 'green': !isPinvAlert}"
         >
           {{invalidsDiffStr}}
         </p>
@@ -47,20 +53,26 @@
     </td>
     <td class="px-2">
       <div
-        v-if="'mean' in stats"
+        v-if="'mean' in refStats"
         class="d-flex flex-column flex-items-begin"
       >
         <p>
-          <span class="blue f6">{{thisMeanNice}}</span>
+          <span
+            class="f6"
+            :class="leftColorClass"
+          >{{this.leftStats.mean.toExponential(2)}}</span>
           <span
             v-html="octicons['arrow-right'].toSVG()"
             class="mx-1"
           ></span>
-          <span class="red f6"> {{otherMeanNice}}</span>
+          <span
+            class="f6"
+            :class="rightColorClass"
+          > {{this.rightStats.mean.toExponential(2)}}</span>
         </p>
         <p
           class="f4"
-          :class="{'red': isMeanAlert, 'green': !isMeanAlert}"
+          :class="{'orange': isMeanAlert, 'green': !isMeanAlert}"
         >
           {{meanDiffStr}}
         </p>
@@ -83,10 +95,15 @@
 <script>
 const octicons = require("@primer/octicons");
 import VuePlotly from "@statnett/vue-plotly";
-import { red, green, blue, yellow } from "@/colors.js";
+import { colors } from "@/js/colors.js";
 export default {
   components: { VuePlotly },
-  props: ["componentData", "otherFeatureData", "compareStats"],
+  props: [
+    "refComponentData",
+    "alternativeAComponentData",
+    "alternativeBComponentData",
+    "reportData",
+  ],
   data: function () {
     return {
       plotLayout: {
@@ -109,11 +126,14 @@ export default {
     };
   },
   computed: {
-    stats() {
-      return this.componentData.component.stats;
+    refStats() {
+      return this.refComponentData.component.stats;
     },
-    otherStats() {
-      return this.otherFeatureData.component.stats;
+    alternativeAStats() {
+      return this.alternativeAComponentData.component.stats;
+    },
+    alternativeBStats() {
+      return this.alternativeBComponentData.component.stats;
     },
     isNumeric() {
       return (
@@ -122,42 +142,66 @@ export default {
       );
     },
     driftStr() {
-      return `${Math.trunc(this.compareStats.drift.drift * 100)}%`;
-    },
-    invalidsDiff() {
-      let diff = this.otherStats.invalids - this.stats.invalids;
-      return diff;
+      return `${Math.trunc(this.reportData.drift.drift * 100)}%`;
     },
     invalidsDiffStr() {
-      return `${Math.trunc(this.compareStats.invalids.invalids * 100)}%`;
+      return `${Math.trunc(this.reportData.invalids.invalids * 100)}%`;
     },
     meanDiffStr() {
-      return `${Math.trunc(this.compareStats.mean.mean * 100)}%`;
+      return `${Math.trunc(this.reportData.mean.mean * 100)}%`;
     },
     thisMeanNice() {
-      return this.stats.mean.toExponential(2);
+      return this.refStats.mean.toExponential(2);
     },
-    otherMeanNice() {
-      return this.otherStats.mean.toExponential(2);
+    alternativeAMeanNice() {
+      return this.alternativeAStats.mean.toExponential(2);
     },
     componentName() {
-      return this.componentData.component.name;
+      return this.refComponentData.component.name;
     },
     componentType() {
-      const splits = this.componentData.component_class.split(".");
+      const splits = this.refComponentData.component_class.split(".");
       return splits.slice(-1)[0].replace("Component", "");
     },
     componentImportance() {
-      return this.componentData.component.importance;
+      return this.refComponentData.component.importance;
     },
     isDrift() {
-      return this.compareStats.drift.alert;
+      return this.reportData.drift.alert;
     },
     isPinvAlert() {
-      return this.compareStats.invalids.alert;
+      return this.reportData.invalids.alert;
     },
     isMeanAlert() {
-      return this.compareStats.mean.alert;
+      return this.reportData.mean.alert;
+    },
+    leftStats() {
+      if (this.alternativeBComponentData) {
+        return this.alternativeAStats;
+      } else {
+        return this.refStats;
+      }
+    },
+    rightStats() {
+      if (this.alternativeBComponentData) {
+        return this.alternativeBStats;
+      } else {
+        return this.alternativeAStats;
+      }
+    },
+    leftColorClass() {
+      if (this.alternativeBComponentData) {
+        return "blue";
+      } else {
+        return "gray";
+      }
+    },
+    rightColorClass() {
+      if (this.alternativeBComponentData) {
+        return "red";
+      } else {
+        return "blue";
+      }
     },
     plotData() {
       if (this.isNumeric) {
@@ -177,30 +221,42 @@ export default {
     getNumberPlotData() {
       let plots = [
         {
-          x: this.stats.percentiles,
+          x: this.refStats.percentiles,
           y: [...Array(101).keys()],
           type: "scatter",
           marker: {
-            color: blue,
+            color: colors.color_scale_gray_5,
           },
         },
         {
-          x: this.otherStats.percentiles,
+          x: this.alternativeAStats.percentiles,
           y: [...Array(101).keys()],
           type: "scatter",
           marker: {
-            color: red,
+            color: colors.color_scale_blue_5,
           },
         },
       ];
+      if (this.alternativeBComponentData) {
+        plots.push({
+          x: this.alternativeBStats.percentiles,
+          y: [...Array(101).keys()],
+          type: "scatter",
+          marker: {
+            color: colors.color_scale_red_5,
+          },
+        });
+      }
       return plots;
     },
     getCategoricPlotData() {
-      let domain = Object.keys(this.stats.frequencies);
-      let counts = Object.values(this.stats.frequencies);
+      let domain = Object.keys(this.refStats.frequencies);
+      let counts = Object.values(this.refStats.frequencies);
 
-      let otherDomain = Object.keys(this.otherStats.frequencies);
-      let otherCounts = Object.values(this.otherStats.frequencies);
+      let alternativeADomain = Object.keys(this.alternativeAStats.frequencies);
+      let alternativeACounts = Object.values(
+        this.alternativeAStats.frequencies
+      );
 
       let plots = [
         {
@@ -208,18 +264,34 @@ export default {
           y: counts,
           type: "bar",
           marker: {
-            color: blue,
+            color: colors.color_scale_gray_5,
           },
         },
         {
-          x: otherDomain,
-          y: otherCounts,
+          x: alternativeADomain,
+          y: alternativeACounts,
           type: "bar",
           marker: {
-            color: red,
+            color: colors.color_scale_blue_5,
           },
         },
       ];
+      if (this.alternativeBComponentData) {
+        let alternativeBDomain = Object.keys(
+          this.alternativeBStats.frequencies
+        );
+        let alternativeBCounts = Object.values(
+          this.alternativeBStats.frequencies
+        );
+        plots.push({
+          x: alternativeBDomain,
+          y: alternativeBCounts,
+          type: "bar",
+          marker: {
+            color: colors.color_scale_red_5,
+          },
+        });
+      }
       return plots;
     },
   },
@@ -228,14 +300,19 @@ export default {
 
 <style lang="scss">
 @import "@primer/css/index.scss";
-
+.gray {
+  color: var(--color-scale-gray-5);
+}
 .red {
-  color: #d73a49;
+  color: var(--color-scale-red-5);
+}
+.orange {
+  color: var(--color-scale-orange-5);
 }
 .blue {
-  color: #0366d6;
+  color: var(--color-scale-blue-5);
 }
 .green {
-  color: #28a745;
+  color: var(--color-scale-green-5);
 }
 </style>

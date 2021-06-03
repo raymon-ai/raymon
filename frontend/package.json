@@ -12,7 +12,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@primer/css": "^15.2.0",
+    "@primer/css": "^17.0.1",
+    "@primer/octicons": "^14.2.1",
     "@statnett/vue-plotly": "^0.3.2",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",

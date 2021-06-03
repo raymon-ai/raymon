@@ -1,6 +1,6 @@
 <template>
   <div class="schemaView mt-3">
-    <h1> Feature: <span class="codeLike">{{componentName}} </span> </h1>
+    <h2 class="h2 mt-4"> Feature: <span class="codeLike">{{componentName}} </span> </h2>
     <VuePlotly
       :data="plotData"
       :layout="plotLayout"
@@ -8,7 +8,7 @@
       :options="plotOptions"
     />
 
-    <h1> Stats: </h1>
+    <h2 class="h2"> Stats: </h2>
 
     <div class="tableWrapper hideScrollbar">
       <table>
@@ -21,15 +21,23 @@
 
             <th
               class="raytablehead typeColumn px-2 schemaInd"
-              :style="{'border-left-color': blue}"
+              :style="{'border-left-color': colors.color_scale_gray_5}"
             >
-              <label>{{schemaDef.name}}@{{schemaDef.version}} </label>
+              <label>{{refData.name}}@{{refData.version}} </label>
             </th>
             <th
               class="raytablehead typeColumn px-2 schemaInd"
-              :style="{'border-left-color': red}"
+              :style="{'border-left-color': colors.color_scale_blue_5}"
             >
-              <label>{{otherDef.name}}@{{otherDef.version}} </label>
+              <label>{{alternativeA.name}}@{{alternativeA.version}} </label>
+
+            </th>
+            <th
+              v-if="alternativeB"
+              class="raytablehead typeColumn px-2 schemaInd"
+              :style="{'border-left-color': colors.color_scale_red_5}"
+            >
+              <label>{{alternativeB.name}}@{{alternativeB.version}} </label>
 
             </th>
 
@@ -47,7 +55,13 @@
               {{getStatValueFormatted(key)}}
             </td>
             <td class="p-1 codeLike">
-              {{getOtherStatValueFormatted(key)}}
+              {{getAlternativeAStatValueFormatted(key)}}
+            </td>
+            <td
+              v-if="alternativeB"
+              class="p-1 codeLike"
+            >
+              {{getAlternativeBStatValueFormatted(key)}}
             </td>
           </tr>
 
@@ -58,6 +72,7 @@
     <div class="mt-4">
       <a
         href="#"
+        class="f3"
         @click="goToMainView"
       >Back</a>
     </div>
@@ -68,15 +83,19 @@
 <script>
 const octicons = require("@primer/octicons");
 import VuePlotly from "@statnett/vue-plotly";
-import { red, green, blue, yellow } from "@/colors.js";
+import { colors } from "@/js/colors.js";
 export default {
   components: { VuePlotly },
-  props: ["schemaDef", "otherDef", "componentType", "componentName"],
+  props: [
+    "refData",
+    "alternativeA",
+    "alternativeB",
+    "componentType",
+    "componentName",
+  ],
   data: function () {
     return {
-      red,
-      green,
-      blue,
+      colors,
       plotOptions: {
         staticPlot: false,
         displayModeBar: false,
@@ -111,26 +130,42 @@ export default {
         yaxis: {
           title: "cdf",
         },
+        showlegend: true,
       };
     },
 
     componentData() {
-      return this.schemaDef[this.componentType][this.componentName];
+      return this.refData[this.componentType][this.componentName];
     },
-    otherFeatureData() {
-      return this.otherDef[this.componentType][this.componentName];
+    alternativeAFeatureData() {
+      return this.alternativeA[this.componentType][this.componentName];
+    },
+    alternativeBFeatureData() {
+      if (this.alternativeB) {
+        return this.alternativeB[this.componentType][this.componentName];
+      } else {
+        return undefined;
+      }
     },
     componentDataType() {
       const splits = this.componentData.component_class.split(".");
       return splits.slice(-1)[0];
     },
 
-    stats() {
+    refStats() {
       return this.componentData.component.stats;
     },
-    otherStats() {
-      return this.otherFeatureData.component.stats;
+    alternativeAStats() {
+      return this.alternativeAFeatureData.component.stats;
     },
+    alternativeBStats() {
+      if (this.alternativeBFeatureData) {
+        return this.alternativeBFeatureData.component.stats;
+      } else {
+        return undefined;
+      }
+    },
+
     isNumeric() {
       return (
         this.componentDataType.toLowerCase() === "intcomponent" ||
@@ -139,82 +174,123 @@ export default {
     },
     min() {
       if (this.isNumeric) {
-        return this.stats.min.toFixed(2);
+        return this.refStats.min.toFixed(2);
       } else {
         return "NA";
       }
     },
     max() {
       if (this.isNumeric) {
-        return this.stats.max.toFixed(2);
+        return this.refStats.max.toFixed(2);
       } else {
         return "NA";
       }
     },
     mean() {
       if (this.isNumeric) {
-        return this.stats.mean.toFixed(2);
+        return this.refStats.mean.toFixed(2);
       } else {
         return "NA";
       }
     },
     std() {
       if (this.isNumeric) {
-        return this.stats.std.toFixed(2);
+        return this.refStats.std.toFixed(2);
       } else {
         return "NA";
       }
     },
     invalids() {
-      return this.stats.invalids.toFixed(2);
+      return this.refStats.invalids.toFixed(2);
     },
     samplesize() {
-      return this.stats.samplesize;
+      return this.refStats.samplesize;
     },
     domain() {
       if (!this.isNumeric) {
-        return Object.keys(this.stats.frequencies);
+        return Object.keys(this.refStats.frequencies);
       } else {
         return "NA";
       }
     },
-    otherMin() {
+    alternativeAMin() {
       if (this.isNumeric) {
-        return this.otherStats.min.toFixed(2);
+        return this.alternativeAStats.min.toFixed(2);
       } else {
         return "NA";
       }
     },
-    otherMax() {
+    alternativeAMax() {
       if (this.isNumeric) {
-        return this.otherStats.max.toFixed(2);
+        return this.alternativeAStats.max.toFixed(2);
       } else {
         return "NA";
       }
     },
-    otherMean() {
+    alternativeAMean() {
       if (this.isNumeric) {
-        return this.otherStats.mean.toFixed(2);
+        return this.alternativeAStats.mean.toFixed(2);
       } else {
         return "NA";
       }
     },
-    otherStd() {
+    alternativeAStd() {
       if (this.isNumeric) {
-        return this.otherStats.std.toFixed(2);
+        return this.alternativeAStats.std.toFixed(2);
       } else {
         return "NA";
       }
     },
-    otherPinv() {
-      return this.otherStats.invalids.toFixed(2);
+    alternativeAPinv() {
+      return this.alternativeAStats.invalids.toFixed(2);
     },
-    otherSamplesize() {
-      return this.otherStats.samplesize;
+    alternativeASamplesize() {
+      return this.alternativeAStats.samplesize;
     },
-    otherDomain() {
+    alternativeADomain() {
       if (!this.isNumeric) {
-        return Object.keys(this.otherStats.frequencies);
+        return Object.keys(this.alternativeAStats.frequencies);
+      } else {
+        return "NA";
+      }
+    },
+    alternativeBMin() {
+      if (this.isNumeric) {
+        return this.alternativeBStats.min.toFixed(2);
+      } else {
+        return "NA";
+      }
+    },
+    alternativeBMax() {
+      if (this.isNumeric) {
+        return this.alternativeBStats.max.toFixed(2);
+      } else {
+        return "NA";
+      }
+    },
+    alternativeBMean() {
+      if (this.isNumeric) {
+        return this.alternativeBStats.mean.toFixed(2);
+      } else {
+        return "NA";
+      }
+    },
+    alternativeBStd() {
+      if (this.isNumeric) {
+        return this.alternativeBStats.std.toFixed(2);
+      } else {
+        return "NA";
+      }
+    },
+    alternativeBPinv() {
+      return this.alternativeBStats.invalids.toFixed(2);
+    },
+    alternativeBSamplesize() {
+      return this.alternativeBStats.samplesize;
+    },
+    alternativeBDomain() {
+      if (!this.isNumeric) {
+        return Object.keys(this.alternativeAStats.frequencies);
       } else {
         return "NA";
       }
@@ -250,21 +326,40 @@ export default {
         console.log("Unknown key: ", key);
       }
     },
-    getOtherStatValueFormatted(key) {
+    getAlternativeAStatValueFormatted(key) {
       if (key === "min") {
-        return this.otherMin;
+        return this.alternativeAMin;
       } else if (key === "max") {
-        return this.otherMax;
+        return this.alternativeAMax;
       } else if (key === "invalids") {
-        return this.otherPinv;
+        return this.alternativeAPinv;
       } else if (key === "mean") {
-        return this.otherMean;
+        return this.alternativeAMean;
       } else if (key === "std") {
-        return this.otherStd;
+        return this.alternativeAStd;
       } else if (key === "samplesize") {
-        return this.otherSamplesize;
+        return this.alternativeASamplesize;
       } else if (key === "domain") {
-        return this.otherDomain;
+        return this.alternativeADomain;
+      } else {
+        console.log("Unknown key: ", key);
+      }
+    },
+    getAlternativeBStatValueFormatted(key) {
+      if (key === "min") {
+        return this.alternativeBMin;
+      } else if (key === "max") {
+        return this.alternativeBMax;
+      } else if (key === "invalids") {
+        return this.alternativeBPinv;
+      } else if (key === "mean") {
+        return this.alternativeBMean;
+      } else if (key === "std") {
+        return this.alternativeBStd;
+      } else if (key === "samplesize") {
+        return this.alternativeBSamplesize;
+      } else if (key === "domain") {
+        return this.alternativeBDomain;
       } else {
         console.log("Unknown key: ", key);
       }
@@ -272,33 +367,46 @@ export default {
     getNumberPlotData() {
       let plots = [
         {
-          x: this.stats.percentiles,
+          x: this.refStats.percentiles,
           y: [...Array(101).keys()],
           type: "scatter",
           marker: {
-            color: blue,
+            color: colors.color_scale_gray_5,
           },
-          name: `${this.schemaDef.name}@${this.schemaDef.version}`,
+          name: `${this.refData.name}@${this.refData.version}`,
         },
         {
-          x: this.otherStats.percentiles,
+          x: this.alternativeAStats.percentiles,
           y: [...Array(101).keys()],
           type: "scatter",
           marker: {
-            color: red,
+            color: colors.color_scale_blue_5,
           },
-          name: `${this.otherDef.name}@${this.otherDef.version}`,
+          name: `${this.alternativeA.name}@${this.alternativeA.version}`,
         },
       ];
+      if (this.alternativeB) {
+        plots.push({
+          x: this.alternativeBStats.percentiles,
+          y: [...Array(101).keys()],
+          type: "scatter",
+          marker: {
+            color: colors.color_scale_red_5,
+          },
+          name: `${this.alternativeB.name}@${this.alternativeB.version}`,
+        });
+      }
 
       return plots;
     },
     getCategoricPlotData() {
-      let domain = Object.keys(this.stats.frequencies);
-      let counts = Object.values(this.stats.frequencies);
+      let domain = Object.keys(this.refStats.frequencies);
+      let counts = Object.values(this.refStats.frequencies);
 
-      let otherDomain = Object.keys(this.otherStats.frequencies);
-      let otherCounts = Object.values(this.otherStats.frequencies);
+      let alternativeADomain = Object.keys(this.alternativeAStats.frequencies);
+      let alternativeACounts = Object.values(
+        this.alternativeAStats.frequencies
+      );
 
       let plots = [
         {
@@ -306,19 +414,37 @@ export default {
           y: counts,
           type: "bar",
           marker: {
-            color: blue,
+            color: colors.color_scale_gray_5,
           },
-          name: "distribution",
+          name: `${this.refData.name}@${this.refData.version}`,
         },
         {
-          x: otherDomain,
-          y: otherCounts,
+          x: alternativeADomain,
+          y: alternativeACounts,
           type: "bar",
           marker: {
-            color: red,
+            color: colors.color_scale_blue_5,
           },
+          name: `${this.alternativeA.name}@${this.alternativeA.version}`,
         },
       ];
+      if (this.alternativeB) {
+        let alternativeBDomain = Object.keys(
+          this.alternativeBStats.frequencies
+        );
+        let alternativeBCounts = Object.values(
+          this.alternativeBStats.frequencies
+        );
+        plots.push({
+          x: alternativeBDomain,
+          y: alternativeBCounts,
+          type: "bar",
+          marker: {
+            color: colors.color_scale_red_5,
+          },
+          name: `${this.alternativeB.name}@${this.alternativeB.version}`,
+        });
+      }
 
       return plots;
     },

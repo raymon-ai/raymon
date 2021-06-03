@@ -1,6 +1,6 @@
 <template>
   <div class="schemaView mt-3">
-    <h1> Feature: <span class="codeLike">{{componentName}} </span> </h1>
+    <h2 class="h2 mt-4"> Feature: <span class="codeLike">{{componentName}} </span> </h2>
     <VuePlotly
       :data="plotData"
       :layout="plotLayout"
@@ -8,7 +8,7 @@
       :options="plotOptions"
     />
 
-    <h1> Stats: </h1>
+    <h2 class="h2 mt-4"> Stats: </h2>
 
     <div class="tableWrapper hideScrollbar">
       <table>
@@ -20,7 +20,7 @@
             </th>
 
             <th class="raytablehead typeColumn px-2">
-              <label>{{schemaDef.name}}@{{schemaDef.version}} </label>
+              <label>{{refDef.name}}@{{refDef.version}} </label>
 
             </th>
 
@@ -47,6 +47,7 @@
       <a
         href="#"
         @click="goToMainView"
+        class="f3"
       >Back</a>
     </div>
   </div>
@@ -56,10 +57,10 @@
 <script>
 const octicons = require("@primer/octicons");
 import VuePlotly from "@statnett/vue-plotly";
-import { red, green, blue, yellow } from "@/colors.js";
+import { colors } from "@/js/colors.js";
 export default {
   components: { VuePlotly },
-  props: ["schemaDef", "poi", "componentType", "componentName"],
+  props: ["refDef", "poi", "componentType", "componentName"],
   data: function () {
     return {
       plotOptions: {
@@ -99,7 +100,7 @@ export default {
       };
     },
     componentData() {
-      return this.schemaDef[this.componentType][this.componentName];
+      return this.refDef[this.componentType][this.componentName];
     },
     componentDataType() {
       const splits = this.componentData.component_class.split(".");
@@ -197,7 +198,7 @@ export default {
           y: [...Array(101).keys()],
           type: "scatter",
           marker: {
-            color: blue,
+            color: colors.color_scale_blue_5,
           },
           name: "cdf",
         },
@@ -209,7 +210,7 @@ export default {
           y: [0, 100],
           mode: "lines",
           line: {
-            color: yellow,
+            color: colors.color_scale_green_5,
             width: 1.5,
           },
           name: "poi",
@@ -227,7 +228,7 @@ export default {
           y: counts,
           type: "bar",
           marker: {
-            color: blue,
+            color: colors.color_scale_blue_5,
           },
           name: "distribution",
         },
@@ -238,7 +239,7 @@ export default {
           y: [0, Math.max(...counts)],
           mode: "lines",
           line: {
-            color: yellow,
+            color: colors.color_scale_green_5,
             width: 1.5,
           },
           name: "poi",
