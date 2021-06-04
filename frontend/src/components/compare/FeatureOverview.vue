@@ -79,12 +79,22 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="alternativeBSelection">
           <FeatureRow
             v-for="(component, name) in schemaSelection"
             :refComponentData="component"
             :alternativeAComponentData="alternativeASelection[name]"
             :alternativeBComponentData="alternativeBSelection[name]"
+            :reportData="reportComponents[name]"
+            :key="name"
+          />
+
+        </tbody>
+        <tbody v-else>
+          <FeatureRow
+            v-for="(component, name) in schemaSelection"
+            :refComponentData="component"
+            :alternativeAComponentData="alternativeASelection[name]"
             :reportData="reportComponents[name]"
             :key="name"
           />
@@ -245,7 +255,11 @@ export default {
       return this.alternativeA[this.componentType];
     },
     alternativeBProfileComponents() {
-      return this.alternativeB[this.componentType];
+      if (this.alternativeB) {
+        return this.alternativeB[this.componentType];
+      } else {
+        return undefined;
+      }
     },
     reportComponents() {
       return this.reportData[this.componentType];
@@ -299,6 +313,9 @@ export default {
       return otherObj;
     },
     alternativeBSelection() {
+      if (!this.alternativeBProfileComponents) {
+        return undefined;
+      }
       const selectedKeys = this.schemaPageKeys;
       let otherObj = {};
       for (const key of selectedKeys) {

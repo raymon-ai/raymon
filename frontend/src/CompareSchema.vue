@@ -59,7 +59,6 @@ export default {
   },
   methods: {
     setPage(page) {
-      console.log("setting page to: ", page);
       this.componentName = page;
     },
     updateComponentType(type) {

@@ -23,8 +23,6 @@ export default {
   computed: {
     profileLoaded() {
       const loaded = JSON.parse(this.profile);
-      console.log("Loaded JSON: ", loaded);
-
       return loaded;
     },
     poiLoaded() {
@@ -35,4 +33,6 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@primer/css/index.scss";
+@import "plotly.js/src/css/style.scss";
 </style>

@@ -357,6 +357,8 @@ class ModelProfile(Serializable, Buildable):
                     <meta charset="utf-8">
                     <title>Raymon view</title>
                     <script src="./raymon.min.js"></script>
+                    <link href="https://unpkg.com/@primer/css@17.0.1/dist/primer.css" rel="stylesheet" />
+
                     <body>
                     <raymon-view-schema-str profile="{jsonescaped}" poi="{poiescaped}"></raymon-view-schema-str>
                     </body>
@@ -376,6 +378,29 @@ class ModelProfile(Serializable, Buildable):
                 <meta charset="utf-8">
                 <title>Raymon contrast</title>
                 <script src="./raymon.min.js"></script>
+                <link href="https://unpkg.com/@primer/css@17.0.1/dist/primer.css" rel="stylesheet" />
+
+                <raymon-compare-schema-str comparison="{jsonescaped}"></raymon-compare-schema-str>
+                """
+        return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
+
+    def view_contrast_alternatives(
+        self, alternativeA, alternativeB, mode="iframe", thresholds={}, outdir=None, silent=True
+    ):
+        if silent:
+            ctx_mgr = NoOutput()
+        else:
+            ctx_mgr = nullcontext()
+        # Build the schema
+        with ctx_mgr:
+            jcr = self.contrast_alternatives(alternativeA, alternativeB, thresholds=thresholds)
+            jsonescaped = html.escape(json.dumps(jcr))
+            htmlstr = f"""
+                <meta charset="utf-8">
+                <title>Raymon contrast</title>
+                <script src="./raymon.min.js"></script>
+                <link href="https://unpkg.com/@primer/css@17.0.1/dist/primer.css" rel="stylesheet" />
+
                 <raymon-compare-schema-str comparison="{jsonescaped}"></raymon-compare-schema-str>
                 """
         return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)

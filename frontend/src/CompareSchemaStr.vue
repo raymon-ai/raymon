@@ -27,4 +27,6 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@primer/css/index.scss";
+@import "plotly.js/src/css/style.scss";
 </style>
