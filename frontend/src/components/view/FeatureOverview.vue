@@ -124,6 +124,12 @@ export default {
       octicons,
       activeSortField: "name",
       activeSortDirection: "up",
+      typeMapping: {
+        Inputs: "InputComponent",
+        Outputs: "OutputComponent",
+        Actuals: "ActualComponent",
+        Evaluations: "EvalComponent",
+      },
     };
   },
   methods: {
@@ -155,29 +161,13 @@ export default {
       } else if (this.activeSortField === "type") {
         func = (firstEl, secondEl) => {
           if (
-            componentData[firstEl].component_class ===
-            componentData[secondEl].component_class
+            componentData[firstEl].state.dtype ===
+            componentData[secondEl].state.dtype
           ) {
             return 0;
           } else if (
-            componentData[firstEl].component_class <
-            componentData[secondEl].component_class
-          ) {
-            return -1;
-          } else {
-            return 1;
-          }
-        };
-      } else if (this.activeSortField === "importance") {
-        func = (firstEl, secondEl) => {
-          if (
-            componentData[firstEl].component.importance ===
-            componentData[secondEl].component.importance
-          ) {
-            return 0;
-          } else if (
-            componentData[firstEl].component.importance <
-            componentData[secondEl].component.importance
+            componentData[firstEl].state.dtype <
+            componentData[secondEl].state.dtype
           ) {
             return -1;
           } else {
@@ -187,17 +177,17 @@ export default {
       } else if (this.activeSortField === "min") {
         func = (firstEl, secondEl) => {
           if (
-            componentData[firstEl].component.stats.min ===
-            componentData[secondEl].component.stats.min
+            componentData[firstEl].state.stats.state.min ===
+            componentData[secondEl].state.stats.state.min
           ) {
             return 0;
           } else if (
-            typeof componentData[firstEl].component.stats.min === "undefined"
+            typeof componentData[firstEl].state.stats.state.min === "undefined"
           ) {
             return -1;
           } else if (
-            componentData[firstEl].component.stats.min <
-            componentData[secondEl].component.stats.min
+            componentData[firstEl].state.stats.state.min <
+            componentData[secondEl].state.stats.state.min
           ) {
             return -1;
           } else {
@@ -207,17 +197,17 @@ export default {
       } else if (this.activeSortField === "max") {
         func = (firstEl, secondEl) => {
           if (
-            componentData[firstEl].component.stats.max ==
-            componentData[secondEl].component.stats.max
+            componentData[firstEl].state.stats.state.max ==
+            componentData[secondEl].state.stats.state.max
           ) {
             return 0;
           } else if (
-            typeof componentData[firstEl].component.stats.max === "undefined"
+            typeof componentData[firstEl].state.stats.state.max === "undefined"
           ) {
             return -1;
           } else if (
-            componentData[firstEl].component.stats.max <
-            componentData[secondEl].component.stats.max
+            componentData[firstEl].state.stats.state.max <
+            componentData[secondEl].state.stats.state.max
           ) {
             return -1;
           } else {
@@ -228,13 +218,13 @@ export default {
         func = (firstEl, secondEl) => {
           console.log("Using invalids function");
           if (
-            componentData[firstEl].component.stats.invalids ==
-            componentData[secondEl].component.stats.invalids
+            componentData[firstEl].state.stats.state.invalids ==
+            componentData[secondEl].state.stats.state.invalids
           ) {
             return 0;
           } else if (
-            componentData[firstEl].component.stats.invalids <
-            componentData[secondEl].component.stats.invalids
+            componentData[firstEl].state.stats.state.invalids <
+            componentData[secondEl].state.stats.state.invalids
           ) {
             return -1;
           } else {
@@ -249,7 +239,14 @@ export default {
   },
   computed: {
     profileComponents() {
-      return this.refDef[this.componentType];
+      let components = {};
+      for (let [name, component] of Object.entries(this.refDef.components)) {
+        let parts = component.class.split(".");
+        if (parts[parts.length - 1] == this.typeMapping[this.componentType]) {
+          components[name] = component;
+        }
+      }
+      return components;
     },
     activeSortObj() {
       return {

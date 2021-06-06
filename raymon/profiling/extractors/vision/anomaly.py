@@ -70,9 +70,11 @@ class DN2AnomalyScorer(KMeansOutlierScorer):
     """Serializable interface"""
 
     def to_jcr(self):
-        data = super().to_jcr()
-        data["size"] = self.size
-        return data
+        b64 = base64.b64encode(self.clusters).decode()
+        diststr = [k for k, v in self.dist_choices.items() if v == self.dist][0]
+        data = {"clusters": b64, "k": self.k, "dist": diststr, "size": self.size}
+        state = {"class": self.class2str(), "state": data}
+        return state
 
     @classmethod
     def from_jcr(cls, jcr):

@@ -10,7 +10,7 @@
 
     </td>
     <td class="px-2 codeLikeContent">
-      {{ componentType }}
+      {{ componentDataType }}
     </td>
 
     <td class="px-2 codeLikeContent pvalueColumn">
@@ -127,18 +127,18 @@ export default {
   },
   computed: {
     refStats() {
-      return this.refComponentData.component.stats;
+      return this.refComponentData.state.stats.state;
     },
     alternativeAStats() {
-      return this.alternativeAComponentData.component.stats;
+      return this.alternativeAComponentData.state.stats.state;
     },
     alternativeBStats() {
-      return this.alternativeBComponentData.component.stats;
+      return this.alternativeBComponentData.state.stats.state;
     },
     isNumeric() {
       return (
-        this.componentType.toLowerCase() === "int" ||
-        this.componentType.toLowerCase() === "float"
+        this.componentDataType.toLowerCase() === "int" ||
+        this.componentDataType.toLowerCase() === "float"
       );
     },
     driftStr() {
@@ -157,14 +157,10 @@ export default {
       return this.alternativeAStats.mean.toExponential(2);
     },
     componentName() {
-      return this.refComponentData.component.name;
+      return this.refComponentData.state.name;
     },
-    componentType() {
-      const splits = this.refComponentData.component_class.split(".");
-      return splits.slice(-1)[0].replace("Component", "");
-    },
-    componentImportance() {
-      return this.refComponentData.component.importance;
+    componentDataType() {
+      return this.refComponentData.state.dtype.toLowerCase();
     },
     isDrift() {
       return this.reportData.drift.alert;

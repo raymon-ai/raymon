@@ -11,21 +11,23 @@ from raymon.globals import (
     DataException,
     ProfileStateException,
 )
-from raymon.profiling.stats import CategoricStats, NumericStats, equalize_domains
-from raymon.tags import Tag, CGROUP_TAGTYPES
-from raymon.profiling.extractors import SimpleExtractor, ScoreExtractor, NoneExtractor, NoneScoreExtractor
+from raymon.profiling.stats import Stats, CategoricStats, FloatStats, IntStats, equalize_domains
+from raymon.tags import Tag, CTYPE_TAGTYPES
+from raymon.profiling.extractors import Extractor, NoneExtractor, NoneEvalExtractor
 
-HIST_N_SAMPLES = 1000
+
+class DataType:
+    INT = "INT"
+    FLOAT = "FLOAT"
+    CAT = "CAT"
 
 
 class Component(Serializable, Buildable, ABC):
-    def __init__(self, name, extractor, importance=None):
-        self._name = None
-        self._importance = None
+    def __init__(self, name, extractor, dtype=DataType.FLOAT, stats=None):
         self.name = name
-        self.importance = importance
         self.extractor = extractor
-        self.stats = None
+        self.dtype = dtype
+        self.stats = stats
 
     @property
     def name(self):
@@ -38,60 +40,73 @@ class Component(Serializable, Buildable, ABC):
         self._name = value.lower()
 
     @property
-    def importance(self):
-        return self._importance
+    def extractor(self):
+        return self._extractor
 
-    @importance.setter
-    def importance(self, value):
-        if isinstance(value, numbers.Number):
-            self._importance = value
-        elif value is None:
-            self._importance = 0
+    @extractor.setter
+    def extractor(self, value):
+        if not isinstance(value, Extractor):
+            raise ValueError(f"Extractor should be a subclass of Extractor")
+        self._extractor = value
+
+    @property
+    def dtype(self):
+        return self._dtype
+
+    @dtype.setter
+    def dtype(self, value):
+        if not value in [DataType.FLOAT, DataType.INT, DataType.CAT]:
+            raise ValueError(f"Component dtype not valid.")
+        self._dtype = value
+
+    @property
+    def stats(self):
+        return self._stats
+
+    @stats.setter
+    def stats(self, value):
+        if value is None:
+            if self.dtype == DataType.FLOAT:
+                self._stats = FloatStats()
+            elif self.dtype == DataType.INT:
+                self._stats = IntStats()
+            else:
+                self._stats = CategoricStats()
+
+        elif isinstance(value, FloatStats) and self.dtype == DataType.FLOAT:
+            self._stats = value
+        elif isinstance(value, IntStats) and self.dtype == DataType.INT:
+            self._stats = value
+        elif isinstance(value, CategoricStats) and self.dtype == DataType.CAT:
+            self._stats = value
         else:
-            raise ValueError(f"Component importance for {self.name} must be a dict[str, Number]")
+            raise DataException(f"Stats type / dtype mismatch. {self.dtype} <-> {type(value)}")
 
     """Serializable interface """
 
     def to_jcr(self):
-        if isinstance(self.extractor, ScoreExtractor):
-            extractor_type = ScoreExtractor.__name__
-        else:
-            extractor_type = SimpleExtractor.__name__
+
         data = {
-            "component_class": self.class2str(),
-            "component": {
+            "class": self.class2str(),
+            "state": {
                 "name": self.name,
-                "extractor_class": self.extractor.class2str(),
-                "extractor_type": extractor_type,
-                "extractor_state": self.extractor.to_jcr(),
-                "importance": self.importance,
+                "dtype": self.dtype,
                 "stats": self.stats.to_jcr(),
+                "extractor": self.extractor.to_jcr(),
             },
         }
         return data
 
     @classmethod
     def from_jcr(cls, jcr, mock_extractor=False):
-        classpath = jcr["component_class"]
-        comp_jcr = jcr["component"]
+        classpath = jcr["class"]
         compclass = locate(classpath)
         if compclass is None:
             raise NameError(f"Could not locate classpath {classpath}")
-        component = compclass.from_jcr(comp_jcr, mock_extractor=mock_extractor)
-        return component
+        return compclass.from_jcr(jcr["state"])
 
     def build_extractor(self, data):
         self.extractor.build(data)
-
-    def build_stats(self, data, domain=None):
-        if isinstance(self.extractor, SimpleExtractor):
-            components = self.extractor.extract_multiple(data)
-        elif isinstance(self.extractor, ScoreExtractor):
-            output, actual = data
-            components = self.extractor.extract_multiple(output=output, actual=actual)
-        else:
-            raise ProfileStateException(f"Unknown Extractor type for {self}: {type(self.extractor)}")
-        self.stats.build(components, domain=domain)
 
     def build(self, data, domain=None):
         # Compile extractor
@@ -102,31 +117,6 @@ class Component(Serializable, Buildable, ABC):
     def is_built(self):
         return self.extractor.is_built() and self.stats.is_built()
 
-    def validate(self, data, cgroup):
-        if isinstance(self.extractor, SimpleExtractor):
-            component = self.extractor.extract(data)
-        elif isinstance(self.extractor, ScoreExtractor):
-            output, actual = data
-            component = self.extractor.extract(output=output, actual=actual)
-        else:
-            raise ProfileStateException(f"Unknown Extractor type 'type(self.extractor)' for component {self.name}")
-        # Make a tag from the component
-        feat_tag = self.component2tag(component, cgroup=cgroup)
-        # Check min, max, nan or None and raise data error
-        err_tag = self.check_invalid(component, cgroup=cgroup)
-        tags = [feat_tag, err_tag]
-        # Filter Nones
-        tags = [tag for tag in tags if tag is not None]
-        return tags
-
-    @abstractmethod
-    def component2tag(self, component, cgroup):
-        pass
-
-    @abstractmethod
-    def check_invalid(self, component, cgroup):
-        pass
-
     def contrast(self, other, thresholds):
 
         invalids_threshold = thresholds.get("invalids", 0.01)
@@ -134,15 +124,9 @@ class Component(Serializable, Buildable, ABC):
 
         drift_report = self.stats.report_drift(other.stats, threshold=drift_threshold)
         invalids_report = self.stats.report_invalid_diff(other.stats, threshold=invalids_threshold)
-        if isinstance(self.extractor, ScoreExtractor):
-            abs = False
-            if self.extractor.lower_better:
-                mean_threshold = thresholds.get("mean", 0.01)
-            else:
-                mean_threshold = thresholds.get("mean", -0.01)
-        else:
-            abs = True
-            mean_threshold = thresholds.get("mean", 0.01)
+        # TODO: Mean should not be part of this, but part of the reducers
+        abs = True
+        mean_threshold = thresholds.get("mean", 0.01)
         mean_report = self.stats.report_mean_diff(other.stats, threshold=mean_threshold, use_abs=abs)
         return {"drift": drift_report, "invalids": invalids_report, "mean": mean_report}
 
@@ -150,200 +134,144 @@ class Component(Serializable, Buildable, ABC):
         return str(self)
 
 
-class FloatComponent(Component):
-    def __init__(self, name="default_name", extractor=None, importance=None, stats=None):
-        super().__init__(name=name, extractor=extractor, importance=importance)
-        self._stats = None
-        self.stats = stats
+class InputComponent(Component):
+    def __init__(self, name, extractor, dtype=DataType.FLOAT, stats=None):
+        super().__init__(name=name, extractor=extractor, dtype=dtype, stats=stats)
 
-    """
-    PROPERTIES
-    """
+    def build_stats(self, data, domain=None):
+        extracted = self.extractor.extract_multiple(data)
+        self.stats.build(extracted, domain=domain)
 
-    @property
-    def stats(self):
-        return self._stats
-
-    @stats.setter
-    def stats(self, value):
-        if value is None:
-            self._stats = NumericStats()
-        elif isinstance(value, NumericStats):
-            self._stats = value
-        else:
-            raise DataException(f"stats for a NumericComponant should be of type NumericStats, not {type(value)}")
-
-    def component2tag(self, component, cgroup):
-        if not np.isnan(component):
-            return Tag(name=self.name, value=float(component), type=CGROUP_TAGTYPES[cgroup]["tagtype"])
-        else:
-            return None
-
-    def check_invalid(self, component, cgroup):
-        tagname = f"{self.name}-error"
-        if component is None:
-            return Tag(name=tagname, value="Value None", type=CGROUP_TAGTYPES[cgroup]["errortype"])
-        elif np.isnan(component):
-            return Tag(name=tagname, value="Value NaN", type=CGROUP_TAGTYPES[cgroup]["errortype"])
-        elif component > self.stats.max:
-            return Tag(name=tagname, value="UpperBoundError", type=CGROUP_TAGTYPES[cgroup]["errortype"])
-        elif component < self.stats.min:
-            return Tag(name=tagname, value="LowerBoundError", type=CGROUP_TAGTYPES[cgroup]["errortype"])
-        else:
-            return None
+    def validate(self, data):
+        component = self.extractor.extract(data)
+        # Make a tag from the component
+        feat_tag = self.stats.component2tag(component, tagtypes=CTYPE_TAGTYPES["input"]["tagtype"])
+        # Check min, max, nan or None and raise data error
+        err_tag = self.stats.check_invalid(component, tagtypes=CTYPE_TAGTYPES["input"]["errortype"])
+        tags = [feat_tag, err_tag]
+        # Filter Nones
+        tags = [tag for tag in tags if tag is not None]
+        return tags
 
     @classmethod
     def from_jcr(cls, jcr, mock_extractor=False):
-        if mock_extractor:
-            if jcr["extractor_type"] == ScoreExtractor:
-                lower_better = jcr["extractor_state"]["lower_better"]
-                extractor = NoneScoreExtractor(lower_better=lower_better)
-            else:
-                extractor = NoneExtractor()
-        else:
-            classpath = jcr["extractor_class"]
-            extr_class = locate(classpath)
-            if extr_class is None:
-                raise NameError(f"Could not locate {classpath}")
-            extractor = extr_class.from_jcr(jcr["extractor_state"])
-        stats = NumericStats.from_jcr(jcr["stats"])
-        importance = jcr["importance"]
         name = jcr["name"]
-        return cls(name=name, extractor=extractor, importance=importance, stats=stats)
+        dtype = jcr["dtype"]
+        stats = Stats.from_jcr(jcr["stats"])
+        if mock_extractor:
+            extractor = NoneExtractor()
+        else:
+            extractor = Extractor.from_jcr(jcr["extractor"])
+        component = cls(name=name, extractor=extractor, stats=stats, dtype=dtype)
+        return component
 
     def __str__(self):
-        return f"FloatComponent(name={self.name}, extractor={self.extractor})"
+        return f"InputComponent(name={self.name}, dtype={self.dtype}, extractor={self.extractor})"
 
 
-class IntComponent(Component):
-    def __init__(self, name="default_name", extractor=None, importance=None, stats=None):
-        super().__init__(name=name, extractor=extractor, importance=importance)
-        self._stats = None
-        self.stats = stats
+class OutputComponent(Component):
+    def __init__(self, name, extractor, dtype=DataType.FLOAT, stats=None):
+        super().__init__(name=name, extractor=extractor, dtype=dtype, stats=stats)
 
-    """
-    PROPERTIES
-    """
+    def build_stats(self, data, domain=None):
+        extracted = self.extractor.extract_multiple(data)
+        self.stats.build(extracted, domain=domain)
 
-    @property
-    def stats(self):
-        return self._stats
-
-    @stats.setter
-    def stats(self, value):
-        if value is None:
-            self._stats = NumericStats()
-        elif isinstance(value, NumericStats):
-            self._stats = value
-        else:
-            raise DataException(f"stats for a NumericComponant should be of type NumericStats, not {type(value)}")
-
-    def component2tag(self, component, cgroup):
-        if not np.isnan(component):
-            return Tag(name=self.name, value=int(component), type=CGROUP_TAGTYPES[cgroup]["tagtype"])
-        else:
-            return None
-
-    def check_invalid(self, component, cgroup):
-        tagname = f"{self.name}-error"
-        if component is None:
-            return Tag(name=tagname, value="Value None", type=CGROUP_TAGTYPES[cgroup]["errortype"])
-        elif np.isnan(component):
-            return Tag(name=tagname, value="Value NaN", type=CGROUP_TAGTYPES[cgroup]["errortype"])
-        elif component > self.stats.max:
-            return Tag(name=tagname, value="UpperBoundError", type=CGROUP_TAGTYPES[cgroup]["errortype"])
-        elif component < self.stats.min:
-            return Tag(name=tagname, value="LowerBoundError", type=CGROUP_TAGTYPES[cgroup]["errortype"])
-        else:
-            return None
+    def validate(self, data):
+        component = self.extractor.extract(data)
+        # Make a tag from the component
+        feat_tag = self.stats.component2tag(component, tagtypes=CTYPE_TAGTYPES["output"]["tagtype"])
+        # Check min, max, nan or None and raise data error
+        err_tag = self.stats.check_invalid(component, tagtypes=CTYPE_TAGTYPES["output"]["errortype"])
+        tags = [feat_tag, err_tag]
+        # Filter Nones
+        tags = [tag for tag in tags if tag is not None]
+        return tags
 
     @classmethod
     def from_jcr(cls, jcr, mock_extractor=False):
-        if mock_extractor:
-            if jcr["extractor_type"] == ScoreExtractor:
-                lower_better = jcr["extractor_state"]["lower_better"]
-                extractor = NoneScoreExtractor(lower_better=lower_better)
-            else:
-                extractor = NoneExtractor()
-        else:
-            classpath = jcr["extractor_class"]
-            extr_class = locate(classpath)
-            if extr_class is None:
-                raise NameError(f"Could not locate {classpath}")
-            extractor = extr_class.from_jcr(jcr["extractor_state"])
-        stats = NumericStats.from_jcr(jcr["stats"])
-        importance = jcr["importance"]
-
         name = jcr["name"]
-        importance = jcr["importance"]
-        return cls(name=name, extractor=extractor, importance=importance, stats=stats)
+        dtype = jcr["dtype"]
+        stats = Stats.from_jcr(jcr["stats"])
+        if mock_extractor:
+            extractor = NoneExtractor()
+        else:
+            extractor = Extractor.from_jcr(jcr["extractor"])
+        component = cls(name=name, extractor=extractor, stats=stats, dtype=dtype)
+        return component
 
     def __str__(self):
-        return f"IntComponent(name={self.name}, extractor={self.extractor})"
+        return f"OutputComponent(name={self.name}, dtype={self.dtype}, extractor={self.extractor})"
 
 
-class CategoricComponent(Component):
+class ActualComponent(Component):
+    def __init__(self, name, extractor, dtype=DataType.FLOAT, stats=None):
+        super().__init__(name=name, extractor=extractor, dtype=dtype, stats=stats)
 
-    # Domain, domain distribution
-    def __init__(self, name="default_name", extractor=None, importance=None, stats=None):
-        super().__init__(name=name, extractor=extractor, importance=importance)
-        self._stats = None
-        self.stats = stats
+    def build_stats(self, data, domain=None):
+        extracted = self.extractor.extract_multiple(data)
+        self.stats.build(extracted, domain=domain)
 
-    """
-    PROPERTIES
-    """
-
-    @property
-    def stats(self):
-        return self._stats
-
-    @stats.setter
-    def stats(self, value):
-        if value is None:
-            self._stats = CategoricStats()
-        elif isinstance(value, CategoricStats):
-            self._stats = value
-        else:
-            raise DataException(f"stats for a NumericComponant should be of type CategoricStats, not {type(value)}")
-
-    def component2tag(self, component, cgroup):
-        if isinstance(component, str) or not np.isnan(component):
-            return Tag(name=self.name, value=component, type=CGROUP_TAGTYPES[cgroup]["tagtype"])
-        else:
-            return None
-
-    def check_invalid(self, component, cgroup):
-        tagname = f"{self.name}-error"
-        if component is None:
-            return Tag(name=tagname, value="Value None", type=CGROUP_TAGTYPES[cgroup]["errortype"])
-        elif pd.isnull(component):
-            return Tag(name=tagname, value="Value NaN", type=CGROUP_TAGTYPES[cgroup]["errortype"])
-        elif component not in self.stats.frequencies:
-            return Tag(name=tagname, value="Domain Error", type=CGROUP_TAGTYPES[cgroup]["errortype"])
-        else:
-            return None
+    def validate(self, data):
+        component = self.extractor.extract(data)
+        # Make a tag from the component
+        feat_tag = self.stats.component2tag(component, tagtypes=CTYPE_TAGTYPES["actual"]["tagtype"])
+        # Check min, max, nan or None and raise data error
+        err_tag = self.stats.check_invalid(component, tagtypes=CTYPE_TAGTYPES["actual"]["errortype"])
+        tags = [feat_tag, err_tag]
+        # Filter Nones
+        tags = [tag for tag in tags if tag is not None]
+        return tags
 
     @classmethod
     def from_jcr(cls, jcr, mock_extractor=False):
-        if mock_extractor:
-            if jcr["extractor_type"] == ScoreExtractor:
-                lower_better = jcr["extractor_state"]["lower_better"]
-                extractor = NoneScoreExtractor(lower_better=lower_better)
-            else:
-                extractor = NoneExtractor()
-        else:
-            classpath = jcr["extractor_class"]
-            extr_class = locate(classpath)
-            if extr_class is None:
-                NameError(f"Could not locate {classpath}")
-
-            extractor = extr_class.from_jcr(jcr["extractor_state"])
-        stats = CategoricStats.from_jcr(jcr["stats"])
-        importance = jcr["importance"]
         name = jcr["name"]
-
-        return cls(name=name, extractor=extractor, importance=importance, stats=stats)
+        dtype = jcr["dtype"]
+        stats = Stats.from_jcr(jcr["stats"])
+        if mock_extractor:
+            extractor = NoneExtractor()
+        else:
+            extractor = Extractor.from_jcr(jcr["extractor"])
+        component = cls(name=name, extractor=extractor, stats=stats, dtype=dtype)
+        return component
 
     def __str__(self):
-        return f"CategoricComponent(name={self.name}, extractor={self.extractor})"
+        return f"ActualComponent(name={self.name}, dtype={self.dtype}, extractor={self.extractor})"
+
+
+class EvalComponent(Component):
+    def __init__(self, name, extractor, dtype=DataType.FLOAT, stats=None):
+        super().__init__(name=name, extractor=extractor, dtype=dtype, stats=stats)
+
+    def build_stats(self, data, domain=None):
+        output, actual = data
+        extracted = self.extractor.extract_multiple(output=output, actual=actual)
+
+        self.stats.build(extracted, domain=domain)
+
+    def validate(self, data):
+        output, actual = data
+        component = self.extractor.extract(output=output, actual=actual)
+        # Make a tag from the component
+        feat_tag = self.stats.component2tag(component, tagtypes=CTYPE_TAGTYPES["eval"]["tagtype"])
+        # Check min, max, nan or None and raise data error
+        err_tag = self.stats.check_invalid(component, tagtypes=CTYPE_TAGTYPES["eval"]["errortype"])
+        tags = [feat_tag, err_tag]
+        # Filter Nones
+        tags = [tag for tag in tags if tag is not None]
+        return tags
+
+    @classmethod
+    def from_jcr(cls, jcr, mock_extractor=False):
+        name = jcr["name"]
+        dtype = jcr["dtype"]
+        stats = Stats.from_jcr(jcr["stats"])
+        if mock_extractor:
+            extractor = NoneEvalExtractor()
+        else:
+            extractor = Extractor.from_jcr(jcr["extractor"])
+        component = cls(name=name, extractor=extractor, stats=stats, dtype=dtype)
+        return component
+
+    def __str__(self):
+        return f"EvalComponent(name={self.name}, dtype={self.dtype}, extractor={self.extractor})"

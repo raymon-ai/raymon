@@ -27,7 +27,7 @@ A profile component is responsible for extracting a feature from the data it is 
 
 Component Extractors
 --------------------
-Extractors take in a datum and extract a feature from it. Raymon provides some out-of-the-box extractors, but you can easily plug in your own by implementting the :class:`raymon.SimpleExtractor` or :class:`raymon.ScoreExtractorExtractor` interface. Extractors convert your data to single value that Raymon will track. By doing so, Raymon in itself does not analyse your raw data and can support any data type.
+Extractors take in a datum and extract a feature from it. Raymon provides some out-of-the-box extractors, but you can easily plug in your own by implementting the :class:`raymon.SimpleExtractor` or :class:`raymon.EvalExtractorExtractor` interface. Extractors convert your data to single value that Raymon will track. By doing so, Raymon in itself does not analyse your raw data and can support any data type.
 
 
 Component Stats

@@ -115,7 +115,8 @@ class FixedSubpatchSimilarity(SimpleExtractor):
             "refs": [str(ref) for ref in self.refs] if self.refs is not None else None,
             "nrefs": self.nrefs,
         }
-        return data
+        state = {"class": self.class2str(), "state": data}
+        return state
 
     @classmethod
     def from_jcr(cls, jcr):

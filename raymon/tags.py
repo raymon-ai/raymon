@@ -14,11 +14,11 @@ METRIC = "metric"
 VECTOR = "vector"
 ERROR = "error"
 
-CGROUP_TAGTYPES = {
-    "input_comps": {"tagtype": PROFILE_INPUT, "errortype": PROFILE_INPUT_ERROR},
-    "output_comps": {"tagtype": PROFILE_OUTPUT, "errortype": PROFILE_OUTPUT_ERROR},
-    "actual_comps": {"tagtype": PROFILE_ACTUAL, "errortype": PROFILE_ACTUAL_ERROR},
-    "eval_comps": {"tagtype": PROFILE_SCORE, "errortype": PROFILE_SCORE_ERROR},
+CTYPE_TAGTYPES = {
+    "input": {"tagtype": PROFILE_INPUT, "errortype": PROFILE_INPUT_ERROR},
+    "output": {"tagtype": PROFILE_OUTPUT, "errortype": PROFILE_OUTPUT_ERROR},
+    "actual": {"tagtype": PROFILE_ACTUAL, "errortype": PROFILE_ACTUAL_ERROR},
+    "eval": {"tagtype": PROFILE_SCORE, "errortype": PROFILE_SCORE_ERROR},
 }
 
 

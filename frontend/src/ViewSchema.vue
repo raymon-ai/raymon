@@ -13,8 +13,7 @@
       />
       <ComponentTypeNav
         v-if="showNav"
-        :types="Object.keys(componentTypes)"
-        @componentType="updateComponentType"
+        @viewComponentPage="updateComponentView"
       />
       <component
         :is="pageToShow"
@@ -46,13 +45,7 @@ export default {
   data() {
     return {
       componentName: undefined,
-      componentTypes: {
-        Inputs: "input_comps",
-        Outputs: "output_comps",
-        Actuals: "actual_comps",
-        Scores: "eval_comps",
-      },
-      componentPage: "input_comps",
+      componentPage: "Inputs",
     };
   },
   methods: {
@@ -60,8 +53,8 @@ export default {
       console.log("setting page to: ", page);
       this.componentName = page;
     },
-    updateComponentType(type) {
-      this.componentPage = this.componentTypes[type];
+    updateComponentView(type) {
+      this.componentPage = type;
     },
   },
   computed: {

@@ -7,12 +7,12 @@
     <div class="UnderlineNav-body">
 
       <a
-        v-for="type in types"
+        v-for="type in pages"
         :key="type"
         class="UnderlineNav-item"
         href="#url"
         :aria-current="type==selectedType"
-        @click="selectType(type)"
+        @click="selectPage(type)"
       >{{type}}</a>
 
     </div>
@@ -22,18 +22,18 @@
 
 <script>
 export default {
-  name: "SchemaView",
-  props: ["types"],
+  name: "TypeNav",
   components: {},
   data() {
     return {
-      selectedType: this.types[0],
+      selectedType: "Inputs",
+      pages: ["Inputs", "Outputs", "Actuals", "Evaluations", "Scores"],
     };
   },
   methods: {
-    selectType(type) {
+    selectPage(type) {
       this.selectedType = type;
-      this.$emit("componentType", type);
+      this.$emit("viewComponentPage", type);
     },
   },
   computed: {},

@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from abc import ABC, abstractmethod
 from scipy.interpolate import interp1d
+from pydoc import locate
 
 
 from raymon.globals import (
@@ -11,6 +12,7 @@ from raymon.globals import (
 )
 
 N_SAMPLES = 500
+from raymon.tags import Tag, CTYPE_TAGTYPES
 
 
 class Stats(Serializable, Buildable, ABC):
@@ -36,6 +38,30 @@ class Stats(Serializable, Buildable, ABC):
             "valid": True,
         }
         return invalids_report
+
+    @abstractmethod
+    def component2tag(self, component, tagtype):
+        pass
+
+    @abstractmethod
+    def check_invalid(self, component, tagtype):
+        pass
+
+    def to_jcr(self):
+        state = {}
+        for attr in self._attrs:
+            state[attr] = getattr(self, attr)
+        data = {"class": self.class2str(), "state": state}
+        return data
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        classpath = jcr["class"]
+        state_jcr = jcr["state"]
+        statsclass = locate(classpath)
+        if statsclass is None:
+            raise NameError(f"Could not locate classpath {classpath}")
+        return statsclass.from_jcr(state_jcr)
 
 
 class NumericStats(Stats):
@@ -139,21 +165,6 @@ class NumericStats(Stats):
             raise DataException("stats.samplesize cannot be NaN")
         self._samplesize = value
 
-    """Serializable Interface"""
-
-    def to_jcr(self):
-        data = {}
-        for attr in self._attrs:
-            data[attr] = getattr(self, attr)
-        return data
-
-    @classmethod
-    def from_jcr(cls, jcr):
-        d = {}
-        for attr in cls._attrs:
-            d[attr] = jcr.get(attr, None)
-        return cls(**d)
-
     """Buildable Interface"""
 
     def build(self, data, domain=None):
@@ -256,6 +267,56 @@ class NumericStats(Stats):
             return px
 
 
+class IntStats(NumericStats):
+    def component2tag(self, component, tagtype):
+        if not np.isnan(component):
+            return Tag(name=self.name, value=int(component), type=tagtype)
+        else:
+            return None
+
+    def check_invalid(self, component, tagtype):
+        tagname = f"{self.name}-error"
+        if component is None:
+            return Tag(name=tagname, value="Value None", type=tagtype)
+        elif np.isnan(component):
+            return Tag(name=tagname, value="Value NaN", type=tagtype)
+        elif component > self.stats.max:
+            return Tag(name=tagname, value="UpperBoundError", type=tagtype)
+        elif component < self.stats.min:
+            return Tag(name=tagname, value="LowerBoundError", type=tagtype)
+        else:
+            return None
+
+    @classmethod
+    def from_jcr(cls, data):
+        return cls(**data)
+
+
+class FloatStats(NumericStats):
+    def component2tag(self, component, tagtype):
+        if not np.isnan(component):
+            return Tag(name=self.name, value=float(component), type=tagtype)
+        else:
+            return None
+
+    def check_invalid(self, component, tagtype):
+        tagname = f"{self.name}-error"
+        if component is None:
+            return Tag(name=tagname, value="Value None", type=tagtype)
+        elif np.isnan(component):
+            return Tag(name=tagname, value="Value NaN", type=tagtype)
+        elif component > self.stats.max:
+            return Tag(name=tagname, value="UpperBoundError", type=tagtype)
+        elif component < self.stats.min:
+            return Tag(name=tagname, value="LowerBoundError", type=tagtype)
+        else:
+            return None
+
+    @classmethod
+    def from_jcr(cls, data):
+        return cls(**data)
+
+
 class CategoricStats(Stats):
 
     _attrs = ["frequencies", "invalids", "samplesize"]
@@ -305,20 +366,6 @@ class CategoricStats(Stats):
         if value is np.nan:
             raise DataException("stats.samplesize cannot be NaN")
         self._samplesize = value
-
-    def to_jcr(self):
-        data = {}
-        for attr in self._attrs:
-            value = getattr(self, attr)
-            data[attr] = value
-        return data
-
-    @classmethod
-    def from_jcr(cls, jcr):
-        d = {}
-        for attr in cls._attrs:
-            d[attr] = jcr.get(attr, None)
-        return cls(**d)
 
     def build(self, data, domain=None):
         """[summary]
@@ -385,6 +432,27 @@ class CategoricStats(Stats):
         counts = (np.array(p) * (n - len(domain))).astype("int")
         counts += 1  # make sure there are no zeros
         return counts
+
+    def component2tag(self, component, tagtype):
+        if isinstance(component, str) or not np.isnan(component):
+            return Tag(name=self.name, value=component, type=tagtype)
+        else:
+            return None
+
+    def check_invalid(self, component, tagtype):
+        tagname = f"{self.name}-error"
+        if component is None:
+            return Tag(name=tagname, value="Value None", type=tagtype)
+        elif pd.isnull(component):
+            return Tag(name=tagname, value="Value NaN", type=tagtype)
+        elif component not in self.stats.frequencies:
+            return Tag(name=tagname, value="Domain Error", type=tagtype)
+        else:
+            return None
+
+    @classmethod
+    def from_jcr(cls, data):
+        return cls(**data)
 
 
 def add_missing(frequencies, full_domain):

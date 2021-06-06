@@ -140,6 +140,12 @@ export default {
       octicons,
       activeSortField: "name",
       activeSortDirection: "up",
+      typeMapping: {
+        Inputs: "InputComponent",
+        Outputs: "OutputComponent",
+        Actuals: "ActualComponent",
+        Evaluations: "EvalComponent",
+      },
     };
   },
   methods: {
@@ -171,13 +177,13 @@ export default {
       } else if (this.activeSortField === "type") {
         func = (firstEl, secondEl) => {
           if (
-            componentData[firstEl].component_class ===
-            componentData[secondEl].component_class
+            componentData[firstEl].state.dtype ===
+            componentData[secondEl].state.dtype
           ) {
             return 0;
           } else if (
-            componentData[firstEl].component_class <
-            componentData[secondEl].component_class
+            componentData[firstEl].state.dtype <
+            componentData[secondEl].state.dtype
           ) {
             return -1;
           } else {
@@ -241,28 +247,50 @@ export default {
     },
     getPinvDiff(featName) {
       return Math.abs(
-        this.profileComponents.components[featName].component.stats.invalids -
-          this.alternativeAProfileComponents.components[featName].component
-            .stats.invalids
+        this.profileComponents.components[featName].state.stats.state.invalids -
+          this.alternativeAProfileComponents.components[featName].state.stats
+            .state.invalids
       );
     },
   },
   computed: {
     profileComponents() {
-      return this.refData[this.componentType];
+      // return this.refData[this.componentType];
+      let components = {};
+      for (let [name, component] of Object.entries(this.refData.components)) {
+        let parts = component.class.split(".");
+        if (parts[parts.length - 1] == this.typeMapping[this.componentType]) {
+          components[name] = component;
+        }
+      }
+      return components;
     },
     alternativeAProfileComponents() {
-      return this.alternativeA[this.componentType];
+      let components = {};
+      for (let [name, component] of Object.entries(
+        this.alternativeA.components
+      )) {
+        let parts = component.class.split(".");
+        if (parts[parts.length - 1] == this.typeMapping[this.componentType]) {
+          components[name] = component;
+        }
+      }
+      return components;
     },
     alternativeBProfileComponents() {
-      if (this.alternativeB) {
-        return this.alternativeB[this.componentType];
-      } else {
-        return undefined;
+      let components = {};
+      for (let [name, component] of Object.entries(
+        this.alternativeB.components
+      )) {
+        let parts = component.class.split(".");
+        if (parts[parts.length - 1] == this.typeMapping[this.componentType]) {
+          components[name] = component;
+        }
       }
+      return components;
     },
     reportComponents() {
-      return this.reportData[this.componentType];
+      return this.reportData;
     },
     activeSortObj() {
       return {

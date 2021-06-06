@@ -103,7 +103,9 @@ class KMeansOutlierScorer(SimpleExtractor):
         shape = self.clusters.shape
         diststr = [k for k, v in self.dist_choices.items() if v == self.dist][0]
         data = {"clusters": b64, "k": self.k, "dist": diststr}
-        return data
+
+        state = {"class": self.class2str(), "state": data}
+        return state
 
     @classmethod
     def from_jcr(cls, jcr):

@@ -1,10 +1,10 @@
 # from raymon.types import load_jcr
-from raymon.profiling.extractors import ScoreExtractor
+from raymon.profiling.extractors import EvalExtractor
 
 
-class ClassificationErrorType(ScoreExtractor):
-    def __init__(self, positive=1, lower_better=True):
-        super().__init__(lower_better=lower_better)
+class ClassificationErrorType(EvalExtractor):
+    def __init__(self, positive=1):
+        super().__init__()
         self.positive = positive
 
     def extract(self, output, actual):
@@ -21,9 +21,9 @@ class ClassificationErrorType(ScoreExtractor):
     """Serializable interface """
 
     def to_jcr(self):
-        data = super().to_jcr()
-        data["positive"] = self.positive
-        return data
+        data = {"positive": self.positive}
+        state = {"class": self.class2str(), "state": data}
+        return state
 
     @classmethod
     def from_jcr(cls, jcr):
@@ -38,18 +38,38 @@ class ClassificationErrorType(ScoreExtractor):
         return True
 
 
-class AbsoluteError(ScoreExtractor):
-    def __init__(self, lower_better=True):
-        super().__init__(lower_better=True)
+class RegressionError(EvalExtractor):
+    def extract(self, output, actual):
+        return output - actual
 
+    """Serializable interface """
+
+    def to_jcr(self):
+        state = {"class": self.class2str(), "state": {}}
+        return state
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        return cls(**jcr)
+
+    """Buildable interface"""
+
+    def build(self, data):
+        pass
+
+    def is_built(self):
+        return True
+
+
+class AbsoluteRegressionError(EvalExtractor):
     def extract(self, output, actual):
         return abs(output - actual)
 
     """Serializable interface """
 
     def to_jcr(self):
-        data = super().to_jcr()
-        return data
+        state = {"class": self.class2str(), "state": {}}
+        return state
 
     @classmethod
     def from_jcr(cls, jcr):
@@ -64,18 +84,15 @@ class AbsoluteError(ScoreExtractor):
         return True
 
 
-class SquaredError(ScoreExtractor):
-    def __init__(self, lower_better=True):
-        super().__init__(lower_better=True)
-
+class SquaredRegressionError(EvalExtractor):
     def extract(self, output, actual):
         return pow(output - actual, 2)
 
     """Serializable interface """
 
     def to_jcr(self):
-        data = super().to_jcr()
-        return data
+        state = {"class": self.class2str(), "state": {}}
+        return state
 
     @classmethod
     def from_jcr(cls, jcr):

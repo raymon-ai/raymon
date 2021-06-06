@@ -100,22 +100,23 @@ export default {
       };
     },
     componentData() {
-      return this.refDef[this.componentType][this.componentName];
+      return this.refDef.components[this.componentName].state;
     },
     componentDataType() {
-      const splits = this.componentData.component_class.split(".");
-      return splits.slice(-1)[0];
+      return this.refDef.components[
+        this.componentName
+      ].state.dtype.toLowerCase();
     },
     poiValue() {
       return this.poi[this.componentName];
     },
     stats() {
-      return this.componentData.component.stats;
+      return this.componentData.stats.state;
     },
     isNumeric() {
       return (
-        this.componentDataType.toLowerCase() === "intcomponent" ||
-        this.componentDataType.toLowerCase() === "floatcomponent"
+        this.componentDataType.toLowerCase() === "int" ||
+        this.componentDataType.toLowerCase() === "float"
       );
     },
     min() {

@@ -18,7 +18,8 @@ class AvgIntensity(SimpleExtractor):
     """Serializable inteface """
 
     def to_jcr(self):
-        return {}
+        state = {"class": self.class2str(), "state": {}}
+        return state
 
     @classmethod
     def from_jcr(cls, jcr):

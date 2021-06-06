@@ -10,7 +10,7 @@
 
     </td>
     <td class="px-2 codeLikeContent">
-      {{ componentType }}
+      {{ componentDataType }}
     </td>
     <!-- <td class="px-2 codeLikeContent">
       {{ componentImportance }}
@@ -68,12 +68,12 @@ export default {
   },
   computed: {
     stats() {
-      return this.componentData.component.stats;
+      return this.componentData.state.stats.state;
     },
     isNumeric() {
       return (
-        this.componentType.toLowerCase() === "int" ||
-        this.componentType.toLowerCase() === "float"
+        this.componentDataType.toLowerCase() === "int" ||
+        this.componentDataType.toLowerCase() === "float"
       );
     },
     min() {
@@ -94,15 +94,12 @@ export default {
       return this.stats.invalids.toFixed(2);
     },
     componentName() {
-      return this.componentData.component.name;
+      return this.componentData.state.name;
     },
-    componentType() {
-      const splits = this.componentData.component_class.split(".");
-      return splits.slice(-1)[0].replace("Component", "");
+    componentDataType() {
+      return this.componentData.state.dtype.toLowerCase();
     },
-    componentImportance() {
-      return this.componentData.component.importance;
-    },
+
     plotData() {
       if (this.isNumeric) {
         return this.getNumberPlotData();

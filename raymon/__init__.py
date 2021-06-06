@@ -4,7 +4,14 @@ from raymon.trace import Trace
 from raymon.tags import Tag
 from raymon.globals import Serializable
 from raymon.profiling.profiles import ModelProfile
-from raymon.profiling.components import FloatComponent, IntComponent, CategoricComponent, Component
+from raymon.profiling.components import (
+    InputComponent,
+    OutputComponent,
+    ActualComponent,
+    EvalComponent,
+    DataType,
+    Component,
+)
 from raymon.profiling.stats import NumericStats, CategoricStats, Stats
 from raymon.profiling.extractors import Extractor
 

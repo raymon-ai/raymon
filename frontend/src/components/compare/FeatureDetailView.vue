@@ -135,32 +135,31 @@ export default {
     },
 
     componentData() {
-      return this.refData[this.componentType][this.componentName];
+      return this.refData.components[this.componentName];
     },
     alternativeAFeatureData() {
-      return this.alternativeA[this.componentType][this.componentName];
+      return this.alternativeA.components[this.componentName];
     },
     alternativeBFeatureData() {
       if (this.alternativeB) {
-        return this.alternativeB[this.componentType][this.componentName];
+        return this.alternativeB.components[this.componentName];
       } else {
         return undefined;
       }
     },
     componentDataType() {
-      const splits = this.componentData.component_class.split(".");
-      return splits.slice(-1)[0];
+      return this.componentData.state.dtype.toLowerCase();
     },
 
     refStats() {
-      return this.componentData.component.stats;
+      return this.componentData.state.stats.state;
     },
     alternativeAStats() {
-      return this.alternativeAFeatureData.component.stats;
+      return this.alternativeAFeatureData.state.stats.state;
     },
     alternativeBStats() {
       if (this.alternativeBFeatureData) {
-        return this.alternativeBFeatureData.component.stats;
+        return this.alternativeBFeatureData.state.stats.state;
       } else {
         return undefined;
       }
@@ -168,8 +167,8 @@ export default {
 
     isNumeric() {
       return (
-        this.componentDataType.toLowerCase() === "intcomponent" ||
-        this.componentDataType.toLowerCase() === "floatcomponent"
+        this.componentDataType.toLowerCase() === "int" ||
+        this.componentDataType.toLowerCase() === "float"
       );
     },
     min() {

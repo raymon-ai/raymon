@@ -2,7 +2,7 @@ import numpy as np
 
 from raymon.globals import DataException, ExtractorException
 from raymon.profiling.extractors import SimpleExtractor
-from raymon.profiling.components import FloatComponent, IntComponent, CategoricComponent
+from raymon.profiling.components import InputComponent, OutputComponent, ActualComponent, DataType
 
 
 class ElementExtractor(SimpleExtractor):
@@ -32,7 +32,10 @@ class ElementExtractor(SimpleExtractor):
 
     def to_jcr(self):
         data = {
-            "element": self.element,
+            "class": self.class2str(),
+            "state": {
+                "element": self.element,
+            },
         }
         return data
 
@@ -52,17 +55,17 @@ class ElementExtractor(SimpleExtractor):
         return f"{self.__class__.__name__}(element={self.element})"
 
 
-def generate_components(dtypes):
+def generate_components(dtypes, complass=InputComponent):
     components = []
     for key in dtypes.index:
         # Check type: Numeric or categoric
         extractor = ElementExtractor(element=key)
         if np.issubdtype(dtypes[key], np.floating):
-            component = FloatComponent(name=key, extractor=extractor)
+            component = complass(name=key, extractor=extractor, dtype=DataType.FLOAT)
         elif np.issubdtype(dtypes[key], np.integer):
-            component = IntComponent(name=key, extractor=extractor)
+            component = complass(name=key, extractor=extractor, dtype=DataType.INT)
         elif dtypes[key] == np.dtype("O"):
-            component = CategoricComponent(name=key, extractor=extractor)
+            component = complass(name=key, extractor=extractor, dtype=DataType.CAT)
         else:
             raise ValueError(f"dtype {dtypes[key]} not supported.")
         components.append(component)
