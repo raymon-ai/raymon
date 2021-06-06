@@ -1,6 +1,6 @@
 <template>
 
-  <body>
+  <div class="d-inline-flex">
     <div
       id="app"
       class="mainWindow m-2 p-2 white"
@@ -27,7 +27,7 @@
         @setPage="setPage"
       />
     </div>
-  </body>
+  </div>
 </template>
 
 <script>
@@ -101,7 +101,7 @@ export default {
 }
 
 .mainWindow {
-  max-width: 1000px;
+  min-width: 1000px;
 }
 
 .codeLikeContent {

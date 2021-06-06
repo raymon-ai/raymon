@@ -65,7 +65,7 @@ export default {
     return {
       plotOptions: {
         staticPlot: false,
-        displayModeBar: false,
+        displayModeBar: true,
       },
       statKeys: [
         "min",
@@ -203,7 +203,7 @@ export default {
           name: "cdf",
         },
       ];
-      if (this.poiValue) {
+      if (!(this.poiValue == undefined)) {
         console.log("Poivalue: ", typeof this.poiValue);
         plots.push({
           x: [this.poiValue, this.poiValue],

@@ -98,7 +98,7 @@ export default {
       colors,
       plotOptions: {
         staticPlot: false,
-        displayModeBar: false,
+        displayModeBar: true,
       },
       statKeys: [
         "min",

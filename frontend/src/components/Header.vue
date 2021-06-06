@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="d-flex flex-row flex-justify-begin">
+    <div class="d-flex flex-row flex-justify-begin mb-6">
       <div
         class="schemaDiv pl-2 mr-4"
         :style="{'border-left-color': colors.color_scale_gray_5}"

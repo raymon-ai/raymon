@@ -49,7 +49,7 @@ export default {
     return {
       plotLayout: {
         autosize: false,
-        width: 400,
+        width: 300,
         height: 100,
         margin: {
           l: 20,

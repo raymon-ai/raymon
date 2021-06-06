@@ -214,7 +214,7 @@ class NumericStats(Stats):
         interpolator_2 = interp1d(x=p2, y=cdf2, fill_value=(0, 100), bounds_error=False)
         interpolated_1 = interpolator_1(data_all)
         interpolated_2 = interpolator_2(data_all)
-        drift = np.max(np.abs(interpolated_1 - interpolated_2)) / 100
+        drift = min(np.max(np.abs(interpolated_1 - interpolated_2)), 100) / 100
         drift_idx = int(np.argmax(np.abs(interpolated_1 - interpolated_2)))
 
         drift_report = {"drift": float(drift), "drift_idx": drift_idx, "alert": bool(drift > threshold), "valid": True}
@@ -363,7 +363,7 @@ class CategoricStats(Stats):
         f_sorted_self = np.array(f_sorted_self)
         f_sorted_other = np.array(f_sorted_other)
         # Chebyshev
-        drift = np.max(np.abs(f_sorted_self - f_sorted_other))
+        drift = min(np.max(np.abs(f_sorted_self - f_sorted_other)), 100)
         drift_idx = full_domain[np.argmax(np.abs(f_sorted_self - f_sorted_other))]
         drift_report = {"drift": float(drift), "drift_idx": drift_idx, "alert": bool(drift > threshold), "valid": True}
 

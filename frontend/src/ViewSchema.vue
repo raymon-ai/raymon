@@ -1,6 +1,6 @@
 <template>
 
-  <body>
+  <div class="d-inline-flex">
 
     <div
       id="app"
@@ -26,7 +26,7 @@
       />
 
     </div>
-  </body>
+  </div>
 
 </template>
 
@@ -88,7 +88,7 @@ export default {
 }
 
 .mainWindow {
-  max-width: 1000px;
+  min-width: 1000px;
 }
 
 .codeLikeContent {
