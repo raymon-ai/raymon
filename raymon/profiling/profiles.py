@@ -12,6 +12,7 @@ from pathlib import Path
 import raymon
 from raymon.globals import Buildable, ProfileStateException, Serializable
 from raymon.profiling.components import Component, InputComponent, OutputComponent, ActualComponent, EvalComponent
+from raymon.profiling.reducers import Reducer
 from raymon.out import NoOutput, nullcontext
 
 COMPONENT_TYPES = ["input_comps", "output_comps", "actual_comps", "eval_comps"]
@@ -26,16 +27,18 @@ class ModelProfile(Serializable, Buildable):
         name="default",
         version="0.0.0",
         components={},
-        summaries={},
+        reducers={},
     ):
 
         self._name = None
         self._version = None
         self._components = {}
+        self._reducers = {}
 
         self.name = str(name)
         self.version = str(version)
         self.components = components
+        self.reducers = reducers
 
     """Serializable interface"""
 
@@ -76,6 +79,20 @@ class ModelProfile(Serializable, Buildable):
             raise ValueError(f"components must be a list[Component] or dict[str, Component]")
 
     @property
+    def reducers(self):
+        return self._reducers
+
+    @reducers.setter
+    def reducers(self, value):
+        if isinstance(value, list) and all(isinstance(reducers, Reducer) for reducers in value):
+            # Convert to dict
+            self._reducers = {c.name: c for c in value}
+        elif isinstance(value, dict) and all(isinstance(reducers, Reducer) for reducers in value.values()):
+            self._reducers = value
+        else:
+            raise ValueError(f"components must be a list[Reducer] or dict[str, Reducer]")
+
+    @property
     def group_idfr(self):
         return f"{self.name}@{self.version}".lower()
 
@@ -88,6 +105,11 @@ class ModelProfile(Serializable, Buildable):
         for component in self.components.values():
             ser_comps[component.name] = component.to_jcr()
         jcr["components"] = ser_comps
+        # likewise for reducers
+        ser_reducers = {}
+        for reducer in self.reducers.values():
+            ser_reducers[reducer.name] = reducer.to_jcr()
+        jcr["reducers"] = ser_reducers
         return jcr
 
     @classmethod
@@ -99,7 +121,12 @@ class ModelProfile(Serializable, Buildable):
         for comp_dict in jcr["components"].values():
             component = Component.from_jcr(comp_dict, mock_extractor=mock_extractors)
             components[component.name] = component
-        return cls(name=name, version=version, components=components)
+        # TODO: likewise for reducers
+        reducers = {}
+        for reducer_dict in jcr["reducers"].values():
+            reducer = Reducer.from_jcr(reducer_dict)
+            reducers[reducer.name] = reducer
+        return cls(name=name, version=version, components=components, reducers=reducers)
 
     def save(self, dir):
         dir = Path(dir)
@@ -122,18 +149,22 @@ class ModelProfile(Serializable, Buildable):
             ctx_mgr = nullcontext()
         # Build the schema
         with ctx_mgr:
+            component_values = {}
             for component in self.components.values():
                 comp_domain = domains.get(component.name, None)
                 if isinstance(component, InputComponent):
-                    component.build(data=input, domain=comp_domain)
+                    values = component.build(data=input, domain=comp_domain)
                 elif isinstance(component, OutputComponent):
-                    component.build(data=output, domain=comp_domain)
+                    values = component.build(data=output, domain=comp_domain)
                 elif isinstance(component, ActualComponent):
-                    component.build(data=actual, domain=comp_domain)
+                    values = component.build(data=actual, domain=comp_domain)
                 elif isinstance(component, EvalComponent):
-                    component.build(data=[output, actual])
+                    values = component.build(data=[output, actual])
                 else:
                     raise ProfileStateException("Unknown Component type: ", type(component))
+                component_values[component.name] = values
+            for reducer in self.reducers.values():
+                reducer.build(data=component_values)
 
     def is_built(self):
         return all(component.is_built() for component in self.components.values())
@@ -205,21 +236,28 @@ class ModelProfile(Serializable, Buildable):
             raise ProfileStateException("Profile 'self' is not built.")
         if not other.is_built():
             raise ProfileStateException("Profile 'other' is not built.")
+        component_thresholds = thresholds.get("components", {})
+        reducer_thresholds = thresholds.get("reducers", {})
         report = {}
-
         for component in self.components.values():
-            print(component.name)
-            comp_thresholds = thresholds.get(component.name, {})
+            comp_thresholds = component_thresholds.get(component.name, {})
             comp_report = component.contrast(
                 other.components[component.name],
                 thresholds=comp_thresholds,
             )
             report[component.name] = comp_report
 
+        reducer_reports = {}
+        for reducer in self.reducers.values():
+            red_threshold = reducer_thresholds.get(reducer.name, {})
+            red_report = reducer.contrast(other.reducers[reducer.name], thresholds=red_threshold)
+            reducer_reports[reducer.name] = red_report
+
         jcr = {}
         jcr["reference"] = self.to_jcr()
         jcr["alternativeA"] = other.to_jcr()
-        jcr["report"] = report
+        jcr["health_reports"] = report
+        jcr["reducer_reports"] = reducer_reports
         return jcr
 
     def contrast_alternatives(self, alternativeA, alternativeB, thresholds={}):
@@ -229,23 +267,32 @@ class ModelProfile(Serializable, Buildable):
             raise ProfileStateException("Profile 'alternativeA' is not built.")
         if not alternativeB.is_built():
             raise ProfileStateException("Profile 'alternativeB' is not built.")
+        component_thresholds = thresholds.get("components", {})
+        reducer_thresholds = thresholds.get("reducers", {})
         report = {}
         for component in self.components.values():
             print(component.name)
-            comp_thresholds = thresholds.get(component.name, {})
-
+            comp_thresholds = component_thresholds.get(component.name, {})
             comp_report = alternativeA.components[component.name].contrast(
                 alternativeB.components[component.name],
                 thresholds=comp_thresholds,
             )
 
             report[component.name] = comp_report
+        reducer_reports = {}
+        for reducer in self.reducers.values():
+            red_threshold = reducer_thresholds.get(reducer.name, {})
+            red_report = alternativeA.reducers[reducer.name].contrast(
+                alternativeB.reducers[reducer.name], thresholds=red_threshold
+            )
+            reducer_reports[reducer.name] = red_report
 
         jcr = {}
         jcr["reference"] = self.to_jcr()
         jcr["alternativeA"] = alternativeA.to_jcr()
         jcr["alternativeB"] = alternativeB.to_jcr()
-        jcr["report"] = report
+        jcr["health_reports"] = report
+        jcr["reducer_reports"] = reducer_reports
         return jcr
 
     def view(self, poi=None, mode="iframe", outdir=None, silent=True):
@@ -266,7 +313,6 @@ class ModelProfile(Serializable, Buildable):
                     <title>Raymon view</title>
                     <script src="./raymon.min.js"></script>
                     <link href="https://unpkg.com/@primer/css@17.0.1/dist/primer.css" rel="stylesheet" />
-
                     <body>
                     <raymon-view-schema-str profile="{jsonescaped}" poi="{poiescaped}"></raymon-view-schema-str>
                     </body>
@@ -287,8 +333,9 @@ class ModelProfile(Serializable, Buildable):
                 <title>Raymon contrast</title>
                 <script src="./raymon.min.js"></script>
                 <link href="https://unpkg.com/@primer/css@17.0.1/dist/primer.css" rel="stylesheet" />
-
+                <body>
                 <raymon-compare-schema-str comparison="{jsonescaped}"></raymon-compare-schema-str>
+                </body>
                 """
         return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
 
@@ -308,8 +355,9 @@ class ModelProfile(Serializable, Buildable):
                 <title>Raymon contrast</title>
                 <script src="./raymon.min.js"></script>
                 <link href="https://unpkg.com/@primer/css@17.0.1/dist/primer.css" rel="stylesheet" />
-
+                <body>
                 <raymon-compare-schema-str comparison="{jsonescaped}"></raymon-compare-schema-str>
+                </body>
                 """
         return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
 

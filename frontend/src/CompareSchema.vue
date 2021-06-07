@@ -11,6 +11,12 @@
         :alternativeB="alternativeB"
         @setPage="setPage"
       />
+      <ReducerReports
+        :refData="refData"
+        :alternativeA="alternativeA"
+        :alternativeB="alternativeB"
+        :reducerReports="reducerReportData"
+      />
       <ComponentTypeNav
         v-if="showNav"
         @viewComponentPage="updateComponentView"
@@ -35,6 +41,8 @@ import ComponentTypeNav from "@/components/ComponentTypeNav.vue";
 
 import FeatureOverview from "@/components/compare/FeatureOverview.vue";
 import FeatureDetailView from "@/components/compare/FeatureDetailView.vue";
+import ReducerReports from "@/components/compare/ReducerReports.vue";
+
 export default {
   name: "CompareSchema",
   props: ["comparison"],
@@ -43,6 +51,7 @@ export default {
     FeatureDetailView,
     FeatureOverview,
     ComponentTypeNav,
+    ReducerReports,
   },
   data() {
     return {
@@ -69,7 +78,10 @@ export default {
       return this.comparison.alternativeB;
     },
     reportData() {
-      return this.comparison.report;
+      return this.comparison.health_reports;
+    },
+    reducerReportData() {
+      return this.comparison.reducer_reports;
     },
     pageToShow() {
       if (this.componentName !== undefined) {

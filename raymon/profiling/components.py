@@ -112,7 +112,7 @@ class Component(Serializable, Buildable, ABC):
         # Compile extractor
         self.build_extractor(data)
         # Configure stats
-        self.build_stats(data, domain=domain)
+        return self.build_stats(data, domain=domain)
 
     def is_built(self):
         return self.extractor.is_built() and self.stats.is_built()
@@ -124,11 +124,8 @@ class Component(Serializable, Buildable, ABC):
 
         drift_report = self.stats.report_drift(other.stats, threshold=drift_threshold)
         invalids_report = self.stats.report_invalid_diff(other.stats, threshold=invalids_threshold)
-        # TODO: Mean should not be part of this, but part of the reducers
-        abs = True
-        mean_threshold = thresholds.get("mean", 0.01)
-        mean_report = self.stats.report_mean_diff(other.stats, threshold=mean_threshold, use_abs=abs)
-        return {"drift": drift_report, "invalids": invalids_report, "mean": mean_report}
+
+        return {"drift": drift_report, "invalids": invalids_report}
 
     def __repr__(self):
         return str(self)
@@ -141,6 +138,7 @@ class InputComponent(Component):
     def build_stats(self, data, domain=None):
         extracted = self.extractor.extract_multiple(data)
         self.stats.build(extracted, domain=domain)
+        return extracted
 
     def validate(self, data):
         component = self.extractor.extract(data)
@@ -176,6 +174,7 @@ class OutputComponent(Component):
     def build_stats(self, data, domain=None):
         extracted = self.extractor.extract_multiple(data)
         self.stats.build(extracted, domain=domain)
+        return extracted
 
     def validate(self, data):
         component = self.extractor.extract(data)
@@ -211,6 +210,7 @@ class ActualComponent(Component):
     def build_stats(self, data, domain=None):
         extracted = self.extractor.extract_multiple(data)
         self.stats.build(extracted, domain=domain)
+        return extracted
 
     def validate(self, data):
         component = self.extractor.extract(data)
@@ -246,8 +246,8 @@ class EvalComponent(Component):
     def build_stats(self, data, domain=None):
         output, actual = data
         extracted = self.extractor.extract_multiple(output=output, actual=actual)
-
         self.stats.build(extracted, domain=domain)
+        return extracted
 
     def validate(self, data):
         output, actual = data

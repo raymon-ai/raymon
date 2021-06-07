@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import schemaFromJson from "@/assets/cheap-houses@0.0.1.json";
+import schemaFromJson from "@/assets/housepricescheap@2.0.0.json";
 import ViewSchemaStr from "@/ViewSchemaStr.vue";
 export default {
   name: "ViewSchemaWrapper",

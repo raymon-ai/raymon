@@ -619,8 +619,8 @@
                                 "Blmngtn": 0.007056451612903226,
                                 "Veenker": 0.005040322580645161,
                                 "Blueste": 0.0020161290322580645,
-                                "NoRidge": 0.0020161290322580645,
-                                "StoneBr": 0.0020161290322580645
+                                "StoneBr": 0.0020161290322580645,
+                                "NoRidge": 0.0020161290322580645
                             },
                             "invalids": 0.0,
                             "samplesize": 992
@@ -649,8 +649,8 @@
                                 "RRAn": 0.018145161290322582,
                                 "RRAe": 0.011088709677419355,
                                 "PosN": 0.009072580645161291,
-                                "RRNn": 0.0030241935483870967,
                                 "PosA": 0.0030241935483870967,
+                                "RRNn": 0.0030241935483870967,
                                 "RRNe": 0.0010080645161290322
                             },
                             "invalids": 0.0,
@@ -1300,11 +1300,11 @@
                                 "CompShg": 0.9868951612903226,
                                 "Tar&Grv": 0.006048387096774193,
                                 "WdShake": 0.0020161290322580645,
-                                "Metal": 0.0010080645161290322,
                                 "ClyTile": 0.0010080645161290322,
+                                "Roll": 0.0010080645161290322,
+                                "Metal": 0.0010080645161290322,
                                 "WdShngl": 0.0010080645161290322,
-                                "Membran": 0.0010080645161290322,
-                                "Roll": 0.0010080645161290322
+                                "Membran": 0.0010080645161290322
                             },
                             "invalids": 0.0,
                             "samplesize": 992
@@ -1715,8 +1715,8 @@
                         "state": {
                             "frequencies": {
                                 "Unf": 0.3148535564853556,
-                                "ALQ": 0.18514644351464435,
                                 "GLQ": 0.18514644351464435,
+                                "ALQ": 0.18514644351464435,
                                 "BLQ": 0.1297071129707113,
                                 "Rec": 0.12133891213389121,
                                 "LwQ": 0.06380753138075314
@@ -5265,9 +5265,9 @@
                         "class": "raymon.profiling.stats.CategoricStats",
                         "state": {
                             "frequencies": {
-                                "Fa": 0.3333333333333333,
+                                "Gd": 0.3333333333333333,
                                 "Ex": 0.3333333333333333,
-                                "Gd": 0.3333333333333333
+                                "Fa": 0.3333333333333333
                             },
                             "invalids": 0.9969758064516129,
                             "samplesize": 992
@@ -5729,8 +5729,8 @@
                                 "ConLD": 0.009072580645161291,
                                 "ConLI": 0.004032258064516129,
                                 "ConLw": 0.004032258064516129,
-                                "CWD": 0.0030241935483870967,
                                 "Oth": 0.0030241935483870967,
+                                "CWD": 0.0030241935483870967,
                                 "Con": 0.0010080645161290322
                             },
                             "invalids": 0.0,
@@ -5900,7 +5900,8 @@
                     }
                 }
             }
-        }
+        },
+        "reducers": {}
     },
     "alternativeA": {
         "name": "exp-houses",
@@ -6517,8 +6518,8 @@
                                 "Veenker": 0.01282051282051282,
                                 "Edwards": 0.01282051282051282,
                                 "BrkSide": 0.010683760683760684,
-                                "Sawyer": 0.00641025641025641,
                                 "SWISU": 0.00641025641025641,
+                                "Sawyer": 0.00641025641025641,
                                 "Blueste": 0,
                                 "BrDale": 0,
                                 "IDOTRR": 0,
@@ -6579,8 +6580,8 @@
                             "frequencies": {
                                 "Norm": 0.9893162393162394,
                                 "PosN": 0.004273504273504274,
-                                "Feedr": 0.002136752136752137,
                                 "RRAe": 0.002136752136752137,
+                                "Feedr": 0.002136752136752137,
                                 "PosA": 0.002136752136752137,
                                 "Artery": 0,
                                 "RRAn": 0,
@@ -7175,8 +7176,8 @@
                                 "Gable": 0.717948717948718,
                                 "Hip": 0.25854700854700857,
                                 "Flat": 0.010683760683760684,
-                                "Shed": 0.004273504273504274,
                                 "Gambrel": 0.004273504273504274,
+                                "Shed": 0.004273504273504274,
                                 "Mansard": 0.004273504273504274
                             },
                             "invalids": 0.0,
@@ -7201,8 +7202,8 @@
                         "state": {
                             "frequencies": {
                                 "CompShg": 0.9722222222222222,
-                                "WdShngl": 0.010683760683760684,
                                 "Tar&Grv": 0.010683760683760684,
+                                "WdShngl": 0.010683760683760684,
                                 "WdShake": 0.00641025641025641,
                                 "ClyTile": 0,
                                 "Membran": 0,
@@ -7486,8 +7487,8 @@
                             "frequencies": {
                                 "TA": 0.9188034188034188,
                                 "Gd": 0.07692307692307693,
-                                "Fa": 0.002136752136752137,
                                 "Ex": 0.002136752136752137,
+                                "Fa": 0.002136752136752137,
                                 "Po": 0
                             },
                             "invalids": 0.0,
@@ -11169,8 +11170,8 @@
                         "state": {
                             "frequencies": {
                                 "Gd": 0.5,
-                                "Fa": 0.25,
-                                "Ex": 0.25
+                                "Ex": 0.25,
+                                "Fa": 0.25
                             },
                             "invalids": 0.9914529914529915,
                             "samplesize": 468
@@ -11220,8 +11221,8 @@
                         "state": {
                             "frequencies": {
                                 "Shed": 0.8571428571428571,
-                                "Gar2": 0.07142857142857142,
                                 "TenC": 0.07142857142857142,
+                                "Gar2": 0.07142857142857142,
                                 "Othr": 0
                             },
                             "invalids": 0.9700854700854701,
@@ -11629,10 +11630,10 @@
                                 "WD": 0.7884615384615384,
                                 "New": 0.18803418803418803,
                                 "COD": 0.014957264957264958,
-                                "Con": 0.002136752136752137,
-                                "CWD": 0.002136752136752137,
                                 "ConLI": 0.002136752136752137,
                                 "ConLw": 0.002136752136752137,
+                                "Con": 0.002136752136752137,
+                                "CWD": 0.002136752136752137,
                                 "ConLD": 0,
                                 "Oth": 0
                             },
@@ -11660,8 +11661,8 @@
                                 "Normal": 0.7670940170940171,
                                 "Partial": 0.18803418803418803,
                                 "Abnorml": 0.03632478632478633,
-                                "Family": 0.004273504273504274,
                                 "Alloca": 0.004273504273504274,
+                                "Family": 0.004273504273504274,
                                 "AdjLand": 0
                             },
                             "invalids": 0.0,
@@ -11803,7 +11804,8 @@
                     }
                 }
             }
-        }
+        },
+        "reducers": {}
     },
     "alternativeB": {
         "name": "corr-houses",
@@ -12425,8 +12427,8 @@
                                 "Blmngtn": 0.007056451612903226,
                                 "Veenker": 0.005040322580645161,
                                 "Blueste": 0.0020161290322580645,
-                                "NoRidge": 0.0020161290322580645,
-                                "StoneBr": 0.0020161290322580645
+                                "StoneBr": 0.0020161290322580645,
+                                "NoRidge": 0.0020161290322580645
                             },
                             "invalids": 0.0,
                             "samplesize": 992
@@ -12455,8 +12457,8 @@
                                 "RRAn": 0.018145161290322582,
                                 "RRAe": 0.011088709677419355,
                                 "PosN": 0.009072580645161291,
-                                "RRNn": 0.0030241935483870967,
                                 "PosA": 0.0030241935483870967,
+                                "RRNn": 0.0030241935483870967,
                                 "RRNe": 0.0010080645161290322
                             },
                             "invalids": 0.0,
@@ -13106,11 +13108,11 @@
                                 "CompShg": 0.9868951612903226,
                                 "Tar&Grv": 0.006048387096774193,
                                 "WdShake": 0.0020161290322580645,
-                                "Metal": 0.0010080645161290322,
                                 "ClyTile": 0.0010080645161290322,
+                                "Roll": 0.0010080645161290322,
+                                "Metal": 0.0010080645161290322,
                                 "WdShngl": 0.0010080645161290322,
-                                "Membran": 0.0010080645161290322,
-                                "Roll": 0.0010080645161290322
+                                "Membran": 0.0010080645161290322
                             },
                             "invalids": 0.0,
                             "samplesize": 992
@@ -13521,8 +13523,8 @@
                         "state": {
                             "frequencies": {
                                 "Unf": 0.3148535564853556,
-                                "ALQ": 0.18514644351464435,
                                 "GLQ": 0.18514644351464435,
+                                "ALQ": 0.18514644351464435,
                                 "BLQ": 0.1297071129707113,
                                 "Rec": 0.12133891213389121,
                                 "LwQ": 0.06380753138075314
@@ -17071,9 +17073,9 @@
                         "class": "raymon.profiling.stats.CategoricStats",
                         "state": {
                             "frequencies": {
-                                "Fa": 0.3333333333333333,
+                                "Gd": 0.3333333333333333,
                                 "Ex": 0.3333333333333333,
-                                "Gd": 0.3333333333333333
+                                "Fa": 0.3333333333333333
                             },
                             "invalids": 0.9969758064516129,
                             "samplesize": 992
@@ -17535,8 +17537,8 @@
                                 "ConLD": 0.009072580645161291,
                                 "ConLI": 0.004032258064516129,
                                 "ConLw": 0.004032258064516129,
-                                "CWD": 0.0030241935483870967,
                                 "Oth": 0.0030241935483870967,
+                                "CWD": 0.0030241935483870967,
                                 "Con": 0.0010080645161290322
                             },
                             "invalids": 0.0,
@@ -17706,9 +17708,10 @@
                     }
                 }
             }
-        }
+        },
+        "reducers": {}
     },
-    "report": {
+    "health_reports": {
         "mssubclass": {
             "drift": {
                 "drift": 0.16,
@@ -17719,11 +17722,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": 0.0908367417811391,
-                "alert": true,
                 "valid": true
             }
         },
@@ -17738,11 +17736,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "lotfrontage": {
@@ -17755,11 +17748,6 @@
             "invalids": {
                 "invalids": -0.012510339123242342,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.1480403190694083,
-                "alert": true,
                 "valid": true
             }
         },
@@ -17774,11 +17762,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": -0.29932955456891763,
-                "alert": true,
-                "valid": true
             }
         },
         "street": {
@@ -17792,11 +17775,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "alley": {
@@ -17810,11 +17788,6 @@
                 "invalids": -0.044561621174524446,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "lotshape": {
@@ -17828,11 +17801,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "landcontour": {
@@ -17846,11 +17814,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "utilities": {
@@ -17864,11 +17827,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "lotconfig": {
@@ -17882,11 +17840,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "landslope": {
@@ -17900,11 +17853,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "neighborhood": {
@@ -17918,11 +17866,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "condition1": {
@@ -17936,11 +17879,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "condition2": {
@@ -17954,11 +17892,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "bldgtype": {
@@ -17972,11 +17905,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "housestyle": {
@@ -17990,11 +17918,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "overallqual": {
@@ -18007,11 +17930,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.2408485581694281,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18026,11 +17944,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": 0.04251679047522131,
-                "alert": true,
-                "valid": true
             }
         },
         "yearbuilt": {
@@ -18044,11 +17957,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": -0.013958925012183562,
-                "alert": true,
-                "valid": true
             }
         },
         "yearremodadd": {
@@ -18060,11 +17968,6 @@
             },
             "invalids": {
                 "invalids": 0.0,
-                "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.009199497818311765,
                 "alert": false,
                 "valid": true
             }
@@ -18080,11 +17983,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "roofmatl": {
@@ -18098,11 +17996,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "exterior1st": {
@@ -18116,11 +18009,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "exterior2nd": {
@@ -18134,11 +18022,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "masvnrtype": {
@@ -18152,11 +18035,6 @@
                 "invalids": -0.013949200441135925,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "masvnrarea": {
@@ -18169,11 +18047,6 @@
             "invalids": {
                 "invalids": -0.013949200441135925,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.6444014578100686,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18188,11 +18061,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "extercond": {
@@ -18206,11 +18074,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "foundation": {
@@ -18224,11 +18087,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "bsmtqual": {
@@ -18242,11 +18100,6 @@
                 "invalids": 0.03415357044389303,
                 "alert": true,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "bsmtcond": {
@@ -18260,11 +18113,6 @@
                 "invalids": 0.03415357044389303,
                 "alert": true,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "bsmtexposure": {
@@ -18278,11 +18126,6 @@
                 "invalids": 0.03201681830714089,
                 "alert": true,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "bsmtfintype1": {
@@ -18296,11 +18139,6 @@
                 "invalids": 0.03415357044389303,
                 "alert": true,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "bsmtfinsf1": {
@@ -18313,11 +18151,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.37292437730449135,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18332,11 +18165,6 @@
                 "invalids": 0.03201681830714089,
                 "alert": true,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "bsmtfinsf2": {
@@ -18349,11 +18177,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": 0.07207777784681157,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18368,11 +18191,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": -0.2696274730008308,
-                "alert": true,
-                "valid": true
             }
         },
         "totalbsmtsf": {
@@ -18385,11 +18203,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.3042967090532139,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18404,11 +18217,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "heatingqc": {
@@ -18422,11 +18230,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "centralair": {
@@ -18440,11 +18243,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "electrical": {
@@ -18458,11 +18256,6 @@
                 "invalids": 0.0010080645161290322,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "1stflrsf": {
@@ -18475,11 +18268,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.24983743802574684,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18494,11 +18282,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": -1.0,
-                "alert": true,
-                "valid": true
             }
         },
         "lowqualfinsf": {
@@ -18511,11 +18294,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": 2.5179673263211746,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18530,11 +18308,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": -0.3008552936678421,
-                "alert": true,
-                "valid": true
             }
         },
         "bsmtfullbath": {
@@ -18547,11 +18320,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.2904363943808532,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18566,11 +18334,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": 0.41532258064516125,
-                "alert": true,
-                "valid": true
             }
         },
         "fullbath": {
@@ -18583,11 +18346,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.27265958591983924,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18602,11 +18360,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": -0.433499491998984,
-                "alert": true,
-                "valid": true
             }
         },
         "bedroomabvgr": {
@@ -18619,11 +18372,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.05746545429337278,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18638,11 +18386,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": 0.06526411720200848,
-                "alert": true,
-                "valid": true
             }
         },
         "kitchenqual": {
@@ -18656,11 +18399,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "totrmsabvgrd": {
@@ -18673,11 +18411,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.17613112693757862,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18692,11 +18425,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "fireplaces": {
@@ -18709,11 +18437,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.48753665689149556,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18728,11 +18451,6 @@
                 "invalids": 0.38422766749379655,
                 "alert": true,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "garagetype": {
@@ -18746,11 +18464,6 @@
                 "invalids": 0.08165322580645161,
                 "alert": true,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "garageyrblt": {
@@ -18762,11 +18475,6 @@
             },
             "invalids": {
                 "invalids": 0.08165322580645161,
-                "alert": true,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.01075696874636207,
                 "alert": true,
                 "valid": true
             }
@@ -18782,11 +18490,6 @@
                 "invalids": 0.08165322580645161,
                 "alert": true,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "garagecars": {
@@ -18799,11 +18502,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.33528734074274863,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18818,11 +18516,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": -0.347415205558588,
-                "alert": true,
-                "valid": true
             }
         },
         "garagequal": {
@@ -18836,11 +18529,6 @@
                 "invalids": 0.08165322580645161,
                 "alert": true,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "garagecond": {
@@ -18854,11 +18542,6 @@
                 "invalids": 0.08165322580645161,
                 "alert": true,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "paveddrive": {
@@ -18872,11 +18555,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "wooddecksf": {
@@ -18889,11 +18567,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.47322455104231226,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18908,11 +18581,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": -0.5311254634494518,
-                "alert": true,
-                "valid": true
             }
         },
         "enclosedporch": {
@@ -18925,11 +18593,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": 1.3616112712832509,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18944,11 +18607,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": -0.6534843205574913,
-                "alert": true,
-                "valid": true
             }
         },
         "screenporch": {
@@ -18961,11 +18619,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.49678897344166867,
-                "alert": true,
                 "valid": true
             }
         },
@@ -18980,11 +18633,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": -0.6760009726049603,
-                "alert": true,
-                "valid": true
             }
         },
         "poolqc": {
@@ -18998,11 +18646,6 @@
                 "invalids": 0.005522814998621395,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "fence": {
@@ -19016,11 +18659,6 @@
                 "invalids": -0.15747346291701125,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "miscfeature": {
@@ -19034,11 +18672,6 @@
                 "invalids": -0.010408050730631335,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "miscval": {
@@ -19051,11 +18684,6 @@
             "invalids": {
                 "invalids": 0.0,
                 "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": -0.09958772331653694,
-                "alert": true,
                 "valid": true
             }
         },
@@ -19070,11 +18698,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": -0.04548012003000752,
-                "alert": true,
-                "valid": true
             }
         },
         "yrsold": {
@@ -19086,11 +18709,6 @@
             },
             "invalids": {
                 "invalids": 0.0,
-                "alert": false,
-                "valid": true
-            },
-            "mean": {
-                "mean": 2.3138506309158534e-05,
                 "alert": false,
                 "valid": true
             }
@@ -19106,11 +18724,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "salecondition": {
@@ -19124,11 +18737,6 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": "-",
-                "alert": false,
-                "valid": false
             }
         },
         "saleprice": {
@@ -19142,12 +18750,8 @@
                 "invalids": 0.0,
                 "alert": false,
                 "valid": true
-            },
-            "mean": {
-                "mean": -0.44434831087472365,
-                "alert": true,
-                "valid": true
             }
         }
-    }
+    },
+    "reducer_reports": {}
 }

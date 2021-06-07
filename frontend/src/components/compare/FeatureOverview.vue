@@ -65,14 +65,14 @@
               />
 
             </th>
-            <th class="raytablehead valueColumn px-2">
+            <!-- <th class="raytablehead valueColumn px-2">
               <label>Mean </label>
               <SortArrows
                 field="mean"
                 :active="activeSortObj"
                 @activeSortChanged="setActiveSort"
               />
-            </th>
+            </th> -->
             <th class="raytablehead px-2 plotColumn">
               <label>Distribution </label>
 
@@ -278,6 +278,9 @@ export default {
       return components;
     },
     alternativeBProfileComponents() {
+      if (!this.alternativeB) {
+        return undefined;
+      }
       let components = {};
       for (let [name, component] of Object.entries(
         this.alternativeB.components

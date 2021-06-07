@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       selectedType: "Inputs",
-      pages: ["Inputs", "Outputs", "Actuals", "Evaluations", "Scores"],
+      pages: ["Inputs", "Outputs", "Actuals", "Evaluations"],
     };
   },
   methods: {

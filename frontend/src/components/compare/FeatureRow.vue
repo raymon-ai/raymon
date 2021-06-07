@@ -51,7 +51,7 @@
       </div>
 
     </td>
-    <td class="px-2">
+    <!-- <td class="px-2">
       <div
         v-if="'mean' in refStats"
         class="d-flex flex-column flex-items-begin"
@@ -79,7 +79,7 @@
       </div>
       <div v-else> - </div>
 
-    </td>
+    </td> -->
 
     <td class="px-2">
       <VuePlotly
