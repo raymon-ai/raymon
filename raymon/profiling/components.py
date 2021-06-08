@@ -143,10 +143,13 @@ class InputComponent(Component):
     def validate(self, data):
         component = self.extractor.extract(data)
         # Make a tag from the component
-        feat_tag = self.stats.component2tag(component, tagtypes=CTYPE_TAGTYPES["input"]["tagtype"])
+        feat_tag = self.stats.component2tag(name=self.name, value=component, tagtype=CTYPE_TAGTYPES["input"]["tagtype"])
         # Check min, max, nan or None and raise data error
-        err_tag = self.stats.check_invalid(component, tagtypes=CTYPE_TAGTYPES["input"]["errortype"])
+        err_tag = self.stats.check_invalid(
+            name=self.name, value=component, tagtype=CTYPE_TAGTYPES["input"]["errortype"]
+        )
         tags = [feat_tag, err_tag]
+        print(tags)
         # Filter Nones
         tags = [tag for tag in tags if tag is not None]
         return tags
@@ -179,9 +182,13 @@ class OutputComponent(Component):
     def validate(self, data):
         component = self.extractor.extract(data)
         # Make a tag from the component
-        feat_tag = self.stats.component2tag(component, tagtypes=CTYPE_TAGTYPES["output"]["tagtype"])
+        feat_tag = self.stats.component2tag(
+            name=self.name, value=component, tagtype=CTYPE_TAGTYPES["output"]["tagtype"]
+        )
         # Check min, max, nan or None and raise data error
-        err_tag = self.stats.check_invalid(component, tagtypes=CTYPE_TAGTYPES["output"]["errortype"])
+        err_tag = self.stats.check_invalid(
+            name=self.name, value=component, tagtype=CTYPE_TAGTYPES["output"]["errortype"]
+        )
         tags = [feat_tag, err_tag]
         # Filter Nones
         tags = [tag for tag in tags if tag is not None]
@@ -215,9 +222,13 @@ class ActualComponent(Component):
     def validate(self, data):
         component = self.extractor.extract(data)
         # Make a tag from the component
-        feat_tag = self.stats.component2tag(component, tagtypes=CTYPE_TAGTYPES["actual"]["tagtype"])
+        feat_tag = self.stats.component2tag(
+            name=self.name, value=component, tagtype=CTYPE_TAGTYPES["actual"]["tagtype"]
+        )
         # Check min, max, nan or None and raise data error
-        err_tag = self.stats.check_invalid(component, tagtypes=CTYPE_TAGTYPES["actual"]["errortype"])
+        err_tag = self.stats.check_invalid(
+            name=self.name, value=component, tagtype=CTYPE_TAGTYPES["actual"]["errortype"]
+        )
         tags = [feat_tag, err_tag]
         # Filter Nones
         tags = [tag for tag in tags if tag is not None]
@@ -253,9 +264,9 @@ class EvalComponent(Component):
         output, actual = data
         component = self.extractor.extract(output=output, actual=actual)
         # Make a tag from the component
-        feat_tag = self.stats.component2tag(component, tagtypes=CTYPE_TAGTYPES["eval"]["tagtype"])
+        feat_tag = self.stats.component2tag(name=self.name, value=component, tagtype=CTYPE_TAGTYPES["eval"]["tagtype"])
         # Check min, max, nan or None and raise data error
-        err_tag = self.stats.check_invalid(component, tagtypes=CTYPE_TAGTYPES["eval"]["errortype"])
+        err_tag = self.stats.check_invalid(name=self.name, value=component, tagtype=CTYPE_TAGTYPES["eval"]["errortype"])
         tags = [feat_tag, err_tag]
         # Filter Nones
         tags = [tag for tag in tags if tag is not None]

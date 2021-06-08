@@ -204,20 +204,21 @@ class ModelProfile(Serializable, Buildable):
         return tags
 
     def validate_input(self, input, convert_json=True):
-        components = [c for c in self.components if isinstance(c, InputComponent)]
+        components = [c for c in self.components.values() if isinstance(c, InputComponent)]
+        print(components)
         return self._validate_simple(data=input, components=components, convert_json=convert_json)
 
     def validate_output(self, output, convert_json=True):
-        components = [c for c in self.components if isinstance(c, OutputComponent)]
+        components = [c for c in self.components.values() if isinstance(c, OutputComponent)]
         return self._validate_simple(data=input, components=components, convert_json=convert_json)
 
     def validate_actual(self, actual, convert_json=True):
-        components = [c for c in self.components if isinstance(c, ActualComponent)]
+        components = [c for c in self.components.values() if isinstance(c, ActualComponent)]
         return self._validate_simple(data=input, components=components, convert_json=convert_json)
 
     def validate_eval(self, output, actual, convert_json=True):
         tags = []
-        components = [c for c in self.components if isinstance(c, EvalComponent)]
+        components = [c for c in self.components.values() if isinstance(c, EvalComponent)]
         if self.is_built():
             for component in components:
                 component_tags = component.validate(data=(output, actual))

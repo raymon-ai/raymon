@@ -268,21 +268,21 @@ class NumericStats(Stats):
 
 
 class IntStats(NumericStats):
-    def component2tag(self, component, tagtype):
-        if not np.isnan(component):
-            return Tag(name=self.name, value=int(component), type=tagtype)
+    def component2tag(self, name, value, tagtype):
+        if not np.isnan(value):
+            return Tag(name=name, value=int(value), type=tagtype)
         else:
             return None
 
-    def check_invalid(self, component, tagtype):
-        tagname = f"{self.name}-error"
-        if component is None:
+    def check_invalid(self, name, value, tagtype):
+        tagname = f"{name}-error"
+        if value is None:
             return Tag(name=tagname, value="Value None", type=tagtype)
-        elif np.isnan(component):
+        elif np.isnan(value):
             return Tag(name=tagname, value="Value NaN", type=tagtype)
-        elif component > self.stats.max:
+        elif value > self.max:
             return Tag(name=tagname, value="UpperBoundError", type=tagtype)
-        elif component < self.stats.min:
+        elif value < self.min:
             return Tag(name=tagname, value="LowerBoundError", type=tagtype)
         else:
             return None
@@ -293,21 +293,21 @@ class IntStats(NumericStats):
 
 
 class FloatStats(NumericStats):
-    def component2tag(self, component, tagtype):
-        if not np.isnan(component):
-            return Tag(name=self.name, value=float(component), type=tagtype)
+    def component2tag(self, name, value, tagtype):
+        if not np.isnan(value):
+            return Tag(name=name, value=float(value), type=tagtype)
         else:
             return None
 
-    def check_invalid(self, component, tagtype):
-        tagname = f"{self.name}-error"
-        if component is None:
+    def check_invalid(self, name, value, tagtype):
+        tagname = f"{name}-error"
+        if value is None:
             return Tag(name=tagname, value="Value None", type=tagtype)
-        elif np.isnan(component):
+        elif np.isnan(value):
             return Tag(name=tagname, value="Value NaN", type=tagtype)
-        elif component > self.stats.max:
+        elif value > self.max:
             return Tag(name=tagname, value="UpperBoundError", type=tagtype)
-        elif component < self.stats.min:
+        elif value < self.min:
             return Tag(name=tagname, value="LowerBoundError", type=tagtype)
         else:
             return None
@@ -433,19 +433,19 @@ class CategoricStats(Stats):
         counts += 1  # make sure there are no zeros
         return counts
 
-    def component2tag(self, component, tagtype):
-        if isinstance(component, str) or not np.isnan(component):
-            return Tag(name=self.name, value=component, type=tagtype)
+    def component2tag(self, name, value, tagtype):
+        if isinstance(value, str) or not np.isnan(value):
+            return Tag(name=name, value=value, type=tagtype)
         else:
             return None
 
-    def check_invalid(self, component, tagtype):
-        tagname = f"{self.name}-error"
-        if component is None:
+    def check_invalid(self, name, value, tagtype):
+        tagname = f"{name}-error"
+        if value is None:
             return Tag(name=tagname, value="Value None", type=tagtype)
-        elif pd.isnull(component):
+        elif pd.isnull(value):
             return Tag(name=tagname, value="Value NaN", type=tagtype)
-        elif component not in self.stats.frequencies:
+        elif value not in self.frequencies:
             return Tag(name=tagname, value="Domain Error", type=tagtype)
         else:
             return None
