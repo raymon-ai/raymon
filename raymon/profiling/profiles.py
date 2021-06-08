@@ -205,7 +205,6 @@ class ModelProfile(Serializable, Buildable):
 
     def validate_input(self, input, convert_json=True):
         components = [c for c in self.components.values() if isinstance(c, InputComponent)]
-        print(components)
         return self._validate_simple(data=input, components=components, convert_json=convert_json)
 
     def validate_output(self, output, convert_json=True):
