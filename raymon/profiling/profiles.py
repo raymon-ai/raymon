@@ -8,7 +8,7 @@ import numbers
 
 from pydoc import locate
 from pathlib import Path
-
+import pkg_resources
 import raymon
 from raymon.globals import Buildable, ProfileStateException, Serializable
 from raymon.profiling.components import Component, InputComponent, OutputComponent, ActualComponent, EvalComponent
@@ -362,10 +362,10 @@ class ModelProfile(Serializable, Buildable):
         return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
 
     def _build_page(self, htmlstr, mode="iframe", outdir=None):
-        frontend_src = (Path(raymon.__file__) / "../frontend/").resolve()
-        print(f"Frontend src: {frontend_src}")
-        tmp_dir = Path(tempfile.mkdtemp(dir=outdir, prefix=".tmp")) / "view"
-        shutil.copytree(src=frontend_src, dst=tmp_dir)
+        tmp_dir = Path(tempfile.mkdtemp(dir=outdir, prefix=".tmp"))
+        shutil.copy(src=pkg_resources.resource_filename("raymon", "frontend/raymon.min.js"), dst=tmp_dir)
+        shutil.copy(src=pkg_resources.resource_filename("raymon", "frontend/raymon.min.js.map"), dst=tmp_dir)
+
         html_file = tmp_dir / "schema.html"
 
         with open(html_file, "w") as f:
