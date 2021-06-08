@@ -23,4 +23,7 @@ setuptools.setup(
     ],
     python_requires=">=3.6",
     install_requires=REQUIREMENTS,
+    package_data={
+        "raymon": ["frontend/*"],
+    },
 )
