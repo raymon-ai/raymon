@@ -59,8 +59,10 @@ class Reducer(Serializable, Buildable):
             # If value has decreased, and larger is better
             if self_val > other_val and diff > threshold and self.preferences[key] == "high":
                 alert = True
-            if self_val < other_val and diff > threshold and self.preferences[key] == "low":
+            elif self_val < other_val and diff > threshold and self.preferences[key] == "low":
                 alert = True
+            else:
+                alert = False
             key_report = {
                 "diff": float(diff),
                 "alert": alert,
