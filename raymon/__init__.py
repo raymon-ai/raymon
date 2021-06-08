@@ -12,7 +12,7 @@ from raymon.profiling.components import (
     DataType,
     Component,
 )
-from raymon.profiling.stats import NumericStats, CategoricStats, Stats
+from raymon.profiling.stats import IntStats, FloatStats, CategoricStats, Stats
 from raymon.profiling.extractors import Extractor
 
 from .version import __version__

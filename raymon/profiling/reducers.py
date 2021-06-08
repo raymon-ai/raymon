@@ -49,6 +49,9 @@ class Reducer(Serializable, Buildable):
     def contrast(self, other, thresholds=None):
         reports = {}
         for key in self.results:
+            if key not in other.results:
+                print(f"{key} not found in other profile reducer {self.name}. Skipping.")
+                continue
             self_val = self.results[key]
             other_val = other.results[key]
             diff = abs(other_val - self_val) / self_val

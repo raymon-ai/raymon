@@ -15,8 +15,6 @@ from raymon.profiling.components import Component, InputComponent, OutputCompone
 from raymon.profiling.reducers import Reducer
 from raymon.out import NoOutput, nullcontext
 
-COMPONENT_TYPES = ["input_comps", "output_comps", "actual_comps", "eval_comps"]
-
 
 class ModelProfile(Serializable, Buildable):
 
