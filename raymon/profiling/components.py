@@ -149,7 +149,6 @@ class InputComponent(Component):
             name=self.name, value=component, tagtype=CTYPE_TAGTYPES["input"]["errortype"]
         )
         tags = [feat_tag, err_tag]
-        print(tags)
         # Filter Nones
         tags = [tag for tag in tags if tag is not None]
         return tags

@@ -210,11 +210,11 @@ class ModelProfile(Serializable, Buildable):
 
     def validate_output(self, output, convert_json=True):
         components = [c for c in self.components.values() if isinstance(c, OutputComponent)]
-        return self._validate_simple(data=input, components=components, convert_json=convert_json)
+        return self._validate_simple(data=output, components=components, convert_json=convert_json)
 
     def validate_actual(self, actual, convert_json=True):
         components = [c for c in self.components.values() if isinstance(c, ActualComponent)]
-        return self._validate_simple(data=input, components=components, convert_json=convert_json)
+        return self._validate_simple(data=actual, components=components, convert_json=convert_json)
 
     def validate_eval(self, output, actual, convert_json=True):
         tags = []
