@@ -31,10 +31,10 @@
         :style="{'border-left-color': colors.color_scale_red_5}"
       >
         <h2 class="pt-0"> Profile: <span class="codeLike">
-            {{alternativeA.name}}</span>
+            {{alternativeB.name}}</span>
         </h2>
         <h5>Version: <span class="codeLike">
-            {{alternativeA.version}}
+            {{alternativeB.version}}
           </span></h5>
       </div>
 
