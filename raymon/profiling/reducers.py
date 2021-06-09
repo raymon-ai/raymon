@@ -105,16 +105,28 @@ class PrecisionRecallReducer(Reducer):
         reduced = {}
         for tag in self.inputs:
             to_reduce = data[tag]
-            counts = pd.Series(to_reduce).value_counts()
+            counts = pd.Series(to_reduce).value_counts().to_dict()
             metrics = self.get_precision_recall(counts)
             reduced[tag] = metrics
         self.results = reduced
 
     def get_precision_recall(self, counts):
         results = {}
-        results["precision"] = counts["TP"] / (counts["TP"] + counts["FP"])
-        results["recall"] = counts["TP"] / (counts["TP"] + counts["FN"])
-        results["f1"] = counts["TP"] / (counts["TP"] + 0.5 * (counts["FP"] + counts["FN"]))
+        for key in ["TP", "FP", "TN", "FN"]:
+            if key not in counts:
+                counts[key] = 0
+        try:
+            results["precision"] = counts["TP"] / (counts["TP"] + counts["FP"])
+        except:
+            results["precision"] = -1
+        try:
+            results["recall"] = counts["TP"] / (counts["TP"] + counts["FN"])
+        except:
+            results["recall"] = -1
+        try:
+            results["f1"] = counts["TP"] / (counts["TP"] + 0.5 * (counts["FP"] + counts["FN"]))
+        except:
+            results["f1"] = -1
         return results
 
     @classmethod
@@ -126,15 +138,23 @@ class ClassErrorReducer(Reducer):
     def __init__(self, name, inputs, preferences={"TP": "high", "FP": "low", "TN": "high", "FN": "low"}, results=None):
         super().__init__(name, inputs=inputs, preferences=preferences, results=results)
 
-    def reduce(self, data):
+    def build(self, data):
         reduced = {}
         for tag in self.inputs:
             to_reduce = data[tag]
-            counts = pd.Series(to_reduce).value_counts(normalize=True)
-            results = {}
+            series = pd.Series(to_reduce)
+            series = series.where(series.isin(self.preferences.keys()))
+            counts = series.value_counts()
+            counts = counts / counts.sum()
+            frequencies = counts.to_dict()
+            parsed = {}
+
             for key in ["TP", "FP", "TN", "FN"]:
-                results[key] = counts[key]
-            reduced[tag] = results
+                if key in frequencies:
+                    parsed[key.upper()] = float(frequencies[key])
+                else:
+                    parsed[key.upper()] = 0
+            reduced[tag] = parsed
         self.results = reduced
 
     @classmethod
