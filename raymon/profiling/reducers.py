@@ -124,11 +124,10 @@ class MeanReducer(Reducer):
         super().__init__(name, inputs=inputs, preferences=preferences, results=results)
 
     def build(self, data):
-        reduced = {}
-        for tag in self.inputs:
-            to_reduce = data[tag]
-            reduced[tag] = np.mean(to_reduce)
-        self.results = reduced
+        tag = self.inputs[0]
+        to_reduce = data[tag]
+        obs_mean = np.mean(to_reduce)
+        self.results = {"mean": obs_mean}
 
     @classmethod
     def from_jcr(cls, jcr):
@@ -140,12 +139,10 @@ class PrecisionRecallReducer(Reducer):
         super().__init__(name, inputs=inputs, preferences=preferences, results=results)
 
     def build(self, data):
-        reduced = {}
-        for tag in self.inputs:
-            to_reduce = data[tag]
-            counts = pd.Series(to_reduce).value_counts().to_dict()
-            metrics = self.get_precision_recall(counts)
-            reduced[tag] = metrics
+        tag = self.inputs[0]
+        to_reduce = data[tag]
+        counts = pd.Series(to_reduce).value_counts().to_dict()
+        reduced = self.get_precision_recall(counts)
         self.results = reduced
 
     def get_precision_recall(self, counts):
@@ -177,23 +174,21 @@ class ClassErrorReducer(Reducer):
         super().__init__(name, inputs=inputs, preferences=preferences, results=results)
 
     def build(self, data):
-        reduced = {}
-        for tag in self.inputs:
-            to_reduce = data[tag]
-            series = pd.Series(to_reduce)
-            series = series.where(series.isin(self.preferences.keys()))
-            counts = series.value_counts()
-            counts = counts / counts.sum()
-            frequencies = counts.to_dict()
-            parsed = {}
+        tag = self.inputs[0]
+        to_reduce = data[tag]
+        series = pd.Series(to_reduce)
+        series = series.where(series.isin(self.preferences.keys()))
+        counts = series.value_counts()
+        counts = counts / counts.sum()
+        frequencies = counts.to_dict()
+        parsed = {}
 
-            for key in ["TP", "FP", "TN", "FN"]:
-                if key in frequencies:
-                    parsed[key.upper()] = float(frequencies[key])
-                else:
-                    parsed[key.upper()] = 0
-            reduced[tag] = parsed
-        self.results = reduced
+        for key in ["TP", "FP", "TN", "FN"]:
+            if key in frequencies:
+                parsed[key.upper()] = float(frequencies[key])
+            else:
+                parsed[key.upper()] = 0
+        self.results = parsed
 
     @classmethod
     def from_jcr(cls, jcr):
