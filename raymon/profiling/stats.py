@@ -213,7 +213,7 @@ class NumericStats(Stats):
 
     def report_drift(self, other, threshold):
         if other.samplesize == 0:
-            return {"drift": "-", "drift_idx": -1, "alert": False, "valid": False}
+            return {"drift": -1, "drift_idx": -1, "alert": False, "valid": False}
         p1 = self.percentiles
         p2 = other.percentiles
         data_all = np.concatenate([p1, p2])
@@ -233,7 +233,7 @@ class NumericStats(Stats):
 
     def report_mean_diff(self, other, threshold, use_abs):
         if other.samplesize == 0:
-            return {"mean": "-", "alert": False, "valid": False}
+            return {"mean": -1, "alert": False, "valid": False}
         meandiff = other.mean - self.mean
         meandiff_perc = meandiff / self.mean
         if use_abs:
@@ -400,7 +400,7 @@ class CategoricStats(Stats):
 
     def report_drift(self, other, threshold):
         if other.samplesize == 0:
-            return {"drift": "-", "drift_idx": -1, "alert": False, "valid": False}
+            return {"drift": -1, "drift_idx": -1, "alert": False, "valid": False}
         self_f, other_f, full_domain = equalize_domains(self.frequencies, other.frequencies)
         f_sorted_self = []
         f_sorted_other = []
@@ -417,7 +417,7 @@ class CategoricStats(Stats):
         return drift_report
 
     def report_mean_diff(self, other, threshold, use_abs=False):
-        return {"mean": "-", "alert": False, "valid": False}
+        return {"mean": -1, "alert": False, "valid": False}
 
     def sample(self, n):
         domain = sorted(list(self.frequencies.keys()))
