@@ -29,6 +29,44 @@ class Reducer(Serializable, Buildable):
         self.preferences = preferences
         self.results = results
 
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        if not isinstance(value, str):
+            raise ValueError(f"Profile name should be a string")
+        if "@" in value:
+            raise ValueError(f"Profile name should not include '@'")
+        self._name = value.lower()
+
+    @property
+    def inputs(self):
+        return self._inputs
+
+    @inputs.setter
+    def inputs(self, value):
+        if not isinstance(value, list) and all(isinstance(s, str) for s in value):
+            raise ValueError(f"Reducer inputs must be a list of str tag names")
+        self._inputs = value
+
+    @property
+    def preferences(self):
+        return self._preferences
+
+    @preferences.setter
+    def preferences(self, value):
+        if (
+            not isinstance(value, dict)
+            and all(isinstance(s, str) for s in value.keys())
+            and all(p in ["high", "low"] for p in value.values())
+        ):
+            raise ValueError(
+                f"Reducer inputs must be a dict with tag names (str) as key and 'high' or 'low' as values."
+            )
+        self._preferences = value
+
     def build(self, data, **kwargs):
         raise NotImplementedError()
 
