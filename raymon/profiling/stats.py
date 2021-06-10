@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import math
 from abc import ABC, abstractmethod
 from scipy.interpolate import interp1d
 from pydoc import locate
@@ -86,7 +87,7 @@ class NumericStats(Stats):
 
     @min.setter
     def min(self, value):
-        if value is np.nan:
+        if math.isnan(value):
             raise DataException("stats.min cannot be NaN")
         self._min = value
 
@@ -98,7 +99,7 @@ class NumericStats(Stats):
 
     @max.setter
     def max(self, value):
-        if value is np.nan:
+        if math.isnan(value):
             raise DataException("stats.max cannot be NaN")
         self._max = value
 
@@ -110,7 +111,7 @@ class NumericStats(Stats):
 
     @mean.setter
     def mean(self, value):
-        if value is np.nan:
+        if math.isnan(value):
             raise DataException("stats.mean cannot be NaN")
         self._mean = value
 
@@ -122,7 +123,7 @@ class NumericStats(Stats):
 
     @std.setter
     def std(self, value):
-        if value is np.nan:
+        if math.isnan(value):
             raise DataException("stats.std cannot be NaN")
         self._std = value
 
@@ -134,7 +135,7 @@ class NumericStats(Stats):
 
     @invalids.setter
     def invalids(self, value):
-        if value is np.nan:
+        if math.isnan(value):
             raise DataException("stats.invalids cannot be NaN")
         self._invalids = value
 
@@ -161,7 +162,7 @@ class NumericStats(Stats):
 
     @samplesize.setter
     def samplesize(self, value):
-        if value is np.nan:
+        if math.isnan(value):
             raise DataException("stats.samplesize cannot be NaN")
         self._samplesize = value
 
@@ -353,7 +354,7 @@ class CategoricStats(Stats):
 
     @invalids.setter
     def invalids(self, value):
-        if value is np.nan:
+        if math.isnan(value):
             raise DataException("stats.invalids cannot be NaN")
         self._invalids = value
 
@@ -363,7 +364,7 @@ class CategoricStats(Stats):
 
     @samplesize.setter
     def samplesize(self, value):
-        if value is np.nan:
+        if math.isnan(value):
             raise DataException("stats.samplesize cannot be NaN")
         self._samplesize = value
 
