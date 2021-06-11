@@ -47,8 +47,8 @@ class SimpleExtractor(Extractor):
         if isinstance(data, pd.DataFrame) or isinstance(data, np.ndarray):
             components = self.extract(data)
         elif isinstance(data, Iterable):
-            for data in data:
-                components.append(self.extract(data))
+            for el in data:
+                components.append(self.extract(el))
         else:
             raise DataException("Data should be a DataFrame or Iterable")
         return components
