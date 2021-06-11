@@ -84,7 +84,7 @@ class Reducer(Serializable, Buildable):
             },
         }
 
-    def contrast(self, other, thresholds=None):
+    def contrast(self, other, components, thresholds=None):
         reports = {}
         for key in self.results:
             if key not in other.results:
@@ -92,8 +92,10 @@ class Reducer(Serializable, Buildable):
                 continue
             self_val = self.results[key]
             other_val = other.results[key]
-            diff = abs(other_val - self_val) / self_val
-            threshold = thresholds.get(key, 0.01)
+            component = components[self.inputs[0]]
+            valuerrange = component.stats.range
+            diff = abs(other_val - self_val) / valuerrange
+            threshold = thresholds.get(key, 0.05)
             # If value has decreased, and larger is better
             if self_val > other_val and diff > threshold and self.preferences[key] == "high":
                 alert = True
@@ -125,6 +127,7 @@ class MeanReducer(Reducer):
 
     def build(self, data):
         tag = self.inputs[0]
+
         to_reduce = data[tag]
         obs_mean = np.mean(to_reduce)
         self.results = {"mean": obs_mean}

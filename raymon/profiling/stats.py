@@ -166,6 +166,10 @@ class NumericStats(Stats):
             raise DataException("stats.samplesize cannot be NaN")
         self._samplesize = value
 
+    @property
+    def range(self):
+        return self.max - self.min
+
     """Buildable Interface"""
 
     def build(self, data, domain=None):
@@ -367,6 +371,10 @@ class CategoricStats(Stats):
         if value is not None and math.isnan(value):
             raise DataException("stats.samplesize cannot be NaN")
         self._samplesize = value
+
+    @property
+    def range(self):
+        return 1
 
     def build(self, data, domain=None):
         """[summary]
