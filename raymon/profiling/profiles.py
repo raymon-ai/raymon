@@ -149,6 +149,7 @@ class ModelProfile(Serializable, Buildable):
         with ctx_mgr:
             component_values = {}
             for component in self.components.values():
+                print(component.name)
                 comp_domain = domains.get(component.name, None)
                 if isinstance(component, InputComponent):
                     values = component.build(data=input, domain=comp_domain)
@@ -160,7 +161,9 @@ class ModelProfile(Serializable, Buildable):
                     values = component.build(data=[output, actual])
                 else:
                     raise ProfileStateException("Unknown Component type: ", type(component))
+                print(values)
                 component_values[component.name] = values
+
             for reducer in self.reducers.values():
                 reducer.build(data=component_values)
 

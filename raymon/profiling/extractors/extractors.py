@@ -79,10 +79,13 @@ class EvalExtractor(Extractor):
 
         components = []
         if isinstance(output, pd.DataFrame) or isinstance(output, np.ndarray):
-            components = self.extract(output, actual)
-        elif isinstance(output, Iterable):
-            for out, act in zip(output, actual):
+            zipped = zip(output, actual)
+            for out, act in zipped:
                 components.append(self.extract(out, act))
+        elif isinstance(output, Iterable):
+            zipped = zip(output, actual)
+            for out, act in zipped:
+                components.append(self.extract(out[0], act[0]))
         else:
             raise DataException("Data should be a DataFrame or Iterable")
         return components
