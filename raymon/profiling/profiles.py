@@ -222,6 +222,7 @@ class ModelProfile(Serializable, Buildable):
         if self.is_built():
             for component in components:
                 component_tags = component.validate(data=(output, actual))
+                print(component_tags)
                 self.set_group(component_tags)
                 tags.extend(component_tags)
         else:

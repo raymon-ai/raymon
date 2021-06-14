@@ -1,47 +1,48 @@
+from raymon.profiling.components import DataType
 import pytest
 import json
 from raymon import ModelProfile
-from raymon import FloatComponent
-from raymon import NumericStats, CategoricStats
+from raymon import InputComponent
+from raymon import IntStats, FloatStats, CategoricStats
 from raymon.profiling.extractors.vision.similarity import FixedSubpatchSimilarity
 
 
 def test_stats_none():
-    stats = NumericStats()
+    stats = FloatStats()
     jcr = stats.to_jcr()
-    for attr in NumericStats._attrs:
-        assert jcr[attr] is None
+    for attr in FloatStats._attrs:
+        assert jcr["state"][attr] is None
 
 
 def test_stats_partial_none():
     params = dict(min=0, max=1, mean=0.5, std=0.02, invalids=0.1, percentiles=list(range(101)), samplesize=10)
-    stats = NumericStats(**params)
+    stats = FloatStats(**params)
     jcr = stats.to_jcr()
-    for attr in NumericStats._attrs:
-        assert jcr[attr] == params[attr]
+    for attr in FloatStats._attrs:
+        assert jcr["state"][attr] == params[attr]
 
 
 def test_num_stats_build():
-    stats = NumericStats()
+    stats = FloatStats()
     assert not stats.is_built()
-    stats = NumericStats(
+    stats = FloatStats(
         min=0,
         max=1,
         mean=0.5,
         std=0.02,
     )
     assert not stats.is_built()
-    stats = NumericStats(min=0, max=1, mean=0.5, percentiles=range(101), invalids=0)
+    stats = FloatStats(min=0, max=1, mean=0.5, percentiles=range(101), invalids=0)
     assert not stats.is_built()
-    stats = NumericStats(min=0, max=1, std=0.02, percentiles=range(101), invalids=0)
+    stats = FloatStats(min=0, max=1, std=0.02, percentiles=range(101), invalids=0)
     assert not stats.is_built()
-    stats = NumericStats(min=0, mean=0.5, std=0.02, percentiles=range(101), invalids=0)
+    stats = FloatStats(min=0, mean=0.5, std=0.02, percentiles=range(101), invalids=0)
     assert not stats.is_built()
-    stats = NumericStats(max=1, mean=0.5, std=0.02, percentiles=range(101), invalids=0)
+    stats = FloatStats(max=1, mean=0.5, std=0.02, percentiles=range(101), invalids=0)
     assert not stats.is_built()
-    stats = NumericStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101))
+    stats = FloatStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101))
     assert not stats.is_built()
-    stats = NumericStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), invalids=0, samplesize=10)
+    stats = FloatStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), invalids=0, samplesize=10)
     assert stats.is_built()
 
 
@@ -75,8 +76,8 @@ def test_component_buildable():
     extractor = FixedSubpatchSimilarity(
         patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, refs=["adf8d224cb8786cc"], nrefs=1
     )
-    stats = NumericStats(min=0, max=1)
-    component = FloatComponent(name="testcomponent", extractor=extractor, stats=stats)
+    stats = FloatStats(min=0, max=1)
+    component = InputComponent(name="testcomponent", extractor=extractor, stats=stats, dtype=DataType.FLOAT)
     assert not stats.is_built()
     assert extractor.is_built()
     assert not component.is_built()
@@ -84,8 +85,8 @@ def test_component_buildable():
     extractor = FixedSubpatchSimilarity(
         patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, refs=["adf8d224cb8786cc"], nrefs=1
     )
-    stats = NumericStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), invalids=0, samplesize=10)
-    component = FloatComponent(name="testcomponent", extractor=extractor, stats=stats)
+    stats = FloatStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), invalids=0, samplesize=10)
+    component = InputComponent(name="testcomponent", extractor=extractor, stats=stats, dtype=DataType.FLOAT)
     assert stats.is_built()
     assert extractor.is_built()
     assert component.is_built()
@@ -95,17 +96,17 @@ def test_schema_buildable():
     extractor = FixedSubpatchSimilarity(
         patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, refs=["adf8d224cb8786cc"], nrefs=1
     )
-    stats = NumericStats(min=0, max=1)
-    component = FloatComponent(name="testcomponent", extractor=extractor, stats=stats)
-    schema = ModelProfile(name="Testing", version="1.0.0", input_comps=[component])
+    stats = FloatStats(min=0, max=1)
+    component = InputComponent(name="testcomponent", extractor=extractor, stats=stats, dtype=DataType.FLOAT)
+    schema = ModelProfile(name="Testing", version="1.0.0", components=[component])
 
     assert not schema.is_built()
 
     extractor = FixedSubpatchSimilarity(
         patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, refs=["adf8d224cb8786cc"], nrefs=1
     )
-    stats = NumericStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), invalids=0, samplesize=10)
-    component = FloatComponent(name="testcomponent", extractor=extractor, stats=stats)
-    schema = ModelProfile(name="Testing", version="1.0.0", input_comps=[component, component])
+    stats = FloatStats(min=0, max=1, mean=0.5, std=0.02, percentiles=range(101), invalids=0, samplesize=10)
+    component = InputComponent(name="testcomponent", extractor=extractor, stats=stats, dtype=DataType.FLOAT)
+    schema = ModelProfile(name="Testing", version="1.0.0", components=[component, component])
 
     assert schema.is_built()

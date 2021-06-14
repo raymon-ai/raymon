@@ -1,10 +1,11 @@
+from raymon.profiling.components import DataType
 import pandas as pd
 import numpy as np
-from raymon.profiling.components import FloatComponent
+from raymon import InputComponent, OutputComponent, ActualComponent, EvalComponent
 
 from raymon.profiling.extractors.structured import generate_components
 from raymon import ModelProfile
-from raymon.profiling.extractors.structured.scoring import AbsoluteError
+from raymon.profiling.extractors.structured.scoring import AbsoluteRegressionError
 
 
 def test_compile_nan():
@@ -13,8 +14,8 @@ def test_compile_nan():
         "cat1": ["a"] * 5 + ["b"] * 5,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_components(dtypes=df.dtypes)
-    schema = ModelProfile(input_comps=components)
+    components = generate_components(dtypes=df.dtypes, complass=InputComponent)
+    schema = ModelProfile(components=components)
     schema.build(input=df)
 
     tags = schema.validate_input(input=pd.Series([np.nan, np.nan], index=["num1", "cat1"]))
@@ -30,10 +31,10 @@ def test_compile_nan_2():
         "cat1": ["a"] * 5 + ["b"] * 5,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_components(dtypes=df.dtypes)
-    schema = ModelProfile(input_comps=components)
+    components = generate_components(dtypes=df.dtypes, complass=InputComponent)
+    schema = ModelProfile(components=components)
     schema.build(input=df)
-    components = schema.input_comps
+    components = schema.components
 
     tags = schema.validate_input(input=pd.Series([1, "b"], index=["num1", "cat1"]))
     assert len(tags) == 2
@@ -55,10 +56,10 @@ def test_valdiate_output():
         "cat1": ["a"] * 5 + ["b"] * 5,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_components(dtypes=df.dtypes)
-    schema = ModelProfile(output_comps=components)
+    components = generate_components(dtypes=df.dtypes, complass=OutputComponent)
+    schema = ModelProfile(components=components)
     schema.build(output=df)
-    components = schema.output_comps
+    components = schema.components
 
     tags = schema.validate_output(output=pd.Series([1, "b"], index=["num1", "cat1"]))
     assert len(tags) == 2
@@ -79,10 +80,10 @@ def test_validate_actual():
         "cat1": ["a"] * 5 + ["b"] * 5,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_components(dtypes=df.dtypes)
-    schema = ModelProfile(actual_comps=components)
+    components = generate_components(dtypes=df.dtypes, complass=ActualComponent)
+    schema = ModelProfile(components=components)
     schema.build(actual=df)
-    components = schema.actual_comps
+    components = schema.components
 
     tags = schema.validate_actual(actual=pd.Series([1, "b"], index=["num1", "cat1"]))
     assert len(tags) == 2
@@ -103,8 +104,11 @@ def test_multiple_component_types():
         "cat1": ["a"] * 5 + ["b"] * 5,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_components(dtypes=df.dtypes)
-    schema = ModelProfile(input_comps=components, output_comps=components, actual_comps=components)
+    inputcomps = generate_components(dtypes=df.dtypes, complass=InputComponent, name_prefix="input_")
+    outcomps = generate_components(dtypes=df.dtypes, complass=OutputComponent, name_prefix="output_")
+    actualcomps = generate_components(dtypes=df.dtypes, complass=ActualComponent, name_prefix="actual_")
+
+    schema = ModelProfile(components=inputcomps + outcomps + actualcomps)
     schema.build(input=df, output=df, actual=df)
 
     tags = schema.validate_input(input=pd.Series([1, "b"], index=["num1", "cat1"]))
@@ -118,13 +122,13 @@ def test_multiple_component_types():
 
 
 def test_score():
-    outputs = [2, 1, 2, 0, 1]
-    actuals = [0, 1, 2, 1, 2]
-    components = [FloatComponent(name="model_abs_error", extractor=AbsoluteError())]
-    profile = ModelProfile(eval_comps=components)
+    outputs = np.array([2, 1, 2, 0, 1])[:, None].tolist()
+    actuals = np.array([0, 1, 2, 1, 2])[:, None].tolist()
+    components = [EvalComponent(name="model_abs_error", extractor=AbsoluteRegressionError(), dtype=DataType.FLOAT)]
+    profile = ModelProfile(components=components)
     profile.build(output=outputs, actual=actuals)
     assert profile.is_built()
 
-    tags = profile.validate_score(output=outputs[0], actual=actuals[0])
+    tags = profile.validate_eval(output=outputs[0][0], actual=actuals[0][0])
     assert len(tags) == 1
     assert tags[0]["type"] == "profile-score"

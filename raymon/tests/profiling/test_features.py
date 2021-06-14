@@ -1,14 +1,15 @@
 #%%
+from raymon.profiling.components import DataType
 import pytest
 
 import pandas as pd
 import numpy as np
 
 from raymon.profiling.extractors.structured import generate_components
-from raymon import CategoricComponent, FloatComponent, IntComponent
+from raymon import InputComponent
+from raymon import IntStats, FloatStats, CategoricStats
 from raymon import ModelProfile
 from raymon.globals import ProfileStateException, DataException
-from raymon import NumericStats, CategoricStats
 from raymon.profiling.extractors.structured import ElementExtractor
 
 #%%
@@ -20,12 +21,13 @@ def test_constuct_comps():
         "num2": [0.2] * 10,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_components(dtypes=df.dtypes)
+    components = generate_components(dtypes=df.dtypes, complass=InputComponent)
     assert len(components) == 4
-    assert isinstance(components[0], IntComponent)
-    assert isinstance(components[1], CategoricComponent)
-    assert isinstance(components[2], CategoricComponent)
-    assert isinstance(components[3], FloatComponent)
+    assert all(isinstance(c, InputComponent) for c in components)
+    assert isinstance(components[0].stats, IntStats)
+    assert isinstance(components[1].stats, CategoricStats)
+    assert isinstance(components[2].stats, CategoricStats)
+    assert isinstance(components[3].stats, FloatStats)
 
 
 def test_compile():
@@ -34,12 +36,12 @@ def test_compile():
         "cat1": ["a"] * 5 + ["b"] * 5,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_components(dtypes=df.dtypes)
-    schema = ModelProfile(input_comps=components)
+    components = generate_components(dtypes=df.dtypes, complass=InputComponent)
+    schema = ModelProfile(components=components)
     assert not schema.is_built()
     schema.build(input=df)
-    components = schema.input_comps
-    assert isinstance(components["num1"].stats, NumericStats)
+    components = schema.components
+    assert isinstance(components["num1"].stats, IntStats)
     assert components["num1"].stats.min == 0
     assert components["num1"].stats.max == 9
     assert components["num1"].stats.mean == 4.5
@@ -56,12 +58,12 @@ def test_compile():
 def test_compile_one():
     arr = np.array([1, 2, 3, 4, 5])[None, :]
     schema = ModelProfile(
-        input_comps=[FloatComponent(name="predicted_price", extractor=ElementExtractor(element=0))],
+        components=[InputComponent(name="predicted_price", extractor=ElementExtractor(element=0), dtype=DataType.INT)],
     )
     assert not schema.is_built()
     schema.build(input=arr)
-    components = schema.input_comps
-    assert isinstance(components["predicted_price"].stats, NumericStats)
+    components = schema.components
+    assert isinstance(components["predicted_price"].stats, IntStats)
     assert components["predicted_price"].stats.min == 1
     assert components["predicted_price"].stats.max == 5
     assert components["predicted_price"].is_built()
@@ -76,7 +78,7 @@ def test_all_nan():
     }
     df = pd.DataFrame(data=cols)
     components = generate_components(dtypes=df.dtypes)
-    schema = ModelProfile(input_comps=components)
+    schema = ModelProfile(components=components)
     try:
         schema.build(input=df)
     except ValueError:

@@ -55,17 +55,17 @@ class ElementExtractor(SimpleExtractor):
         return f"{self.__class__.__name__}(element={self.element})"
 
 
-def generate_components(dtypes, complass=InputComponent):
+def generate_components(dtypes, complass=InputComponent, name_prefix=""):
     components = []
     for key in dtypes.index:
         # Check type: Numeric or categoric
         extractor = ElementExtractor(element=key)
         if np.issubdtype(dtypes[key], np.floating):
-            component = complass(name=key, extractor=extractor, dtype=DataType.FLOAT)
+            component = complass(name=f"{name_prefix}{key}", extractor=extractor, dtype=DataType.FLOAT)
         elif np.issubdtype(dtypes[key], np.integer):
-            component = complass(name=key, extractor=extractor, dtype=DataType.INT)
+            component = complass(name=f"{name_prefix}{key}", extractor=extractor, dtype=DataType.INT)
         elif dtypes[key] == np.dtype("O"):
-            component = complass(name=key, extractor=extractor, dtype=DataType.CAT)
+            component = complass(name=f"{name_prefix}{key}", extractor=extractor, dtype=DataType.CAT)
         else:
             raise ValueError(f"dtype {dtypes[key]} not supported.")
         components.append(component)
