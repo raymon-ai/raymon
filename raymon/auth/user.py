@@ -13,6 +13,7 @@ import webbrowser
 
 def save_user_config(existing, auth_endpoint, audience, client_id, token, out, env):
     out = Path(out)
+    out.parent.mkdir(parents=True, exist_ok=True)
 
     known_configs = existing
     # If so, check whether project exists
@@ -30,7 +31,7 @@ def save_user_config(existing, auth_endpoint, audience, client_id, token, out, e
     # Save secret
     user_config[env["auth_url"]] = env_config
     known_configs["user"] = user_config
-    with open(out, "w") as f:
+    with out.open("w") as f:
         json.dump(known_configs, fp=f, indent=4)
 
 
