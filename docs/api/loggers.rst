@@ -7,3 +7,7 @@ Loggers
 
 .. autoclass:: raymon.RaymonAPILogger
    :members:
+
+.. autoclass:: raymon.loggers.RaymonLoggerBase
+   :members:
+

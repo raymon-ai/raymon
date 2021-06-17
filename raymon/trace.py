@@ -70,17 +70,5 @@ class Trace:
         """
         self.logger.tag(trace_id=self.trace_id, tags=tags)
 
-    def log_profile_input(self, profile, data):
-        ref = f"#{profile.name}@{profile.version}-input"
-        self.logger.log(trace_id=self.trace_id, ref=ref, data=data)
-
-    def log_profile_output(self, profile, data):
-        ref = f"#{profile.name}@{profile.version}-output"
-        self.logger.log(trace_id=self.trace_id, ref=ref, data=data)
-
-    def log_profile_actual(self, profile, data):
-        ref = f"#{profile.name}@{profile.version}-actual"
-        self.logger.log(trace_id=self.trace_id, ref=ref, data=data)
-
     def __str__(self):
         return self.trace_id

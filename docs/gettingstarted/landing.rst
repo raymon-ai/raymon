@@ -7,8 +7,10 @@ Getting started
    :caption: Getting Started
 
    install_deploy
+   apisetup
    logging_tracing
    profiling
+   manifest
    modelmonitoring
    extensions
-   abtesting
+   

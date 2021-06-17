@@ -1,94 +1,152 @@
-=============================
-Data Profiling and Validation
-=============================
+======================
+Model & Data Profiling
+======================
 
-One of the primary functionalities of Raymon is to help you validate and monitor production data quality. This is done using the :py:class:`raymon.ModelProfile` class. 
+One of the primary functionalities of Raymon is to help you validate incoming data, monitor production data quality and be able to find valuable data easily. This is mainly done using the :py:class:`raymon.ModelProfile` class. The idea is that raymon analyses your data and training time, builds a data profile, and uses that data profile in production code to validate live data.
 
-----------------------------------------------------
-Concepts: Profiles, Components, Extractors and Stats
-----------------------------------------------------
+--------------------------------------------------------------
+Concepts: Profiles, Components, Extractors, Stats and Reducers
+--------------------------------------------------------------
 
-Raymon helps you capture data characterisics of your models inputs, outputs, actuals and scores using the :class:`raymon.ModelProfile` class. For each data profiling hook, a :class:`raymon.ModelProfile` contains a list of one or more components (:class:`raymon.Component`), each of which watches a feature of your data that is extracted from the data by the component using an :class:`raymon.Extractor`. Extractors can ingest any type of data (structured data, images, time series, ...) and return any feature as long as it is a single numerical or catagorical value (meaning, no vectors). For example, in case of structured data, an extractor may simply extract one element from its input vector, it may calculate the vector norm, or the norm of a subvector, etc... For image data, an extractor could extract an anomaly score, or it could extract the image sharpness. Each component saves statistics about its extracted feature in its stats property (:class:`raymon.Stats`). These stats will be used to validate new data.
-
-As illustrted in the examples below, constructing a ModelProfile should be done at train time using :code:`profile.build(input=loaded_data)`. Then, the profile can be loaded in your production code and used to validate incoming data, for example as follows: :code:`profile.validate_input(data)`. Validating data will return several tags: the value the extractor returned, and optional error tags if the data is determined to have issues.
+Raymon helps you capture data characterisics of your models inputs, outputs, actuals and output-actual evaluations using the :class:`raymon.ModelProfile` class. 
 
 
 Profile
 -------
 
-Raymon currently has one type of profile: the :class:`raymon.ModelProfile` class. This class can be used to validate and score all data relevant to ML models (its inputs, outputs, actuals and scores) and can auto-configure the Raymon backend for model monitoring. 
+A :class:`raymon.ModelProfile` is the main entry point for data profiling in Raymon. Its an object that has a name and a version, and holds a list of :class:`raymon.profiling.Component` objects and a list of :class:`raymon.profiling.Reducer` objects. 
+
+Raymon currently has one type of profile: the :class:`raymon.ModelProfile` class. This class can be used to validate and score all data relevant to ML models (its inputs, outputs, actuals and output-actual evaluations) and can auto-configure the Raymon backend for model & data monitoring. 
 
 
 Profile Components
 ------------------
-A profile component is responsible for extracting a feature from the data it is given and to distill statistics about that extracted feature. The extrating of the feature is delegated to its :code:`extractor` property, the distillation of stats to its :code:`stats` property. Depending on the type (:code:`int`, :code:`float` or :code:`str`) an extractor returns, the component needs to be of the equivalent type: :class:`raymon.FloatComponent`, :class:`raymon.IntComponent`, :class:`raymon.CategoricComponent`. 
+A profile component is responsible for extracting a feature from the data it is given and to distill statistics about that extracted feature. The extrating of the feature is delegated to its :code:`extractor` property, the distillation of stats to its :code:`stats` property. When validating data, the extracted feature will be returned as a :raymon.Tag: object with the component's `name` and tag `name` and the feature value as tag `value`.
 
+A component can be one of 4 types.
+
+.. list-table:: Component types and their function
+   :widths: 25 75
+   :header-rows: 1
+
+   * - Component Type
+     - Function
+   * - :class:`raymon.InputComponent`
+     - Used for capturing input data characteristics.
+   * - :class:`raymon.OutputComponent`
+     - Used for capturing output data characteristics.
+   * - :class:`raymon.ActualComponent`
+     - Used for capturing actual (ground truth) data characteristics.
+   * - :class:`raymon.EvalComponent`
+     - Used for capturing characteristics that depend on both outputs and actuals, like model performance scores.
 
 
 Component Extractors
 --------------------
-Extractors take in a datum and extract a feature from it. Raymon provides some out-of-the-box extractors, but you can easily plug in your own by implementting the :class:`raymon.SimpleExtractor` or :class:`raymon.EvalExtractorExtractor` interface. Extractors convert your data to single value that Raymon will track. By doing so, Raymon in itself does not analyse your raw data and can support any data type.
+Extractors take in a datum and extract a feature from it. Raymon provides some out-of-the-box extractors, but you can easily plug in your own by implementting the :class:`raymon.SimpleExtractor` or :class:`raymon.EvalExtractor` interface. Extractors convert your data (image, Pandas Series, ...) to single value (a tag) that Raymon will track. By doing so, Raymon can support any data type.
+
+Extractors of :class:`raymon.SimpleExtractor` are suited for components of type :class:`InputComponent`, :class:`OutputComponent` and :class:`ActualComponent` and have a single value as input (i.e., the models, input, output or actual). Extractors of :class:`raymon.EvalExtractor` are only suited for components of type :class:`raymon.EvalComponent` and take in 2 arguments: the model output and the actual. 
+
+A :class:`raymon.SimpleExtractor` can for example extract a specific dimension of a vector, the sharpness of an image or some anomalyscore from a given datum. A :class:`raymon.EvalExtractor` could for example calculate the absolute error of a given prediction and actual.
 
 
 Component Stats
 ---------------
-For numeric components, :class:`raymon.NumericStats` tracks the min, max, mean, std, distribution and amount of invalid values of the component. For categoric components, :class:`raymon.CategoricStats` tracks the value frequencies and amount of invalid values. 
-
-------------------------
-Example: Vision Data
-------------------------
-
-.. code-block:: python
-    :linenos:
-
-    profile = ModelProfile(
-            name="retinopathy",
-            version="1.0.0",
-            input_comps=[
-                FloatComponent(name="sharpness", extractor=Sharpness()),
-                FloatComponent(name="intensity", extractor=AvgIntensity()),
-                FloatComponent(name="outlierscore", extractor=DN2AnomalyScorer(k=20, size=(512, 512)))
-            ],
-        )
-    # Build the profile
-    profile.build(input=loaded_data)
-    fullprofile_path = "../models/profile-retinopathy-1.1.0.json"
-    profile.save(fullprofile_path)
-    # reload the profile and validate some data
-    profile = ModelProfile().load(fullprofile_path)
-    tags = profile.validate_input(loaded_data[-1])
+:class:`raymon.Stats` objects are responible for storing statistics about extracted features. For numeric components, :class:`raymon.IntStats` and :class:`raymon.FloatStats` track the min, max, mean, std, distribution and amount of invalid values seen during building. For categoric components, :class:`raymon.CategoricStats` tracks the value frequencies and amount of invalid values. 
+Depending on the type (:code:`int`, :code:`float` or :code:`str`) a component's extractor returns, the component's stats need to be of the equivalent type (:class:`raymon.IntStats`, :class:`raymon.FloatStats` or :class:`raymon.CategoricStats`.
 
 
-This code snippet above illustrates how one can define some checks on image data. Here, only the input data is checked.
+Reducers
+--------
+Reducers take in extracted features and reduce those to one or a fixed amount of scores. For example, a reducer could reduce all absolute errors of a given dataset into the mean absolute error, or could calculate a precision and recall score.
 
-------------------------
-Example: Structured Data
-------------------------
+A reducer is of type :class:`raymon.Reducer` and needs a `name`, `inputs` and `preferences` as initialization parameters. The inputs designate the tags (outputs of the components) that the reducer should take as input, the preferences indicate whether the value should be high or low for every output. For example, when reducing the `absolute_error` component to the mean absolute error, the preference should be `low`, since a low error is better. When reducing a precision and recall score, the preference should be `high` for both outputs, since a higher score is better.
+
+
+-----------------
+Building profiles
+-----------------
+Defining a model profile is done by first defining its structure and then passing it some data to analyse. 
 
 .. code-block:: python
     :linenos:
 
-    from raymon.profiling import ModelProfile, FloatComponent
+    from raymon.profiling import (
+        ModelProfile,
+        InputComponent,
+        OutputComponent,
+        ActualComponent,
+        EvalComponent,
+        MeanReducer,
+    )
     from raymon.profiling.extractors.structured import generate_components, ElementExtractor
-    from raymon.profiling.extractors.structured.scoring import AbsoluteError, SquaredError
+
+    components = generate_components(X.dtypes, complass=InputComponent) + [
+        OutputComponent(name="prediction", extractor=ElementExtractor(element=0)),
+        ActualComponent(name="actual", extractor=ElementExtractor(element=0)),
+        EvalComponent(name="abs_error", extractor=AbsoluteRegressionError()),
+    ]
+    reducers = [
+        MeanReducer(
+            name="MAE",
+            inputs=["abs_error"],
+            preferences={"mean": "low"},
+            results=None,
+        )
+    ]
 
     profile = ModelProfile(
-        name="HousePriceModelProfile",
-        version="1.0.0",
-        input_comps=generate_components(X.dtypes),
-        output_comps=[
-            FloatComponent(name="prediction", extractor=ElementExtractor(element=0))
-        ],
-        actual_comps=[
-            FloatComponent(name="actual", extractor=ElementExtractor(element=0))
-        ],
-        eval_comps=[
-            FloatComponent(name="abs_error", extractor=AbsoluteError()),
-            FloatComponent(name="sq_error", extractor=SquaredError()),
-        ],
+        name="HousePricesCheap",
+        version="2.0.0",
+        components=components,
+        reducers=reducers,
     )
     profile.build(input=X, output=y_pred[None, :], actual=y_test[None, :])
-    profile.save(ROOT / "models/profile-houseprices-v3.0.0.json")
+    profile.save(ROOT / "models")
 
 
-This example, for structured data shows how one can define checks on inputs (tracking every element in the input vector), outputs and actuals, as well as defining scores we want to track. 
+Examples of building profiles in the basic examples `here (structured) <https://github.com/raymon-ai/raymon/blob/master/examples/1-building_structured.ipynb>`_ and `here (vision) <https://github.com/raymon-ai/raymon/blob/master/examples/2-building_cv.ipynb>`_. Examples involving output, actual and evaluator components can be found in the full `demonstrator code <https://github.com/raymon-ai/examples>`_ `here (structured data) <https://github.com/raymon-ai/demonstrators/blob/master/houseprices/houseprices/train_model.py#L174-L197>` and `here (visiondata) <https://github.com/raymon-ai/demonstrators/blob/master/retinopathy/retinopathy/train.py#L67-L114>`
+
+---------------
+Comparing profiles
+---------------
+As shown in the `examples <<https://github.com/raymon-ai/raymon/blob/master/examples>`_, rayman offers simple UIs for viewing model profiles and viewing a datum (POI) of interest in the profile. The figure below show how that looks like, but the UI is interactive. Go try it out!
+
+.. figure:: screens/profileview.png
+  :width: 800
+  :alt: Viewing a profile & poi.
+  :class: with-shadow with-border
+
+
+---------------
+Validating data
+---------------
+Validating inputs, outputs and actuals is done through calling , :meth:`raymon.ModelProfile.validate_input`, :meth:`raymon.ModelProfile.validate_output`, or :meth:`raymon.ModelProfile.validate_actual`. Validating evaluator components is done through :meth:`raymon.ModelProfile.validate_eval`. This model evaluation can also be done on the raymon backend, or through webhooks on the backend>  see :ref:`The project manifest`.
+
+.. code-block:: python
+    :linenos:
+
+    def process(self, req_id, data, metadata):
+        trace = Trace(logger=self.raymon, trace_id=str(req_id))
+
+        # validate data
+        input_tags = self.profile.validate_input(input=data)
+        trace.tag(input_tags)
+        # ...
+        pred_arr = self.model.predict(data)
+        pred = float(pred_arr[0])
+        output_tags = self.profile.validate_output(output=pred_arr)
+        trace.tag(output_tags)
+
+
+Further examples can be found on lines `204 <https://github.com/raymon-ai/demonstrators/blob/master/houseprices/houseprices/processing.py#L204>`_, `219 <https://github.com/raymon-ai/demonstrators/blob/master/houseprices/houseprices/processing.py#L219>`_ and `250 <https://github.com/raymon-ai/demonstrators/blob/master/houseprices/houseprices/processing.py#L250>`_. 
+
+---------------
+Comparing profiles
+---------------
+As shown in the `examples <https://github.com/raymon-ai/raymon/blob/master/examples>`_, rayman also offers a simple UI comparing profiles. The figure below show how that looks like, but again, the report is interactive, so you should try it out yourself.
+
+.. figure:: screens/profilecompare.png
+  :width: 800
+  :alt: Comparing 2 profiles.
+  :class: with-shadow with-border
