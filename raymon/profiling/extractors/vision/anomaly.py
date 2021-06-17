@@ -7,14 +7,16 @@ import numpy as np
 import base64
 from PIL import Image
 import os
+from pathlib import Path
 
 from raymon.profiling.extractors.structured.kmeans import KMeansOutlierScorer
+model_path = Path("../../../models/")
 
 class DN2AnomalyScorer(KMeansOutlierScorer):
     def __init__(self, k=16, size=None, clusters=None, dist="euclidean"):
         super().__init__(k=k, clusters=clusters, dist=dist)
         # model link - https://github.com/onnx/models/tree/master/vision/classification/mobilenet
-        self.mobilenet = onnxruntime.InferenceSession("raymon/models/mobilenetv2-7.onnx")
+        self.mobilenet = onnxruntime.InferenceSession(model_path + "mobilenetv2-7.onnx")
         self.size = size
                 
     def preprocess_data(self, pil_img):
@@ -95,3 +97,5 @@ class DN2AnomalyScorer(KMeansOutlierScorer):
         size = jcr["size"]
         clusters = np.frombuffer(base64.decodebytes(b64.encode()), dtype=np.float64).reshape((k, -1))
         return cls(k=k, size=size, clusters=clusters, dist=dist)
+
+
