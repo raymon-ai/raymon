@@ -6,7 +6,7 @@ MB = 1000000
 
 
 class RaymonAPI:
-    def __init__(self, url="http://localhost:8000", project_id=None, auth_path=None, env=None):
+    def __init__(self, url="https://api.raymon.ai/v0", project_id=None, auth_path=None, env=None):
         self.project_id = project_id
         self.url = url
         self.auth_path = auth_path

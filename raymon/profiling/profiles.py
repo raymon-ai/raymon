@@ -161,7 +161,6 @@ class ModelProfile(Serializable, Buildable):
                     values = component.build(data=[output, actual])
                 else:
                     raise ProfileStateException("Unknown Component type: ", type(component))
-                print(values)
                 component_values[component.name] = values
 
             for reducer in self.reducers.values():
@@ -323,7 +322,7 @@ class ModelProfile(Serializable, Buildable):
                     """
             return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
 
-    def view_contrast(self, other, mode="iframe", thresholds={}, outdir=None, silent=True):
+    def view_contrast(self, other, mode="external", thresholds={}, outdir=None, silent=True):
         if silent:
             ctx_mgr = NoOutput()
         else:
@@ -344,7 +343,7 @@ class ModelProfile(Serializable, Buildable):
         return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
 
     def view_contrast_alternatives(
-        self, alternativeA, alternativeB, mode="iframe", thresholds={}, outdir=None, silent=True
+        self, alternativeA, alternativeB, mode="external", thresholds={}, outdir=None, silent=True
     ):
         if silent:
             ctx_mgr = NoOutput()

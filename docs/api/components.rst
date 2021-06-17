@@ -2,11 +2,14 @@
 Component
 ---------
 
-.. autoclass:: raymon.FloatComponent
+.. autoclass:: raymon.InputComponent
    :members:
 
-.. autoclass:: raymon.IntComponent
+.. autoclass:: raymon.OutputComponent
    :members:
 
-.. autoclass:: raymon.CategoricComponent
+.. autoclass:: raymon.ActualComponent
+   :members:
+
+.. autoclass:: raymon.EvalComponent
    :members:

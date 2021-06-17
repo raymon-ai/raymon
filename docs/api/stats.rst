@@ -1,8 +1,10 @@
 -----
 Stats
 -----
+.. autoclass:: raymon.FloatStats
+   :members:
 
-.. autoclass:: raymon.NumericStats
+.. autoclass:: raymon.IntStats
    :members:
 
 .. autoclass:: raymon.CategoricStats

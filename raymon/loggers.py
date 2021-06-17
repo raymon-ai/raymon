@@ -140,7 +140,7 @@ class RaymonFileLogger(RaymonLoggerBase):
 
 
 class RaymonAPILogger(RaymonLoggerBase):
-    def __init__(self, url="http://localhost:8000", project_id=None, auth_path=None, env=None):
+    def __init__(self, url="https://api.raymon.ai/v0", project_id=None, auth_path=None, env=None):
         super().__init__(project_id=project_id)
         self.api = RaymonAPI(url=url, project_id=project_id, auth_path=auth_path, env=env)
 

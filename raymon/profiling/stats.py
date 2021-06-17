@@ -274,7 +274,7 @@ class NumericStats(Stats):
 
 class IntStats(NumericStats):
     def component2tag(self, name, value, tagtype):
-        if not np.isnan(value):
+        if not math.isnan(value):
             return Tag(name=name, value=int(value), type=tagtype)
         else:
             return None
@@ -283,7 +283,7 @@ class IntStats(NumericStats):
         tagname = f"{name}-error"
         if value is None:
             return Tag(name=tagname, value="Value None", type=tagtype)
-        elif np.isnan(value):
+        elif math.isnan(value):
             return Tag(name=tagname, value="Value NaN", type=tagtype)
         elif value > self.max:
             return Tag(name=tagname, value="UpperBoundError", type=tagtype)
@@ -299,7 +299,7 @@ class IntStats(NumericStats):
 
 class FloatStats(NumericStats):
     def component2tag(self, name, value, tagtype):
-        if not np.isnan(value):
+        if not math.isnan(value):
             return Tag(name=name, value=float(value), type=tagtype)
         else:
             return None
@@ -308,7 +308,7 @@ class FloatStats(NumericStats):
         tagname = f"{name}-error"
         if value is None:
             return Tag(name=tagname, value="Value None", type=tagtype)
-        elif np.isnan(value):
+        elif math.isnan(value):
             return Tag(name=tagname, value="Value NaN", type=tagtype)
         elif value > self.max:
             return Tag(name=tagname, value="UpperBoundError", type=tagtype)
@@ -443,8 +443,8 @@ class CategoricStats(Stats):
         return counts
 
     def component2tag(self, name, value, tagtype):
-        if isinstance(value, str) or not np.isnan(value):
-            return Tag(name=name, value=value, type=tagtype)
+        if isinstance(value, str):
+            return Tag(name=name, value=str(value), type=tagtype)
         else:
             return None
 
