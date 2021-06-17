@@ -107,6 +107,16 @@ Defining a model profile is done by first defining its structure and then passin
 
 Examples of building profiles in the basic examples `here (structured) <https://github.com/raymon-ai/raymon/blob/master/examples/1-building_structured.ipynb>`_ and `here (vision) <https://github.com/raymon-ai/raymon/blob/master/examples/2-building_cv.ipynb>`_. Examples involving output, actual and evaluator components can be found in the full `demonstrator code <https://github.com/raymon-ai/examples>`_ `here (structured data) <https://github.com/raymon-ai/demonstrators/blob/master/houseprices/houseprices/train_model.py#L174-L197>` and `here (visiondata) <https://github.com/raymon-ai/demonstrators/blob/master/retinopathy/retinopathy/train.py#L67-L114>`
 
+---------------
+Comparing profiles
+---------------
+As shown in the `examples <<https://github.com/raymon-ai/raymon/blob/master/examples>`_, rayman offers simple UIs for viewing model profiles and viewing a datum (POI) of interest in the profile. The figure below show how that looks like, but the UI is interactive. Go try it out!
+
+.. figure:: screens/profileview.png
+  :width: 800
+  :alt: Viewing a profile & poi.
+  :class: with-shadow with-border
+
 
 ---------------
 Validating data
@@ -127,9 +137,16 @@ Validating inputs, outputs and actuals is done through calling , :meth:`raymon.M
         pred = float(pred_arr[0])
         output_tags = self.profile.validate_output(output=pred_arr)
         trace.tag(output_tags)
-            
 
 
 Further examples can be found on lines `204 <https://github.com/raymon-ai/demonstrators/blob/master/houseprices/houseprices/processing.py#L204>`_, `219 <https://github.com/raymon-ai/demonstrators/blob/master/houseprices/houseprices/processing.py#L219>`_ and `250 <https://github.com/raymon-ai/demonstrators/blob/master/houseprices/houseprices/processing.py#L250>`_. 
 
+---------------
+Comparing profiles
+---------------
+As shown in the `examples <https://github.com/raymon-ai/raymon/blob/master/examples>`_, rayman also offers a simple UI comparing profiles. The figure below show how that looks like, but again, the report is interactive, so you should try it out yourself.
 
+.. figure:: screens/profilecompare.png
+  :width: 800
+  :alt: Comparing 2 profiles.
+  :class: with-shadow with-border
