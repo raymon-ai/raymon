@@ -10,7 +10,8 @@ Getting started
    apisetup
    logging_tracing
    profiling
+   slices
    manifest
-   modelmonitoring
-   extensions
+   uiwalkthrough
+   
    

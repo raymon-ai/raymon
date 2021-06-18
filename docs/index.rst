@@ -2,9 +2,14 @@
    sphinx-quickstart on Tue May  4 16:15:29 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
-
+   
+====================================
 Raymon: Observability for ML systems
+<<<<<<< HEAD
+====================================
+=======
 ============================================
+>>>>>>> d7b61ec4d3067feb66feb2a9a8b031b3a558b3c0
 Raymon is an observability platform for ML-based systems that requires minimal setup. It allows you to monitor data quality and model performance over multiple slices of your data, it alerts you when something is wrong and provides you with troubleshooting tooling for further anaysis. It is very extensible and it can serve for all data and model types.
 
 Raymon's functionality includes:

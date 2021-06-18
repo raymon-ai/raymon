@@ -23,7 +23,8 @@ Raymon currently has one type of profile: the :class:`raymon.ModelProfile` class
 
 Profile Components
 ------------------
-A profile component is responsible for extracting a feature from the data it is given and to distill statistics about that extracted feature. The extraction of the feature is delegated to its :code:`extractor` property, the distillation of stats to its :code:`stats` property. When validating data, the extracted feature will be returned as a :raymon.Tag: object with the component's :code:`name` as tag :name:`name` and the feature value as tag :code:`value`. 
+A profile component is responsible for extracting a feature from the data it is given and to distill statistics about that extracted feature. The extraction of the feature is delegated to its :code:`extractor` property, the distillation of stats to its :code:`stats` property. When validating data, the extracted feature will be returned as a :raymon.Tag: object with the component's :code:`name` as tag :code:`name` and the feature value as tag :code:`value`. 
+
 
 A component can be one of 4 types.
 
