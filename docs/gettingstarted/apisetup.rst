@@ -3,7 +3,7 @@ Using the API
 =============
 The Raymon backend supports communication through a REST API, and provides the :class:`raymon.RaymonAPI` class to communicate with it.
 
-To initialize the api, simply create an instance of the API class, with the API URL as paremeter.
+To initialize the api, simply create an instance of the API class, with the API URL as parameter.
 
 .. code-block:: python
   :linenos:
@@ -17,7 +17,7 @@ When executing the code snippet above, you will be asked to login to the Raymon 
 
 Creating a project with the API
 -------------------------------
-Once logged in, you can create a project, just like we already did through the web UI. This retuns a `project_id`, which needs to be passed in all api calls for that project.
+Once logged in, you can create a project, just like we already did through the web UI. This returns a `project_id`, which needs to be passed in all api calls for that project.
 
 .. code-block:: python
   :linenos:
@@ -44,7 +44,7 @@ Configuring the Raymon backend for a certain project is done using a project man
 Uploading a model profile
 -------------------------
 
-The :class:`raymon.ModelProfile` is used to capture a model's input, output and actual data characteristics and perform data validation and tagging (see :ref:`Model & Data Profiling`. You can add a modelprofile to a project as follows:
+The :class:`raymon.ModelProfile` is used to capture a model's input, output and actual data characteristics and perform data validation and tagging (see :ref:`Model & Data Profiling`. You can add a model profile to a project as follows:
 
 .. code-block:: python
   :linenos:

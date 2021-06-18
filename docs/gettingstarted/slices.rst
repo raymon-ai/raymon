@@ -28,27 +28,15 @@ As already stated, a :code:`slicestr` consists out of a combination of multiple 
     * - :code:`trace(<trace_id>)`
       - Matches all traces with a given :code:`trace_id`. This should only match 1 trace. 
       - :code:`trace()`
-<<<<<<< HEAD
     * - :code:`tagname(<tag_name>)`
       - Matches all traces that have a tag with the given name, whatever the value for that tag may be. 
       - :code:`tagname(client)`
     * - :code:`tagtype(<tag_type>)`
       - Matches all traces that have a tag with the given type, whatever the name and value for that tag may be. 
-      - :code:`tagtype(error)`, :code:`hastype(profile-actual)`
+      - :code:`tagtype(error)`, :code:`tagtype(profile-actual)`
     * - :code:`taggroup(<tag_group>)`
       - Matches all traces that have a tag with the given group, whatever the name, value or type for that tag may be. 
       - :code:`taggroup(client)`
-=======
-    * - :code:`hastag(<tag_name>)`
-      - Matches all traces that have a tag with the given name, whatever the value for that tag may be. 
-      - :code:`hastag(client)`
-    * - :code:`hastype(<tag_type>)`
-      - Matches all traces that have a tag with the given type, whatever the name and value for that tag may be. 
-      - :code:`hastype(error)`, :code:`hastype(profile-actual)`
-    * - :code:`hasgroup(<tag_group>)`
-      - Matches all traces that have a tag with the given group, whatever the name, value or type for that tag may be. 
-      - :code:`hastype(client)`
->>>>>>> 1934462b2e195503c78fd40b121a76777b390563
     * - :code:`<tag>==<value>)`
       - Matches all traces that have a tag with the given name and a value of that tag equal to the given value. 
       - :code:`client==bigshot`
@@ -73,6 +61,6 @@ Slice strings have multiple uses in Raymon. A few examples what slices allow you
 - Compare 2 slices on the dashboard view (web UI)
 - Detect issues (like model accuracy issues) per slice (backend / web UI)
 
-This is further explained in :ref:`UI Walkthrough`.
+This is further explained in :ref:`UI Overview`.
 
 
