@@ -28,15 +28,15 @@ As already stated, a :code:`slicestr` consists out of a combination of multiple 
     * - :code:`trace(<trace_id>)`
       - Matches all traces with a given :code:`trace_id`. This should only match 1 trace. 
       - :code:`trace()`
-    * - :code:`hastag(<tag_name>)`
+    * - :code:`tagname(<tag_name>)`
       - Matches all traces that have a tag with the given name, whatever the value for that tag may be. 
-      - :code:`hastag(client)`
-    * - :code:`hastype(<tag_type>)`
+      - :code:`tagname(client)`
+    * - :code:`tagtype(<tag_type>)`
       - Matches all traces that have a tag with the given type, whatever the name and value for that tag may be. 
-      - :code:`hastype(error)`, :code:`hastype(profile-actual)`
-    * - :code:`hasgroup(<tag_group>)`
+      - :code:`tagtype(error)`, :code:`hastype(profile-actual)`
+    * - :code:`taggroup(<tag_group>)`
       - Matches all traces that have a tag with the given group, whatever the name, value or type for that tag may be. 
-      - :code:`hastype(client)`
+      - :code:`taggroup(client)`
     * - :code:`<tag>==<value>)`
       - Matches all traces that have a tag with the given name and a value of that tag equal to the given value. 
       - :code:`client==bigshot`

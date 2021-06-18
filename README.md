@@ -75,7 +75,7 @@ profile = ModelProfile(
     name="houses_cheap", 
     version="0.0.1", 
     components=generate_components(all_data.dtypes),
-    )
+)
 
 ```
 
