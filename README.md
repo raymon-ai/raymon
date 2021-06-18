@@ -21,6 +21,11 @@ Raymon's functionality includes:
 
 This repository contains the Raymon client library used for data profiling, logging and interacting with the Raymon backend, contains the docs and serves as access point for any issues users might have.
 
+## Docs & Examples
+- Docs: https://docs.raymon.ai
+- Example Notebooks: https://github.com/raymon-ai/raymon/tree/master/examples
+- Full demonstrators: https://github.com/raymon-ai/demonstrators
+
 
 ## At a glance
 
@@ -89,7 +94,3 @@ profile.validate_outputs(prediction)
 ```
 For more information, check out our docs & examples!
 
-## Docs & Examples
-- Docs: https://docs.raymon.ai
-- Example Notebooks: https://github.com/raymon-ai/raymon/tree/master/examples
-- Full demonstrators: https://github.com/raymon-ai/demonstrators
