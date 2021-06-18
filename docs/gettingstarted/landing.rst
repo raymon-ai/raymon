@@ -13,5 +13,5 @@ Getting started
    slices
    manifest
    uiwalkthrough
-   
+   extensions
    
