@@ -14,7 +14,7 @@ Raymon's functionality includes:
 - Making all model predictions and their pre- and postprocessing steps traceable.
 - Validating incoming data and guarding for data drift or data health issues.
 - Monitoring your model performance
-- Benchmarking different slices of your production data against each other to expose sliced with reduced performance.
+- Benchmarking different slices of your production data against each other to expose slices with reduced performance.
 - Alerting when things break down
 - Fetching production data for further debugging
 - Exporting valuable data from production for building high-quality datasets and improving your models
