@@ -1,4 +1,4 @@
-# Raymon Logging Library
+# Raymon: ML Observability
 ![Build](https://github.com/raymon-ai/raymon/workflows/test-build-deploy/badge.svg)
 [![Documentation Status](https://readthedocs.org/projects/raymon/badge/?version=latest)](https://docs.raymon.ai/en/latest/?badge=latest)
 ![Coverage](https://raw.githubusercontent.com/raymon-ai/raymon/master/coverage.svg)
