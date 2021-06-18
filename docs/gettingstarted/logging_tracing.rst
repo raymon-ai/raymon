@@ -4,24 +4,24 @@ Traces and Tags
 
 The Raymon client library allows you to log text, data and tags to the backend. This can be done using the API's :meth:`raymon.RaymonAPI.post` method, but is simplified by using the :class:`raymon.Trace` class.
 
-A :class:`raymon.Trace` object is a small object with a unique `id` per request. It can be used to send data to the Raymon backend and connects all data logged with the same `id` to the same request, forming a *trace* of how the data was processed. You can log data from anywhere in your code, even over different services. As long as it is connected to the same `id`, Raymon will connect it to the relevant trace. Creating a :class:`raymon.Trace` object also requires an intantiated logger, as discussed in :ref:`Loggers: direct API calls vs shipping logfiles` below.
+A :class:`raymon.Trace` object is a small object with a unique :code:`trace_id` per request your system receives. It can be used to send data to the Raymon backend and connects all data logged with the same :code:`trace_id` to the same request, forming a *trace* of how the request was processed. You can log data from anywhere in your code, even over different services. As long as it is connected to the same :code:`trace_id`, Raymon will connect it to the relevant trace. Creating a :class:`raymon.Trace` object also requires logger, as discussed in :ref:`Loggers: direct API calls vs shipping logfiles` below.
 
 ----------------------------------------------
 Loggers: direct API calls vs shipping logfiles
 ----------------------------------------------
-Upon initialization, the :class:`raymon.Trace` object requires a `logger` parameter of type :class:`raymon.loggers.RaymonLoggerBase`. This logger is used by the Trace object and takes care of sending data to the backend. The library offers 2 options of sending data to the backend. One is through direct API calls by using the :class:`raymon.RaymonAPILogger` class, the other one is by logging to text files by using the :class:`raymon.RaymonFileLogger` class. Both classes offer the same interface but work differently under the hood. 
+Upon initialization, the :class:`raymon.Trace` object requires a `logger` parameter which should be a subclass of :class:`raymon.loggers.RaymonLoggerBase`. This logger is used by the Trace object and takes care of sending data to the backend. Raymon offers 2 options for this logger. One is through direct API calls by using the :class:`raymon.RaymonAPILogger` class, the other one is by logging to text files by using the :class:`raymon.RaymonFileLogger` class. Both classes offer the same interface but work differently under the hood. 
 
-The :class:`raymon.RaymonAPILogger` uses direct REST API calls to send data syncronously to the backend. This is great for testing and development, but blocks your code until the data is successfully sent and will crash when the backend can be reached. You should probably not use it in production settings.
+The :class:`raymon.RaymonAPILogger` uses direct REST API calls to send data syncronously to the backend. This is great for testing and development, but blocks your code until the data is successfully sent and will crash when the backend can't be reached. You should probably not use it in production settings.
 
-The :class:`raymon.RaymonFileLogger` simply serializes all data to a text file that must then be shipped to the backend through FluentBit or Filebeat. The advantage of using the :class:`raymon.RaymonFileLogger` is that it does not block your code with an API call and detaches your code from the Raymon backend. For those reasons it is recommended to use the :class:`raymon.RaymonFileLogger` class for production use cases. 
+The :class:`raymon.RaymonFileLogger` simply serializes all data to a text file that must then be shipped to the backend through FluentBit or Filebeat. The advantage of using the :class:`raymon.RaymonFileLogger` is that it does not block your code with an API call and detaches your production code from the Raymon backend. This is why it is recommended to use the :class:`raymon.RaymonFileLogger` class for production use cases. 
 
 --------
 Examples
 --------
 
-Enough talk, lets see some examples, right? This section lists some of the code from on of the examples: `examples/0-setup-logging.ipynb`.
+Enough talk, lets see some examples, right? This section lists some of the code from on of the example that can be found  `here <https://github.com/raymon-ai/raymon/blob/master/examples/0-setup-logging.ipynb>`_.
 
-In the code snippet below, we create an :class:`raymon.RaymonAPILogger` logger first, and then pass it as a parameter when constructing a :class:`raymon.Trace` object. We do not pass a `trace_id`, which means a `uuid` will be auto generated. If you alreay have a `uuid`, you can pass it as `trace_id`.
+In the code snippet below, we create an :class:`raymon.RaymonAPILogger` logger first, and then pass it as a parameter when constructing a :class:`raymon.Trace` object. We do not pass a :code:`trace_id`, which means a :code:`uuid` will be auto generated for this trace. If you alreay have a :code:`uuid`, you can pass it as :code:`trace_id`.
 
 After construction, we can use the trace object like a logger to log text mesages.
 
@@ -47,7 +47,9 @@ You can use the trace like any other logger to log info text messages, as shown 
 Logging Tags
 ------------
 
-Additionally, you can attach tags to the trace. :class:`raymon.Tag` objects have a :code:`name`, a :code:`value`, a :code:`type` and optionally a :code:`group`. Tags are what the Raymon backend uses for monitoring and alerting. Tags can represent anything: metadata, data quality metrics, errors during execution, execution times, etc... Tags are fundamental to how the Raymon backend works: tags allow you to filter and query data, tag cominations define slices and tags are used for monitoring and alerting.
+Additionally, you can attach tags to the trace. Tags are fundamental to how the Raymon backend works and are what the Raymon backend uses for monitoring and alerting. Tags can represent anything: metadata, data quality metrics, errors during execution, execution times, etc... Furthermore, tags allow you to filter and query data and tag cominations define slices.
+
+:class:`raymon.Tag` objects have a :code:`name`, a :code:`value`, a :code:`type` and, optionally, a :code:`group`. The tag type can be any string you want (like 'error', 'label', 'metric'), but some get a pretty color in the frontend (for example, error = red, label = blue, metric = yellow). Tag groups are simply used to be able to group tags, for example al ltags generated by a model profile (see :ref:`Model & Data Profiling`) will have the same tag group. 
 
 .. code-block:: python
     :linenos:
@@ -71,7 +73,7 @@ Additionally, you can attach tags to the trace. :class:`raymon.Tag` objects have
 
 Logging Data
 ------------
-Raymon allows you to log data artefacts to the backend too. The artefacts have a reference that must be unique within the trace and which allows you to fetch them from the backend whenever you want. By default, these artefacts are simply stored, although you can do extra processing on them with some configuration in the project manifest. (Explained in other tutorials.)
+Raymon allows you to log data artefacts to the backend too. The artefacts must have a reference (a name) that must be unique within the trace and which allows you to fetch the artefact from the backend whenever you want. By default, these artefacts are simply stored, although you can do extra processing on them with some configuration in the project manifest. (Explained in other tutorials.)
 
 All data that is logged to the Raymn platform is serialized to JSON, so all data must be serializable. Raymon offers data wrappers for popular data types that will take care of serializing your data in the `raymon.types` module. Of course, you can also define your own wrappers if you need them by implementing the :class:`raymon.types.RaymonDataType` interface.
 
@@ -89,7 +91,7 @@ All data that is logged to the Raymn platform is serialized to JSON, so all data
     arr = np.array([[1, 2], [3, 4]])
     df = pd.DataFrame(arr, columns=['a', 'b'])
 
-    trace.log(ref="native-reff", data=rt.Native(
+    trace.log(ref="native-ref", data=rt.Native(
         {"foo": "bar", 
         "whatever": ["you", "want"], 
         "all_native_types": 1}))

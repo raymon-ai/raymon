@@ -1,6 +1,6 @@
-========
-API Docs
-========
+===========
+Module Docs
+===========
 
 .. toctree::
    :maxdepth: 2
