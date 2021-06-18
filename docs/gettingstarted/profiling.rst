@@ -10,7 +10,7 @@ In short, Raymon analyses your data at training time and builds a data profile t
 Concepts: Profiles, Components, Extractors, Stats and Reducers
 --------------------------------------------------------------
 
-Raymon helps you capture data characterisics of your models inputs, outputs, actuals and output-actual evaluations using the :class:`raymon.ModelProfile` class. 
+Raymon helps you capture data characteristics of your models inputs, outputs, actuals and output-actual evaluations using the :class:`raymon.ModelProfile` class. 
 
 
 Profile
@@ -46,16 +46,16 @@ A component can be one of 4 types.
 
 Component Extractors
 --------------------
-Extractors take in a datum and extract a feature from it. Raymon provides some out-of-the-box extractors, but you can easily plug in your own by implementting the :class:`raymon.SimpleExtractor` or :class:`raymon.EvalExtractor` interface. Extractors convert your data (image, Pandas Series, ...) to single value (a tag) that Raymon will track. Since extractors only need to run in your code, and not on the raymn backend, Raymon can support any data type.
+Extractors take in a datum and extract a feature from it. Raymon provides some out-of-the-box extractors, but you can easily plug in your own by implementing the :class:`raymon.SimpleExtractor` or :class:`raymon.EvalExtractor` interface. Extractors convert your data (image, Pandas Series, ...) to single value (a tag) that Raymon will track. Since extractors only need to run in your code, and not on the raymon backend, Raymon can support any data type.
 
 Extractors of :class:`raymon.SimpleExtractor` are suited for components of type :class:`InputComponent`, :class:`OutputComponent` and :class:`ActualComponent` and have a single value as input (i.e., the models, input, output or actual). Extractors of :class:`raymon.EvalExtractor` are only suited for components of type :class:`raymon.EvalComponent` and take in 2 arguments: the model output and the actual. 
 
-A :class:`raymon.SimpleExtractor` can for example extract a specific dimension of a vector, the sharpness of an image or some anomalyscore for a given datum. A :class:`raymon.EvalExtractor` could for example calculate the absolute error of a given prediction and actual.
+A :class:`raymon.SimpleExtractor` can for example extract a specific dimension of a vector, the sharpness of an image or some anomaly score for a given datum. A :class:`raymon.EvalExtractor` could for example calculate the absolute error of a given prediction and actual.
 
 
 Component Stats
 ---------------
-:class:`raymon.Stats` objects are responible for storing statistics about extracted features. For numeric components, :class:`raymon.IntStats` and :class:`raymon.FloatStats` track the min, max, mean, std, distribution and amount of invalid values seen during building. For categoric components, :class:`raymon.CategoricStats` tracks the value frequencies and amount of invalid values. 
+:class:`raymon.Stats` objects are responsible for storing statistics about extracted features. For numeric components, :class:`raymon.IntStats` and :class:`raymon.FloatStats` track the min, max, mean, std, distribution and amount of invalid values seen during building. For categoric components, :class:`raymon.CategoricStats` tracks the value frequencies and amount of invalid values. 
 Depending on the type (:code:`int`, :code:`float` or :code:`str`) a component's extractor returns, the component's stats need to be of the equivalent type (:class:`raymon.IntStats`, :class:`raymon.FloatStats` or :class:`raymon.CategoricStats`.
 
 
@@ -72,9 +72,9 @@ Building profiles
 -----------------
 Defining a model profile is done by first defining its structure and then building it with some data. 
 
-The code snippet below illustrates for to build a :code:`ModelProfile` based on a :code:`DataFrame`. As can be seen, the profile tracks all the model's inputs, outputs, actuals and scores (evaluations). It also reduces the absulute error to the mean absolute error.
+The code snippet below illustrates for to build a :code:`ModelProfile` based on a :code:`DataFrame`. As can be seen, the profile tracks all the model's inputs, outputs, actuals and scores (evaluations). It also reduces the absolute error to the mean absolute error.
 
-Note the use of the :meth:`raymon.profiling.extractors.structured.generate_components` function on line 11. This method generates a component for every column in the input Dataframe.
+Note the use of the :meth:`raymon.profiling.extractors.structured.generate_components` function on line 11. This method generates a component for every column in the input DataFrame.
 
 .. code-block:: python
     :linenos:
@@ -89,7 +89,7 @@ Note the use of the :meth:`raymon.profiling.extractors.structured.generate_compo
     )
     from raymon.profiling.extractors.structured import generate_components, ElementExtractor
 
-    components = generate_components(X.dtypes, complass=InputComponent) + [
+    components = generate_components(X.dtypes, compclass=InputComponent) + [
         OutputComponent(name="prediction", extractor=ElementExtractor(element=0)),
         ActualComponent(name="actual", extractor=ElementExtractor(element=0)),
         EvalComponent(name="abs_error", extractor=AbsoluteRegressionError()),
@@ -113,12 +113,12 @@ Note the use of the :meth:`raymon.profiling.extractors.structured.generate_compo
     profile.save(ROOT / "models")
 
 
-More examples of building profiles can be found in the basic examples `here (structured) <https://github.com/raymon-ai/raymon/blob/master/examples/1-building_structured.ipynb>`_ and `here (vision) <https://github.com/raymon-ai/raymon/blob/master/examples/2-building_cv.ipynb>`_ and in full `demonstrator code <https://github.com/raymon-ai/examples>`_ `here (structured data) <https://github.com/raymon-ai/demonstrators/blob/master/houseprices/houseprices/train_model.py#L174-L197>`_ and `here (visiondata) <https://github.com/raymon-ai/demonstrators/blob/master/retinopathy/retinopathy/train.py#L67-L114>`_
+More examples of building profiles can be found in the basic examples `here (structured) <https://github.com/raymon-ai/raymon/blob/master/examples/1-building_structured.ipynb>`_ and `here (vision) <https://github.com/raymon-ai/raymon/blob/master/examples/2-building_cv.ipynb>`_ and in full `demonstrator code <https://github.com/raymon-ai/examples>`_ `here (structured data) <https://github.com/raymon-ai/demonstrators/blob/master/houseprices/houseprices/train_model.py#L174-L197>`_ and `here (vision data) <https://github.com/raymon-ai/demonstrators/blob/master/retinopathy/retinopathy/train.py#L67-L114>`_
 
 ----------------
 Viewing profiles
 ----------------
-As shown in the `examples <https://github.com/raymon-ai/raymon/blob/master/examples>`_, rayman offers a simple UI for viewing model profiles and comparing a POI with the profile. The figure below show what that looks like, but the UI is interactive, so you should go try it out yourself!
+As shown in the `examples <https://github.com/raymon-ai/raymon/blob/master/examples>`_, raymon offers a simple UI for viewing model profiles and comparing a POI with the profile. The figure below show what that looks like, but the UI is interactive, so you should go try it out yourself!
 
 .. figure:: screens/profileview.png
   :width: 800

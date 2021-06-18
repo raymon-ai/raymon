@@ -51,7 +51,7 @@ When creating a project, you own it and only you have access to it. By clicking 
 
 .. figure:: screens/transfer.png
   :width: 400
-  :alt: Transfering a project by clicking on the icon.
+  :alt: Transferring a project by clicking on the icon.
   :class: with-shadow with-border
 
 When all is set up, your screen could look as follows.

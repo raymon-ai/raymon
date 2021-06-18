@@ -7,7 +7,7 @@
 <a href="https://pypi.org/project/raymon/"><img alt="PyPI" src="https://img.shields.io/pypi/v/raymon"></a>
 
 ## What is Raymon?
-[Raymon.ai](http://raymon.ai) is an observability platform for ML-based systems that requires minimal setup. It allows you to monitor data quality and model performance over multiple slices of your data, it alerts you when something is wrong and provides you with troubleshooting tooling for further anaysis. It is very extensible and it can serve for all data and model types.
+[Raymon.ai](http://raymon.ai) is an observability platform for ML-based systems that requires minimal setup. It allows you to monitor data quality and model performance over multiple slices of your data, it alerts you when something is wrong and provides you with troubleshooting tooling for further analysis. It is very extensible and it can serve for all data and model types.
 
 Raymon's functionality includes:
 
@@ -38,7 +38,7 @@ pip install raymon
 
 ### Logging text, data and tags
 
-Raymon allows you to easiliy make model predictions traceable by enabling you to log text, data and tags.
+Raymon allows you to easily make model predictions traceable by enabling you to log text, data and tags.
 
 ```python
 import pandas as pd

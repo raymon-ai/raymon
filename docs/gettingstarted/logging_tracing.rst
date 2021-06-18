@@ -63,7 +63,7 @@ Additionally, you can attach tags to the trace. Tags are fundamental to how the 
             "value": "bigshot_client",
             "type": "label"
         },
-        # Using the Tag ogbject
+        # Using the Tag object
         Tag(name="sdk_version", value="1.4.2", type="label"),
         Tag(name="prediction_time_ms", value="120", type="metric")
     ]
@@ -73,9 +73,9 @@ Additionally, you can attach tags to the trace. Tags are fundamental to how the 
 
 Logging Data
 ------------
-Raymon allows you to log data artefacts to the backend too. The artefacts must have a reference (a name) that must be unique within the trace and which allows you to fetch the artefact from the backend whenever you want. By default, these artefacts are simply stored, although you can do extra processing on them with some configuration in the project manifest. (Explained in other tutorials.)
+Raymon allows you to log data to the backend too. The data objects must have a reference (a name) that must be unique within the trace and which allows you to fetch the artefact from the backend whenever you want. By default, these objects are simply stored, although you can do extra processing on them with some configuration in the project manifest. (Explained in other tutorials.)
 
-All data that is logged to the Raymn platform is serialized to JSON, so all data must be serializable. Raymon offers data wrappers for popular data types that will take care of serializing your data in the `raymon.types` module. Of course, you can also define your own wrappers if you need them by implementing the :class:`raymon.types.RaymonDataType` interface.
+All data that is logged to the Raymon platform is serialized to JSON, so all data must be serializable. Raymon offers data wrappers for popular data types that will take care of serializing your data in the `raymon.types` module. Of course, you can also define your own wrappers if you need them by implementing the :class:`raymon.types.RaymonDataType` interface.
 
 .. code-block:: python
     :linenos:
@@ -105,7 +105,7 @@ All data that is logged to the Raymn platform is serialized to JSON, so all data
 -------------------------------
 Retrieving Traces and Artefacts
 -------------------------------
-After logging this data, you can navigate to the `web UI <https://ui.raymon.ai>`_ and navigate to the Traces tab. There, you shoudl see one trace, with 3 tags. When clicking on the eye icon, the trace should open and you should see the tags, text and data you have logged as shown below.
+After logging this data, you can navigate to the `web UI <https://ui.raymon.ai>`_ and navigate to the Traces tab. There, you should see one trace, with 3 tags. When clicking on the eye icon, the trace should open and you should see the tags, text and data you have logged as shown below.
 
 .. figure:: screens/logged_data.png
   :width: 800
