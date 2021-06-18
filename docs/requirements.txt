@@ -1,2 +1,3 @@
 furo  # Sphinx theme
 raymon
+nbsphinx
