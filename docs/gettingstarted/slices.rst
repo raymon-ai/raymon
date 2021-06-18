@@ -37,7 +37,7 @@ As already stated, a :code:`slicestr` consists out of a combination of multiple 
     * - :code:`taggroup(<tag_group>)`
       - Matches all traces that have a tag with the given group, whatever the name, value or type for that tag may be. 
       - :code:`taggroup(client)`
-    * - :code:`<tag>==<value>)`
+    * - :code:`<tag>==<value>`
       - Matches all traces that have a tag with the given name and a value of that tag equal to the given value. 
       - :code:`client==bigshot`
     * - :code:`<tag>!=<value>`
@@ -46,9 +46,9 @@ As already stated, a :code:`slicestr` consists out of a combination of multiple 
     * - :code:`<tag>>=<value>`
       - Matches all traces that have a tag with the given name and a value of that tag greater than or equal to the given value. 
       - :code:`outlier_score>=50`, :code:`abs_error>=10`
-    * - :code:`<tag><>=<value>`
+    * - :code:`<tag><=<value>`
       - Matches all traces that have a tag with the given name and a value of that tag smaller than or equal to the given value. 
-      - :code:`outlier_score<>=50`, :code:`abs_error<>=10`
+      - :code:`outlier_score<=50`, :code:`abs_error<=10`
     
 -------------------
 Using slices
