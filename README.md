@@ -19,7 +19,7 @@ Raymon's functionality includes:
 - Fetching production data for further debugging
 - Exporting valuable data from production for building high-quality datasets and improving your models
 
-This repository contains the Raymon client library used for data profiling, logging and interacting with the Raymon backend, contains the docs and serves as access point for any issues users might have.
+This repository contains the Raymon client library used for data profiling and logging that can be used standalone. It further contains the docs and serves as access point for any issues users might have.
 
 
 ## Docs & Examples
