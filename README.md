@@ -14,12 +14,13 @@ Raymon's functionality includes:
 - Making all model predictions and their pre- and postprocessing steps traceable.
 - Validating incoming data and guarding for data drift or data health issues.
 - Monitoring your model performance
-- Benchmarking different slices of your production data against each other to expose sliced with reduced performance.
+- Benchmarking different slices of your production data against each other to expose slices with reduced performance.
 - Alerting when things break down
 - Fetching production data for further debugging
 - Exporting valuable data from production for building high-quality datasets and improving your models
 
 This repository contains the Raymon client library used for data profiling, logging and interacting with the Raymon backend, contains the docs and serves as access point for any issues users might have.
+
 
 ## Docs & Examples
 - Docs: https://docs.raymon.ai
@@ -80,7 +81,7 @@ profile = ModelProfile(
     name="houses_cheap", 
     version="0.0.1", 
     components=generate_components(all_data.dtypes),
-)
+    )
 
 ```
 
@@ -93,4 +94,3 @@ profile.validate_outputs(prediction)
 
 ```
 For more information, check out our docs & examples!
-
