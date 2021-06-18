@@ -7,7 +7,17 @@
 <a href="https://pypi.org/project/raymon/"><img alt="PyPI" src="https://img.shields.io/pypi/v/raymon"></a>
 
 ## What?
-[Raymon.ai](http://raymon.ai) is an observability platform tailored for ML systems. It helps you monitor data quality and model performance, it alerts you when data quality or model performance drops and provides you with troubleshooting tooling for root cause analysis. This repository contains the open source logging and data profiling library required to interact with the backend. 
+[Raymon.ai](http://raymon.ai) is an observability platform for ML-based systems that requires minimal setup. It allows you to monitor data quality and model performance over multiple slices of your data, it alerts you when something is wrong and provides you with troubleshooting tooling for further anaysis. It is very extensible and it can serve for all data and model types.
+
+Raymon's functionality includes:
+
+- Making all model predictions and their pre- and postprocessing steps traceable.
+- Validating incoming data and guarding for data drift or data health issues.
+- Monitoring your model performance
+- Benchmarking different slices of your production data against each other to expose sliced with reduced performance.
+- Alerting when things break down
+- Fetching production data for further debugging
+- Exporting valuable data from production for building high-quality datasets and improving your models
 
 ## At a glance
 

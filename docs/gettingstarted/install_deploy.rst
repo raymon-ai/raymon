@@ -7,7 +7,7 @@ Raymon offers a client library and a backend. This backend can be self hosted, o
 ---------------------------
 Client library
 ---------------------------
-Installation from PyPI is the default way to install the raymon client library. This library can be used to integrate in your production code and send data to the Raymon backend that can be deployed and managed by you, or can be hosted by us. See :ref:`Deploying the Raymon backend`
+Installation from PyPI is the default way to install the Raymon client library. This library can be used to integrate in your production code and send data to the Raymon backend.
 
 .. code:: bash
 
@@ -42,12 +42,12 @@ Before being able to push data to the backend, you need to create a project. You
 
 Creating an organization
 ========================
-You can create an organization by clicking the "create organization" button and giving your organization a name. Afterwards, you can add team members to your organization by clicking the "Add Member" button and enering your coworkers user id (which can be found at the top right of the screen after logging in) and a readable name.
+You can create an organization by clicking the "create organization" button and giving your organization a name. Afterwards, you can add team members to your organization by clicking the "Add Member" button and entering your coworkers user id (which can be found at the top right of the screen after logging in) and a readable name.
 
 --------------------
 Transfering Projects
 --------------------
-When creating a project, you own it and only you have access to it. By clicking the transfer button at the top right of the project overview, you can transfer the project to your organization. When a project belongs to your organization, team members also get access to the project too. All projects where production systems write data to should probably be owned by your organization. 
+When creating a project, you own it and only you have access to it. By clicking the transfer button at the top right of the project box, you can transfer the project to your organization. When a project belongs to your organization, team members get access to the project too. All projects where production systems write data to should probably be owned by your organization. 
 
 .. figure:: screens/transfer.png
   :width: 400
