@@ -1,26 +1,20 @@
 #%%Import Libraries 
 import numpy as np
-import random
 from PIL import Image
-from PIL import ImageFile
 import math
-from importlib_resources import files
+import pkg_resources
+import glob
 from collections.abc import Iterable
 
 from raymon.profiling.extractors.vision import DN2AnomalyScorer
 
-from PIL import ImageFilter
-from PIL import ImageEnhance
-
 #%%
-ImageFile.LOAD_TRUNCATED_IMAGES = True
-TEST_DATA_PATH = files('raymon').joinpath('tests/profiling/retinopathy_data/3')
-DATA_PATH = files('raymon').joinpath('tests/profiling/retinopathy_data/1')
+TEST_DATA_PATH=pkg_resources.resource_filename("raymon", "tests/profiling/retinopathy_data/3")
 # Test data contains max 10 different images
 test_LIM = 10
 
 def load_data(dpath, lim):
-    files = dpath.glob("*.jpeg")
+    files = glob.glob(dpath + "/*.jpeg")
     images = []
     for n, fpath in enumerate(files):
         if n == lim:
@@ -64,12 +58,12 @@ def test_build():
 def test_extract():
     extractor=DN2AnomalyScorer(k=3, size=(256, 256)) 
     extractor.build(data=test_data, batch_size=5)
-    DATA_PATH1 = files('raymon').joinpath('tests/profiling/retinopathy_data/3/test/8627_left.jpeg')
-    normal_image = Image.open(DATA_PATH1)
+    normal_image_path = pkg_resources.resource_filename("raymon", "tests/profiling/retinopathy_data/3/test/8627_left.jpeg")
+    normal_image = Image.open(normal_image_path)
     normal_image.thumbnail(size=(500, 500))
     normal_outlier_score = extractor.extract(normal_image)
-    DATA_PATH2 = files('raymon').joinpath('tests/profiling/retinopathy_data/3/test/8631_left.jpeg')
-    blur_image = Image.open(DATA_PATH2)
+    blur_image_path = pkg_resources.resource_filename("raymon", "tests/profiling/retinopathy_data/3/test/8631_left.jpeg")
+    blur_image = Image.open(blur_image_path)
     blur_image.thumbnail(size=(500, 500))
     blur_outlier_score = extractor.extract(blur_image)
     message = "Blurred image's outlier score must be bigger than normal image's everytime."
