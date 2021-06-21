@@ -7,13 +7,11 @@ import pkg_resources
 import numpy as np
 import base64
 from PIL import Image
-import os
-from pathlib import Path
 from collections.abc import Iterable
 
 from raymon.profiling.extractors.structured.kmeans import KMeansOutlierScorer
 
-model_path=pkg_resources.resource_filename("raymon", "raymon/models/mobilenetv2-7.onnx")
+model_path=pkg_resources.resource_filename("raymon", "models/mobilenetv2-7.onnx")
 
 class DN2AnomalyScorer(KMeansOutlierScorer):
     def __init__(self, k=16, size=None, clusters=None, dist="euclidean"):
