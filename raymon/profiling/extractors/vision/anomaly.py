@@ -2,29 +2,31 @@
 # https://pytorch.org/tutorials/advanced/super_resolution_with_onnxruntime.html
 
 import onnxruntime
+from importlib_resources import files
 
 import numpy as np
 import base64
 from PIL import Image
 import os
-from pathlib import Path
+#from pathlib import Path
 from collections.abc import Iterable
 
 from raymon.profiling.extractors.structured.kmeans import KMeansOutlierScorer
-model_path = Path("../../../models/")
+model_path = files('raymon').joinpath('models/mobilenetv2-7.onnx')
+model_path2 = str(model_path)
 
 class DN2AnomalyScorer(KMeansOutlierScorer):
     def __init__(self, k=16, size=None, clusters=None, dist="euclidean"):
         super().__init__(k=k, clusters=clusters, dist=dist)
         # model link - https://github.com/onnx/models/tree/master/vision/classification/mobilenet
-        self.mobilenet = onnxruntime.InferenceSession(model_path + "mobilenetv2-7.onnx")
+        self.mobilenet = onnxruntime.InferenceSession(model_path2)
         self.size = size
                 
-    def preprocess(self, pil_img):
-        # resize pil image 
-        img = pil_img.resize(size=(224, 224))
+    def preprocess(self, img):
         # Convert pil_image into numpy
         numpy_img = np.array( img, dtype=np.float32 ) 
+        # resize image 
+        numpy_img = np.resize(numpy_img, (224, 224, 3))
         # reshape image for onnx model
         numpy_img = numpy_img.reshape( [1, 3, 224, 224] ) 
         return numpy_img
@@ -56,12 +58,11 @@ class DN2AnomalyScorer(KMeansOutlierScorer):
         return dataloader
 
     def extract(self, data):
-        if not isinstance(data, Image.Image) or not isinstance(data, np.ndarray):
+        if not isinstance(data, Image.Image) and not isinstance(data, np.ndarray):
             raise ValueError(f"type of data must be PIL.Image.Image or numpy.ndarray, not {type(data)}")
         numpy_img = {self.mobilenet.get_inputs()[0].name: self.preprocess(data)}
         feats = self.mobilenet.run(None, input_feed=numpy_img)
-        print('emre')
-        return super().extract(data=feats) 
+        return super().extract(data=feats[0]) 
 
     def build(self, data, batch_size=16): 
         if not isinstance(data, Iterable):
@@ -97,7 +98,6 @@ class DN2AnomalyScorer(KMeansOutlierScorer):
         size = jcr["size"]
         clusters = np.frombuffer(base64.decodebytes(b64.encode()), dtype=np.float64).reshape((k, -1))
         return cls(k=k, size=size, clusters=clusters, dist=dist)
-
 
 
 
