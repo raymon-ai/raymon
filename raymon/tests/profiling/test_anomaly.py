@@ -22,6 +22,7 @@ def load_data(dpath, lim):
         images.append(img)
     return images
 
+
 test_data = load_data(dpath=TEST_DATA_PATH, lim=test_LIM)
 
 
@@ -47,8 +48,8 @@ def test_prepare_batch():
     assert actual_batch_number == expected_batch_number, message
 
 
-def test_build(): 
-    extractor = DN2AnomalyScorer(k=3, size=(256, 256)) 
+def test_build():
+    extractor = DN2AnomalyScorer(k=3, size=(256, 256))
     extractor.build(data=test_data, batch_size=5)
     actual_cluster_number = len(extractor.clusters)
     expected_cluster_number = extractor.k
@@ -57,7 +58,7 @@ def test_build():
 
 
 def test_extract():
-    extractor=DN2AnomalyScorer(k=3, size=(256, 256)) 
+    extractor = DN2AnomalyScorer(k=3, size=(256, 256))
     extractor.build(data=test_data, batch_size=5)
     normal_image_path = pkg_resources.resource_filename(
         "raymon", "tests/profiling/retinopathy_data/3/test/8627_left.jpeg"
@@ -91,4 +92,3 @@ def test_from_jcr():
     other_extractor = extractor.from_jcr(jcr)
     assert other_extractor.k == extractor.k
     assert other_extractor.size == extractor.size
-
