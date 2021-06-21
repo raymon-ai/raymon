@@ -2,24 +2,24 @@
 # https://pytorch.org/tutorials/advanced/super_resolution_with_onnxruntime.html
 
 import onnxruntime
-from importlib_resources import files
+import pkg_resources
 
 import numpy as np
 import base64
 from PIL import Image
 import os
-#from pathlib import Path
+from pathlib import Path
 from collections.abc import Iterable
 
 from raymon.profiling.extractors.structured.kmeans import KMeansOutlierScorer
-model_path = files('raymon').joinpath('models/mobilenetv2-7.onnx')
-model_path2 = str(model_path)
+
+model_path=pkg_resources.resource_filename("raymon", "raymon/models/mobilenetv2-7.onnx")
 
 class DN2AnomalyScorer(KMeansOutlierScorer):
     def __init__(self, k=16, size=None, clusters=None, dist="euclidean"):
         super().__init__(k=k, clusters=clusters, dist=dist)
         # model link - https://github.com/onnx/models/tree/master/vision/classification/mobilenet
-        self.mobilenet = onnxruntime.InferenceSession(model_path2)
+        self.mobilenet = onnxruntime.InferenceSession(model_path)
         self.size = size
                 
     def preprocess(self, img):
