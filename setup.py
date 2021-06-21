@@ -25,5 +25,6 @@ setuptools.setup(
     install_requires=REQUIREMENTS,
     package_data={
         "raymon": ["frontend/*"],
+        "raymon": ["raymon/models/*"]
     },
 )
