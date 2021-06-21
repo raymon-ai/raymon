@@ -25,6 +25,7 @@ setuptools.setup(
     install_requires=REQUIREMENTS,
     package_data={
         "raymon": ["frontend/*"],
-        "raymon": ["raymon/models/*"]
+        "raymon": ["raymon/models/*"],
+        "raymon": ["raymon/tests/profiling/retinopathy_data/3*"]
     },
 )
