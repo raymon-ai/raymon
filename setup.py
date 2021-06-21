@@ -26,6 +26,6 @@ setuptools.setup(
     package_data={
         "raymon": ["frontend/*"],
         "raymon": ["raymon/models/*"],
-        "raymon": ["raymon/tests/profiling/retinopathy_data/3*"]
+        "raymon": ["raymon/tests/profiling/retinopathy_data/3*"],
     },
 )
