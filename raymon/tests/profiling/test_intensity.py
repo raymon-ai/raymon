@@ -1,32 +1,15 @@
 from raymon.profiling.extractors.vision import AvgIntensity
-import glob
-from PIL import Image
+from raymon.tests.conftest import load_data
 
 
-def load_data(dpath, lim):
-    files = glob.glob(dpath + "/*.jpeg")
-    images = []
-    for n, fpath in enumerate(files):
-        if n == lim:
-            break
-        img = Image.open(fpath)
-        img.thumbnail(size=(500, 500))
-        images.append(img)
-    return images
-
-
-test_LIM = 10
-test_data = load_data(dpath="raymon/tests/sample_data", lim=test_LIM)
-
-
-def test_extract():
+def test_extract(load_data):
     extractor = AvgIntensity()
-    assert isinstance(extractor.extract(test_data[0]), float)
+    assert isinstance(extractor.extract(load_data[0]), float)
 
 
-def test_extract_multiple():
+def test_extract_multiple(load_data):
     extractor = AvgIntensity()
-    avg_intensity_list = extractor.extract_multiple(test_data)
+    avg_intensity_list = extractor.extract_multiple(load_data)
     assert isinstance(avg_intensity_list, list)
     assert isinstance(avg_intensity_list[0], float)
 
@@ -44,9 +27,9 @@ def test_from_jcr():
     assert isinstance(extractor.from_jcr(jcr), AvgIntensity)
 
 
-def test_build():
+def test_build(load_data):
     extractor = AvgIntensity()
-    extractor.build(test_data[0])
+    extractor.build(load_data[0])
 
 
 def test_is_built():
