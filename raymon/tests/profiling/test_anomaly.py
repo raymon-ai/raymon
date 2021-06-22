@@ -5,9 +5,6 @@ import glob
 from collections.abc import Iterable
 from raymon.profiling.extractors.vision import DN2AnomalyScorer
 
-# Test data contains max 10 different images
-test_LIM = 10
-
 
 def load_data(dpath, lim):
     files = glob.glob(dpath + "/*.jpeg")
@@ -21,11 +18,10 @@ def load_data(dpath, lim):
     return images
 
 
-test_data = load_data(dpath="../sample_data", lim=test_LIM)
-
-
 def test_preprocess():
     extractor = DN2AnomalyScorer(k=3, size=(256, 256))
+    test_LIM = 10
+    test_data = load_data(dpath="sample_data", lim=test_LIM)
     pil_image = test_data[0]
     numpy_img = np.array(pil_image, dtype=np.float32)
     img_list = [pil_image, numpy_img]
@@ -37,6 +33,8 @@ def test_preprocess():
 
 def test_prepare_batch():
     extractor = DN2AnomalyScorer(k=3, size=(256, 256))
+    test_LIM = 10
+    test_data = load_data(dpath="sample_data", lim=test_LIM)
     batch_size = 5
     actual_batch_number = len(extractor.prepare_batch(test_data, batch_size))
     expected_batch_number = math.ceil(len(test_data) / batch_size)
@@ -48,6 +46,8 @@ def test_prepare_batch():
 
 def test_build():
     extractor = DN2AnomalyScorer(k=3, size=(256, 256))
+    test_LIM = 10
+    test_data = load_data(dpath="sample_data", lim=test_LIM)
     extractor.build(data=test_data, batch_size=5)
     actual_cluster_number = len(extractor.clusters)
     expected_cluster_number = extractor.k
@@ -57,12 +57,14 @@ def test_build():
 
 def test_extract():
     extractor = DN2AnomalyScorer(k=3, size=(256, 256))
+    test_LIM = 10
+    test_data = load_data(dpath="sample_data", lim=test_LIM)
     extractor.build(data=test_data, batch_size=5)
-    normal_image_path = "../sample_data/863_right.jpeg"
+    normal_image_path = "sample_data/863_right.jpeg"
     normal_image = Image.open(normal_image_path)
     normal_image.thumbnail(size=(500, 500))
     normal_outlier_score = extractor.extract(normal_image)
-    blur_image_path = "../sample_data/8631_left.jpeg"
+    blur_image_path = "sample_data/8631_left.jpeg"
     blur_image = Image.open(blur_image_path)
     blur_image.thumbnail(size=(500, 500))
     blur_outlier_score = extractor.extract(blur_image)
@@ -73,6 +75,8 @@ def test_extract():
 
 def test_to_jcr():
     extractor = DN2AnomalyScorer(k=3, size=(256, 256))
+    test_LIM = 10
+    test_data = load_data(dpath="sample_data", lim=test_LIM)
     extractor.build(data=test_data, batch_size=5)
     assert extractor.to_jcr()["class"] == "raymon.profiling.extractors.vision.anomaly.DN2AnomalyScorer"
     assert extractor.to_jcr()["state"]["k"] == extractor.k
@@ -81,6 +85,8 @@ def test_to_jcr():
 
 def test_from_jcr():
     extractor = DN2AnomalyScorer(k=3, size=(256, 256))
+    test_LIM = 10
+    test_data = load_data(dpath="sample_data", lim=test_LIM)
     extractor.build(data=test_data, batch_size=5)
     jcr = extractor.to_jcr()["state"]
     other_extractor = extractor.from_jcr(jcr)
