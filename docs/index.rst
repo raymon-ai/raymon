@@ -5,12 +5,8 @@
    
 ====================================
 Raymon: Observability for ML systems
-<<<<<<< HEAD
 ====================================
-=======
-============================================
->>>>>>> d7b61ec4d3067feb66feb2a9a8b031b3a558b3c0
-Raymon is an observability platform for ML-based systems that requires minimal setup. It allows you to monitor data quality and model performance over multiple slices of your data, it alerts you when something is wrong and provides you with troubleshooting tooling for further anaysis. It is very extensible and it can serve for all data and model types.
+Raymon is an observability platform for ML-based systems that requires minimal setup. It allows you to monitor data quality and model performance over multiple slices of your data, it alerts you when something is wrong and provides you with troubleshooting tooling for further analysis. It is very extensible and it can serve for all data and model types.
 
 Raymon's functionality includes:
 
@@ -41,7 +37,7 @@ Wikipedia defines Observability as follows:
 
    Observability is a measure of how well internal states of a system can be inferred from knowledge of its external outputs.
 
-Raymon helps you log, store, process and retrieve any info or data that you might need to verfiy your systems are healthy or to determine what is wrong. It aims to be a full solution for all monitoring and troubleshooting tailored for ML-powered systems. 
+Raymon helps you log, store, process and retrieve any info or data that you might need to verify your systems are healthy or to determine what is wrong. It aims to be a full solution for all monitoring and troubleshooting tailored for ML-powered systems. 
 
 
 ..................
