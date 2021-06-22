@@ -35,7 +35,7 @@ def test_to_jcr():
     extractor = AvgIntensity()
     jcr = extractor.to_jcr()
     assert jcr["class"] == "raymon.profiling.extractors.vision.intensity.AvgIntensity"
-    assert not jcr["state"]
+    assert len(jcr["state"]) == 0
 
 
 def test_from_jcr():
@@ -46,7 +46,7 @@ def test_from_jcr():
 
 def test_build():
     extractor = AvgIntensity()
-    assert not extractor.build(test_data[0])
+    extractor.build(test_data[0])
 
 
 def test_is_built():
