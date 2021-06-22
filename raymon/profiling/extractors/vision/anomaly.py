@@ -32,6 +32,8 @@ class DN2AnomalyScorer(KMeansOutlierScorer):
             yield batch_numpy.astype(np.float32)
 
     def preprocess(self, pil_img):
+        if isinstance(pil_img, np.ndarray):
+            pil_img = Image.fromarray(pil_img)
         pil_resized = pil_img.resize(size=self.size)
         np_img = np.array(pil_resized) / 255
         np_std = (np_img - np.array([0.485, 0.456, 0.406])) / np.array([0.229, 0.224, 0.225])
