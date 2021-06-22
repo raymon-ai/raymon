@@ -67,7 +67,7 @@ class DN2AnomalyScorer(KMeansOutlierScorer):
     def to_jcr(self):
         b64 = base64.b64encode(self.clusters).decode()
         diststr = [k for k, v in self.dist_choices.items() if v == self.dist][0]
-        data = {"clusters": b64, "k": self.k, "dist": diststr, "size": self.size}
+        data = {"clusters": b64, "k": self.k, "dist": diststr}
         state = {"class": self.class2str(), "state": data}
         return state
 
@@ -76,6 +76,5 @@ class DN2AnomalyScorer(KMeansOutlierScorer):
         k = jcr["k"]
         b64 = jcr["clusters"]
         dist = jcr["dist"]
-        size = jcr["size"]
         clusters = np.frombuffer(base64.decodebytes(b64.encode()), dtype=np.float64).reshape((k, -1))
-        return cls(k=k, size=size, clusters=clusters, dist=dist)
+        return cls(k=k, clusters=clusters, dist=dist)
