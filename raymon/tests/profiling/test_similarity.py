@@ -55,7 +55,12 @@ def test_from_jcr(load_data):
     extractor = FixedSubpatchSimilarity(patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, nrefs=2)
     extractor.build(load_data)
     jcr = extractor.to_jcr()
-    isinstance(extractor.from_jcr(jcr), FixedSubpatchSimilarity)
+    other_extractor = extractor.from_jcr(jcr)
+    assert isinstance(other_extractor, FixedSubpatchSimilarity)
+    assert extractor.patch["x1"] == 64
+    assert extractor.nrefs == 2
+    assert len(extractor.refs) == 2
+    assert isinstance(extractor.refs[0], imagehash.ImageHash)
 
 
 def test_is_built(load_data):
