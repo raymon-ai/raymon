@@ -1,16 +1,13 @@
 import numpy as np
 from PIL import Image
 import math
-import os
 import glob
 from collections.abc import Iterable
 from raymon.profiling.extractors.vision import DN2AnomalyScorer
 
 
 def load_data(dpath, lim):
-    print(dpath)
     files = glob.glob(dpath + "/*.jpeg")
-    print(os.getcwd())
     images = []
     for n, fpath in enumerate(files):
         if n == lim:
@@ -21,10 +18,12 @@ def load_data(dpath, lim):
     return images
 
 
+test_LIM = 10
+test_data = load_data(dpath="raymon/tests/sample_data", lim=test_LIM)
+
+
 def test_preprocess():
     extractor = DN2AnomalyScorer(k=3, size=(256, 256))
-    test_LIM = 10
-    test_data = load_data(dpath="raymon/tests/sample_data", lim=test_LIM)
     pil_image = test_data[0]
     numpy_img = np.array(pil_image, dtype=np.float32)
     img_list = [pil_image, numpy_img]
@@ -36,8 +35,6 @@ def test_preprocess():
 
 def test_prepare_batch():
     extractor = DN2AnomalyScorer(k=3, size=(256, 256))
-    test_LIM = 10
-    test_data = load_data(dpath="raymon/tests/sample_data", lim=test_LIM)
     batch_size = 5
     actual_batch_number = len(extractor.prepare_batch(test_data, batch_size))
     expected_batch_number = math.ceil(len(test_data) / batch_size)
@@ -49,8 +46,6 @@ def test_prepare_batch():
 
 def test_build():
     extractor = DN2AnomalyScorer(k=3, size=(256, 256))
-    test_LIM = 10
-    test_data = load_data(dpath="raymon/tests/sample_data", lim=test_LIM)
     extractor.build(data=test_data, batch_size=5)
     actual_cluster_number = len(extractor.clusters)
     expected_cluster_number = extractor.k
@@ -60,8 +55,6 @@ def test_build():
 
 def test_extract():
     extractor = DN2AnomalyScorer(k=3, size=(256, 256))
-    test_LIM = 10
-    test_data = load_data(dpath="raymon/tests/sample_data", lim=test_LIM)
     extractor.build(data=test_data, batch_size=5)
     normal_image_path = "raymon/tests/sample_data/863_right.jpeg"
     normal_image = Image.open(normal_image_path)
@@ -78,8 +71,6 @@ def test_extract():
 
 def test_to_jcr():
     extractor = DN2AnomalyScorer(k=3, size=(256, 256))
-    test_LIM = 10
-    test_data = load_data(dpath="raymon/tests/sample_data", lim=test_LIM)
     extractor.build(data=test_data, batch_size=5)
     assert extractor.to_jcr()["class"] == "raymon.profiling.extractors.vision.anomaly.DN2AnomalyScorer"
     assert extractor.to_jcr()["state"]["k"] == extractor.k
@@ -88,8 +79,6 @@ def test_to_jcr():
 
 def test_from_jcr():
     extractor = DN2AnomalyScorer(k=3, size=(256, 256))
-    test_LIM = 10
-    test_data = load_data(dpath="raymon/tests/sample_data", lim=test_LIM)
     extractor.build(data=test_data, batch_size=5)
     jcr = extractor.to_jcr()["state"]
     other_extractor = extractor.from_jcr(jcr)
