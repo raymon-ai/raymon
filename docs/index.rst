@@ -52,9 +52,34 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 2
+   :caption: Getting Started
+
+   gettingstarted/install_deploy
+   gettingstarted/apisetup
+   gettingstarted/logging_tracing
+   gettingstarted/profiling
+   gettingstarted/slices
+   gettingstarted/orchestration
+   gettingstarted/uiwalkthrough
    
-   gettingstarted/landing
-   api/apilanding
+.. toctree::
+   :maxdepth: 2
+   :caption: Module Docs
+
+   module/api
+   module/traces
+   module/tags
+   module/loggers
+   module/types
+   module/modelprofile
+   module/components
+   module/stats
+
+.. .. toctree::
+..    :maxdepth: 2
+   
+..    gettingstarted/landing
+..    module/apilanding
 
 
 

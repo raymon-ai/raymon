@@ -129,7 +129,7 @@ As shown in the `examples <https://github.com/raymon-ai/raymon/blob/master/examp
 ---------------
 Validating data
 ---------------
-Validating inputs, outputs and actuals is done through calling , :meth:`raymon.ModelProfile.validate_input`, :meth:`raymon.ModelProfile.validate_output`, or :meth:`raymon.ModelProfile.validate_actual`. Validating evaluator components is done through :meth:`raymon.ModelProfile.validate_eval`. The model evaluation can also be done on the raymon backend, or through webhooks on the backend (see :ref:`The project manifest`).
+Validating inputs, outputs and actuals is done through calling , :meth:`raymon.ModelProfile.validate_input`, :meth:`raymon.ModelProfile.validate_output`, or :meth:`raymon.ModelProfile.validate_actual`. Validating evaluator components is done through :meth:`raymon.ModelProfile.validate_eval`. The model evaluation can also be done on the raymon backend, or through webhooks on the backend (see :ref:`The project orchestration`).
 
 .. code-block:: python
     :linenos:
