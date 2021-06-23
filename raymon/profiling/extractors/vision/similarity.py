@@ -121,14 +121,14 @@ class FixedSubpatchSimilarity(SimpleExtractor):
     @classmethod
     def from_jcr(cls, jcr):
         patch, refs, nrefs, idfr = None, None, None, None
-        if "patch" in jcr["state"]:
-            patch = jcr["state"]["patch"]
-        if "nrefs" in jcr["state"]:
-            nrefs = jcr["state"]["nrefs"]
-        if "refs" in jcr["state"]:
-            refs = jcr["state"]["refs"]
-        if "idfr" in jcr["state"]:
-            refs = jcr["state"]["idfr"]
+        if "patch" in jcr:
+            patch = jcr["patch"]
+        if "nrefs" in jcr:
+            nrefs = jcr["nrefs"]
+        if "refs" in jcr:
+            refs = jcr["refs"]
+        if "idfr" in jcr:
+            refs = jcr["idfr"]
 
         return cls(patch=patch, refs=refs, nrefs=nrefs, idfr=idfr)
 

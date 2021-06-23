@@ -55,7 +55,7 @@ def test_from_jcr(load_data):
     extractor = FixedSubpatchSimilarity(patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, nrefs=2)
     extractor.build(load_data)
     jcr = extractor.to_jcr()
-    other_extractor = extractor.from_jcr(jcr)
+    other_extractor = extractor.from_jcr(jcr["state"])
     assert isinstance(other_extractor, FixedSubpatchSimilarity)
     assert extractor.patch["x1"] == 64
     assert extractor.nrefs == 2
