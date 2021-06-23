@@ -67,3 +67,8 @@ def test_is_built(load_data):
     extractor = FixedSubpatchSimilarity(patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, nrefs=2)
     extractor.build(load_data)
     assert extractor.is_built()
+
+
+def test_str():
+    extractor = FixedSubpatchSimilarity(patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, nrefs=2)
+    assert str(extractor) == "raymon.profiling.extractors.vision.similarity.FixedSubpatchSimilarity (None)"

@@ -11,37 +11,30 @@ def test_element():
 
 
 def test_extract(load_data):
-    extractor = ElementExtractor(3)
-    assert extractor.extract(load_data) == load_data[3]
+    assert ElementExtractor(3).extract(load_data) == load_data[3]
 
 
 def test_to_jcr():
-    extractor = ElementExtractor(3)
-    jcr = extractor.to_jcr()
+    jcr = ElementExtractor(3).to_jcr()
     assert jcr["class"] == "raymon.profiling.extractors.structured.element.ElementExtractor"
     assert jcr["state"]["element"] == 3
 
 
 def test_from_jcr():
     extractor = ElementExtractor(3)
-    jcr = extractor.to_jcr()
-    other_extractor = extractor.from_jcr(jcr)
-    assert other_extractor.element == 3
+    assert extractor.from_jcr(extractor.to_jcr()).element == 3
 
 
 def test_build(load_data):
-    extractor = ElementExtractor(3)
-    extractor.build(load_data)
+    ElementExtractor(3).build(load_data)
 
 
 def test_is_built():
-    extractor = ElementExtractor(3)
-    assert extractor.is_built()
+    assert ElementExtractor(3).is_built()
 
 
 def test_str():
-    extractor = ElementExtractor(3)
-    assert str(extractor) == "ElementExtractor(element=3)"
+    assert str(ElementExtractor(3)) == "ElementExtractor(element=3)"
 
 
 def test_generate_components():
