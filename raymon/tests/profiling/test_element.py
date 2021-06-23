@@ -1,4 +1,3 @@
-#%%
 from raymon.profiling.extractors.structured import ElementExtractor, generate_components
 from raymon.profiling.components import InputComponent
 from raymon.tests.conftest import load_data
@@ -53,9 +52,9 @@ def test_generate_components():
         "num2": [0.2] * 10,
     }
     df = pd.DataFrame(data=cols)
-    components = generate_components(dtypes=df.dtypes, complass=InputComponent)
+    components = generate_components(dtypes=df.dtypes, complass=InputComponent, name_prefix="raymon_")
     assert len(components) == 4
-    assert components[1].name == "cat1"
+    assert components[1].name == "raymon_cat1"
     assert components[0].dtype == "INT"
     assert components[1].dtype == "CAT"
     assert components[3].dtype == "FLOAT"
