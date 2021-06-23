@@ -4,6 +4,7 @@ import math
 import glob
 from collections.abc import Iterable
 from raymon.profiling.extractors.vision import DN2AnomalyScorer
+from PIL import ImageFilter
 
 
 def load_data(dpath, lim):
@@ -23,29 +24,26 @@ test_data = load_data(dpath="raymon/tests/sample_data", lim=test_LIM)
 
 
 def test_preprocess():
-    extractor = DN2AnomalyScorer(k=3, size=(256, 256))
+    extractor = DN2AnomalyScorer(k=3)
     pil_image = test_data[0]
-    numpy_img = np.array(pil_image, dtype=np.float32)
+    numpy_img = np.array(pil_image)
     img_list = [pil_image, numpy_img]
     for img in img_list:
         actual_image = extractor.preprocess(img)
         assert isinstance(actual_image, np.ndarray)
-        assert actual_image.shape == (1, 3, 224, 224)
+        assert actual_image.shape == (3, 224, 224)
 
 
-def test_prepare_batch():
-    extractor = DN2AnomalyScorer(k=3, size=(256, 256))
+def test_batcher_normal():
+    extractor = DN2AnomalyScorer(k=3)
     batch_size = 5
-    actual_batch_number = len(extractor.prepare_batch(test_data, batch_size))
-    expected_batch_number = math.ceil(len(test_data) / batch_size)
-    message = "Batch number must equal -the number of images / batch size (round up) -"
-    assert len(test_data) > 0
-    assert isinstance(test_data, Iterable)
-    assert actual_batch_number == expected_batch_number, message
+    batch_iterator = extractor.batches(test_data, batch_size)
+    batch = next(iter(batch_iterator))
+    assert len(batch) == 5
 
 
 def test_build():
-    extractor = DN2AnomalyScorer(k=3, size=(256, 256))
+    extractor = DN2AnomalyScorer(k=3)
     extractor.build(data=test_data, batch_size=5)
     actual_cluster_number = len(extractor.clusters)
     expected_cluster_number = extractor.k
@@ -54,14 +52,13 @@ def test_build():
 
 
 def test_extract():
-    extractor = DN2AnomalyScorer(k=3, size=(256, 256))
+    extractor = DN2AnomalyScorer(k=3)
     extractor.build(data=test_data, batch_size=5)
     normal_image_path = "raymon/tests/sample_data/863_right.jpeg"
     normal_image = Image.open(normal_image_path)
     normal_image.thumbnail(size=(500, 500))
     normal_outlier_score = extractor.extract(normal_image)
-    blur_image_path = "raymon/tests/sample_data/8631_left.jpeg"
-    blur_image = Image.open(blur_image_path)
+    blur_image = normal_image.copy().filter(ImageFilter.GaussianBlur(radius=3))
     blur_image.thumbnail(size=(500, 500))
     blur_outlier_score = extractor.extract(blur_image)
     message = "Blurred image's outlier score must be bigger than normal image's everytime."
@@ -70,15 +67,14 @@ def test_extract():
 
 
 def test_to_jcr():
-    extractor = DN2AnomalyScorer(k=3, size=(256, 256))
+    extractor = DN2AnomalyScorer(k=3)
     extractor.build(data=test_data, batch_size=5)
     assert extractor.to_jcr()["class"] == "raymon.profiling.extractors.vision.anomaly.DN2AnomalyScorer"
     assert extractor.to_jcr()["state"]["k"] == extractor.k
-    assert extractor.to_jcr()["state"]["size"] == extractor.size
 
 
 def test_from_jcr():
-    extractor = DN2AnomalyScorer(k=3, size=(256, 256))
+    extractor = DN2AnomalyScorer(k=3)
     extractor.build(data=test_data, batch_size=5)
     jcr = extractor.to_jcr()["state"]
     other_extractor = extractor.from_jcr(jcr)
