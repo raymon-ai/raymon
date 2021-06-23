@@ -1,70 +1,67 @@
+# https://github.com/onnx/tutorials#converting-to-onnx-format
+# https://pytorch.org/tutorials/advanced/super_resolution_with_onnxruntime.html
+
+import onnxruntime
+import pkg_resources
+
 import numpy as np
-import torch
 import base64
-import torchvision.models as models
-from torch.utils.data import DataLoader, Dataset
-from torchvision import transforms
 from PIL import Image
+from collections.abc import Iterable
 
 from raymon.profiling.extractors.structured.kmeans import KMeansOutlierScorer
 
-# Loosely based on "Deep Nearest Neighbor Anomaly Detection": https://arxiv.org/abs/2002.10445
-
-
-class ImageDataset(Dataset):
-    """Face Landmarks dataset."""
-
-    def __init__(self, loaded_data, transform=None):
-
-        self.loaded_data = loaded_data
-        self.transform = transform
-
-    def __len__(self):
-        return len(self.loaded_data)
-
-    def __getitem__(self, idx):
-        sample = self.loaded_data[idx]
-        if self.transform:
-            sample = self.transform(sample)
-        return sample
-
 
 class DN2AnomalyScorer(KMeansOutlierScorer):
-    def __init__(self, k=16, size=None, clusters=None, dist="euclidean"):
+    def __init__(self, k=16, clusters=None, dist="euclidean"):
         super().__init__(k=k, clusters=clusters, dist=dist)
-        self.mobilenet = models.mobilenet_v2(pretrained=True).eval()
-        self.size = size
-        tfs = [
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        ]
-        if size is not None:
-            tfs.append(
-                transforms.Resize(size=size),
-            )
-        self.tfs = transforms.Compose(tfs)
+        # model link - https://github.com/onnx/models/tree/master/vision/classification/mobilenet
+        self.mobilenet = onnxruntime.InferenceSession(
+            pkg_resources.resource_filename("raymon", "models/mobilenetv2-7.onnx")
+        )
+        self.size = (224, 224)
+
+    def batches(self, loaded_data, batch_size):
+        l = len(loaded_data)
+        for start in range(0, l, batch_size):
+            images = loaded_data[start : min(start + batch_size, l)]
+            batch_numpy = np.zeros((len(images), 3, self.size[0], self.size[1]), dtype=np.float32)
+            for i, img in enumerate(images):
+                img_np = self.preprocess(img)
+                batch_numpy[i, :] = img_np
+            yield batch_numpy.astype(np.float32)
+
+    def preprocess(self, pil_img):
+        if isinstance(pil_img, np.ndarray):
+            pil_img = Image.fromarray(pil_img)
+        pil_resized = pil_img.resize(size=self.size)
+        np_img = np.array(pil_resized) / 255
+        np_std = (np_img - np.array([0.485, 0.456, 0.406])) / np.array([0.229, 0.224, 0.225])
+        np_moved = np.moveaxis(np_std, 2, 0)
+        return np_moved.astype(np.float32)
 
     def extract(self, data):
-        if not isinstance(data, Image.Image):
-            raise ValueError(f"data must be of type PIL.Image.Image, not {data.shape}")
-        batchtf = self.tfs(data)[None, :]
-        feats = self.mobilenet(batchtf).detach().numpy()
-        return super().extract(data=feats)
+        if not (isinstance(data, Image.Image) or isinstance(data, np.ndarray)):
+            raise ValueError(f"type of data must be PIL.Image.Image or numpy.ndarray, not {type(data)}")
+        input_np = np.zeros((1, 3, self.size[0], self.size[1]), dtype=np.float32)
+        input_np[0, :] = self.preprocess(data)
+        input_img = {self.mobilenet.get_inputs()[0].name: input_np}
+        feats = self.mobilenet.run(None, input_feed=input_img)
+        return super().extract(data=feats[0])
 
     def build(self, data, batch_size=16):
-        dataset = ImageDataset(loaded_data=data, transform=self.tfs)
-        # data is a list of images here
-        dataloader = DataLoader(dataset, shuffle=False, batch_size=batch_size, drop_last=True)
-        embeddings = torch.zeros(size=(len(data), 1000))
-        for batchidx, batchtf in enumerate(dataloader):
-            # batchtf = self.tfs(batch)
-            components = self.mobilenet(batchtf).detach()  # .numpy()
-            startidx = batchidx * batch_size
-            stopidx = startidx + len(components)
-            embeddings[startidx:stopidx, :] = components
+        if not isinstance(data, Iterable):
+            raise ValueError(f"type of the data must be Iterable")
+        embeddings = np.zeros((len(data), 1000))
+        for batch_idx, batch_np in enumerate(self.batches(data, batch_size=batch_size)):
+            input_images = {self.mobilenet.get_inputs()[0].name: batch_np}
+            extracted = self.mobilenet.run(None, input_feed=input_images)[0]
+            start_idx = batch_idx * batch_size
+            stop_idx = start_idx + len(extracted)
+            embeddings[start_idx:stop_idx] = extracted
 
-        embeddings = embeddings[embeddings.abs().sum(axis=1) != 0]
-        embeddings = embeddings.numpy()
+        indexes = np.where(np.sum(np.abs(embeddings), axis=1) != 0)
+        embeddings = embeddings[indexes]
         super().build(data=embeddings)
 
     """Serializable interface"""
@@ -72,7 +69,7 @@ class DN2AnomalyScorer(KMeansOutlierScorer):
     def to_jcr(self):
         b64 = base64.b64encode(self.clusters).decode()
         diststr = [k for k, v in self.dist_choices.items() if v == self.dist][0]
-        data = {"clusters": b64, "k": self.k, "dist": diststr, "size": self.size}
+        data = {"clusters": b64, "k": self.k, "dist": diststr}
         state = {"class": self.class2str(), "state": data}
         return state
 
@@ -81,6 +78,5 @@ class DN2AnomalyScorer(KMeansOutlierScorer):
         k = jcr["k"]
         b64 = jcr["clusters"]
         dist = jcr["dist"]
-        size = jcr["size"]
         clusters = np.frombuffer(base64.decodebytes(b64.encode()), dtype=np.float64).reshape((k, -1))
-        return cls(k=k, size=size, clusters=clusters, dist=dist)
+        return cls(k=k, clusters=clusters, dist=dist)
