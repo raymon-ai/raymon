@@ -111,6 +111,6 @@ venv.bak/
 **/.DS_Store
 .vscode
 
-*.jpeg
+#*.jpeg
 dev/*
 store_secret.py

@@ -28,14 +28,14 @@ Once logged in, you can create a project, just like we already did through the w
 
 
 
-Setting the project manifest
-----------------------------
-Configuring the Raymon backend for a certain project is done using a project manifest yaml file (see :ref:`The project manifest` for more information). This manifest can be set as follows. 
+Setting the project orchestration
+---------------------------------
+Configuring the Raymon backend for a certain project is done using a project orchestration yaml file (see :ref:`Backend Configuration` for more information). This orchestration can be set as follows. 
 
 .. code-block:: python
   :linenos:
 
-  with open("manifest.yml", "r") as f:
+  with open("orchestration.yml", "r") as f:
       cfg = f.read()
 
   resp = api.orchestration_apply(project_id=project_id, cfg=cfg)
