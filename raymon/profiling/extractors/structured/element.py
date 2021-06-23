@@ -41,7 +41,7 @@ class ElementExtractor(SimpleExtractor):
 
     @classmethod
     def from_jcr(cls, jcr):
-        return cls(**jcr)
+        return cls(**jcr["state"])
 
     """Buildable interface"""
 
