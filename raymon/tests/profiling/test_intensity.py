@@ -1,13 +1,13 @@
 from raymon.profiling.extractors.vision import AvgIntensity
-from raymon.tests.conftest import load_data
+from raymon.tests.conftest import images
 
 
-def test_extract(load_data):
-    assert isinstance(AvgIntensity().extract(load_data[0]), float)
+def test_extract(images):
+    assert isinstance(AvgIntensity().extract(images[0]), float)
 
 
-def test_extract_multiple(load_data):
-    avg_intensity_list = AvgIntensity().extract_multiple(load_data)
+def test_extract_multiple(images):
+    avg_intensity_list = AvgIntensity().extract_multiple(images)
     assert isinstance(avg_intensity_list, list)
     assert isinstance(avg_intensity_list[0], float)
 
@@ -23,8 +23,8 @@ def test_from_jcr():
     assert isinstance(extractor.from_jcr(extractor.to_jcr()), AvgIntensity)
 
 
-def test_build(load_data):
-    AvgIntensity().build(load_data[0])
+def test_build(images):
+    AvgIntensity().build(images[0])
 
 
 def test_is_built():

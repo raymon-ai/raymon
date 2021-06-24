@@ -1,5 +1,5 @@
 from raymon.profiling.extractors.vision import FixedSubpatchSimilarity
-from raymon.tests.conftest import load_data
+from raymon.tests.conftest import images
 import imagehash
 
 
@@ -28,22 +28,22 @@ def test_idfr():
     assert isinstance(extractor.idfr, str)
 
 
-def test_extract(load_data):
+def test_extract(images):
     extractor = FixedSubpatchSimilarity(patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, nrefs=3)
-    extractor.build(load_data)
-    assert isinstance(extractor.extract(load_data[0]), int)
+    extractor.build(images)
+    assert isinstance(extractor.extract(images[0]), int)
 
 
-def test_build(load_data):
+def test_build(images):
     extractor = FixedSubpatchSimilarity(patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, nrefs=2)
-    extractor.build(load_data)
+    extractor.build(images)
     assert len(extractor.refs) == 2
     assert isinstance(extractor.refs[0], imagehash.ImageHash)
 
 
-def test_to_jcr(load_data):
+def test_to_jcr(images):
     extractor = FixedSubpatchSimilarity(patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, nrefs=2)
-    extractor.build(load_data)
+    extractor.build(images)
     jcr = extractor.to_jcr()
     assert jcr["class"] == "raymon.profiling.extractors.vision.similarity.FixedSubpatchSimilarity"
     assert jcr["state"]["patch"] == {"x0": 0, "y0": 0, "x1": 64, "y1": 64}
@@ -51,9 +51,9 @@ def test_to_jcr(load_data):
     assert isinstance(jcr["state"]["refs"][0], str)
 
 
-def test_from_jcr(load_data):
+def test_from_jcr(images):
     extractor = FixedSubpatchSimilarity(patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, nrefs=2)
-    extractor.build(load_data)
+    extractor.build(images)
     jcr = extractor.to_jcr()
     other_extractor = extractor.from_jcr(jcr["state"])
     assert isinstance(other_extractor, FixedSubpatchSimilarity)
@@ -63,9 +63,9 @@ def test_from_jcr(load_data):
     assert isinstance(extractor.refs[0], imagehash.ImageHash)
 
 
-def test_is_built(load_data):
+def test_is_built(images):
     extractor = FixedSubpatchSimilarity(patch={"x0": 0, "y0": 0, "x1": 64, "y1": 64}, nrefs=2)
-    extractor.build(load_data)
+    extractor.build(images)
     assert extractor.is_built()
 
 

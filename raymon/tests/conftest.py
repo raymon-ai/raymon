@@ -49,7 +49,7 @@ def envsecretfile(tmp_path):
 
 
 @pytest.fixture
-def load_data(dpath="raymon/tests/sample_data", lim=10):
+def images(dpath="raymon/tests/sample_data", lim=10):
     files = glob.glob(dpath + "/*.jpeg")
     images = []
     for n, fpath in enumerate(files):

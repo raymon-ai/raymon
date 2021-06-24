@@ -1,7 +1,7 @@
 #%%
 from raymon.profiling.extractors.structured import ElementExtractor, generate_components
 from raymon.profiling.components import InputComponent
-from raymon.tests.conftest import load_data
+from raymon.tests.conftest import images
 import pandas as pd
 
 
@@ -11,8 +11,8 @@ def test_element():
     assert extractor.element == 4
 
 
-def test_extract(load_data):
-    assert ElementExtractor(3).extract(load_data) == load_data[3]
+def test_extract(images):
+    assert ElementExtractor(3).extract(images) == images[3]
 
 
 def test_to_jcr():
@@ -26,8 +26,8 @@ def test_from_jcr():
     assert extractor.from_jcr(extractor.to_jcr()["state"]).element == 3
 
 
-def test_build(load_data):
-    ElementExtractor(3).build(load_data)
+def test_build(images):
+    ElementExtractor(3).build(images)
 
 
 def test_is_built():
