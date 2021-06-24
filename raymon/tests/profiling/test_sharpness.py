@@ -1,5 +1,4 @@
 from raymon.profiling.extractors.vision import Sharpness
-from raymon.tests.conftest import images
 
 
 def test_extract(images):

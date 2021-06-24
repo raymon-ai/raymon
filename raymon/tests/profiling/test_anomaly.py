@@ -5,7 +5,6 @@ import glob
 from collections.abc import Iterable
 from raymon.profiling.extractors.vision import DN2AnomalyScorer
 from PIL import ImageFilter
-from raymon.tests.conftest import images
 
 
 def test_preprocess(images):

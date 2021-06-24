@@ -1,5 +1,4 @@
 from raymon.profiling.extractors.vision import FixedSubpatchSimilarity
-from raymon.tests.conftest import images
 import imagehash
 
 
