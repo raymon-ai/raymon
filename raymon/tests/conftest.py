@@ -5,6 +5,9 @@ from raymon.auth.m2m import save_m2m_config
 from raymon.auth.user import save_user_config
 from PIL import Image
 import glob
+from raymon import ModelProfile
+from raymon.profiling.extractors.vision import DN2AnomalyScorer, AvgIntensity, Sharpness
+from raymon.profiling.components import DataType
 
 PROJECT_NAME = "testing_project"
 
@@ -59,3 +62,8 @@ def images(dpath="raymon/tests/sample_data", lim=10):
         img.thumbnail(size=(500, 500))
         images.append(img)
     return images
+
+
+@pytest.fixture
+def save_profile_model_path(tmp_path):
+    return tmp_path
