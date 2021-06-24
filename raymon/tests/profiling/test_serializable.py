@@ -8,7 +8,6 @@ from raymon.profiling.extractors.vision.similarity import FixedSubpatchSimilarit
 from raymon.profiling.extractors.structured.scoring import ClassificationErrorType
 from raymon.profiling.extractors.vision import DN2AnomalyScorer, AvgIntensity, Sharpness
 from raymon.profiling.extractors.structured import ElementExtractor
-from pathlib import Path
 import numpy as np
 from raymon.profiling import ActualComponent
 
@@ -65,10 +64,10 @@ def test_profile_inputComponent(images):
     # Build profile: profile
     profile.build(input=images)
     # Save profile
-    fullprofile_path = Path("raymon/tests/models/")
-    profile.save(fullprofile_path)
+    # fullprofile_path = Path("raymon/tests/models/")
+    profile.save("raymon/tests/models/")
     # Load profile: loaded_profile
-    loaded_profile = ModelProfile().load(fullprofile_path / f"{profile.group_idfr}.json")
+    loaded_profile = ModelProfile().load("raymon/tests/models/" + f"{profile.group_idfr}.json")
     # Create the jcr of the profile
     loaded_profile_jcr = loaded_profile.to_jcr()
     assert len(loaded_profile_jcr["components"]) == 3
@@ -102,10 +101,9 @@ def test_profile_actualComponent():
     # Build profile: profile
     profile.build(actual=vector1)
     # Save profile
-    fullprofile_path = Path("raymon/tests/models/")
-    profile.save(fullprofile_path)
+    profile.save("raymon/tests/models/")
     # Load profile: loaded_profile
-    loaded_profile = ModelProfile().load(fullprofile_path / f"{profile.group_idfr}.json")
+    loaded_profile = ModelProfile().load("raymon/tests/models/" + f"{profile.group_idfr}.json")
     # Create the jcr of the profile
     loaded_profile_jcr = loaded_profile.to_jcr()
     assert len(loaded_profile_jcr["components"]) == 1
