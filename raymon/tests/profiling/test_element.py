@@ -1,3 +1,4 @@
+#%%
 from raymon.profiling.extractors.structured import ElementExtractor, generate_components
 from raymon.profiling.components import InputComponent
 from raymon.tests.conftest import load_data
