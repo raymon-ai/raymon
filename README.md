@@ -35,10 +35,48 @@ This repository contains the Raymon client library used for data profiling and l
 ```bash
 pip install raymon
 ```
+### Building a model profile
+Building a `ModelProfile` captures your expected model data characteristics...
+
+```python
+from raymon.profiling.extractors.structured import generate_components
+
+profile = ModelProfile(
+    name="HousePricesCheap",
+    version="2.0.0",
+    components=[
+        InputComponent(name="feature_1", extractor=ElementExtractor(element="feature_1")),
+        InputComponent(name="feature_2", extractor=ElementExtractor(element="feature_2")),
+        InputComponent(name="feature_3", extractor=ElementExtractor(element="feature_3")),
+        InputComponent(name="feature_4", extractor=ElementExtractor(element="feature_4")),               
+        OutputComponent(name="prediction", extractor=ElementExtractor(element=0)),
+        ActualComponent(name="actual", extractor=ElementExtractor(element=0)),
+        EvalComponent(name="abs_error", extractor=AbsoluteRegressionError()),
+    ],
+    reducers=[
+        MeanReducer(
+            name="MAE",
+            inputs=["abs_error"],
+            preferences={"mean": "low"},
+            results=None,
+        )
+    ],
+)
+profile.build(input=X, output=y_pred, actual=y_test)
+profile.save(".")
+```
+
+### Validating production data
+... and can then be used in production code to validate your incoming data and model performance monitoring.
+
+```python
+profile.validate_input(row)
+profile.validate_outputs(prediction)
+```
 
 ### Logging text, data and tags
 
-Raymon allows you to easily make model predictions traceable by enabling you to log text, data and tags.
+Moreover, Raymon makes model predictions debuggable by enabling you to log relevant text, data and tags from anywhere in your code. You can later use these tags and data objects to debug and improve your systems.
 
 ```python
 import pandas as pd
@@ -69,28 +107,5 @@ trace.log(ref="pandas-ref", data=rt.DataFrame(df))
 trace.log(ref="image-ref", data=rt.Image(img))
 
 ```
-### Building a model profile
-Building a `ModelProfile` captures your expected (input, output and more) data characteristics...
-
-```python
-from raymon.profiling.extractors.structured import generate_components
-
-all_data = pd.DataFrame(...)
-
-profile = ModelProfile(
-    name="houses_cheap", 
-    version="0.0.1", 
-    components=generate_components(all_data.dtypes),
-    )
-
-```
-
-### Validating production data
-... that can then be used in production code to validate your incoming data and model performance monitoring.
-
-```python
-profile.validate_input(row)
-profile.validate_outputs(prediction)
-
-```
 For more information, check out our docs & examples!
+
