@@ -22,7 +22,7 @@ def test_to_jcr():
 
 def test_from_jcr():
     extractor = ElementExtractor(3)
-    assert extractor.from_jcr(extractor.to_jcr()).element == 3
+    assert extractor.from_jcr(extractor.to_jcr()["state"]).element == 3
 
 
 def test_build(load_data):
