@@ -10,7 +10,7 @@ def test_element():
     assert extractor.element == 4
 
 
-def test_extract(images):
+def test_extract():
     vector1 = np.array([[10], [20], [30]])
     assert ElementExtractor(2).extract(vector1) == [30]
     cols = {
@@ -43,20 +43,3 @@ def test_is_built():
 
 def test_str():
     assert str(ElementExtractor(3)) == "ElementExtractor(element=3)"
-
-
-def test_generate_components():
-    cols = {
-        "num1": list(range(10)),
-        "cat1": ["a"] * 5 + ["b"] * 5,
-        "cat2": ["c"] * 5 + ["d"] * 5,
-        "num2": [0.2] * 10,
-    }
-    df = pd.DataFrame(data=cols)
-    components = generate_components(dtypes=df.dtypes, complass=InputComponent, name_prefix="raymon_")
-    assert len(components) == 4
-    assert components[1].name == "raymon_cat1"
-    assert components[0].dtype == "INT"
-    assert components[1].dtype == "CAT"
-    assert components[3].dtype == "FLOAT"
-    assert components[0].extractor.element == "num1"
