@@ -1,3 +1,4 @@
+#%%
 from raymon.profiling.extractors.structured import ElementExtractor, generate_components
 from raymon.profiling.components import InputComponent
 import pandas as pd
@@ -19,7 +20,8 @@ def test_extract():
         "cat2": ["c"] * 5 + ["d"] * 5,
         "num2": [0.2] * 10,
     }
-    assert ElementExtractor("num1").extract(cols) == list(range(10))
+    df = pd.DataFrame(data=cols)
+    assert ElementExtractor("cat1").extract(df.iloc[0, :]) == "a"
 
 
 def test_to_jcr():
@@ -28,6 +30,7 @@ def test_to_jcr():
     assert jcr["state"]["element"] == 3
 
 
+#%%
 def test_from_jcr():
     extractor = ElementExtractor(3)
     jcr = extractor.to_jcr()
