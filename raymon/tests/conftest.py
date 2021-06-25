@@ -5,9 +5,7 @@ from raymon.auth.m2m import save_m2m_config
 from raymon.auth.user import save_user_config
 from PIL import Image
 import glob
-from raymon import ModelProfile
-from raymon.profiling.extractors.vision import DN2AnomalyScorer, AvgIntensity, Sharpness
-from raymon.profiling.components import DataType
+
 
 PROJECT_NAME = "testing_project"
 
