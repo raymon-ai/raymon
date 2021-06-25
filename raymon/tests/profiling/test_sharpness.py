@@ -20,7 +20,7 @@ def test_to_jcr():
 def test_from_jcr():
     extractor = Sharpness()
     jcr = extractor.to_jcr()
-    assert isinstance(extractor.from_jcr(jcr), Sharpness)
+    assert isinstance(extractor.from_jcr(jcr["state"]), Sharpness)
 
 
 def test_build(images):

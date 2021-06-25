@@ -19,7 +19,8 @@ def test_to_jcr():
 
 def test_from_jcr():
     extractor = AvgIntensity()
-    assert isinstance(extractor.from_jcr(extractor.to_jcr()), AvgIntensity)
+    jcr = extractor.to_jcr()
+    assert isinstance(extractor.from_jcr(jcr["state"]), AvgIntensity)
 
 
 def test_build(images):

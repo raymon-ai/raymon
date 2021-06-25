@@ -60,7 +60,7 @@ def test_to_jcr(images):
 def test_from_jcr(images):
     extractor = DN2AnomalyScorer(k=3)
     extractor.build(data=images, batch_size=5)
-    jcr = extractor.to_jcr()["state"]
-    other_extractor = extractor.from_jcr(jcr)
+    jcr = extractor.to_jcr()
+    other_extractor = extractor.from_jcr(jcr["state"])
     assert other_extractor.k == extractor.k
     assert other_extractor.size == extractor.size
