@@ -64,10 +64,9 @@ def test_profile_with_images(images, tmp_path):
     # Build profile: profile
     profile.build(input=images)
     # Save profile
-    path_model = str(tmp_path)
-    profile.save(path_model)
+    profile.save(str(tmp_path))
     # Load profile: loaded_profile
-    loaded_profile = ModelProfile().load(path_model + f"/{profile.group_idfr}.json")
+    loaded_profile = ModelProfile().load(str(tmp_path) + f"/{profile.group_idfr}.json")
     # Create the jcr of the profile
     loaded_profile_jcr = loaded_profile.to_jcr()
     # jcr checks
@@ -107,10 +106,9 @@ def test_profile_with_structured_data(tmp_path):
     # Build profile: profile
     profile.build(input=df)
     # Save profile
-    path_model = str(tmp_path)
-    profile.save(path_model)
+    profile.save(str(tmp_path))
     # Load profile: loaded_profile
-    loaded_profile = ModelProfile().load(path_model + f"/{profile.group_idfr}.json")
+    loaded_profile = ModelProfile().load(str(tmp_path) + f"/{profile.group_idfr}.json")
     # Create the jcr of the profile
     loaded_profile_jcr = loaded_profile.to_jcr()
     # jcr checks

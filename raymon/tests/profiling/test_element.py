@@ -1,6 +1,4 @@
-#%%
-from raymon.profiling.extractors.structured import ElementExtractor, generate_components
-from raymon.profiling.components import InputComponent
+from raymon.profiling.extractors.structured import ElementExtractor
 import pandas as pd
 import numpy as np
 
@@ -30,7 +28,6 @@ def test_to_jcr():
     assert jcr["state"]["element"] == 3
 
 
-#%%
 def test_from_jcr():
     extractor = ElementExtractor(3)
     jcr = extractor.to_jcr()
