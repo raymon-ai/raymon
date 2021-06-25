@@ -62,8 +62,3 @@ def images(dpath="raymon/tests/sample_data", lim=10):
         img.thumbnail(size=(500, 500))
         images.append(img)
     return images
-
-
-@pytest.fixture
-def save_profile_model_path(tmp_path):
-    return tmp_path

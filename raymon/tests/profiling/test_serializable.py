@@ -10,7 +10,6 @@ from raymon.profiling.extractors.vision import DN2AnomalyScorer, AvgIntensity, S
 from raymon.profiling.extractors.structured import ElementExtractor
 import numpy as np
 from raymon.profiling import ActualComponent
-from raymon.tests.conftest import save_profile_model_path
 
 
 def test_schema_jcr():
@@ -40,7 +39,7 @@ def test_score_json():
     assert isinstance(dumped, str)
 
 
-def test_profile_inputComponent(images, save_profile_model_path):
+def test_profile_inputComponent(images, tmp_path):
     profile = ModelProfile(
         name="retinopathy",
         version="2.0.0",
@@ -65,7 +64,7 @@ def test_profile_inputComponent(images, save_profile_model_path):
     # Build profile: profile
     profile.build(input=images)
     # Save profile
-    path_model = str(save_profile_model_path)
+    path_model = str(tmp_path)
     profile.save(path_model)
     # Load profile: loaded_profile
     loaded_profile = ModelProfile().load(path_model + f"/{profile.group_idfr}.json")
@@ -91,7 +90,7 @@ def test_profile_inputComponent(images, save_profile_model_path):
     assert all([c1 == c2 for (c1, c2) in zip(loaded_profile.components.keys(), profile_restored.components.keys())])
 
 
-def test_profile_actualComponent(save_profile_model_path):
+def test_profile_actualComponent(tmp_path):
     profile = ModelProfile(
         name="vector",
         version="1.0.0",
@@ -102,7 +101,7 @@ def test_profile_actualComponent(save_profile_model_path):
     # Build profile: profile
     profile.build(actual=vector1)
     # Save profile
-    path_model = str(save_profile_model_path)
+    path_model = str(tmp_path)
     profile.save(path_model)
     # Load profile: loaded_profile
     loaded_profile = ModelProfile().load(path_model + f"/{profile.group_idfr}.json")
