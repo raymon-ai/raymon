@@ -39,7 +39,7 @@ def test_score_json():
     assert isinstance(dumped, str)
 
 
-def test_profile_with_images(images, tmp_path):
+def test_profile_with_vision_data(images, tmp_path):
     profile = ModelProfile(
         name="retinopathy",
         version="2.0.0",
