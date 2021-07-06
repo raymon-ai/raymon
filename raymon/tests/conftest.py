@@ -3,6 +3,9 @@ import pytest
 # import raymon
 from raymon.auth.m2m import save_m2m_config
 from raymon.auth.user import save_user_config
+from PIL import Image
+import glob
+
 
 PROJECT_NAME = "testing_project"
 
@@ -44,3 +47,16 @@ def envsecretfile(tmp_path):
     with open(tmp_file, "w") as f:
         f.write("client_secret")
     return tmp_file
+
+
+@pytest.fixture
+def images(dpath="raymon/tests/sample_data", lim=10):
+    files = glob.glob(dpath + "/*.jpeg")
+    images = []
+    for n, fpath in enumerate(files):
+        if n == lim:
+            break
+        img = Image.open(fpath)
+        img.thumbnail(size=(500, 500))
+        images.append(img)
+    return images
