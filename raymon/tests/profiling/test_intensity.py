@@ -8,6 +8,7 @@ def test_extract(images):
 def test_extract_multiple(images):
     avg_intensity_list = AvgIntensity().extract_multiple(images)
     assert isinstance(avg_intensity_list, list)
+    assert len(avg_intensity_list) == 10
     assert isinstance(avg_intensity_list[0], float)
 
 
