@@ -286,7 +286,7 @@ class ModelProfile(Serializable, Buildable):
         for reducer in self.reducers.values():
             red_threshold = reducer_thresholds.get(reducer.name, {})
             red_report = alternativeA.reducers[reducer.name].contrast(
-                alternativeB.reducers[reducer.name], thresholds=red_threshold
+                alternativeB.reducers[reducer.name], components=alternativeA.components, thresholds=red_threshold
             )
             reducer_reports[reducer.name] = red_report
 
