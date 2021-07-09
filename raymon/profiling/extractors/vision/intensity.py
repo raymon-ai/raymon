@@ -6,10 +6,7 @@ from raymon.profiling.extractors import SimpleExtractor
 
 class AvgIntensity(SimpleExtractor):
 
-    _config_attrs = []
-    _compile_attrs = []
-    _ccable_deps = []
-    _attrs = _config_attrs + _compile_attrs + _ccable_deps
+    _attrs = []
 
     def extract(self, data):
         img = data.convert("L")

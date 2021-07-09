@@ -298,7 +298,7 @@ class ModelProfile(Serializable, Buildable):
         jcr["reducer_reports"] = reducer_reports
         return jcr
 
-    def view(self, poi=None, mode="iframe", outdir=None, silent=True):
+    def view(self, poi=None, mode="external", outdir=None, silent=True):
         if silent:
             ctx_mgr = NoOutput()
         else:
@@ -364,7 +364,7 @@ class ModelProfile(Serializable, Buildable):
                 """
         return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
 
-    def _build_page(self, htmlstr, mode="iframe", outdir=None):
+    def _build_page(self, htmlstr, mode="external", outdir=None):
         tmp_dir = Path(tempfile.mkdtemp(dir=outdir, prefix=".tmp"))
         shutil.copy(src=pkg_resources.resource_filename("raymon", "frontend/raymon.min.js"), dst=tmp_dir)
         shutil.copy(src=pkg_resources.resource_filename("raymon", "frontend/raymon.min.js.map"), dst=tmp_dir)

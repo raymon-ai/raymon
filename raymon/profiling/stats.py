@@ -25,10 +25,6 @@ class Stats(Serializable, Buildable, ABC):
     def report_drift(self, other, threshold):
         raise NotImplementedError
 
-    @abstractmethod
-    def report_mean_diff(self, other, threshold, use_abs=False):
-        raise NotImplementedError
-
     def report_invalid_diff(self, other, threshold):
         if other.samplesize == 0:
             return {"invalids": "_", "alert": False, "valid": False}
@@ -67,17 +63,19 @@ class Stats(Serializable, Buildable, ABC):
 
 class NumericStats(Stats):
 
-    _attrs = ["min", "max", "mean", "std", "invalids", "percentiles", "samplesize"]
+    _attrs = ["min", "max", "mean", "std", "invalids", "percentiles", "samplesize", "percentiles_lb", "percentiles_ub"]
 
-    def __init__(self, min=None, max=None, mean=None, std=None, invalids=None, percentiles=None, samplesize=None):
-
+    def __init__(
+        self, min=None, max=None, mean=None, std=None, invalids=None, percentiles=None, samplesize=None, **kwargs
+    ):
+        self.samplesize = samplesize
         self.min = min
         self.max = max
         self.mean = mean
         self.std = std
         self.invalids = invalids
+
         self.percentiles = percentiles
-        self.samplesize = samplesize
 
     """MIN"""
 
@@ -151,8 +149,19 @@ class NumericStats(Stats):
             self._percentiles = None
         elif len(value) == 101:
             self._percentiles = list(value)
+            lower, upper, epsilon = self.get_conf_bounds_dkw(list(range(0, 101, 1)))
+            self._percentiles_lb = lower
+            self._percentiles_ub = upper
         else:
             raise DataException("stats.percentiles must be None or a list of length 101.")
+
+    @property
+    def percentiles_lb(self):
+        return self._percentiles_lb
+
+    @property
+    def percentiles_ub(self):
+        return self._percentiles_ub
 
     """Size of the sample that was analyzed"""
 
@@ -216,41 +225,68 @@ class NumericStats(Stats):
 
     """Testing and sampling functions"""
 
+    def get_conf_bounds_dkw(self, ys):
+        """
+        Get the confidence interval that encompasses the true CDF with 1-alpha certainty based on the DKW (Dvoretzky–Kiefer–Wolfowitz) inequality.
+        References:
+        - https://www.wikiwand.com/en/Dvoretzky%E2%80%93Kiefer%E2%80%93Wolfowitz_inequality
+        - https://www.wikiwand.com/en/Empirical_distribution_function#/Confidence%20intervals
+
+
+        Parameters
+        ----------
+        edf : np.array
+            the empirical distribution function
+        nobs : int
+            number of observations used for the edf
+        alpha : float, optional
+            alpha as in the EKW, by default 0.05
+
+        Returns
+        -------
+        list
+            lower bounds
+        list
+            upper bound
+        float
+            epsilon, as in the DKW
+        """
+        #
+        alpha = 0.05
+        epsilon = np.sqrt(np.log(2.0 / alpha) / (2 * self.samplesize)) * 100
+        lower = np.clip(ys - epsilon, 0, 100)
+        upper = np.clip(ys + epsilon, 0, 100)
+        return lower.tolist(), upper.tolist(), epsilon
+
     def report_drift(self, other, threshold):
         if other.samplesize == 0:
             return {"drift": -1, "drift_idx": -1, "alert": False, "valid": False}
         p1 = self.percentiles
         p2 = other.percentiles
-        data_all = np.concatenate([p1, p2])
-        # interp = np.sort(data_all)
-        # If certain values cause jumps of multiple percentiles, that value should be associated with the maximum percentile
+        merged_domain = np.sort(np.concatenate([p1, p2]))
+        # interp = np.sort(merged_domain)
+        # If certain values cause jumps of multiple percentages, that value should be associated with the maximum percentage
         cdf1 = np.searchsorted(p1, p1, side="right")
         cdf2 = np.searchsorted(p2, p2, side="right")
+        # cdf contains the y points
         interpolator_1 = interp1d(x=p1, y=cdf1, fill_value=(0, 100), bounds_error=False)
         interpolator_2 = interp1d(x=p2, y=cdf2, fill_value=(0, 100), bounds_error=False)
-        interpolated_1 = interpolator_1(data_all)
-        interpolated_2 = interpolator_2(data_all)
-        drift = min(np.max(np.abs(interpolated_1 - interpolated_2)), 100) / 100
-        drift_idx = int(np.argmax(np.abs(interpolated_1 - interpolated_2)))
+        cdf1_interpolated = interpolator_1(merged_domain)
+        cdf2_interpolated = interpolator_2(merged_domain)
+        # Add confidence bounds
+        cdf1_lower, cdf1_upper, eps1 = self.get_conf_bounds_dkw(cdf1_interpolated)
+        cdf2_lower, cdf2_upper, eps2 = other.get_conf_bounds_dkw(cdf2_interpolated)
+        # Check one above other, and the revers
+        dists1 = np.array(cdf1_lower) - np.array(cdf2_upper)
+        dists2 = np.array(cdf2_lower) - np.array(cdf1_upper)
+        # Keep the maximum distance per x value, and only keep positive ones
+        maxes = np.maximum(np.maximum(dists1, dists2), 0)
+        drift = min(np.max(maxes), 100) / 100
+        drift_idx = int(np.argmax(maxes))
+        # drift_xvalue = merged_domain[drift_idx]
 
         drift_report = {"drift": float(drift), "drift_idx": drift_idx, "alert": bool(drift > threshold), "valid": True}
         return drift_report
-
-    def report_mean_diff(self, other, threshold, use_abs):
-        if other.samplesize == 0:
-            return {"mean": -1, "alert": False, "valid": False}
-        meandiff = other.mean - self.mean
-        meandiff_perc = meandiff / self.mean
-        if use_abs:
-            alert = bool(abs(meandiff_perc) > abs(threshold))
-        else:
-            alert = bool(meandiff_perc > threshold)
-        invalids_report = {
-            "mean": float(meandiff_perc),
-            "alert": alert,
-            "valid": True,
-        }
-        return invalids_report
 
     def sample(self, n=N_SAMPLES, dtype="float"):
         # Sample floats in range 0 - len(percentiles)
@@ -324,13 +360,13 @@ class FloatStats(NumericStats):
 
 class CategoricStats(Stats):
 
-    _attrs = ["frequencies", "invalids", "samplesize"]
+    _attrs = ["frequencies", "invalids", "samplesize", "frequencies_lb", "frequencies_ub"]
 
-    def __init__(self, frequencies=None, invalids=None, samplesize=None):
+    def __init__(self, frequencies=None, invalids=None, samplesize=None, **kwargs):
 
+        self.samplesize = samplesize
         self.frequencies = frequencies
         self.invalids = invalids
-        self.samplesize = samplesize
 
     """frequencies"""
 
@@ -347,8 +383,19 @@ class CategoricStats(Stats):
                 if keyvalue < 0:
                     raise DataException(f"Domain count for {key} is  < 0")
             self._frequencies = value
+            lower, upper, errors = self.get_conf_bounds_poisson(self.frequencies)
+            self._frequencies_lb = lower
+            self._frequencies_ub = upper
         else:
             raise DataException(f"stats.frequencies should be a dict, not {type(value)}")
+
+    @property
+    def frequencies_lb(self):
+        return self._frequencies_lb
+
+    @property
+    def frequencies_ub(self):
+        return self._frequencies_ub
 
     """PINV"""
 
@@ -407,26 +454,53 @@ class CategoricStats(Stats):
 
     """Testing and sampling functions"""
 
+    def get_conf_bounds_poisson(self, frequencies):
+        """
+        Estimate the 95% confidence interval for the distributions, using the "Normal Approximation Method" of the Binomial Confidence Interval.
+        References:
+        - https://stats.stackexchange.com/questions/111355/confidence-interval-and-sample-size-multinomial-probabilities
+        - https://www.dummies.com/education/science/biology/the-confidence-interval-around-an-event-count-or-rate/
+        Parameters
+        ----------
+        frequencies : [type]
+            [description]
+        nobs : [type]
+            [description]
+        """
+        lower = {}
+        upper = {}
+        errors = {}
+        z = 1.96  # z score of 1.96 leads to 95% interval (gaussian)
+        for key, prob in frequencies.items():
+            std_dev = math.sqrt(prob * (1 - prob) / self.samplesize)
+            error = z * std_dev
+            upper[key] = min(prob + error, 1)
+            lower[key] = max(prob - error, 0)
+            errors[key] = error
+        return lower, upper, errors
+
     def report_drift(self, other, threshold):
         if other.samplesize == 0:
             return {"drift": -1, "drift_idx": -1, "alert": False, "valid": False}
         self_f, other_f, full_domain = equalize_domains(self.frequencies, other.frequencies)
-        f_sorted_self = []
-        f_sorted_other = []
+        lower_self, upper_self, errors_self = self.get_conf_bounds_poisson(self_f)
+        lower_other, upper_other, errors_other = self.get_conf_bounds_poisson(other_f)
+
+        # The following boils down to the Chebyshev distance between the confidence intervals
+        max_diff = -1
+        max_diff_idx = 0
         for k in full_domain:
-            f_sorted_self.append(self_f[k])
-            f_sorted_other.append(other_f[k])
-        f_sorted_self = np.array(f_sorted_self)
-        f_sorted_other = np.array(f_sorted_other)
-        # Chebyshev
-        drift = min(np.max(np.abs(f_sorted_self - f_sorted_other)), 100)
-        drift_idx = full_domain[np.argmax(np.abs(f_sorted_self - f_sorted_other))]
+            diff = max([lower_self[k] - upper_other[k], lower_other[k] - upper_self[k], 0]) * 100
+            print(f"{k}: {diff}")
+            if diff > max_diff:
+                max_diff = diff
+                max_diff_idx = k
+
+        drift = min(max_diff, 100) / 100
+        drift_idx = max_diff_idx
         drift_report = {"drift": float(drift), "drift_idx": drift_idx, "alert": bool(drift > threshold), "valid": True}
 
         return drift_report
-
-    def report_mean_diff(self, other, threshold, use_abs=False):
-        return {"mean": -1, "alert": False, "valid": False}
 
     def sample(self, n):
         domain = sorted(list(self.frequencies.keys()))

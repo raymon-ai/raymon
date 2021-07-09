@@ -217,12 +217,42 @@ export default {
     getNumberPlotData() {
       let plots = [
         {
+          x: this.refStats.percentiles.concat(
+            this.refStats.percentiles.slice().reverse()
+          ),
+          y: this.refStats.percentiles_lb.concat(
+            this.refStats.percentiles_ub.slice().reverse()
+          ),
+          fill: "toself",
+          fillcolor: "rgba(106, 115, 125, 0.2)", // same gray, but lower opacity
+          line: {
+            color: "transparent",
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        },
+        {
           x: this.refStats.percentiles,
           y: [...Array(101).keys()],
           type: "scatter",
           marker: {
             color: colors.color_scale_gray_5,
           },
+        },
+        {
+          x: this.alternativeAStats.percentiles.concat(
+            this.alternativeAStats.percentiles.slice().reverse()
+          ),
+          y: this.alternativeAStats.percentiles_lb.concat(
+            this.alternativeAStats.percentiles_ub.slice().reverse()
+          ),
+          fill: "toself",
+          fillcolor: "rgba(3, 102, 214, 0.2)", // same blue, but lower opacity
+          line: {
+            color: "transparent",
+          },
+          hoverinfo: "skip",
+          showlegend: false,
         },
         {
           x: this.alternativeAStats.percentiles,
@@ -234,6 +264,21 @@ export default {
         },
       ];
       if (this.alternativeBComponentData) {
+        plots.push({
+          x: this.alternativeBStats.percentiles.concat(
+            this.alternativeBStats.percentiles.slice().reverse()
+          ),
+          y: this.alternativeBStats.percentiles_lb.concat(
+            this.alternativeBStats.percentiles_ub.slice().reverse()
+          ),
+          fill: "toself",
+          fillcolor: "rgba(215, 58, 73, 0.2)", // same red, but lower opacity
+          line: {
+            color: "transparent",
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        });
         plots.push({
           x: this.alternativeBStats.percentiles,
           y: [...Array(101).keys()],
@@ -248,16 +293,30 @@ export default {
     getCategoricPlotData() {
       let domain = Object.keys(this.refStats.frequencies);
       let counts = Object.values(this.refStats.frequencies);
-
+      let errors = [];
+      for (const [key, value] of Object.entries(this.refStats.frequencies_lb)) {
+        errors.push(this.refStats.frequencies[key] - value);
+      }
       let alternativeADomain = Object.keys(this.alternativeAStats.frequencies);
       let alternativeACounts = Object.values(
         this.alternativeAStats.frequencies
       );
-
+      let alternativeAErrors = [];
+      for (const [key, value] of Object.entries(
+        this.alternativeAStats.frequencies_lb
+      )) {
+        alternativeAErrors.push(
+          this.alternativeAStats.frequencies[key] - value
+        );
+      }
       let plots = [
         {
           x: domain,
           y: counts,
+          error_y: {
+            type: "data",
+            array: errors,
+          },
           type: "bar",
           marker: {
             color: colors.color_scale_gray_5,
@@ -266,6 +325,10 @@ export default {
         {
           x: alternativeADomain,
           y: alternativeACounts,
+          error_y: {
+            type: "data",
+            array: alternativeAErrors,
+          },
           type: "bar",
           marker: {
             color: colors.color_scale_blue_5,
@@ -279,9 +342,21 @@ export default {
         let alternativeBCounts = Object.values(
           this.alternativeBStats.frequencies
         );
+        let alternativeBErrors = [];
+        for (const [key, value] of Object.entries(
+          this.alternativeBStats.frequencies_lb
+        )) {
+          alternativeBErrors.push(
+            this.alternativeBStats.frequencies[key] - value
+          );
+        }
         plots.push({
           x: alternativeBDomain,
           y: alternativeBCounts,
+          error_y: {
+            type: "data",
+            array: alternativeBErrors,
+          },
           type: "bar",
           marker: {
             color: colors.color_scale_red_5,
