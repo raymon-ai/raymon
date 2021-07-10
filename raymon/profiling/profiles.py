@@ -264,12 +264,12 @@ class ModelProfile(Serializable, Buildable):
         return jcr
 
     def contrast_alternatives(self, alternativeA, alternativeB, thresholds={}):
-        if not self.is_built():
-            raise ProfileStateException("Profile 'self' is not built.")
-        if not alternativeA.is_built():
-            raise ProfileStateException("Profile 'alternativeA' is not built.")
-        if not alternativeB.is_built():
-            raise ProfileStateException("Profile 'alternativeB' is not built.")
+        # if not self.is_built():
+        #     raise ProfileStateException("Profile 'self' is not built.")
+        # if not alternativeA.is_built():
+        #     raise ProfileStateException("Profile 'alternativeA' is not built.")
+        # if not alternativeB.is_built():
+        #     raise ProfileStateException("Profile 'alternativeB' is not built.")
         component_thresholds = thresholds.get("components", {})
         reducer_thresholds = thresholds.get("reducers", {})
         report = {}
