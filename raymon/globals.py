@@ -5,6 +5,10 @@ class ProfileStateException(Exception):
     pass
 
 
+class ComponentStateException(Exception):
+    pass
+
+
 class ExtractorException(Exception):
     pass
 

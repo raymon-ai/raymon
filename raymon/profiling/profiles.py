@@ -233,10 +233,10 @@ class ModelProfile(Serializable, Buildable):
         return tags
 
     def contrast(self, other, thresholds={}):
-        if not self.is_built():
-            raise ProfileStateException("Profile 'self' is not built.")
-        if not other.is_built():
-            raise ProfileStateException("Profile 'other' is not built.")
+        # if not self.is_built():
+        #     raise ProfileStateException("Profile 'self' is not built.")
+        # if not other.is_built():
+        #     raise ProfileStateException("Profile 'other' is not built.")
         component_thresholds = thresholds.get("components", {})
         reducer_thresholds = thresholds.get("reducers", {})
         report = {}

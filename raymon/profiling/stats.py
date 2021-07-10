@@ -147,6 +147,8 @@ class NumericStats(Stats):
     def percentiles(self, value):
         if value is None:
             self._percentiles = None
+            self._percentiles_lb = None
+            self._percentiles_ub = None
         elif len(value) == 101:
             self._percentiles = list(value)
             lower, upper, epsilon = self.get_conf_bounds_dkw(list(range(0, 101, 1)))
@@ -377,7 +379,9 @@ class CategoricStats(Stats):
     @frequencies.setter
     def frequencies(self, value):
         if value is None:
-            self._frequencies = value
+            self._frequencies = None
+            self._frequencies_lb = None
+            self._frequencies_ub = None
         elif isinstance(value, dict):
             for key, keyvalue in value.items():
                 if keyvalue < 0:
@@ -491,7 +495,6 @@ class CategoricStats(Stats):
         max_diff_idx = 0
         for k in full_domain:
             diff = max([lower_self[k] - upper_other[k], lower_other[k] - upper_self[k], 0]) * 100
-            print(f"{k}: {diff}")
             if diff > max_diff:
                 max_diff = diff
                 max_diff_idx = k
