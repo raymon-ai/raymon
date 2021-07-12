@@ -18,7 +18,7 @@ def test_stats_partial_none():
     params = dict(min=0, max=1, mean=0.5, std=0.02, invalids=0.1, percentiles=list(range(101)), samplesize=10)
     stats = FloatStats(**params)
     jcr = stats.to_jcr()
-    for attr in FloatStats._attrs:
+    for attr in params:
         assert jcr["state"][attr] == params[attr]
 
 

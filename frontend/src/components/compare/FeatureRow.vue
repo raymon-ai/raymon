@@ -18,14 +18,8 @@
         class="f3"
         :class="{'orange': isDrift, 'green': !isDrift}"
       > {{driftStr}}</p>
-      <!-- <span :class="{'Label mr-1 Label--red': isDrift, 'Label mr-1 Label--green': !isDrift}">
-        {{reportData.drift.drift.toFixed(2)}}
-      </span> -->
     </td>
-    <!-- <td class="px-2 codeLikeContent">
-      {{reportData.impact.toFixed(2)}}
 
-    </td> -->
     <td class="px-2">
       <div class="d-flex flex-column flex-items-begin">
         <p>
@@ -49,37 +43,7 @@
           {{invalidsDiffStr}}
         </p>
       </div>
-
     </td>
-    <!-- <td class="px-2">
-      <div
-        v-if="'mean' in refStats"
-        class="d-flex flex-column flex-items-begin"
-      >
-        <p>
-          <span
-            class="f6"
-            :class="leftColorClass"
-          >{{this.leftStats.mean.toExponential(2)}}</span>
-          <span
-            v-html="octicons['arrow-right'].toSVG()"
-            class="mx-1"
-          ></span>
-          <span
-            class="f6"
-            :class="rightColorClass"
-          > {{this.rightStats.mean.toExponential(2)}}</span>
-        </p>
-        <p
-          class="f4"
-          :class="{'orange': isMeanAlert, 'green': !isMeanAlert}"
-        >
-          {{meanDiffStr}}
-        </p>
-      </div>
-      <div v-else> - </div>
-
-    </td> -->
 
     <td class="px-2">
       <VuePlotly
@@ -130,10 +94,21 @@ export default {
       return this.refComponentData.state.stats.state;
     },
     alternativeAStats() {
-      return this.alternativeAComponentData.state.stats.state;
+      try {
+        return this.alternativeAComponentData.state.stats.state;
+      } catch (error) {
+        return undefined;
+      }
     },
     alternativeBStats() {
-      return this.alternativeBComponentData.state.stats.state;
+      try {
+        return this.alternativeBComponentData.state.stats.state;
+      } catch (error) {
+        return undefined;
+      }
+    },
+    isValid() {
+      return typeof this.reportData !== "undefined";
     },
     isNumeric() {
       return (
@@ -142,20 +117,20 @@ export default {
       );
     },
     driftStr() {
-      return `${Math.trunc(this.reportData.drift.drift * 100)}%`;
+      if (this.isValid) {
+        return `${Math.trunc(this.reportData.drift.drift * 100)}%`;
+      } else {
+        return "None";
+      }
     },
     invalidsDiffStr() {
-      return `${Math.trunc(this.reportData.invalids.invalids * 100)}%`;
+      if (this.isValid) {
+        return `${Math.trunc(this.reportData.invalids.invalids * 100)}%`;
+      } else {
+        return "None";
+      }
     },
-    meanDiffStr() {
-      return `${Math.trunc(this.reportData.mean.mean * 100)}%`;
-    },
-    thisMeanNice() {
-      return this.refStats.mean.toExponential(2);
-    },
-    alternativeAMeanNice() {
-      return this.alternativeAStats.mean.toExponential(2);
-    },
+
     componentName() {
       return this.refComponentData.state.name;
     },
@@ -163,13 +138,18 @@ export default {
       return this.refComponentData.state.dtype.toLowerCase();
     },
     isDrift() {
-      return this.reportData.drift.alert;
+      if (this.isValid) {
+        return this.reportData.drift.alert;
+      } else {
+        return false;
+      }
     },
     isPinvAlert() {
-      return this.reportData.invalids.alert;
-    },
-    isMeanAlert() {
-      return this.reportData.mean.alert;
+      if (this.isValid) {
+        return this.reportData.invalids.alert;
+      } else {
+        return false;
+      }
     },
     leftStats() {
       if (this.alternativeBComponentData) {
@@ -239,54 +219,61 @@ export default {
             color: colors.color_scale_gray_5,
           },
         },
-        {
-          x: this.alternativeAStats.percentiles.concat(
-            this.alternativeAStats.percentiles.slice().reverse()
-          ),
-          y: this.alternativeAStats.percentiles_lb.concat(
-            this.alternativeAStats.percentiles_ub.slice().reverse()
-          ),
-          fill: "toself",
-          fillcolor: "rgba(3, 102, 214, 0.2)", // same blue, but lower opacity
-          line: {
-            color: "transparent",
-          },
-          hoverinfo: "skip",
-          showlegend: false,
-        },
-        {
-          x: this.alternativeAStats.percentiles,
-          y: [...Array(101).keys()],
-          type: "scatter",
-          marker: {
-            color: colors.color_scale_blue_5,
-          },
-        },
       ];
+      if (this.alternativeAComponentData) {
+        plots.push(
+          {
+            x: this.alternativeAStats.percentiles.concat(
+              this.alternativeAStats.percentiles.slice().reverse()
+            ),
+            y: this.alternativeAStats.percentiles_lb.concat(
+              this.alternativeAStats.percentiles_ub.slice().reverse()
+            ),
+            fill: "toself",
+            fillcolor: "rgba(3, 102, 214, 0.2)", // same blue, but lower opacity
+            line: {
+              color: "transparent",
+            },
+            hoverinfo: "skip",
+            showlegend: false,
+          },
+          {
+            x: this.alternativeAStats.percentiles,
+            y: [...Array(101).keys()],
+            type: "scatter",
+            marker: {
+              color: colors.color_scale_blue_5,
+            },
+          }
+        );
+      }
+
       if (this.alternativeBComponentData) {
-        plots.push({
-          x: this.alternativeBStats.percentiles.concat(
-            this.alternativeBStats.percentiles.slice().reverse()
-          ),
-          y: this.alternativeBStats.percentiles_lb.concat(
-            this.alternativeBStats.percentiles_ub.slice().reverse()
-          ),
-          fill: "toself",
-          fillcolor: "rgba(215, 58, 73, 0.2)", // same red, but lower opacity
-          line: {
-            color: "transparent",
+        plots.push(
+          {
+            x: this.alternativeBStats.percentiles.concat(
+              this.alternativeBStats.percentiles.slice().reverse()
+            ),
+            y: this.alternativeBStats.percentiles_lb.concat(
+              this.alternativeBStats.percentiles_ub.slice().reverse()
+            ),
+            fill: "toself",
+            fillcolor: "rgba(215, 58, 73, 0.2)", // same red, but lower opacity
+            line: {
+              color: "transparent",
+            },
+            hoverinfo: "skip",
+            showlegend: false,
           },
-          hoverinfo: "skip",
-          showlegend: false,
-        });
-        plots.push({
-          x: this.alternativeBStats.percentiles,
-          y: [...Array(101).keys()],
-          type: "scatter",
-          marker: {
-            color: colors.color_scale_red_5,
-          },
-        });
+          {
+            x: this.alternativeBStats.percentiles,
+            y: [...Array(101).keys()],
+            type: "scatter",
+            marker: {
+              color: colors.color_scale_red_5,
+            },
+          }
+        );
       }
       return plots;
     },

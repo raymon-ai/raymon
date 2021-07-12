@@ -241,6 +241,9 @@ class ModelProfile(Serializable, Buildable):
         reducer_thresholds = thresholds.get("reducers", {})
         report = {}
         for component in self.components.values():
+            if component.name not in other.components:
+                print(f"Component {component.name} not found in other, skipping...")
+                continue
             comp_thresholds = component_thresholds.get(component.name, {})
             comp_report = component.contrast(
                 other.components[component.name],
@@ -251,6 +254,9 @@ class ModelProfile(Serializable, Buildable):
         reducer_reports = {}
         for reducer in self.reducers.values():
             red_threshold = reducer_thresholds.get(reducer.name, {})
+            if reducer.name not in other.reducers:
+                print(f"Reducer {reducer.name} not found in other, skipping...")
+                continue
             red_report = reducer.contrast(
                 other.reducers[reducer.name], components=self.components, thresholds=red_threshold
             )
@@ -276,15 +282,27 @@ class ModelProfile(Serializable, Buildable):
         for component in self.components.values():
             print(component.name)
             comp_thresholds = component_thresholds.get(component.name, {})
+            if component.name not in alternativeA.components:
+                print(f"Component {component.name} not found in alternativeA, skipping...")
+                continue
+            if component.name not in alternativeB.components:
+                print(f"Component {component.name} not found in alternativeB, skipping...")
+                continue
             comp_report = alternativeA.components[component.name].contrast(
                 alternativeB.components[component.name],
                 thresholds=comp_thresholds,
             )
-
             report[component.name] = comp_report
+
         reducer_reports = {}
         for reducer in self.reducers.values():
             red_threshold = reducer_thresholds.get(reducer.name, {})
+            if reducer.name not in alternativeA.reducers:
+                print(f"Reducer {reducer.name} not found in alternativeA, skipping...")
+                continue
+            if reducer.name not in alternativeB.reducers:
+                print(f"Reducer {reducer.name} not found in alternativeB, skipping...")
+                continue
             red_report = alternativeA.reducers[reducer.name].contrast(
                 alternativeB.reducers[reducer.name], components=alternativeA.components, thresholds=red_threshold
             )

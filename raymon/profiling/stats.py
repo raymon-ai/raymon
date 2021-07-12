@@ -147,15 +147,20 @@ class NumericStats(Stats):
     def percentiles(self, value):
         if value is None:
             self._percentiles = None
-            self._percentiles_lb = None
-            self._percentiles_ub = None
+
         elif len(value) == 101:
             self._percentiles = list(value)
+
+        else:
+            raise DataException("stats.percentiles must be None or a list of length 101.")
+
+        if self.samplesize and self.percentiles:
             lower, upper, epsilon = self.get_conf_bounds_dkw(list(range(0, 101, 1)))
             self._percentiles_lb = lower
             self._percentiles_ub = upper
         else:
-            raise DataException("stats.percentiles must be None or a list of length 101.")
+            self._percentiles_lb = None
+            self._percentiles_ub = None
 
     @property
     def percentiles_lb(self):
@@ -380,18 +385,22 @@ class CategoricStats(Stats):
     def frequencies(self, value):
         if value is None:
             self._frequencies = None
-            self._frequencies_lb = None
-            self._frequencies_ub = None
+
         elif isinstance(value, dict):
             for key, keyvalue in value.items():
                 if keyvalue < 0:
                     raise DataException(f"Domain count for {key} is  < 0")
             self._frequencies = value
+        else:
+            raise DataException(f"stats.frequencies should be a dict, not {type(value)}")
+
+        if self.samplesize and self.frequencies:
             lower, upper, errors = self.get_conf_bounds_poisson(self.frequencies)
             self._frequencies_lb = lower
             self._frequencies_ub = upper
         else:
-            raise DataException(f"stats.frequencies should be a dict, not {type(value)}")
+            self._frequencies_lb = None
+            self._frequencies_ub = None
 
     @property
     def frequencies_lb(self):
