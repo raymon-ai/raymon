@@ -90,29 +90,3 @@ def test_schema_build_input_types(cheap_houses_csv):
     assert profile.components["actual"].stats.samplesize == 992
     assert profile.components["abs_error"].stats.samplesize == 992
     return profile, actuals_list, preds_list
-
-
-cheap_houses_csv = "/Users/kv/Raymon/Code/raymon/raymon/tests/sample_data/houseprices/subset-cheap.csv"
-
-profile, actuals_list, preds_list = test_schema_build_input_types(cheap_houses_csv=cheap_houses_csv)
-
-#%%
-cheap_data = pd.read_csv(cheap_houses_csv).drop("Id", axis="columns")
-actuals = cheap_data["SalePrice"].to_numpy()
-preds = actuals - actuals * 0.1
-# %%
-actuals[:, None].shape
-# %%
-profile.components["prediction"].stats.samplesize
-# %%
-profile.components["actual"].stats.samplesize
-profile.components["abs_error"].stats.samplesize
-
-# %%
-cheap_data = pd.read_csv(cheap_houses_csv).drop("Id", axis="columns")
-actuals = cheap_data["SalePrice"]
-# %%
-cheap_data.loc[:, "SalePrice"].to_frame()
-# %%
-cheap_data
-# %%
