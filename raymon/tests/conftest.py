@@ -50,7 +50,7 @@ def envsecretfile(tmp_path):
 
 
 @pytest.fixture
-def images(dpath="raymon/tests/sample_data", lim=10):
+def images(dpath="raymon/tests/sample_data/retinopathy", lim=10):
     files = glob.glob(dpath + "/*.jpeg")
     images = []
     for n, fpath in enumerate(files):
@@ -60,3 +60,18 @@ def images(dpath="raymon/tests/sample_data", lim=10):
         img.thumbnail(size=(500, 500))
         images.append(img)
     return images
+
+
+@pytest.fixture
+def lenna_path():
+    return "raymon/tests/sample_data/Lenna.png"
+
+
+@pytest.fixture
+def cheap_houses_csv():
+    return "raymon/tests/sample_data/houseprices/subset-cheap.csv"
+
+
+@pytest.fixture
+def exp_houses_csv():
+    return "raymon/tests/sample_data/houseprices/subset-exp.csv"

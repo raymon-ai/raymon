@@ -80,11 +80,13 @@ class EvalExtractor(Extractor):
             raise DataException("output and actual not of same length")
 
         components = []
-        if isinstance(output, pd.DataFrame) or isinstance(output, pd.Series) or isinstance(output, np.ndarray):
+        if isinstance(output, pd.Series) or isinstance(output, np.ndarray):
             for i in range(len(output)):
                 out = output[i]
                 act = actual[i]
                 components.append(self.extract(out, act))
+        elif isinstance(output, pd.DataFrame):
+            components = self.extract(output=output, actual=actual)
         elif isinstance(output, Iterable):
             zipped = zip(output, actual)
             for out, act in zipped:
