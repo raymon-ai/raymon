@@ -38,7 +38,7 @@ def test_build(images):
 def test_extract(images):
     extractor = DN2AnomalyScorer(k=3)
     extractor.build(data=images, batch_size=5)
-    normal_image_path = "raymon/tests/sample_data/863_right.jpeg"
+    normal_image_path = "raymon/tests/sample_data/retinopathy/863_right.jpeg"
     normal_image = Image.open(normal_image_path)
     normal_image.thumbnail(size=(500, 500))
     normal_outlier_score = extractor.extract(normal_image)

@@ -10,6 +10,7 @@ from raymon.globals import (
     Serializable,
     DataException,
     ProfileStateException,
+    ComponentStateException,
 )
 from raymon.profiling.stats import Stats, CategoricStats, FloatStats, IntStats, equalize_domains
 from raymon.tags import Tag, CTYPE_TAGTYPES
@@ -121,11 +122,19 @@ class Component(Serializable, Buildable, ABC):
 
         invalids_threshold = thresholds.get("invalids", 0.01)
         drift_threshold = thresholds.get("drift", 0.05)
+        try:
+            if not self.is_built():
+                print(f"Component {self.name} in 'self' is not built.")
+                raise ComponentStateException(f"Component {self.name} in 'self' is not built.")
+            if not other.is_built():
+                print(f"Component {other.name} in 'other' is not built.")
+                raise ComponentStateException(f"Component {other.name} in 'other' is not built.")
+            drift_report = self.stats.report_drift(other.stats, threshold=drift_threshold)
+            invalids_report = self.stats.report_invalid_diff(other.stats, threshold=invalids_threshold)
 
-        drift_report = self.stats.report_drift(other.stats, threshold=drift_threshold)
-        invalids_report = self.stats.report_invalid_diff(other.stats, threshold=invalids_threshold)
-
-        return {"drift": drift_report, "invalids": invalids_report}
+            return {"drift": drift_report, "invalids": invalids_report}
+        except ComponentStateException as e:
+            return {}
 
     def __repr__(self):
         return str(self)

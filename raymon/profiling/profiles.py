@@ -233,14 +233,17 @@ class ModelProfile(Serializable, Buildable):
         return tags
 
     def contrast(self, other, thresholds={}):
-        if not self.is_built():
-            raise ProfileStateException("Profile 'self' is not built.")
-        if not other.is_built():
-            raise ProfileStateException("Profile 'other' is not built.")
+        # if not self.is_built():
+        #     raise ProfileStateException("Profile 'self' is not built.")
+        # if not other.is_built():
+        #     raise ProfileStateException("Profile 'other' is not built.")
         component_thresholds = thresholds.get("components", {})
         reducer_thresholds = thresholds.get("reducers", {})
         report = {}
         for component in self.components.values():
+            if component.name not in other.components:
+                print(f"Component {component.name} not found in other, skipping...")
+                continue
             comp_thresholds = component_thresholds.get(component.name, {})
             comp_report = component.contrast(
                 other.components[component.name],
@@ -251,6 +254,9 @@ class ModelProfile(Serializable, Buildable):
         reducer_reports = {}
         for reducer in self.reducers.values():
             red_threshold = reducer_thresholds.get(reducer.name, {})
+            if reducer.name not in other.reducers:
+                print(f"Reducer {reducer.name} not found in other, skipping...")
+                continue
             red_report = reducer.contrast(
                 other.reducers[reducer.name], components=self.components, thresholds=red_threshold
             )
@@ -264,27 +270,39 @@ class ModelProfile(Serializable, Buildable):
         return jcr
 
     def contrast_alternatives(self, alternativeA, alternativeB, thresholds={}):
-        if not self.is_built():
-            raise ProfileStateException("Profile 'self' is not built.")
-        if not alternativeA.is_built():
-            raise ProfileStateException("Profile 'alternativeA' is not built.")
-        if not alternativeB.is_built():
-            raise ProfileStateException("Profile 'alternativeB' is not built.")
+        # if not self.is_built():
+        #     raise ProfileStateException("Profile 'self' is not built.")
+        # if not alternativeA.is_built():
+        #     raise ProfileStateException("Profile 'alternativeA' is not built.")
+        # if not alternativeB.is_built():
+        #     raise ProfileStateException("Profile 'alternativeB' is not built.")
         component_thresholds = thresholds.get("components", {})
         reducer_thresholds = thresholds.get("reducers", {})
         report = {}
         for component in self.components.values():
             print(component.name)
             comp_thresholds = component_thresholds.get(component.name, {})
+            if component.name not in alternativeA.components:
+                print(f"Component {component.name} not found in alternativeA, skipping...")
+                continue
+            if component.name not in alternativeB.components:
+                print(f"Component {component.name} not found in alternativeB, skipping...")
+                continue
             comp_report = alternativeA.components[component.name].contrast(
                 alternativeB.components[component.name],
                 thresholds=comp_thresholds,
             )
-
             report[component.name] = comp_report
+
         reducer_reports = {}
         for reducer in self.reducers.values():
             red_threshold = reducer_thresholds.get(reducer.name, {})
+            if reducer.name not in alternativeA.reducers:
+                print(f"Reducer {reducer.name} not found in alternativeA, skipping...")
+                continue
+            if reducer.name not in alternativeB.reducers:
+                print(f"Reducer {reducer.name} not found in alternativeB, skipping...")
+                continue
             red_report = alternativeA.reducers[reducer.name].contrast(
                 alternativeB.reducers[reducer.name], components=alternativeA.components, thresholds=red_threshold
             )
@@ -298,7 +316,7 @@ class ModelProfile(Serializable, Buildable):
         jcr["reducer_reports"] = reducer_reports
         return jcr
 
-    def view(self, poi=None, mode="iframe", outdir=None, silent=True):
+    def view(self, poi=None, mode="external", outdir=None, silent=True):
         if silent:
             ctx_mgr = NoOutput()
         else:
@@ -364,7 +382,7 @@ class ModelProfile(Serializable, Buildable):
                 """
         return self._build_page(htmlstr=htmlstr, mode=mode, outdir=outdir)
 
-    def _build_page(self, htmlstr, mode="iframe", outdir=None):
+    def _build_page(self, htmlstr, mode="external", outdir=None):
         tmp_dir = Path(tempfile.mkdtemp(dir=outdir, prefix=".tmp"))
         shutil.copy(src=pkg_resources.resource_filename("raymon", "frontend/raymon.min.js"), dst=tmp_dir)
         shutil.copy(src=pkg_resources.resource_filename("raymon", "frontend/raymon.min.js.map"), dst=tmp_dir)

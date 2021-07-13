@@ -92,22 +92,29 @@ class Reducer(Serializable, Buildable):
                 continue
             self_val = self.results[key]
             other_val = other.results[key]
-            component = components[self.inputs[0]]
-            valuerrange = component.stats.range
-            diff = abs(other_val - self_val) / valuerrange
-            threshold = thresholds.get(key, 0.05)
-            # If value has decreased, and larger is better
-            if self_val > other_val and diff > threshold and self.preferences[key] == "high":
-                alert = True
-            elif self_val < other_val and diff > threshold and self.preferences[key] == "low":
-                alert = True
+            if self_val is None or other_val is None:
+                key_report = {
+                    "diff": None,
+                    "alert": False,
+                    "valid": False,
+                }
             else:
-                alert = False
-            key_report = {
-                "diff": float(diff),
-                "alert": alert,
-                "valid": True,
-            }
+                component = components[self.inputs[0]]
+                valuerrange = component.stats.range
+                diff = abs(other_val - self_val) / valuerrange
+                threshold = thresholds.get(key, 0.05)
+                # If value has decreased, and larger is better
+                if self_val > other_val and diff > threshold and self.preferences[key] == "high":
+                    alert = True
+                elif self_val < other_val and diff > threshold and self.preferences[key] == "low":
+                    alert = True
+                else:
+                    alert = False
+                key_report = {
+                    "diff": float(diff),
+                    "alert": alert,
+                    "valid": True,
+                }
             reports[key] = key_report
         return reports
 
@@ -127,7 +134,6 @@ class MeanReducer(Reducer):
 
     def build(self, data):
         tag = self.inputs[0]
-
         to_reduce = data[tag]
         obs_mean = np.mean(to_reduce)
         self.results = {"mean": obs_mean}

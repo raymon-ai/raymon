@@ -56,7 +56,7 @@ def test_compile():
 
 
 def test_compile_one():
-    arr = np.array([1, 2, 3, 4, 5])[None, :]
+    arr = np.array([1, 2, 3, 4, 5])[:, None]
     schema = ModelProfile(
         components=[InputComponent(name="predicted_price", extractor=ElementExtractor(element=0), dtype=DataType.INT)],
     )

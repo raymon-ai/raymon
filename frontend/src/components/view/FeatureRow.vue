@@ -115,6 +115,21 @@ export default {
     getNumberPlotData() {
       let plots = [
         {
+          x: this.stats.percentiles.concat(
+            this.stats.percentiles.slice().reverse()
+          ),
+          y: this.stats.percentiles_lb.concat(
+            this.stats.percentiles_ub.slice().reverse()
+          ),
+          fill: "toself",
+          fillcolor: "rgba(3, 102, 214, 0.2)", // same blue, but lower opacity
+          line: {
+            color: "transparent",
+          },
+          hoverinfo: "skip",
+          showlegend: false,
+        },
+        {
           x: this.stats.percentiles,
           y: [...Array(101).keys()],
           type: "scatter",
@@ -139,11 +154,18 @@ export default {
     getCategoricPlotData() {
       let domain = Object.keys(this.stats.frequencies);
       let counts = Object.values(this.stats.frequencies);
-
+      let errors = [];
+      for (const [key, value] of Object.entries(this.stats.frequencies_lb)) {
+        errors.push(this.stats.frequencies[key] - value);
+      }
       let plots = [
         {
           x: domain,
           y: counts,
+          error_y: {
+            type: "data",
+            array: errors,
+          },
           type: "bar",
           marker: {
             color: colors.color_scale_blue_5,

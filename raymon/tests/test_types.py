@@ -27,8 +27,8 @@ def test_image_invalid():
         rdf = rt.DataFrame(data=None)
 
 
-def test_image_lossless():
-    img = Image.open(Path(__file__).parents[0] / "Lenna.png")
+def test_image_lossless(lenna_path):
+    img = Image.open(lenna_path)
     rimg = rt.Image(img, lossless=True)
     jcr = rimg.to_jcr()
 
@@ -37,8 +37,8 @@ def test_image_lossless():
     assert not diff.getbbox()
 
 
-def test_image_lossy():
-    img = Image.open(Path(__file__).parents[0] / "Lenna.png")
+def test_image_lossy(lenna_path):
+    img = Image.open(lenna_path)
     rimg = rt.Image(img)
     jcr = rimg.to_jcr()
 

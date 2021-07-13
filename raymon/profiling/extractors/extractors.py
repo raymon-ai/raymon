@@ -44,7 +44,9 @@ class SimpleExtractor(Extractor):
         if data is None:
             raise DataException(f"Data is None")
         components = []
-        if isinstance(data, pd.DataFrame) or isinstance(data, np.ndarray):
+        if isinstance(data, np.ndarray):
+            components = self.extract(data.T)
+        elif isinstance(data, pd.DataFrame):
             components = self.extract(data)
         elif isinstance(data, Iterable):
             for el in data:
@@ -78,10 +80,13 @@ class EvalExtractor(Extractor):
             raise DataException("output and actual not of same length")
 
         components = []
-        if isinstance(output, pd.DataFrame) or isinstance(output, np.ndarray):
-            zipped = zip(output, actual)
-            for out, act in zipped:
+        if isinstance(output, pd.Series) or isinstance(output, np.ndarray):
+            for i in range(len(output)):
+                out = output[i]
+                act = actual[i]
                 components.append(self.extract(out, act))
+        elif isinstance(output, pd.DataFrame):
+            components = self.extract(output=output, actual=actual)
         elif isinstance(output, Iterable):
             zipped = zip(output, actual)
             for out, act in zipped:

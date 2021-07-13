@@ -1,1 +1,0 @@
-The image data used in this repository is taken from [Kaggle](https://www.kaggle.com/ravirajsinh45/real-life-industrial-dataset-of-casting-product) and is courtesy of PILOT TECHNOCAST, Shapar, Rajkot. Commercial use of this data is not permitted, but we have received permission to use this data in our tutorials.

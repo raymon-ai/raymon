@@ -292,6 +292,20 @@ export default {
       }
       return components;
     },
+    sharedProfileComponents() {
+      var keys = Object.keys(this.profileComponents);
+
+      let common = keys.filter((x) => {
+        return this.alternativeAProfileComponents[x] !== undefined;
+      });
+
+      if (this.alternativeBProfileComponents) {
+        common = keys.filter((x) => {
+          return this.alternativeAProfileComponents[x] !== undefined;
+        });
+      }
+      return common;
+    },
     reportComponents() {
       return this.reportData;
     },
@@ -302,7 +316,7 @@ export default {
       };
     },
     schemaMatchedKeys() {
-      let allKeys = Object.keys(this.profileComponents);
+      let allKeys = this.sharedProfileComponents;
       let selectedKeys = allKeys;
       // filter
       if (this.componentFilter.length > 0) {
