@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="500"  src="docs/assets/Logo-blue-ai.png">
+  <img width="500"  src="./docs/assets/logo-blue-ai.png">
 </p>
 
 # Raymon: data quality and model performance monitoring
