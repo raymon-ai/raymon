@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="500"  src="./docs/assets/logo-blue-ai.png">
+  <img width="500"  src="./docsrc/assets/logo-blue-ai.png">
 </p>
 
 # Raymon: data quality and model performance monitoring
@@ -73,7 +73,7 @@ profile.validate_outputs(prediction)
 ```
 ### Inspect and contrast model profiles
 Raymon also lets you inspect and contrast profiles against each other.
-![Profile contrast preview](docs/assets/profile-contrast.png)
+![Profile contrast preview](docsrc/assets/profile-contrast.png)
 
 
 ### Logging text, data and tags
