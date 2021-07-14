@@ -18,7 +18,7 @@ Raymon backend
 --------------
 You can either host the Raymon backend yourself, or use our cloud hosted backend. The public sandbox is currently hosted at https://api.raymon.ai/v0, with the web UI at https://ui.raymon.ai.
 
-You can also host the backend yourself. It runs on Docker (Swarm mode) or Kubernetes. To deploy the backend yourself, follow the instructions at https://github.com/raymon-ai/backend 
+You can also host the backend yourself. It runs on Docker (Swarm mode) or Kubernetes. To deploy the backend yourself, follow the instructions at https://github.com/raymon-ai/raymon-backend
 
 
 -----------------------------------

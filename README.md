@@ -1,25 +1,24 @@
-# Raymon: ML Observability Platform
+<p align="center">
+  <img width="500"  src="docs/assets/Logo-blue-ai.png">
+</p>
+
+# Raymon: data quality and model performance monitoring
+
 ![Build](https://github.com/raymon-ai/raymon/workflows/test-build-deploy/badge.svg)
 [![Documentation Status](https://readthedocs.org/projects/raymon/badge/?version=latest)](https://docs.raymon.ai/en/latest/?badge=latest)
 ![Coverage](https://raw.githubusercontent.com/raymon-ai/raymon/master/coverage.svg)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 <a href="https://github.com/raymon-ai/raymon/blob/master/LICENSE.md"><img alt="License" src="https://img.shields.io/github/license/raymon-ai/raymon"></a>
 <a href="https://pypi.org/project/raymon/"><img alt="PyPI" src="https://img.shields.io/pypi/v/raymon"></a>
+</p>
 
 ## What is Raymon?
-[Raymon.ai](http://raymon.ai) is an observability platform for ML-based systems that requires minimal setup. It allows you to monitor data quality and model performance over multiple slices of your data, it alerts you when something is wrong and provides you with troubleshooting tooling for further analysis. It is very extensible and it can serve for all data and model types.
+The raymon Python library helps you monitor and troubleshoot ML models in production. It offers the following functionality:
+- It includes extractors that help you **extract valuable metrics** from input data, output data or model internals.
+- It lets you build **data profiles** for those metrics, and lets you use those to **validate & monitor data and models** in production.
+- It lets you log data and metadata to **make model predictions traceable and easily debuggable**.
 
-Raymon's functionality includes:
-
-- Making all model predictions and their pre- and postprocessing steps traceable.
-- Validating incoming data and guarding for data drift or data health issues.
-- Monitoring your model performance
-- Benchmarking different slices of your production data against each other to expose slices with reduced performance.
-- Alerting when things break down
-- Fetching production data for further debugging
-- Exporting valuable data from production for building high-quality datasets and improving your models
-
-This repository contains the Raymon client library used for data profiling and logging that can be used standalone. It further contains the docs and serves as access point for any issues users might have.
+Raymon is open source and can be used standalone, but is made to integrate with the [Raymon.ai Observability Hub for ML systems]((http://raymon.ai)). This observability hub requires minimal setup, allows you to monitor data quality and model performance over multiple slices of your data, it alerts you when something is wrong and provides you with troubleshooting tooling for further analysis. It is very extensible and it can serve for all data and model types. Raymon is under active development and all feedback and suggestions are welcome!
 
 
 ## Docs & Examples
@@ -65,7 +64,6 @@ profile = ModelProfile(
 profile.build(input=X, output=y_pred, actual=y_test)
 profile.save(".")
 ```
-
 ### Validating production data
 ... and can then be used in production code to validate your incoming data and model performance monitoring.
 
@@ -73,6 +71,10 @@ profile.save(".")
 profile.validate_input(row)
 profile.validate_outputs(prediction)
 ```
+### Inspect and contrast model profiles
+Raymon also lets you inspect and contrast profiles against each other.
+![Profile contrast preview](docs/assets/profile-contrast.png)
+
 
 ### Logging text, data and tags
 

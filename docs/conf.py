@@ -59,7 +59,7 @@ html_theme = "furo"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
-html_logo = "./assets/Logo-ai-blue.svg"
+html_logo = "./assets/logo-blue-ai.png"
 html_favicon = "./assets/favicon.ico"
 
 html_theme_options = {
