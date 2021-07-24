@@ -114,3 +114,4 @@ venv.bak/
 #*.jpeg
 dev/*
 store_secret.py
+docsrc/_build/**
