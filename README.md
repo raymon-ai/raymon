@@ -2,7 +2,7 @@
   <img width="500"  src="./docsrc/assets/logo-blue-ai.png">
 </p>
 
-# Raymon: data quality and model performance monitoring
+# Raymon: a data quality and model performance monitoring library
 
 ![Build](https://github.com/raymon-ai/raymon/workflows/test-build-deploy/badge.svg)
 ![Coverage](https://raw.githubusercontent.com/raymon-ai/raymon/master/coverage.svg)
