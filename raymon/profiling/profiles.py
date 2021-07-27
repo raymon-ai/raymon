@@ -105,8 +105,8 @@ class ModelProfile(Serializable, Buildable):
         jcr["components"] = ser_comps
         # likewise for scores
         ser_scores = {}
-        for reducer in self.scores.values():
-            ser_scores[reducer.name] = reducer.to_jcr()
+        for scorer in self.scores.values():
+            ser_scores[scorer.name] = scorer.to_jcr()
         jcr["scores"] = ser_scores
         return jcr
 
@@ -121,9 +121,9 @@ class ModelProfile(Serializable, Buildable):
             components[component.name] = component
         # TODO: likewise for scores
         scores = {}
-        for reducer_dict in jcr["scores"].values():
-            reducer = Score.from_jcr(reducer_dict)
-            scores[reducer.name] = reducer
+        for scorer_dict in jcr["scores"].values():
+            scorer = Score.from_jcr(scorer_dict)
+            scores[scorer.name] = scorer
         return cls(name=name, version=version, components=components, scores=scores)
 
     def save(self, dir):
@@ -163,8 +163,8 @@ class ModelProfile(Serializable, Buildable):
                     raise ProfileStateException("Unknown Component type: ", type(component))
                 component_values[component.name] = values
 
-            for reducer in self.scores.values():
-                reducer.build(data=component_values)
+            for scorer in self.scores.values():
+                scorer.build(data=component_values)
 
     def is_built(self):
         return all(component.is_built() for component in self.components.values())
@@ -238,7 +238,7 @@ class ModelProfile(Serializable, Buildable):
         # if not other.is_built():
         #     raise ProfileStateException("Profile 'other' is not built.")
         component_thresholds = thresholds.get("components", {})
-        reducer_thresholds = thresholds.get("scores", {})
+        scorer_thresholds = thresholds.get("scores", {})
         report = {}
         for component in self.components.values():
             if component.name not in other.components:
@@ -251,25 +251,25 @@ class ModelProfile(Serializable, Buildable):
             )
             report[component.name] = comp_report
 
-        reducer_reports = {}
+        scorer_reports = {}
         for score in self.scores.values():
-            red_threshold = reducer_thresholds.get(score.name, 0.01)
+            red_threshold = scorer_thresholds.get(score.name, 0.01)
             if score.name not in other.scores:
                 print(f"Score {score.name} not found in other, skipping...")
                 continue
             red_report = score.contrast(other.scores[score.name], components=self.components, threshold=red_threshold)
-            reducer_reports[score.name] = red_report
+            scorer_reports[score.name] = red_report
 
         jcr = {}
         jcr["reference"] = self.to_jcr()
         jcr["alternativeA"] = other.to_jcr()
         jcr["health_reports"] = report
-        jcr["score_reports"] = reducer_reports
+        jcr["score_reports"] = scorer_reports
         return jcr
 
     def contrast_alternatives(self, alternativeA, alternativeB, thresholds={}):
         component_thresholds = thresholds.get("components", {})
-        reducer_thresholds = thresholds.get("scores", {})
+        scorer_thresholds = thresholds.get("scores", {})
         report = {}
         for component in self.components.values():
             print(component.name)
@@ -286,26 +286,26 @@ class ModelProfile(Serializable, Buildable):
             )
             report[component.name] = comp_report
 
-        reducer_reports = {}
-        for reducer in self.scores.values():
-            red_threshold = reducer_thresholds.get(reducer.name, {})
-            if reducer.name not in alternativeA.scores:
-                print(f"Score {reducer.name} not found in alternativeA, skipping...")
+        scorer_reports = {}
+        for scorer in self.scores.values():
+            red_threshold = scorer_thresholds.get(scorer.name, {})
+            if scorer.name not in alternativeA.scores:
+                print(f"Score {scorer.name} not found in alternativeA, skipping...")
                 continue
-            if reducer.name not in alternativeB.scores:
-                print(f"Score {reducer.name} not found in alternativeB, skipping...")
+            if scorer.name not in alternativeB.scores:
+                print(f"Score {scorer.name} not found in alternativeB, skipping...")
                 continue
-            red_report = alternativeA.scores[reducer.name].contrast(
-                alternativeB.scores[reducer.name], components=alternativeA.components, thresholds=red_threshold
+            red_report = alternativeA.scores[scorer.name].contrast(
+                alternativeB.scores[scorer.name], components=alternativeA.components, thresholds=red_threshold
             )
-            reducer_reports[reducer.name] = red_report
+            scorer_reports[scorer.name] = red_report
 
         jcr = {}
         jcr["reference"] = self.to_jcr()
         jcr["alternativeA"] = alternativeA.to_jcr()
         jcr["alternativeB"] = alternativeB.to_jcr()
         jcr["health_reports"] = report
-        jcr["reducer_reports"] = reducer_reports
+        jcr["score_reports"] = scorer_reports
         return jcr
 
     def view(self, poi=None, mode="external", outdir=None, silent=True):

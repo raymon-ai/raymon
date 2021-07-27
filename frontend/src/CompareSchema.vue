@@ -11,12 +11,12 @@
         :alternativeB="alternativeB"
         @setPage="setPage"
       />
-      <ReducerReports
-        :refData="refData"
+      <ScoreReports
+        :refDef="refData"
         :alternativeA="alternativeA"
         :alternativeB="alternativeB"
-        :reducerReports="reducerReportData"
       />
+
       <ComponentTypeNav
         v-if="showNav"
         @viewComponentPage="updateComponentView"
@@ -41,7 +41,7 @@ import ComponentTypeNav from "@/components/ComponentTypeNav.vue";
 
 import FeatureOverview from "@/components/compare/FeatureOverview.vue";
 import FeatureDetailView from "@/components/compare/FeatureDetailView.vue";
-import ReducerReports from "@/components/compare/ReducerReports.vue";
+import ScoreReports from "@/components/ScoreReports.vue";
 
 export default {
   name: "CompareSchema",
@@ -51,7 +51,7 @@ export default {
     FeatureDetailView,
     FeatureOverview,
     ComponentTypeNav,
-    ReducerReports,
+    ScoreReports,
   },
   data() {
     return {

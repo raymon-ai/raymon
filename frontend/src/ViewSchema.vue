@@ -11,7 +11,7 @@
         :poi="poi"
         @setPage="setPage"
       />
-      <ReducerReports :refDef="profile" />
+      <ScoreReports :refDef="profile" />
       <ComponentTypeNav
         v-if="showNav"
         @viewComponentPage="updateComponentView"
@@ -36,14 +36,14 @@ import ComponentTypeNav from "@/components/ComponentTypeNav.vue";
 
 import FeatureOverview from "@/components/view/FeatureOverview.vue";
 import FeatureDetailView from "@/components/view/FeatureDetailView.vue";
-import ReducerReports from "@/components/view/ReducerReports.vue";
+import ScoreReports from "@/components/ScoreReports.vue";
 export default {
   name: "SchemaView",
   props: ["profile", "poi"],
   components: {
     Header,
     ComponentTypeNav,
-    ReducerReports,
+    ScoreReports,
   },
   data() {
     return {
