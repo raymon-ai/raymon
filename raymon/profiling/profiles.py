@@ -12,7 +12,7 @@ import pkg_resources
 import raymon
 from raymon.globals import Buildable, ProfileStateException, Serializable
 from raymon.profiling.components import Component, InputComponent, OutputComponent, ActualComponent, EvalComponent
-from raymon.profiling.reducers import Reducer
+from raymon.profiling.scores import Score
 from raymon.out import NoOutput, nullcontext
 
 
@@ -24,19 +24,19 @@ class ModelProfile(Serializable, Buildable):
         self,
         name="default",
         version="0.0.0",
-        components={},
-        reducers={},
+        components=dict(),
+        scores=dict(),
     ):
 
         self._name = None
         self._version = None
         self._components = {}
-        self._reducers = {}
+        self._scores = {}
 
         self.name = str(name)
         self.version = str(version)
         self.components = components
-        self.reducers = reducers
+        self.scores = scores
 
     """Serializable interface"""
 
@@ -77,18 +77,18 @@ class ModelProfile(Serializable, Buildable):
             raise ValueError(f"components must be a list[Component] or dict[str, Component]")
 
     @property
-    def reducers(self):
-        return self._reducers
+    def scores(self):
+        return self._scores
 
-    @reducers.setter
-    def reducers(self, value):
-        if isinstance(value, list) and all(isinstance(reducers, Reducer) for reducers in value):
+    @scores.setter
+    def scores(self, value):
+        if isinstance(value, list) and all(isinstance(scores, Score) for scores in value):
             # Convert to dict
-            self._reducers = {c.name: c for c in value}
-        elif isinstance(value, dict) and all(isinstance(reducers, Reducer) for reducers in value.values()):
-            self._reducers = value
+            self._scores = {c.name: c for c in value}
+        elif isinstance(value, dict) and all(isinstance(scores, Score) for scores in value.values()):
+            self._scores = value
         else:
-            raise ValueError(f"components must be a list[Reducer] or dict[str, Reducer]")
+            raise ValueError(f"components must be a list[Score] or dict[str, Score]")
 
     @property
     def group_idfr(self):
@@ -103,11 +103,11 @@ class ModelProfile(Serializable, Buildable):
         for component in self.components.values():
             ser_comps[component.name] = component.to_jcr()
         jcr["components"] = ser_comps
-        # likewise for reducers
-        ser_reducers = {}
-        for reducer in self.reducers.values():
-            ser_reducers[reducer.name] = reducer.to_jcr()
-        jcr["reducers"] = ser_reducers
+        # likewise for scores
+        ser_scores = {}
+        for reducer in self.scores.values():
+            ser_scores[reducer.name] = reducer.to_jcr()
+        jcr["scores"] = ser_scores
         return jcr
 
     @classmethod
@@ -119,12 +119,12 @@ class ModelProfile(Serializable, Buildable):
         for comp_dict in jcr["components"].values():
             component = Component.from_jcr(comp_dict, mock_extractor=mock_extractors)
             components[component.name] = component
-        # TODO: likewise for reducers
-        reducers = {}
-        for reducer_dict in jcr["reducers"].values():
-            reducer = Reducer.from_jcr(reducer_dict)
-            reducers[reducer.name] = reducer
-        return cls(name=name, version=version, components=components, reducers=reducers)
+        # TODO: likewise for scores
+        scores = {}
+        for reducer_dict in jcr["scores"].values():
+            reducer = Score.from_jcr(reducer_dict)
+            scores[reducer.name] = reducer
+        return cls(name=name, version=version, components=components, scores=scores)
 
     def save(self, dir):
         dir = Path(dir)
@@ -163,7 +163,7 @@ class ModelProfile(Serializable, Buildable):
                     raise ProfileStateException("Unknown Component type: ", type(component))
                 component_values[component.name] = values
 
-            for reducer in self.reducers.values():
+            for reducer in self.scores.values():
                 reducer.build(data=component_values)
 
     def is_built(self):
@@ -238,7 +238,7 @@ class ModelProfile(Serializable, Buildable):
         # if not other.is_built():
         #     raise ProfileStateException("Profile 'other' is not built.")
         component_thresholds = thresholds.get("components", {})
-        reducer_thresholds = thresholds.get("reducers", {})
+        reducer_thresholds = thresholds.get("scores", {})
         report = {}
         for component in self.components.values():
             if component.name not in other.components:
@@ -252,32 +252,24 @@ class ModelProfile(Serializable, Buildable):
             report[component.name] = comp_report
 
         reducer_reports = {}
-        for reducer in self.reducers.values():
-            red_threshold = reducer_thresholds.get(reducer.name, {})
-            if reducer.name not in other.reducers:
-                print(f"Reducer {reducer.name} not found in other, skipping...")
+        for score in self.scores.values():
+            red_threshold = reducer_thresholds.get(score.name, 0.01)
+            if score.name not in other.scores:
+                print(f"Score {score.name} not found in other, skipping...")
                 continue
-            red_report = reducer.contrast(
-                other.reducers[reducer.name], components=self.components, thresholds=red_threshold
-            )
-            reducer_reports[reducer.name] = red_report
+            red_report = score.contrast(other.scores[score.name], components=self.components, threshold=red_threshold)
+            reducer_reports[score.name] = red_report
 
         jcr = {}
         jcr["reference"] = self.to_jcr()
         jcr["alternativeA"] = other.to_jcr()
         jcr["health_reports"] = report
-        jcr["reducer_reports"] = reducer_reports
+        jcr["score_reports"] = reducer_reports
         return jcr
 
     def contrast_alternatives(self, alternativeA, alternativeB, thresholds={}):
-        # if not self.is_built():
-        #     raise ProfileStateException("Profile 'self' is not built.")
-        # if not alternativeA.is_built():
-        #     raise ProfileStateException("Profile 'alternativeA' is not built.")
-        # if not alternativeB.is_built():
-        #     raise ProfileStateException("Profile 'alternativeB' is not built.")
         component_thresholds = thresholds.get("components", {})
-        reducer_thresholds = thresholds.get("reducers", {})
+        reducer_thresholds = thresholds.get("scores", {})
         report = {}
         for component in self.components.values():
             print(component.name)
@@ -295,16 +287,16 @@ class ModelProfile(Serializable, Buildable):
             report[component.name] = comp_report
 
         reducer_reports = {}
-        for reducer in self.reducers.values():
+        for reducer in self.scores.values():
             red_threshold = reducer_thresholds.get(reducer.name, {})
-            if reducer.name not in alternativeA.reducers:
-                print(f"Reducer {reducer.name} not found in alternativeA, skipping...")
+            if reducer.name not in alternativeA.scores:
+                print(f"Score {reducer.name} not found in alternativeA, skipping...")
                 continue
-            if reducer.name not in alternativeB.reducers:
-                print(f"Reducer {reducer.name} not found in alternativeB, skipping...")
+            if reducer.name not in alternativeB.scores:
+                print(f"Score {reducer.name} not found in alternativeB, skipping...")
                 continue
-            red_report = alternativeA.reducers[reducer.name].contrast(
-                alternativeB.reducers[reducer.name], components=alternativeA.components, thresholds=red_threshold
+            red_report = alternativeA.scores[reducer.name].contrast(
+                alternativeB.scores[reducer.name], components=alternativeA.components, thresholds=red_threshold
             )
             reducer_reports[reducer.name] = red_report
 

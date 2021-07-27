@@ -104,7 +104,7 @@ class Component(Serializable, Buildable, ABC):
         compclass = locate(classpath)
         if compclass is None:
             raise NameError(f"Could not locate classpath {classpath}")
-        return compclass.from_jcr(jcr["state"])
+        return compclass.from_jcr(jcr["state"], mock_extractor=mock_extractor)
 
     def build_extractor(self, data):
         self.extractor.build(data)
@@ -138,6 +138,10 @@ class Component(Serializable, Buildable, ABC):
 
     def __repr__(self):
         return str(self)
+
+    @abstractmethod
+    def build_stats(self, data, domain):
+        pass
 
 
 class InputComponent(Component):

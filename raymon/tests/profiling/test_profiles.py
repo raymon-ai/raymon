@@ -7,7 +7,7 @@ from raymon import InputComponent, OutputComponent, ActualComponent, EvalCompone
 from raymon import ModelProfile
 from raymon.profiling.extractors.structured import generate_components, ElementExtractor
 from raymon.profiling.extractors.structured.scoring import AbsoluteRegressionError
-from raymon.profiling import MeanReducer
+from raymon.profiling import MeanScore
 
 
 def test_schema_contrast_missingcomponents(cheap_houses_csv):
@@ -25,12 +25,12 @@ def test_schema_contrast_missingcomponents(cheap_houses_csv):
             ActualComponent(name="actual", extractor=ElementExtractor(element=0)),
             EvalComponent(name="abs_error", extractor=AbsoluteRegressionError()),
         ],
-        reducers=[
-            MeanReducer(
+        scores=[
+            MeanScore(
                 name="MAE",
                 inputs=["abs_error"],
-                preferences={"mean": "low"},
-                results=None,
+                preference="low",
+                result=None,
             )
         ],
     )
@@ -50,7 +50,59 @@ def test_schema_contrast_missingcomponents(cheap_houses_csv):
     contrast = profile.contrast(profile_dropped)
     assert all(k.lower() in contrast["health_reports"] for k in keys)
     assert "actual" not in contrast["health_reports"]
-    assert len(contrast["reducer_reports"]) == 0
+    assert len(contrast["score_reports"]) == 0
+
+
+def test_schema_contrast_missingcomponents(cheap_houses_csv):
+    cheap_data = pd.read_csv(cheap_houses_csv).drop("Id", axis="columns")
+    actuals = cheap_data["SalePrice"].to_numpy()
+    preds = actuals - actuals * 0.1
+    keys = ["LotArea", "LotShape", "1stFlrSF", "GrLivArea", "BldgType"]
+    inputs = cheap_data[keys]
+    profile = ModelProfile(
+        name="cheap-houses",
+        version="0.0.1",
+        components=generate_components(inputs.dtypes, complass=InputComponent)
+        + [
+            OutputComponent(name="prediction", extractor=ElementExtractor(element=0)),
+            ActualComponent(name="actual", extractor=ElementExtractor(element=0)),
+            EvalComponent(name="abs_error", extractor=AbsoluteRegressionError()),
+        ],
+        scores=[
+            MeanScore(
+                name="MAE",
+                inputs=["abs_error"],
+                preference="low",
+                result=None,
+            )
+        ],
+    )
+
+    profile.build(input=inputs, output=preds[:, None], actual=actuals[:, None])
+
+    profile_dropped = ModelProfile(
+        name="cheap-houses-dropped",
+        version="0.0.1",
+        components=generate_components(inputs.dtypes, complass=InputComponent)
+        + [
+            OutputComponent(name="prediction", extractor=ElementExtractor(element=0)),
+            ActualComponent(name="actual", extractor=ElementExtractor(element=0)),
+            EvalComponent(name="abs_error", extractor=AbsoluteRegressionError()),
+        ],
+        scores=[
+            MeanScore(
+                name="MAE",
+                inputs=["abs_error"],
+                preference="low",
+                result=None,
+            )
+        ],
+    )
+    profile_dropped.build(input=inputs, output=preds[:, None], actual=actuals[:, None])
+
+    contrast = profile.contrast(profile_dropped)
+    assert all(k.lower() in contrast["health_reports"] for k in keys)
+    assert len(contrast["score_reports"]) == 1
 
 
 def test_schema_build_input_types(cheap_houses_csv):
