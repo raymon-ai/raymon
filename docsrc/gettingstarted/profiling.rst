@@ -59,13 +59,13 @@ Component Stats
 Depending on the type (:code:`int`, :code:`float` or :code:`str`) a component's extractor returns, the component's stats need to be of the equivalent type (:class:`raymon.IntStats`, :class:`raymon.FloatStats` or :class:`raymon.CategoricStats`.
 
 
-Reducers
---------
-Reducers take in extracted features and reduce those to one or a fixed amount of scores. For example, a reducer could reduce all absolute errors of a given dataset into the mean absolute error, or could calculate a precision and recall score.
+Scores
+------
+Scores take in extracted features and reduce those to one or a fixed amount of scores. For example, a Score could reduce all absolute errors of a given dataset into the mean absolute error, or could calculate a precision and recall score.
 
-A reducer is of type :class:`raymon.Reducer` and needs a :code:`name`, :code:`inputs` and :code:`preferences` as initialization parameters. :code:`inputs` designate the tags that the reducer should take as input,  :code:`preferences` indicate whether the value should be high or low for every output. For example, when reducing the :code:`absolute_error` tag to the mean absolute error, the preference should be :code:`low`, since a low error is better. When reducing a precision and recall score, the preference should be :code:`high` for both outputs, since a higher score is better.
+A scorer is of type :class:`raymon.Scores` and needs a :code:`name`, :code:`inputs` and :code:`preference` as initialization parameters. :code:`inputs` designate the tags that the reducer should take as input,  :code:`preference` indicate whether the value should be high or low. For example, when reducing the :code:`absolute_error` tag to the mean absolute error, the preference should be :code:`low`, since a low error is better. When reducing a precision and recall score, the preference should be :code:`high` for both, since a higher score is better.
 
-Reducers may seem cumbersome at first, but their main goal is to auto-configure the Raymon backend when a model profile is uploaded. 
+Scores may seem cumbersome at first, but their main goal is to auto-configure the Raymon backend when a model profile is uploaded. 
 
 -----------------
 Building profiles
@@ -89,25 +89,24 @@ Note the use of the :meth:`raymon.profiling.extractors.structured.generate_compo
     )
     from raymon.profiling.extractors.structured import generate_components, ElementExtractor
 
-    components = generate_components(X.dtypes, compclass=InputComponent) + [
+    components = generate_components(X.dtypes, complass=InputComponent) + [
         OutputComponent(name="prediction", extractor=ElementExtractor(element=0)),
         ActualComponent(name="actual", extractor=ElementExtractor(element=0)),
         EvalComponent(name="abs_error", extractor=AbsoluteRegressionError()),
     ]
-    reducers = [
-        MeanReducer(
+    scores = [
+        MeanScore(
             name="MAE",
             inputs=["abs_error"],
-            preferences={"mean": "low"},
-            results=None,
+            preference="low",
         )
     ]
 
     profile = ModelProfile(
         name="HousePricesCheap",
-        version="2.0.0",
+        version="3.0.0",
         components=components,
-        reducers=reducers,
+        scores=scores,
     )
     profile.build(input=X, output=y_pred[None, :], actual=y_test[None, :])
     profile.save(ROOT / "models")
