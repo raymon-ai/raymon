@@ -175,9 +175,9 @@ class RecallScore(Score):
             if key not in counts:
                 counts[key] = 0
         try:
-            result["recall"] = counts["TP"] / (counts["TP"] + counts["FN"])
+            result = counts["TP"] / (counts["TP"] + counts["FN"])
         except:
-            result["recall"] = -1
+            result = -1
         return result
 
     @classmethod
