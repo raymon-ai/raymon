@@ -1,0 +1,1 @@
+{"glare": {"0": "no_glare", "1": "glare"}, "night": {"0": "day", "1": "night", "2": "twilight"}, "city": {"0": "rural", "1": "urban"}, "precipitation": {"0": "rain", "1": "snow", "2": "clear", "3": "snowing", "4": "light_rain"}}
