@@ -2,7 +2,7 @@ import onnxruntime
 import numpy as np
 from PIL import Image
 from collections.abc import Iterable
-from svm import SVM
+from raymon.metadata.svm import SVM
 import pkg_resources
 
 

@@ -1,4 +1,4 @@
-from features import WeatherSubExtractor
+from raymon.metadata.features import WeatherSubExtractor
 
 import glob
 import pandas as pd
