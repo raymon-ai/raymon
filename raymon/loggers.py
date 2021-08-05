@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import asyncio
 import time
+import signal
 
 from raymon.tags import Tag
 from raymon.globals import DataException, Serializable
@@ -183,11 +184,28 @@ class RaymonAPILogger(RaymonLoggerBase):
         self.logger.info(f"Ray tagged. Status: {status}", extra=jcr)
 
 
+# Custom exception for the timeout
+class TimeoutException(Exception):
+    pass
+
+
 class BatchedAPILogger(RaymonLoggerBase):
-    def __init__(self, url="https://api.raymon.ai/v0", project_id=None, auth_path=None, env=None):
+    def __init__(
+        self,
+        url="https://api.raymon.ai/v0",
+        project_id=None,
+        auth_path=None,
+        env=None,
+        batch_limit=100,
+        limit_size=250,
+        timelimit=5,
+    ):
         super().__init__(project_id=project_id)
         self.api = RaymonAPI(url=url, project_id=project_id, auth_path=auth_path, env=env)
-        self.logs_queue = asyncio.Queue()
+        self.logs_queue = asyncio.Queue(maxsize=limit_size)
+        self.lim = batch_limit
+        self.timelimit = timelimit
+        self.flush_insist = False
 
     """
     Functions related to logging of traces
@@ -198,11 +216,9 @@ class BatchedAPILogger(RaymonLoggerBase):
         msg_dict = {}
         msg_dict["type"] = name
         msg_dict["data"] = jcr
-        t = time.perf_counter()
         self.logs_queue.put_nowait(msg_dict)
-        print("item added.")
-        if flush is True:
-            self.send_batch()
+        print("item " + name + " added to buffer.")
+        self.check_logs(flush)
 
     def info(self, trace_id, text, flush=False):
         self.produce(name="info", trace_id=trace_id, ref=None, data=text, flush=flush)
@@ -214,16 +230,55 @@ class BatchedAPILogger(RaymonLoggerBase):
         tags = self.parse_tags(tags)
         self.produce(name="tag", trace_id=trace_id, ref=None, data=tags, flush=flush)
 
-    def send_batch(self):
-        print("batch is sent into database")
-        batch_sent = []
-        while not self.logs_queue.empty():
-            msg_dict = self.logs_queue.get_nowait()
-            batch_sent.append(msg_dict)
-        resp = self.api.post(
-            route=f"projects/{self.project_id}/ingest",
-            json=batch_sent,
-        )
-        status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
-        log_dict = self.structure(trace_id=batch_sent[0]["data"]["trace_id"], ref=None, data=batch_sent)
-        self.logger.info(f"Multiple logs logged. Status: {status}", extra=log_dict)
+    def check_logs(self, flush):
+        if self.logs_queue.qsize() >= self.lim or flush is True or self.flush_insist is True:
+            batch_sent = []
+            # Set up signal handler for SIGALRM, saving previous value
+            alarm_handler = signal.signal(signal.SIGALRM, self.sigalrm_handler)
+            # Start timer
+            signal.alarm(self.timelimit)
+            try:
+                # try to access with empty list not to lose the data from queue
+                resp_check = self.api.post(
+                    route=f"projects/{self.project_id}/ingest",
+                    json=batch_sent,
+                )
+                if resp_check.ok:
+                    while not self.logs_queue.empty():
+                        msg_dict = self.logs_queue.get_nowait()
+                        batch_sent.append(msg_dict)
+                    resp = self.api.post(
+                        route=f"projects/{self.project_id}/ingest",
+                        json=batch_sent,
+                    )
+                    log_dict = self.structure(trace_id=batch_sent[0]["data"]["trace_id"], ref=None, data=batch_sent)
+                    if resp.ok:
+                        status = "OK"
+                        self.logger.info(f"Multiple logs logged. Status: {status}", extra=log_dict)
+                        print("Batch is sent into database")
+                        self.flush_insist = False
+                    else:
+                        status = f"ERROR: {resp.status_code}"
+                        self.logger.info(f"API is not reachable. Status: {status}", extra=log_dict)
+                        for item in batch_sent:
+                            self.logs_queue.put_nowait(item)
+                        self.flush_insist = True
+                else:
+                    pass
+            except TimeoutException:
+                print("Took too long to post the logs")
+            except:
+                print("API is not reachable")
+            finally:
+                self.flush_insist = True
+                # Turn off timer
+                signal.alarm(0)
+                # Restore handler to previous value
+                signal.signal(signal.SIGALRM, alarm_handler)
+        else:
+            pass
+
+    # Handler function to be called when SIGALRM is received
+    def sigalrm_handler(self, signum, frame):
+        # We get signal!
+        raise TimeoutException()
