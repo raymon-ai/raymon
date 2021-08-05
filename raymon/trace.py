@@ -2,6 +2,7 @@ import uuid
 import numpy as np
 
 import raymon
+from raymon.loggers import BatchedAPILogger
 
 
 def _parse_trace_id(trace_id):
@@ -37,7 +38,7 @@ class Trace:
     Methods related to data logging
     """
 
-    def info(self, text):
+    def info(self, text, flush=False):
         """
         Log a text message.
 
@@ -46,9 +47,12 @@ class Trace:
         text : str
             The string you want to log to the backend.
         """
-        self.logger.info(trace_id=self.trace_id, text=text)
+        if isinstance(self.logger, BatchedAPILogger):
+            self.logger.info(trace_id=self.trace_id, text=text, flush=flush)
+        else:
+            self.logger.info(trace_id=self.trace_id, text=text)
 
-    def log(self, ref, data):
+    def log(self, ref, data, flush=False):
         """Log a data artefact to the backend.
 
         Parameters
@@ -58,9 +62,12 @@ class Trace:
         data : :class:`raymon.types.RaymonDataType` or :class:`raymon.globals.Serializable`
             The data you want to log to the backend.
         """
-        self.logger.log(trace_id=self.trace_id, ref=ref, data=data)
+        if isinstance(self.logger, BatchedAPILogger):
+            self.logger.log(trace_id=self.trace_id, ref=ref, data=data, flush=flush)
+        else:
+            self.logger.log(trace_id=self.trace_id, ref=ref, data=data)
 
-    def tag(self, tags):
+    def tag(self, tags, flush=False):
         """Tag the trace with given tags.
 
         Parameters
@@ -68,7 +75,10 @@ class Trace:
         tags : list of dicts or list of :class:`raymon.Tag`
              A
         """
-        self.logger.tag(trace_id=self.trace_id, tags=tags)
+        if isinstance(self.logger, BatchedAPILogger):
+            self.logger.tag(trace_id=self.trace_id, tags=tags, flush=flush)
+        else:
+            self.logger.tag(trace_id=self.trace_id, tags=tags)
 
     def __str__(self):
         return self.trace_id
