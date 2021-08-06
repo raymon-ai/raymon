@@ -189,6 +189,11 @@ class TimeoutException(Exception):
     pass
 
 
+# Custom exception for the timeout
+class LimitSizeException(Exception):
+    pass
+
+
 class BatchedAPILogger(RaymonLoggerBase):
     def __init__(
         self,
@@ -197,80 +202,92 @@ class BatchedAPILogger(RaymonLoggerBase):
         auth_path=None,
         env=None,
         batch_limit=100,
-        limit_size=250,
+        limit_size=200,
         timelimit=5,
     ):
         super().__init__(project_id=project_id)
         self.api = RaymonAPI(url=url, project_id=project_id, auth_path=auth_path, env=env)
         self.logs_queue = asyncio.Queue(maxsize=limit_size)
-        self.lim = batch_limit
+        self.batch_limit = batch_limit
         self.timelimit = timelimit
+        self.limit_size = limit_size
         self.flush_insist = False
+        self.batch_sent = []
 
     """
     Functions related to logging of traces
     """
 
-    def produce(self, name, trace_id, ref, data, flush):
+    async def producer(self, name, trace_id, ref, data):
         jcr = self.structure(trace_id=trace_id, ref=ref, data=data)
         msg_dict = {}
         msg_dict["type"] = name
         msg_dict["data"] = jcr
-        self.logs_queue.put_nowait(msg_dict)
-        print("item " + name + " added to buffer.")
-        self.check_logs(flush)
+        try:
+            await self.logs_queue.put(msg_dict)
+        except asyncio.QueueFull:
+            self.logs_queue._queue.clear()
+            print("Exceeded the buffer limit and Logger dropped the data")
+        print("item " + name + " is added to buffer.")
 
     def info(self, trace_id, text, flush=False):
-        self.produce(name="info", trace_id=trace_id, ref=None, data=text, flush=flush)
+        asyncio.gather(
+            asyncio.create_task(self.producer(name="info", trace_id=trace_id, ref=None, data=text)),
+            asyncio.create_task(self.consumer(flush=flush)),
+        )
 
     def log(self, trace_id, ref, data, flush=False):
-        self.produce(name="log", trace_id=trace_id, ref=ref, data=data.to_jcr(), flush=flush)
+        asyncio.gather(
+            asyncio.create_task(self.producer(name="log", trace_id=trace_id, ref=ref, data=data.to_jcr())),
+            asyncio.create_task(self.consumer(flush=flush)),
+        )
 
     def tag(self, trace_id, tags, flush=False):
         tags = self.parse_tags(tags)
-        self.produce(name="tag", trace_id=trace_id, ref=None, data=tags, flush=flush)
+        asyncio.gather(
+            asyncio.create_task(self.producer(name="tag", trace_id=trace_id, ref=None, data=tags)),
+            asyncio.create_task(self.consumer(flush=flush)),
+        )
 
-    def check_logs(self, flush):
-        if self.logs_queue.qsize() >= self.lim or flush is True or self.flush_insist is True:
-            batch_sent = []
+    async def consumer(self, flush):
+        if self.logs_queue.qsize() >= self.batch_limit or flush is True or self.flush_insist is True:
+            while not self.logs_queue.empty():
+                msg_dict = await self.logs_queue.get()
+                self.batch_sent.append(msg_dict)
             # Set up signal handler for SIGALRM, saving previous value
             alarm_handler = signal.signal(signal.SIGALRM, self.sigalrm_handler)
             # Start timer
             signal.alarm(self.timelimit)
             try:
-                # try to access with empty list not to lose the data from queue
-                resp_check = self.api.post(
+                if len(self.batch_sent) > self.limit_size:
+                    self.batch_sent = []
+                    raise LimitSizeException()
+                resp = self.api.post(
                     route=f"projects/{self.project_id}/ingest",
-                    json=batch_sent,
+                    json=self.batch_sent,
                 )
-                if resp_check.ok:
-                    while not self.logs_queue.empty():
-                        msg_dict = self.logs_queue.get_nowait()
-                        batch_sent.append(msg_dict)
-                    resp = self.api.post(
-                        route=f"projects/{self.project_id}/ingest",
-                        json=batch_sent,
-                    )
-                    log_dict = self.structure(trace_id=batch_sent[0]["data"]["trace_id"], ref=None, data=batch_sent)
-                    if resp.ok:
-                        status = "OK"
-                        self.logger.info(f"Multiple logs logged. Status: {status}", extra=log_dict)
-                        print("Batch is sent into database")
-                        self.flush_insist = False
-                    else:
-                        status = f"ERROR: {resp.status_code}"
-                        self.logger.info(f"API is not reachable. Status: {status}", extra=log_dict)
-                        for item in batch_sent:
-                            self.logs_queue.put_nowait(item)
-                        self.flush_insist = True
+                log_dict = self.structure(
+                    trace_id=self.batch_sent[0]["data"]["trace_id"], ref=None, data=self.batch_sent
+                )
+                if resp.ok:
+                    status = "OK"
+                    self.logger.info(f"Multiple logs logged. Status: {status}", extra=log_dict)
+                    print("Batch is sent into database")
+                    self.batch_sent = []
+                    self.flush_insist = False
                 else:
-                    pass
+                    status = f"ERROR: {resp.status_code}"
+                    self.logger.info(f"Couldn't log. Status: {status}", extra=log_dict)
+                    self.flush_insist = True
             except TimeoutException:
                 print("Took too long to post the logs")
-            except:
-                print("API is not reachable")
-            finally:
                 self.flush_insist = True
+            except LimitSizeException:
+                print("Exceeded the buffer limit and Logger dropped the data")
+            except:
+                print("API is not accessible")
+                self.flush_insist = True
+            finally:
                 # Turn off timer
                 signal.alarm(0)
                 # Restore handler to previous value
