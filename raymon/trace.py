@@ -54,7 +54,6 @@ class Trace:
 
     def log(self, ref, data, flush=False):
         """Log a data artefact to the backend.
-
         Parameters
         ----------
         ref : str
@@ -69,7 +68,6 @@ class Trace:
 
     def tag(self, tags, flush=False):
         """Tag the trace with given tags.
-
         Parameters
         ----------
         tags : list of dicts or list of :class:`raymon.Tag`

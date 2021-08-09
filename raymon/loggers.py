@@ -189,11 +189,6 @@ class TimeoutException(Exception):
     pass
 
 
-# Custom exception for the timeout
-class LimitSizeException(Exception):
-    pass
-
-
 class BatchedAPILogger(RaymonLoggerBase):
     def __init__(
         self,
@@ -201,8 +196,8 @@ class BatchedAPILogger(RaymonLoggerBase):
         project_id=None,
         auth_path=None,
         env=None,
-        batch_limit=100,
-        limit_size=200,
+        batch_limit=10,
+        limit_size=100,
         timelimit=5,
     ):
         super().__init__(project_id=project_id)
@@ -210,7 +205,6 @@ class BatchedAPILogger(RaymonLoggerBase):
         self.logs_queue = asyncio.Queue(maxsize=limit_size)
         self.batch_limit = batch_limit
         self.timelimit = timelimit
-        self.limit_size = limit_size
         self.flush_insist = False
         self.batch_sent = []
 
@@ -227,8 +221,9 @@ class BatchedAPILogger(RaymonLoggerBase):
             await self.logs_queue.put(msg_dict)
         except asyncio.QueueFull:
             self.logs_queue._queue.clear()
+            self.batch_sent = []
             print("Exceeded the buffer limit and Logger dropped the data")
-        print("item " + name + " is added to buffer.")
+        # print("item "+name+" is added to buffer.")
 
     def info(self, trace_id, text, flush=False):
         asyncio.gather(
@@ -251,7 +246,10 @@ class BatchedAPILogger(RaymonLoggerBase):
 
     async def consumer(self, flush):
         if self.logs_queue.qsize() >= self.batch_limit or flush is True or self.flush_insist is True:
-            while not self.logs_queue.empty():
+            for _ in range(self.batch_limit):
+                if self.logs_queue.empty() or len(self.batch_sent) > self.batch_limit:
+                    # If buffer is empty or batch size is bigger than batch limit
+                    break
                 msg_dict = await self.logs_queue.get()
                 self.batch_sent.append(msg_dict)
             # Set up signal handler for SIGALRM, saving previous value
@@ -259,9 +257,6 @@ class BatchedAPILogger(RaymonLoggerBase):
             # Start timer
             signal.alarm(self.timelimit)
             try:
-                if len(self.batch_sent) > self.limit_size:
-                    self.batch_sent = []
-                    raise LimitSizeException()
                 resp = self.api.post(
                     route=f"projects/{self.project_id}/ingest",
                     json=self.batch_sent,
@@ -280,17 +275,16 @@ class BatchedAPILogger(RaymonLoggerBase):
                     self.logger.info(f"Couldn't log. Status: {status}", extra=log_dict)
                     self.flush_insist = True
             except TimeoutException:
-                print("Took too long to post the logs")
+                print(f"Took too longer than {self.timelimit} min to post the logs")
+                # On the next logging, even though flush is not true, it calls the consumer method.
                 self.flush_insist = True
-            except LimitSizeException:
-                print("Exceeded the buffer limit and Logger dropped the data")
             except:
                 print("API is not accessible")
                 self.flush_insist = True
             finally:
                 # Turn off timer
                 signal.alarm(0)
-                # Restore handler to previous value
+                # Reset the alarm_handler variable
                 signal.signal(signal.SIGALRM, alarm_handler)
         else:
             pass
