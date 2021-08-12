@@ -283,7 +283,7 @@ class NumericStats(Stats):
         # Add confidence bounds
         cdf1_lower, cdf1_upper, eps1 = self.get_conf_bounds_dkw(cdf1_interpolated)
         cdf2_lower, cdf2_upper, eps2 = other.get_conf_bounds_dkw(cdf2_interpolated)
-        # Check one above other, and the revers
+        # Check one above other, and the reverse
         dists1 = np.array(cdf1_lower) - np.array(cdf2_upper)
         dists2 = np.array(cdf2_lower) - np.array(cdf1_upper)
         # Keep the maximum distance per x value, and only keep positive ones
