@@ -366,11 +366,11 @@ export default {
     getNumberPlotData() {
       let plots = [
         {
-          x: this.refStats.percentiles.concat(
-            this.refStats.percentiles.slice().reverse()
-          ),
-          y: this.refStats.percentiles_lb.concat(
+          x: this.refStats.percentiles_lb.concat(
             this.refStats.percentiles_ub.slice().reverse()
+          ),
+          y: Array.from(Array(101).keys()).concat(
+            Array.from(Array(101).keys()).reverse()
           ),
           fill: "toself",
           fillcolor: "rgba(106, 115, 125, 0.2)", // same gray, but lower opacity
@@ -390,11 +390,11 @@ export default {
           name: `${this.refData.name}@${this.refData.version}`,
         },
         {
-          x: this.alternativeAStats.percentiles.concat(
-            this.alternativeAStats.percentiles.slice().reverse()
-          ),
-          y: this.alternativeAStats.percentiles_lb.concat(
+          x: this.alternativeAStats.percentiles_lb.concat(
             this.alternativeAStats.percentiles_ub.slice().reverse()
+          ),
+          y: Array.from(Array(101).keys()).concat(
+            Array.from(Array(101).keys()).reverse()
           ),
           fill: "toself",
           fillcolor: "rgba(3, 102, 214, 0.2)", // same blue, but lower opacity
@@ -416,11 +416,11 @@ export default {
       ];
       if (this.alternativeB) {
         plots.push({
-          x: this.alternativeBStats.percentiles.concat(
-            this.alternativeBStats.percentiles.slice().reverse()
-          ),
-          y: this.alternativeBStats.percentiles_lb.concat(
+          x: this.alternativeBStats.percentiles_lb.concat(
             this.alternativeBStats.percentiles_ub.slice().reverse()
+          ),
+          y: Array.from(Array(101).keys()).concat(
+            Array.from(Array(101).keys()).reverse()
           ),
           fill: "toself",
           fillcolor: "rgba(215, 58, 73, 0.2)", // same red, but lower opacity

@@ -195,11 +195,11 @@ export default {
     getNumberPlotData() {
       let plots = [
         {
-          x: this.stats.percentiles.concat(
-            this.stats.percentiles.slice().reverse()
-          ),
-          y: this.stats.percentiles_lb.concat(
+          x: this.stats.percentiles_lb.concat(
             this.stats.percentiles_ub.slice().reverse()
+          ),
+          y: Array.from(Array(101).keys()).concat(
+            Array.from(Array(101).keys()).reverse()
           ),
           fill: "toself",
           fillcolor: "rgba(3, 102, 214, 0.2)", // same blue, but lower opacity
