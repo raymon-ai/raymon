@@ -14,6 +14,7 @@ from raymon.globals import Buildable, ProfileStateException, Serializable
 from raymon.profiling.components import Component, InputComponent, OutputComponent, ActualComponent, EvalComponent
 from raymon.profiling.scores import Score
 from raymon.out import NoOutput, nullcontext
+from raymon.version import __version__
 
 
 class ModelProfile(Serializable, Buildable):
@@ -98,6 +99,7 @@ class ModelProfile(Serializable, Buildable):
         jcr = {
             "name": self.name,
             "version": self.version,
+            "raymon_version": __version__,
         }
         ser_comps = {}
         for component in self.components.values():
@@ -114,7 +116,7 @@ class ModelProfile(Serializable, Buildable):
     def from_jcr(cls, jcr, mock_extractors=False):
         name = jcr["name"]
         version = jcr["version"]
-
+        raymon_version = jcr.get("raymon_version", None)
         components = {}
         for comp_dict in jcr["components"].values():
             component = Component.from_jcr(comp_dict, mock_extractor=mock_extractors)

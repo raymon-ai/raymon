@@ -263,7 +263,12 @@ class NumericStats(Stats):
         epsilon = np.sqrt(np.log(2.0 / alpha) / (2 * self.samplesize)) * 100
         lower = np.clip(ys - epsilon, 0, 100)
         upper = np.clip(ys + epsilon, 0, 100)
-        return lower.tolist(), upper.tolist(), epsilon
+        # now, get the x values that match the upper and lower y values so at the percentile points range(101)
+        interpolator_lower = interp1d(x=lower, y=self.percentiles, fill_value="extrapolate", bounds_error=False)
+        perc_lb = interpolator_lower(list(range(101)))
+        interpolator_upper = interp1d(x=upper, y=self.percentiles, fill_value="extrapolate", bounds_error=False)
+        perc_ub = interpolator_upper(list(range(101)))
+        return perc_lb.tolist(), perc_ub.tolist()
 
     def conf_bounds_bootstrap(self, n=100):
         run_diffs = []
