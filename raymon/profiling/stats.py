@@ -4,6 +4,7 @@ import math
 from abc import ABC, abstractmethod
 from scipy.interpolate import interp1d
 from pydoc import locate
+from collections import defaultdict
 
 
 from raymon.globals import (
@@ -12,7 +13,6 @@ from raymon.globals import (
     DataException,
 )
 
-N_SAMPLES = 500
 from raymon.tags import Tag, CTYPE_TAGTYPES
 
 
@@ -155,7 +155,7 @@ class NumericStats(Stats):
             raise DataException("stats.percentiles must be None or a list of length 101.")
 
         if self.samplesize and self.percentiles:
-            lower, upper, epsilon = self.get_conf_bounds_dkw(list(range(0, 101, 1)))
+            lower, upper = self.conf_bounds_bootstrap()
             self._percentiles_lb = lower
             self._percentiles_ub = upper
         else:
@@ -232,7 +232,7 @@ class NumericStats(Stats):
 
     """Testing and sampling functions"""
 
-    def get_conf_bounds_dkw(self, ys):
+    def conf_bounds_approx(self, ys):
         """
         Get the confidence interval that encompasses the true CDF with 1-alpha certainty based on the DKW (Dvoretzky–Kiefer–Wolfowitz) inequality.
         References:
@@ -263,29 +263,48 @@ class NumericStats(Stats):
         epsilon = np.sqrt(np.log(2.0 / alpha) / (2 * self.samplesize)) * 100
         lower = np.clip(ys - epsilon, 0, 100)
         upper = np.clip(ys + epsilon, 0, 100)
-        return lower.tolist(), upper.tolist(), epsilon
+        # now, get the x values that match the upper and lower y values so at the percentile points range(101)
+        interpolator_lower = interp1d(x=lower, y=self.percentiles, fill_value="extrapolate", bounds_error=False)
+        perc_lb = interpolator_lower(list(range(101)))
+        interpolator_upper = interp1d(x=upper, y=self.percentiles, fill_value="extrapolate", bounds_error=False)
+        perc_ub = interpolator_upper(list(range(101)))
+        return perc_lb.tolist(), perc_ub.tolist()
+
+    def conf_bounds_bootstrap(self, n=100):
+        run_diffs = []
+        q = np.arange(start=0, stop=101, step=1)
+        original_perc = np.array(self.percentiles)
+        for _ in range(100):
+            px = self.sample(n=self.samplesize)
+            percentiles = [float(a) for a in np.percentile(a=px, q=q, interpolation="higher")]
+            perc_change = percentiles - original_perc
+            run_diffs.append(perc_change)
+
+        run_diffs = np.array(run_diffs)
+        # sort columns
+        lower_idx = int(n * 0.05)
+        upper_idx = int(n * 0.95)
+        runs, ps = run_diffs.shape
+        for p in range(ps):
+            run_diffs[:, p] = np.sort(run_diffs[:, p])
+        percentile_lb = original_perc + run_diffs[lower_idx, :]
+        percentile_ub = original_perc + run_diffs[upper_idx, :]
+        return percentile_lb.tolist(), percentile_ub.tolist()
 
     def report_drift(self, other, threshold):
         if other.samplesize == 0:
             return {"drift": -1, "drift_idx": -1, "alert": False, "valid": False}
-        p1 = self.percentiles
-        p2 = other.percentiles
-        merged_domain = np.sort(np.concatenate([p1, p2]))
-        # interp = np.sort(merged_domain)
+
+        merged_domain = np.sort(np.concatenate([self.percentiles, other.percentiles]))
         # If certain values cause jumps of multiple percentages, that value should be associated with the maximum percentage
-        cdf1 = np.searchsorted(p1, p1, side="right")
-        cdf2 = np.searchsorted(p2, p2, side="right")
-        # cdf contains the y points
-        interpolator_1 = interp1d(x=p1, y=cdf1, fill_value=(0, 100), bounds_error=False)
-        interpolator_2 = interp1d(x=p2, y=cdf2, fill_value=(0, 100), bounds_error=False)
-        cdf1_interpolated = interpolator_1(merged_domain)
-        cdf2_interpolated = interpolator_2(merged_domain)
-        # Add confidence bounds
-        cdf1_lower, cdf1_upper, eps1 = self.get_conf_bounds_dkw(cdf1_interpolated)
-        cdf2_lower, cdf2_upper, eps2 = other.get_conf_bounds_dkw(cdf2_interpolated)
-        # Check one above other, and the revers
-        dists1 = np.array(cdf1_lower) - np.array(cdf2_upper)
-        dists2 = np.array(cdf2_lower) - np.array(cdf1_upper)
+        lb_self_interpolated = interpolate(self.percentiles_lb, merged_domain)
+        lb_other_interpolated = interpolate(other.percentiles_lb, merged_domain)
+        ub_self_interpolated = interpolate(self.percentiles_ub, merged_domain)
+        ub_other_interpolated = interpolate(other.percentiles_ub, merged_domain)
+
+        # Check one above other, and the reverse
+        dists1 = np.array(lb_self_interpolated) - np.array(ub_other_interpolated)
+        dists2 = np.array(lb_other_interpolated) - np.array(ub_self_interpolated)
         # Keep the maximum distance per x value, and only keep positive ones
         maxes = np.maximum(np.maximum(dists1, dists2), 0)
         drift = min(np.max(maxes), 100) / 100
@@ -295,7 +314,7 @@ class NumericStats(Stats):
         drift_report = {"drift": float(drift), "drift_idx": drift_idx, "alert": bool(drift > threshold), "valid": True}
         return drift_report
 
-    def sample(self, n=N_SAMPLES, dtype="float"):
+    def sample(self, n, dtype="float"):
         # Sample floats in range 0 - len(percentiles)
         samples = np.random.random(n) * 100
 
@@ -395,7 +414,7 @@ class CategoricStats(Stats):
             raise DataException(f"stats.frequencies should be a dict, not {type(value)}")
 
         if self.samplesize and self.frequencies:
-            lower, upper, errors = self.get_conf_bounds_poisson(self.frequencies)
+            lower, upper = self.conf_bounds_bootstrap()
             self._frequencies_lb = lower
             self._frequencies_ub = upper
         else:
@@ -436,6 +455,24 @@ class CategoricStats(Stats):
     def range(self):
         return 1
 
+    def f(self, key):
+        if key in self.frequencies:
+            return self.frequencies[key]
+        else:
+            return 0
+
+    def f_lb(self, key):
+        if key in self.frequencies_lb:
+            return self.frequencies_lb[key]
+        else:
+            return 0
+
+    def f_ub(self, key):
+        if key in self.frequencies_ub:
+            return self.frequencies_ub[key]
+        else:
+            return 0
+
     def build(self, data, domain=None):
         """[summary]
 
@@ -467,7 +504,7 @@ class CategoricStats(Stats):
 
     """Testing and sampling functions"""
 
-    def get_conf_bounds_poisson(self, frequencies):
+    def conf_bounds_approx(self):
         """
         Estimate the 95% confidence interval for the distributions, using the "Normal Approximation Method" of the Binomial Confidence Interval.
         References:
@@ -482,33 +519,50 @@ class CategoricStats(Stats):
         """
         lower = {}
         upper = {}
-        errors = {}
         z = 1.96  # z score of 1.96 leads to 95% interval (gaussian)
-        for key, prob in frequencies.items():
+        for key, prob in self.frequencies.items():
             std_dev = math.sqrt(prob * (1 - prob) / self.samplesize)
             error = z * std_dev
             upper[key] = min(prob + error, 1)
             lower[key] = max(prob - error, 0)
-            errors[key] = error
-        return lower, upper, errors
+        return lower, upper
+
+    def conf_bounds_bootstrap(self, n=100):
+
+        run_diffs = defaultdict(list)
+        lower_idx = int(n * 0.95)
+        upper_idx = int(n * 0.05)
+
+        for _ in range(n):
+            s = self.sample(n=self.samplesize)
+            frequencies_sampled = pd.Series(s).value_counts(normalize=True).to_dict()
+            for key in self.frequencies.keys():
+                run_diffs[key].append(frequencies_sampled.get(key, 0) - self.frequencies[key])
+
+        freq_lb = {}
+        freq_ub = {}
+        for key in run_diffs:
+            errors_sorted = np.sort(run_diffs[key])
+            freq_lb[key] = max(0, self.frequencies[key] - errors_sorted[upper_idx])
+            freq_ub[key] = min(1, self.frequencies[key] - errors_sorted[lower_idx])
+
+        return freq_lb, freq_ub
 
     def report_drift(self, other, threshold):
         if other.samplesize == 0:
             return {"drift": -1, "drift_idx": -1, "alert": False, "valid": False}
-        self_f, other_f, full_domain = equalize_domains(self.frequencies, other.frequencies)
-        lower_self, upper_self, errors_self = self.get_conf_bounds_poisson(self_f)
-        lower_other, upper_other, errors_other = self.get_conf_bounds_poisson(other_f)
+        _, _, full_domain = equalize_domains(self.frequencies, other.frequencies)
 
         # The following boils down to the Chebyshev distance between the confidence intervals
         max_diff = -1
         max_diff_idx = 0
         for k in full_domain:
-            diff = max([lower_self[k] - upper_other[k], lower_other[k] - upper_self[k], 0]) * 100
+            diff = max([self.f_lb(k) - other.f_ub(k), other.f_lb(k) - self.f_ub(k), 0])
             if diff > max_diff:
                 max_diff = diff
                 max_diff_idx = k
 
-        drift = min(max_diff, 100) / 100
+        drift = min(max_diff, 1)
         drift_idx = max_diff_idx
         drift_report = {"drift": float(drift), "drift_idx": drift_idx, "alert": bool(drift > threshold), "valid": True}
 
@@ -520,7 +574,7 @@ class CategoricStats(Stats):
         p = [self.frequencies[k] for k in domain]
         return np.random.choice(a=domain, size=n, p=p)
 
-    def sample_counts(self, domain_freq, keys, n=N_SAMPLES):
+    def sample_counts(self, domain_freq, keys, n):
         domain = sorted(list(keys))
         # Le's be absolutely sure the domain is always in the same order
         p = [domain_freq.get(k, 0) for k in domain]
@@ -562,3 +616,12 @@ def equalize_domains(a, b):
     a = add_missing(a, full_domain)
     b = add_missing(b, full_domain)
     return a, b, full_domain
+
+
+def interpolate(percentiles, merged_domain):
+    # If certain values cause jumps of multiple percentages, that value should be associated with the maximum percentage
+    cdf = np.searchsorted(percentiles, percentiles, side="right")
+    # cdf contains the y points
+    interpolator = interp1d(x=percentiles, y=cdf, fill_value=(0, 100), bounds_error=False)
+    cdf_interpolated = interpolator(merged_domain)
+    return cdf_interpolated
