@@ -155,7 +155,7 @@ class NumericStats(Stats):
             raise DataException("stats.percentiles must be None or a list of length 101.")
 
         if self.samplesize and self.percentiles:
-            lower, upper = self.conf_bounds_bootstrap()
+            lower, upper = self.conf_bounds_approx()
             self._percentiles_lb = lower
             self._percentiles_ub = upper
         else:
@@ -232,8 +232,9 @@ class NumericStats(Stats):
 
     """Testing and sampling functions"""
 
-    def conf_bounds_approx(self, ys):
+    def conf_bounds_approx(self):
         """
+        The approximate method is about 9x times faster (2ms vs 18 ms on a simple timeit test)
         Get the confidence interval that encompasses the true CDF with 1-alpha certainty based on the DKW (Dvoretzky–Kiefer–Wolfowitz) inequality.
         References:
         - https://www.wikiwand.com/en/Dvoretzky%E2%80%93Kiefer%E2%80%93Wolfowitz_inequality
@@ -259,14 +260,19 @@ class NumericStats(Stats):
             epsilon, as in the DKW
         """
         #
+        ys = list(range(101))
         alpha = 0.05
         epsilon = np.sqrt(np.log(2.0 / alpha) / (2 * self.samplesize)) * 100
         lower = np.clip(ys - epsilon, 0, 100)
         upper = np.clip(ys + epsilon, 0, 100)
         # now, get the x values that match the upper and lower y values so at the percentile points range(101)
-        interpolator_lower = interp1d(x=lower, y=self.percentiles, fill_value="extrapolate", bounds_error=False)
+        interpolator_lower = interp1d(
+            x=lower, y=self.percentiles, fill_value=(self.percentiles[0], self.percentiles[-1]), bounds_error=False
+        )
         perc_lb = interpolator_lower(list(range(101)))
-        interpolator_upper = interp1d(x=upper, y=self.percentiles, fill_value="extrapolate", bounds_error=False)
+        interpolator_upper = interp1d(
+            x=upper, y=self.percentiles, fill_value=(self.percentiles[0], self.percentiles[-1]), bounds_error=False
+        )
         perc_ub = interpolator_upper(list(range(101)))
         return perc_lb.tolist(), perc_ub.tolist()
 
@@ -414,7 +420,7 @@ class CategoricStats(Stats):
             raise DataException(f"stats.frequencies should be a dict, not {type(value)}")
 
         if self.samplesize and self.frequencies:
-            lower, upper = self.conf_bounds_bootstrap()
+            lower, upper = self.conf_bounds_approx()
             self._frequencies_lb = lower
             self._frequencies_ub = upper
         else:
@@ -506,6 +512,7 @@ class CategoricStats(Stats):
 
     def conf_bounds_approx(self):
         """
+        The approximated CI is about 25x faster. (4ms vs 100ms on a simple timeit test)
         Estimate the 95% confidence interval for the distributions, using the "Normal Approximation Method" of the Binomial Confidence Interval.
         References:
         - https://stats.stackexchange.com/questions/111355/confidence-interval-and-sample-size-multinomial-probabilities
