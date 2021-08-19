@@ -298,7 +298,7 @@ class ModelProfile(Serializable, Buildable):
                 print(f"Score {scorer.name} not found in alternativeB, skipping...")
                 continue
             red_report = alternativeA.scores[scorer.name].contrast(
-                alternativeB.scores[scorer.name], components=alternativeA.components, thresholds=red_threshold
+                alternativeB.scores[scorer.name], components=alternativeA.components, threshold=red_threshold
             )
             scorer_reports[scorer.name] = red_report
 

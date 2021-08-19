@@ -10,6 +10,44 @@ from raymon.profiling.extractors.structured.scoring import AbsoluteRegressionErr
 from raymon.profiling import MeanScore
 
 
+def test_schema_contrast_alternatives(cheap_houses_csv):
+    cheap_data = pd.read_csv(cheap_houses_csv).drop("Id", axis="columns")
+    actuals = cheap_data["SalePrice"].to_numpy()
+    preds = actuals - actuals * 0.1
+    keys = ["LotArea", "LotShape", "1stFlrSF", "GrLivArea", "BldgType"]
+    inputs = cheap_data[keys]
+
+    def get_profile():
+        profile = ModelProfile(
+            name="cheap-houses",
+            version="0.0.1",
+            components=generate_components(inputs.dtypes, complass=InputComponent)
+            + [
+                OutputComponent(name="prediction", extractor=ElementExtractor(element=0)),
+                ActualComponent(name="actual", extractor=ElementExtractor(element=0)),
+                EvalComponent(name="abs_error", extractor=AbsoluteRegressionError()),
+            ],
+            scores=[
+                MeanScore(
+                    name="MAE",
+                    inputs=["abs_error"],
+                    preference="low",
+                    result=None,
+                )
+            ],
+        )
+        profile.build(input=inputs, output=preds[:, None], actual=actuals[:, None])
+        return profile
+
+    profile_a = get_profile()
+    profile_b = get_profile()
+    profile_c = get_profile()
+
+    contrast = profile_a.contrast_alternatives(alternativeA=profile_b, alternativeB=profile_c)
+    assert len(contrast["health_reports"]) == len(profile_a.components)
+    assert len(contrast["score_reports"]) == 1
+
+
 def test_schema_contrast_missingcomponents(cheap_houses_csv):
     cheap_data = pd.read_csv(cheap_houses_csv).drop("Id", axis="columns")
     actuals = cheap_data["SalePrice"].to_numpy()
