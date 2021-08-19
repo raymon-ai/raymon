@@ -12,12 +12,12 @@ from raymon.profiling import MeanScore
 
 def test_schema_contrast_alternatives(cheap_houses_csv):
     cheap_data = pd.read_csv(cheap_houses_csv).drop("Id", axis="columns")
-    actuals = cheap_data["SalePrice"].to_numpy()
-    preds = actuals - actuals * 0.1
-    keys = ["LotArea", "LotShape", "1stFlrSF", "GrLivArea", "BldgType"]
-    inputs = cheap_data[keys]
 
     def get_profile():
+        actuals = cheap_data["SalePrice"].to_numpy()
+        preds = actuals - actuals * 0.1
+        keys = ["LotArea", "LotShape", "1stFlrSF", "GrLivArea", "BldgType"]
+        inputs = cheap_data[keys]
         profile = ModelProfile(
             name="cheap-houses",
             version="0.0.1",

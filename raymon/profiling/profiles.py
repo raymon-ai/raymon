@@ -290,7 +290,7 @@ class ModelProfile(Serializable, Buildable):
 
         scorer_reports = {}
         for scorer in self.scores.values():
-            red_threshold = scorer_thresholds.get(scorer.name, {})
+            red_threshold = scorer_thresholds.get(scorer.name, 0.01)
             if scorer.name not in alternativeA.scores:
                 print(f"Score {scorer.name} not found in alternativeA, skipping...")
                 continue
