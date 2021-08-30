@@ -44,11 +44,9 @@ class SimpleExtractor(Extractor):
         if data is None:
             raise DataException(f"Data is None")
         components = []
-        if isinstance(data, np.ndarray):
-            components = self.extract(data.T)
-        elif isinstance(data, pd.DataFrame):
+        if isinstance(data, pd.DataFrame):
             components = self.extract(data)
-        elif isinstance(data, Iterable):
+        elif isinstance(data, Iterable) or isinstance(data, np.ndarray):
             for el in data:
                 components.append(self.extract(el))
         else:

@@ -1,2 +1,3 @@
-from .element import ElementExtractor, generate_components
+from .element import ElementExtractor, MaxScoreElementExtractor, generate_components
 from .kmeans import KMeansOutlierScorer
+from .margin import ClassificationMarginExtractor
