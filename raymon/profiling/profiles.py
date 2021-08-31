@@ -234,6 +234,14 @@ class ModelProfile(Serializable, Buildable):
             tags = [t.to_jcr() for t in tags]
         return tags
 
+    def validate_all(self, input, output, actual, convert_json=True):
+        input_tags = self.validate_input(input=input, convert_json=convert_json)
+        output_tags = self.validate_output(output=output, convert_json=convert_json)
+        actual_tags = self.validate_actual(actual=actual, convert_json=convert_json)
+        eval_tags = self.validate_eval(output=output, actual=actual, convert_json=convert_json)
+
+        return input_tags + output_tags + actual_tags + eval_tags
+
     def contrast(self, other, thresholds={}):
         # if not self.is_built():
         #     raise ProfileStateException("Profile 'self' is not built.")
