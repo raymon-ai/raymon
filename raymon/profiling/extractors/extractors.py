@@ -197,8 +197,8 @@ class SequenceEvalExtractor(EvalExtractor):
 
     def is_built(self):
         # sequences built?
-        out_seq = all(extr.is_bult() for extr in self.sequence_output)
-        act_seq = all(extr.is_bult() for extr in self.sequence_actual)
+        out_seq = all(extr.is_built() for extr in self.sequence_output)
+        act_seq = all(extr.is_built() for extr in self.sequence_actual)
         # evalextractor built?
         eval_built = self.eval_extractor.is_built()
         return out_seq and act_seq and eval_built

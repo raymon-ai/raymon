@@ -190,6 +190,10 @@ class ModelProfile(Serializable, Buildable):
             tags_dict[tag["name"]] = tag["value"]
         return tags_dict
 
+    def convert_json(self, tags):
+        tags = [t.to_jcr() for t in tags]
+        return tags
+
     def _validate_simple(self, data, components, convert_json=True):
         tags = []
         if self.is_built():
@@ -202,7 +206,7 @@ class ModelProfile(Serializable, Buildable):
                 f"Cannot check data on an unbuilt profile. Check whether all components are built."
             )
         if convert_json:
-            tags = [t.to_jcr() for t in tags]
+            tags = self.convert_json(tags)
         return tags
 
     def validate_input(self, input, convert_json=True):
@@ -231,7 +235,7 @@ class ModelProfile(Serializable, Buildable):
                 f"Cannot check data on an unbuilt profile. Check whether all components are built."
             )
         if convert_json:
-            tags = [t.to_jcr() for t in tags]
+            tags = self.convert_json(tags)
         return tags
 
     def validate_all(self, input, output, actual, convert_json=True):
@@ -326,7 +330,7 @@ class ModelProfile(Serializable, Buildable):
         # Build the schema
         with ctx_mgr:
             if poi is not None:
-                poi_dict = self.flatten_tags(self.validate_input(poi))
+                poi_dict = self.flatten_tags(poi)
             else:
                 poi_dict = {}
             jsonescaped = html.escape(json.dumps(self.to_jcr()))
