@@ -1,10 +1,6 @@
 from sklearn.ensemble import IsolationForest
 
-from scipy.sparse.sputils import isscalarlike
-from raymon.profiling.extractors.structured.margin import ClassificationMarginExtractor
 from raymon.profiling.components import ActualComponent, DataType, EvalComponent
-from raymon.profiling.extractors.structured.element import ElementExtractor
-from raymon.profiling import extractors
 import pandas as pd
 import sklearn
 import numpy as np
@@ -16,7 +12,13 @@ from sklearn.model_selection import train_test_split
 from raymon.tags import normalize
 
 from raymon import ModelProfile, InputComponent, OutputComponent, ActualComponent
-from raymon.profiling.extractors.structured import MaxScoreElementExtractor, IsolationForestOutlierScorer
+from raymon.profiling.extractors.structured import (
+    MaxScoreElementExtractor,
+    IsolationForestOutlierScorer,
+    ClassificationEntropyExtractor,
+    ClassificationMarginExtractor,
+    ElementExtractor,
+)
 from raymon.profiling.extractors.structured.scoring import ClassificationErrorType
 from raymon.profiling.scores import MeanScore, PrecisionScore, RecallScore
 from raymon.profiling.extractors import SequenceEvalExtractor
@@ -80,6 +82,7 @@ def test_profile_multiple():
                 extractor=IsolationForestOutlierScorer(iforest=IsolationForest(n_estimators=100)),
             ),
             OutputComponent(name="class_margin", extractor=ClassificationMarginExtractor()),
+            OutputComponent(name="entropy", extractor=ClassificationEntropyExtractor()),
             OutputComponent(
                 name="prediction", extractor=MaxScoreElementExtractor(categories=target_names), dtype=DataType.CAT
             ),
