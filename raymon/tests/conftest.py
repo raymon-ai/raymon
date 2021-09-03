@@ -1,4 +1,5 @@
 import pytest
+import pickle
 
 # import raymon
 from raymon.auth.m2m import save_m2m_config
@@ -60,6 +61,13 @@ def images(dpath="raymon/tests/sample_data/retinopathy", lim=10):
         img.thumbnail(size=(500, 500))
         images.append(img)
     return images
+
+
+@pytest.fixture
+def cocodata(dpath="raymon/tests/sample_data/coco/input-output.pkl", lim=10):
+    with open("/Users/kv/Raymon/Code/raymon/raymon/tests/sample_data/coco/input-output.pkl", "rb") as f:
+        images, outputs = pickle.load(f)
+    return images, outputs
 
 
 @pytest.fixture

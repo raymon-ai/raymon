@@ -159,7 +159,6 @@ def test_schema_build_input_types(cheap_houses_csv):
             EvalComponent(name="abs_error", extractor=AbsoluteRegressionError()),
         ],
     )
-    # Try pandas Series, the [;, None] indexing is actually deprecated
     profile.build(input=inputs, output=preds.to_frame(name=0), actual=actuals.to_frame(name=0))
     assert profile.components["prediction"].stats.samplesize == 992
     assert profile.components["actual"].stats.samplesize == 992

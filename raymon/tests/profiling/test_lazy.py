@@ -23,6 +23,7 @@ from raymon.profiling.extractors.structured.scoring import ClassificationErrorTy
 from raymon.profiling.scores import MeanScore, PrecisionScore, RecallScore
 from raymon.profiling.extractors import SequenceEvalExtractor
 from sklearn import preprocessing
+from raymon.profiling.extractors.vision import YoloConfidenceExtractor, Sharpness
 
 #%%
 
@@ -96,3 +97,24 @@ def test_profile_multiple():
     assert len(poi) >= 11
 
     ModelProfile.from_jcr(profile.to_jcr())
+
+
+def test_profile_coco(cocodata):
+    images, outputs = cocodata
+
+    profile = ModelProfile(
+        name="Yolo",
+        version="1.0.0",
+        components=[
+            InputComponent(name="sharpness", dtype=DataType.FLOAT, extractor=Sharpness()),
+            OutputComponent(name="confidence", extractor=YoloConfidenceExtractor()),
+        ],
+        scores=[MeanScore(name="mean_confidence", inputs=["confidence"], preference="high")],
+    )
+
+    profile.build(input=images, output=outputs, silent=False)
+    # %%
+    poi_inputs = profile.validate_input(input=images[0])
+    poi_outputs = profile.validate_output(output=outputs[0])
+    poi = poi_inputs + poi_outputs
+    assert len(poi) == 2

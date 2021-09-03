@@ -15,6 +15,7 @@ from raymon.profiling.components import Component, InputComponent, OutputCompone
 from raymon.profiling.scores import Score
 from raymon.out import NoOutput, nullcontext
 from raymon.version import __version__
+from raymon.profiling.utils import filter_nan
 
 
 class ModelProfile(Serializable, Buildable):
@@ -163,8 +164,7 @@ class ModelProfile(Serializable, Buildable):
                     values = component.build(data=[output, actual])
                 else:
                     raise ProfileStateException("Unknown Component type: ", type(component))
-                component_values[component.name] = values
-
+                component_values[component.name] = filter_nan(values)
             for scorer in self.scores.values():
                 scorer.build(data=component_values)
 
