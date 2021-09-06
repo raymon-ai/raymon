@@ -5,4 +5,5 @@ from .extractors import (
     SimpleExtractor,
     EvalExtractor,
     SequenceEvalExtractor,
+    SequenceSimpleExtractor,
 )

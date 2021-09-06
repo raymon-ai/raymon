@@ -2,7 +2,10 @@ import base64
 import pickle
 import io
 import numpy as np
+import pandas as pd
 from sklearn.ensemble import IsolationForest
+from sklearn.pipeline import Pipeline
+
 from sklearn.exceptions import NotFittedError
 from raymon.profiling.extractors import SimpleExtractor
 
@@ -21,12 +24,14 @@ class IsolationForestOutlierScorer(SimpleExtractor):
 
     @iforest.setter
     def iforest(self, value):
-        if isinstance(value, IsolationForest):
+        if isinstance(value, IsolationForest) or isinstance(value, Pipeline):
             self._iforest = value
         else:
             raise ValueError(f"iforest must be of type  {IsolationForest}, not {type(value)}")
 
     def extract(self, data):
+        if isinstance(data, pd.Series):
+            data = data.to_frame().T
         if len(data.shape) == 1:
             data = data[None, :]
         elif len(data.shape) == 2 and data.shape[0] == 1:
@@ -40,7 +45,9 @@ class IsolationForestOutlierScorer(SimpleExtractor):
     """Buildable interface"""
 
     def build(self, data):
-        self.iforest.fit(X=data)
+        # self.iforest.fit(X=data)
+        # We do NOT want to build this when building the profile, or it will detect outliers on the current profile dataset.
+        pass
 
     def is_built(self):
         try:

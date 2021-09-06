@@ -149,7 +149,11 @@ class InputComponent(Component):
         super().__init__(name=name, extractor=extractor, dtype=dtype, stats=stats)
 
     def build_stats(self, data, domain=None):
+        print("data", type(data))
+        print(data)
         extracted = self.extractor.extract_multiple(data)
+        print("extracted")
+        print(extracted)
         self.stats.build(extracted, domain=domain)
         return extracted
 

@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
 from pydoc import locate
-
+import pickle
+import io
+import base64
 import pandas as pd
 import numpy as np
 
@@ -45,8 +47,7 @@ class SimpleExtractor(Extractor):
             raise DataException(f"Data is None")
         components = []
         if isinstance(data, pd.DataFrame):
-            # components = self.extract(data)
-            components = data.apply(self.extract, axis="columns").tolist()
+            components = data.apply(self.extract, axis="columns", raw=False).tolist()
         elif isinstance(data, Iterable) or isinstance(data, np.ndarray):
             for el in data:
                 components.append(self.extract(el))
@@ -99,31 +100,123 @@ class EvalExtractor(Extractor):
         return components
 
 
+class SequenceSimpleExtractor(SimpleExtractor):
+    def __init__(self, prep, extractor, func="transform"):
+        self.prep = prep
+        self.extractor = extractor
+        self.func = func
+
+    @property
+    def prep(self):
+        return self._prep
+
+    @prep.setter
+    def prep(self, value):
+        self._prep = value
+
+    @property
+    def func(self):
+        return self._func
+
+    @func.setter
+    def func(self, value):
+        if isinstance(value, str) and hasattr(self.prep, value) and callable(getattr(self.prep, value)):
+            self._func = value
+        else:
+            raise ValueError(f"func should be a string representing the name of a callable attribute of prep.")
+
+    @property
+    def extractor(self):
+        return self._extractor
+
+    @extractor.setter
+    def extractor(self, value):
+        if isinstance(value, SimpleExtractor):
+            self._extractor = value
+        else:
+            raise ValueError(f"extractor should be a SimpleExtractor")
+
+    def to_jcr(self):
+        f = io.BytesIO()
+        pickle.dump(self.prep, f)
+        byte_arr = f.getvalue()
+        prep_dumped = base64.b64encode(byte_arr).decode()
+
+        return {
+            "class": self.class2str(),
+            "state": {
+                "prep": prep_dumped,
+                "func": self.func,
+                "extractor": self.extractor.to_jcr(),
+            },
+        }
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        prep_b64 = jcr["prep"]
+        rest_byte_arr = io.BytesIO(base64.decodebytes(prep_b64.encode()))
+        prep = pickle.load(rest_byte_arr)
+        func = jcr["func"]
+        extr_jcr = jcr["extractor"]
+        seq_extr_class = locate(extr_jcr["class"])
+        extractor = seq_extr_class.from_jcr(extr_jcr["state"])
+
+        return cls(prep=prep, func=func, extractor=extractor)
+
+    def preprocess(self, data):
+        prep_func = getattr(self.prep, self.func)
+        if isinstance(data, pd.Series):
+            data = data.to_frame().T
+        preprocessed = prep_func(data)
+        return preprocessed
+
+    def extract(self, data):
+        """Extracts a component from a data instance.
+
+        Parameters
+        ----------
+        data : any
+            The data instance you want to extract a component from. The type is up to you.
+
+        """
+        preprocessed = self.preprocess(data)
+        return self.extractor.extract(data=preprocessed)
+
+    def build(self, data):
+        preprocessed = self.preprocess(data)
+        self.extractor.build(preprocessed)
+
+    def is_built(self):
+        # evalextractor built?
+        extr_built = self.extractor.is_built()
+        return extr_built and self.prep is not None and self.func is not None
+
+
 class SequenceEvalExtractor(EvalExtractor):
-    def __init__(self, sequence_output, sequence_actual, eval_extractor):
-        self.sequence_output = sequence_output
-        self.sequence_actual = sequence_actual
+    def __init__(self, prep_output, prep_actual, eval_extractor):
+        self.prep_output = prep_output
+        self.prep_actual = prep_actual
         self.eval_extractor = eval_extractor
 
     @property
-    def sequence_output(self):
-        return self._sequence_output
+    def prep_output(self):
+        return self._prep_output
 
-    @sequence_output.setter
-    def sequence_output(self, value):
+    @prep_output.setter
+    def prep_output(self, value):
         if isinstance(value, list) and all(isinstance(el, SimpleExtractor) for el in value):
-            self._sequence_output = value
+            self._prep_output = value
         else:
             raise ValueError(f"value should be a list of SimpleExtractors")
 
     @property
-    def sequence_actual(self):
-        return self._sequence_actual
+    def prep_actual(self):
+        return self._prep_actual
 
-    @sequence_actual.setter
-    def sequence_actual(self, value):
+    @prep_actual.setter
+    def prep_actual(self, value):
         if isinstance(value, list) and all(isinstance(el, SimpleExtractor) for el in value):
-            self._sequence_actual = value
+            self._prep_actual = value
         else:
             raise ValueError(f"value should be a list of SimpleExtractors")
 
@@ -139,14 +232,14 @@ class SequenceEvalExtractor(EvalExtractor):
             raise ValueError(f"value should be an EvalExtractors")
 
     def to_jcr(self):
-        output_extractors_jcr = [el.to_jcr() for el in self.sequence_output]
-        actual_extractors_jcr = [el.to_jcr() for el in self.sequence_actual]
+        output_extractors_jcr = [el.to_jcr() for el in self.prep_output]
+        actual_extractors_jcr = [el.to_jcr() for el in self.prep_actual]
 
         return {
             "class": self.class2str(),
             "state": {
-                "sequence_output": output_extractors_jcr,
-                "sequence_actual": actual_extractors_jcr,
+                "prep_output": output_extractors_jcr,
+                "prep_actual": actual_extractors_jcr,
                 "eval_extractor": self.eval_extractor.to_jcr(),
             },
         }
@@ -158,15 +251,15 @@ class SequenceEvalExtractor(EvalExtractor):
             loaded = seq_extr_class.from_jcr(jcr["state"])
             return loaded
 
-        output_jcrs = jcr["sequence_output"]
-        sequence_output = [load_jcr(jcr) for jcr in output_jcrs]
-        actual_jcrs = jcr["sequence_actual"]
-        sequence_actual = [load_jcr(jcr) for jcr in actual_jcrs]
+        output_jcrs = jcr["prep_output"]
+        prep_output = [load_jcr(jcr) for jcr in output_jcrs]
+        actual_jcrs = jcr["prep_actual"]
+        prep_actual = [load_jcr(jcr) for jcr in actual_jcrs]
         eval_extractor = load_jcr(jcr["eval_extractor"])
 
         return cls(
-            sequence_output=sequence_output,
-            sequence_actual=sequence_actual,
+            prep_output=prep_output,
+            prep_actual=prep_actual,
             eval_extractor=eval_extractor,
         )
 
@@ -181,10 +274,10 @@ class SequenceEvalExtractor(EvalExtractor):
         """
         output_extr = output
         actual_extr = actual
-        for extr in self.sequence_output:
+        for extr in self.prep_output:
             output_extr = extr.extract(data=output_extr)
 
-        for extr in self.sequence_actual:
+        for extr in self.prep_actual:
             actual_extr = extr.extract(data=actual_extr)
         print(f"output: ")
         print(output_extr)
@@ -196,9 +289,9 @@ class SequenceEvalExtractor(EvalExtractor):
         pass  # Do not support building for now. KISS
 
     def is_built(self):
-        # sequences built?
-        out_seq = all(extr.is_built() for extr in self.sequence_output)
-        act_seq = all(extr.is_built() for extr in self.sequence_actual)
+        # preps built?
+        out_seq = all(extr.is_built() for extr in self.prep_output)
+        act_seq = all(extr.is_built() for extr in self.prep_actual)
         # evalextractor built?
         eval_built = self.eval_extractor.is_built()
         return out_seq and act_seq and eval_built
