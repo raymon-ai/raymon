@@ -19,6 +19,8 @@ from raymon.profiling.extractors.structured import (
     ClassificationMarginExtractor,
     ElementExtractor,
 )
+from raymon.profiling.extractors.structured import KMeansOutlierScorer
+from raymon.profiling.extractors import SequenceSimpleExtractor
 from raymon.profiling.extractors.structured.scoring import ClassificationErrorType
 from raymon.profiling.scores import MeanScore, PrecisionScore, RecallScore
 from raymon.profiling.extractors import SequenceEvalExtractor
@@ -53,8 +55,8 @@ def test_profile_multiple():
         eval_component = EvalComponent(
             name=f"{output_class}_errortype",
             extractor=SequenceEvalExtractor(
-                sequence_output=[MaxScoreElementExtractor(categories=target_names)],
-                sequence_actual=[],
+                prep_output=[MaxScoreElementExtractor(categories=target_names)],
+                prep_actual=[],
                 eval_extractor=ClassificationErrorType(positive=output_class),
             ),
             dtype=DataType.CAT,
@@ -70,7 +72,8 @@ def test_profile_multiple():
                 RecallScore(name=f"{output_class}_recall", inputs=[f"{output_class}_errortype"]),
             ]
         )
-
+    iforest = IsolationForest(n_estimators=100)
+    iforest.fit(X)
     profile = ModelProfile(
         name="Iris",
         version="1.0.0",
@@ -80,7 +83,7 @@ def test_profile_multiple():
             InputComponent(
                 name="outlier_score",
                 dtype=DataType.FLOAT,
-                extractor=IsolationForestOutlierScorer(iforest=IsolationForest(n_estimators=100)),
+                extractor=IsolationForestOutlierScorer(iforest=iforest),
             ),
             OutputComponent(name="class_margin", extractor=ClassificationMarginExtractor()),
             OutputComponent(name="entropy", extractor=ClassificationEntropyExtractor()),
