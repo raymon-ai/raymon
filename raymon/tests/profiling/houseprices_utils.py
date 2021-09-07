@@ -2,34 +2,13 @@
 # %load_ext autoreload
 # %autoreload 2
 # Import packages
-import numpy as np
 import pandas as pd
-import pickle
-import plotly.express as px
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import make_pipeline, Pipeline
+from sklearn.pipeline import make_pipeline
 from sklearn.ensemble import RandomForestRegressor
 
-
-from raymon.profiling import (
-    ModelProfile,
-    InputComponent,
-    OutputComponent,
-    ActualComponent,
-    EvalComponent,
-    MeanScore,
-)
-from raymon.profiling.extractors.structured import (
-    generate_components,
-    ElementExtractor,
-    IsolationForestOutlierScorer,
-)
-from raymon.profiling.extractors.structured.scoring import (
-    AbsoluteRegressionError,
-    SquaredRegressionError,
-)
 
 to_drop = [
     "Alley",
@@ -115,53 +94,3 @@ def train(X_train, y_train):
     rf = RandomForestRegressor(n_estimators=25)
     rf.fit(Xtf_train, y_train)
     return rf, coltf, feature_selector_ohe, feature_selector
-
-
-def get_importances(rf, feature_selector_ohe):
-    return (
-        pd.DataFrame(rf.feature_importances_, index=feature_selector_ohe, columns=["importance"])
-        .rename_axis("feature")
-        .sort_values("importance", ascending=False)
-        .reset_index(drop=False)
-    )
-
-
-def plot_importances(feat_imp):
-    fig = px.bar(feat_imp, x="feature", y="importance")
-    fig.layout.width = 800
-    fig.layout.height = 400
-    fig.show()
-
-
-def corrupt_df(X):
-    to_drop = ["OverallQual", "GrLivArea"]
-    X_corrupt = X.copy()
-    X_corrupt[to_drop] = 0
-    return X_corrupt
-
-
-def do_pred(X, feature_selector, feature_selector_ohe):
-    Xtf = pd.DataFrame(coltf.transform(X[feature_selector]), columns=feature_selector_ohe)
-
-    y_pred = rf.predict(Xtf[feature_selector_ohe])
-    return y_pred
-
-    #%%
-
-    # Load data
-    X_train, y_train = load_data(ROOT / "data/subset-cheap-train.csv")
-    X_test, y_test = load_data(ROOT / "data/subset-cheap-test.csv")
-
-    X_exp_test, y_exp_test = load_data(ROOT / "data/subset-exp-test.csv")
-
-    rf, coltf, feature_selector_ohe, feature_selector = train(X_train=X_train, y_train=y_train)
-    # %%
-
-    with open(ROOT / "models/HousePrices-RF-v3.0.0.pkl", "wb") as f:
-        pickle.dump(rf, f)
-    with open(ROOT / "models/HousePrices-RF-v3.0.0-coltf.pkl", "wb") as f:
-        pickle.dump(coltf, f)
-    with open(ROOT / "models/HousePrices-RF-v3.0.0-ohe-sel.pkl", "wb") as f:
-        pickle.dump(feature_selector_ohe, f)
-    with open(ROOT / "models/HousePrices-RF-v3.0.0-sel.pkl", "wb") as f:
-        pickle.dump(feature_selector, f)
