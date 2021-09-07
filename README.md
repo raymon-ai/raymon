@@ -23,7 +23,6 @@ Raymon is open source and can be used standalone, but is made to integrate with 
 ## Docs & Examples
 - Docs: https://docs.raymon.ai
 - Example Notebooks: https://github.com/raymon-ai/raymon/tree/master/examples
-- Full demonstrators: https://github.com/raymon-ai/demonstrators
 
 
 ## At a glance

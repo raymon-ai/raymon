@@ -15,6 +15,7 @@ from raymon.profiling.components import Component, InputComponent, OutputCompone
 from raymon.profiling.scores import Score
 from raymon.out import NoOutput, nullcontext
 from raymon.version import __version__
+from raymon.profiling.utils import filter_nan
 
 
 class ModelProfile(Serializable, Buildable):
@@ -163,8 +164,7 @@ class ModelProfile(Serializable, Buildable):
                     values = component.build(data=[output, actual])
                 else:
                     raise ProfileStateException("Unknown Component type: ", type(component))
-                component_values[component.name] = values
-
+                component_values[component.name] = filter_nan(values)
             for scorer in self.scores.values():
                 scorer.build(data=component_values)
 
@@ -190,6 +190,10 @@ class ModelProfile(Serializable, Buildable):
             tags_dict[tag["name"]] = tag["value"]
         return tags_dict
 
+    def convert_json(self, tags):
+        tags = [t.to_jcr() for t in tags]
+        return tags
+
     def _validate_simple(self, data, components, convert_json=True):
         tags = []
         if self.is_built():
@@ -202,7 +206,7 @@ class ModelProfile(Serializable, Buildable):
                 f"Cannot check data on an unbuilt profile. Check whether all components are built."
             )
         if convert_json:
-            tags = [t.to_jcr() for t in tags]
+            tags = self.convert_json(tags)
         return tags
 
     def validate_input(self, input, convert_json=True):
@@ -231,8 +235,16 @@ class ModelProfile(Serializable, Buildable):
                 f"Cannot check data on an unbuilt profile. Check whether all components are built."
             )
         if convert_json:
-            tags = [t.to_jcr() for t in tags]
+            tags = self.convert_json(tags)
         return tags
+
+    def validate_all(self, input, output, actual, convert_json=True):
+        input_tags = self.validate_input(input=input, convert_json=convert_json)
+        output_tags = self.validate_output(output=output, convert_json=convert_json)
+        actual_tags = self.validate_actual(actual=actual, convert_json=convert_json)
+        eval_tags = self.validate_eval(output=output, actual=actual, convert_json=convert_json)
+
+        return input_tags + output_tags + actual_tags + eval_tags
 
     def contrast(self, other, thresholds={}):
         # if not self.is_built():
@@ -318,7 +330,7 @@ class ModelProfile(Serializable, Buildable):
         # Build the schema
         with ctx_mgr:
             if poi is not None:
-                poi_dict = self.flatten_tags(self.validate_input(poi))
+                poi_dict = self.flatten_tags(poi)
             else:
                 poi_dict = {}
             jsonescaped = html.escape(json.dumps(self.to_jcr()))

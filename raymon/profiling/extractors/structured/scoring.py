@@ -40,7 +40,7 @@ class ClassificationErrorType(EvalExtractor):
 
 class RegressionError(EvalExtractor):
     def extract(self, output, actual):
-        return output - actual
+        return float(output - actual)
 
     """Serializable interface """
 
@@ -63,7 +63,7 @@ class RegressionError(EvalExtractor):
 
 class AbsoluteRegressionError(EvalExtractor):
     def extract(self, output, actual):
-        return abs(output - actual)
+        return float(abs(output - actual))
 
     """Serializable interface """
 
@@ -86,7 +86,7 @@ class AbsoluteRegressionError(EvalExtractor):
 
 class SquaredRegressionError(EvalExtractor):
     def extract(self, output, actual):
-        return pow(output - actual, 2)
+        return float(pow(output - actual, 2))
 
     """Serializable interface """
 

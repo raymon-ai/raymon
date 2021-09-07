@@ -185,6 +185,62 @@ class RecallScore(Score):
         return cls(**jcr)
 
 
+class ClassPrecisionScore(Score):
+    def __init__(self, name, inputs, preference="high", result=None):
+        super().__init__(name, inputs=inputs, preference=preference, result=result)
+
+    def build(self, data):
+        prediction_tag = self.inputs[0]
+        actual_tag = self.inputs[1]
+        preds = data[prediction_tag]
+
+        counts = pd.Series(to_reduce).value_counts().to_dict()
+        reduced = self.get_precision(counts)
+        self.result = reduced
+
+    def get_precision(self, counts):
+        result = {}
+        for key in ["TP", "FP", "TN", "FN"]:
+            if key not in counts:
+                counts[key] = 0
+        try:
+            result = counts["TP"] / (counts["TP"] + counts["FP"])
+        except:
+            result = -1
+        return result
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        return cls(**jcr)
+
+
+class ClassRecallScore(Score):
+    def __init__(self, name, inputs, preference="high", result=None):
+        super().__init__(name, inputs=inputs, preference=preference, result=result)
+
+    def build(self, data):
+        tag = self.inputs[0]
+        to_reduce = data[tag]
+        counts = pd.Series(to_reduce).value_counts().to_dict()
+        reduced = self.get_recall(counts)
+        self.result = reduced
+
+    def get_recall(self, counts):
+        result = {}
+        for key in ["TP", "FP", "TN", "FN"]:
+            if key not in counts:
+                counts[key] = 0
+        try:
+            result = counts["TP"] / (counts["TP"] + counts["FN"])
+        except:
+            result = -1
+        return result
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        return cls(**jcr)
+
+
 class ElementCorrelationScore(Score):
     pass
 

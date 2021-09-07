@@ -1,3 +1,4 @@
+import string
 from raymon.globals import Serializable
 
 PROFILE_INPUT = "profile-input"
@@ -22,6 +23,13 @@ CTYPE_TAGTYPES = {
 }
 
 
+def normalize(tag_name):
+    tag_nospaces = tag_name.replace(" ", "_").lower()
+    allowed_chars = string.ascii_lowercase + string.digits + "_-@./"
+    filtered = [c for c in tag_nospaces if c in allowed_chars]
+    return "".join(filtered).rstrip("_")
+
+
 class Tag(Serializable):
     """
     Represents a tag. Tags are used for monitoring and filtering in the backend.
@@ -44,6 +52,17 @@ class Tag(Serializable):
         self.value = value
         self.type = type
         self.group = group
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        if not isinstance(value, str):
+            raise ValueError(f"Profile name should be a string")
+        value_normed = normalize(value)
+        self._name = value_normed.lower()
 
     def to_jcr(self):
         jcr = {

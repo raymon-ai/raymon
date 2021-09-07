@@ -55,6 +55,64 @@ class ElementExtractor(SimpleExtractor):
         return f"{self.__class__.__name__}(element={self.element})"
 
 
+class MaxScoreElementExtractor(SimpleExtractor):
+    """
+    Extract the index with the maximum value from a vector, and optionally translate it to a categorical.
+    """
+
+    def __init__(self, categories=None):
+        self.categories = categories
+
+    """categories"""
+
+    @property
+    def categories(self):
+        return self._categories
+
+    @categories.setter
+    def categories(self, value):
+        if value is None:
+            self._categories = None
+        elif isinstance(value, list):
+            self._categories = value
+        elif isinstance(value, np.ndarray) and len(value.shape) == 1:
+            self._categories = value.tolist()
+        else:
+            raise DataException("categories must be None, a list or 1D numpy array")
+
+    def extract(self, data):
+        idx = np.argmax(data)
+        if self.categories is not None:
+            return self.categories[idx]
+        return idx
+
+    """Serializable interface """
+
+    def to_jcr(self):
+        data = {
+            "class": self.class2str(),
+            "state": {
+                "categories": self.categories,
+            },
+        }
+        return data
+
+    @classmethod
+    def from_jcr(cls, jcr):
+        return cls(**jcr)
+
+    """Buildable interface"""
+
+    def build(self, data):
+        pass
+
+    def is_built(self):
+        return True
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(categories={self.categories})"
+
+
 def generate_components(dtypes, complass=InputComponent, name_prefix=""):
     components = []
     for key in dtypes.index:
