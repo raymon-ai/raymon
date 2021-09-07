@@ -198,8 +198,6 @@ class NumericStats(Stats):
         domain : [type], optional
                     For numericstats, the domain is the range of values: (min, max). One or both can also be None. by default None
         """
-        # print("Stats data:")
-        # print(data)
         data = np.array(data)
         self.samplesize = len(data)
         nan = np.isnan(data)
