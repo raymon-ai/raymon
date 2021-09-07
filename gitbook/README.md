@@ -2,7 +2,7 @@
 description: Quick intro to the Raymon library.
 ---
 
-# Home
+# Intro & Installation
 
 ![Raymon: analyse data &amp; model health](.gitbook/assets/image.png)
 
