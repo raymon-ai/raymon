@@ -2,7 +2,7 @@
 description: Introduction to ModelProfiles with structured data.
 ---
 
-# Model Profiles
+# Building: house prices
 
 Allright, let's get started with Raymon by building a so called `ModelProfile`, and then see what we can do with this profile. In Raymon, profiles are used to capture all kinds of data characteristics that you want to watch. These profiles can then be used to validate data, or check for data drift and model performance drops.
 

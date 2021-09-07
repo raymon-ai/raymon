@@ -1,5 +1,9 @@
 # Table of contents
 
 * [Intro & Installation](README.md)
-* [Model Profiles](model-profiles.md)
+
+## Model Profiles <a id="model-profiles-1"></a>
+
+* [Building: house prices](model-profiles-1/building-house-prices.md)
+* [Building: computer vision](model-profiles-1/building-computer-vision.md)
 
