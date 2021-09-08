@@ -1,2 +1,2 @@
-# Building: computer vision
+# Building a profile: computer vision
 
