@@ -14,7 +14,7 @@ To illustrate some features you can extract from input images, we'l use the Pilo
 
 The goal is to classify images based on production quality. The image below shows and example of what data looks like. A data sample is also included in [`raymon/tests/sample_data/castinginspection`](https://github.com/raymon-ai/raymon/tree/master/raymon/tests/sample_data/castinginspection)\`\`
 
-![Good quality](../.gitbook/assets/cast_ok_0_2190.jpeg)
+![An example of what an image looks like.](../.gitbook/assets/cast_ok_0_2190.jpeg)
 
 We will not build a full model here, but let's see how we can watch some data features. The following snippet loads the data.
 
