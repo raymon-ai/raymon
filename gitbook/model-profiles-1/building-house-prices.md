@@ -196,5 +196,5 @@ When we build and inspect the full profile, we can see some stuff has been added
 
 ## Wrapping up
 
-We have now built a model profile for structured data. The next section will show how to do this for vision data. If you are not interested in vision at this point, feel free to skip that section. Afterwards, we'll show how we can use these profiles for data validation and monitoring.
+We have now built a model profile for structured data. The next section will show how to do this for vision data. If you are not interested in vision at this point, feel free to skip that section. Afterwards, we'll show how we can use these profiles for data [validation](validating-data.md) and [monitoring](contrasting-profiles.md).
 
