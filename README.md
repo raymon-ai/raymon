@@ -2,7 +2,7 @@
   <img width="500"  src="./docsrc/assets/logo-blue-ai.png">
 </p>
 
-# Raymon: a data quality and model performance monitoring library
+# Raymon: analyse data & model health
 
 ![Build](https://github.com/raymon-ai/raymon/workflows/test-build-deploy/badge.svg)
 ![Coverage](https://raw.githubusercontent.com/raymon-ai/raymon/master/coverage.svg)
@@ -12,17 +12,17 @@
 </p>
 
 ## What is Raymon?
-The raymon Python library helps you monitor and troubleshoot ML models in production. It offers the following functionality:
-- It includes extractors that help you **extract valuable metrics** from input data, output data or model internals.
-- It lets you build **data profiles** for those metrics, and lets you use those to **validate & monitor data and models** in production.
-- It lets you log data and metadata to **make model predictions traceable and easily debuggable**.
+Raymon helps Machine Learning teams analyse data, data health and model performance. 
 
-Raymon is open source and can be used standalone, but is made to integrate with the [Raymon.ai Observability Hub for ML systems]((http://raymon.ai)). This observability hub requires minimal setup, allows you to monitor data quality and model performance over multiple slices of your data, it alerts you when something is wrong and provides you with troubleshooting tooling for further analysis. It is very extensible and it can serve for all data and model types. Raymon is under active development and all feedback and suggestions are welcome!
+Using data profiles, users can extract features describing data quality, data novelty, model confidence and prediction performance from data and use these features to validate production data and monitor for changes in data distributions, data health or model performance. 
+
+Raymon is open source and can be used standalone but integrates nicely with the rest of the Raymon.ai ML Observability hub, for example to make models traceable and debuggable (link to tracing docs).
+
+Raymon’s focus is on extractors that are cheap to compute and simple to understand. Currently, we offer extractors for structured data and vision data, but by implementing the right feature extractors we support any data type. Let us know if you would like to explore this!
 
 
-## Docs & Examples
-- Docs: https://docs.raymon.ai
-- Example Notebooks: https://github.com/raymon-ai/raymon/tree/master/examples
+## Docs
+:point_right: https://docs.raymon.ai
 
 
 ## At a glance
