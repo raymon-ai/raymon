@@ -91,7 +91,7 @@ profile = ModelProfile(
 profile.build(input=images, output=outputs)
 ```
 
-Easy right? Now the output component tab of the profiel view looks like this:
+Easy right? Now the output component tab of the profile view looks like this:
 
 ![](../.gitbook/assets/image%20%283%29.png)
 

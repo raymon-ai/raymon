@@ -102,6 +102,15 @@ profile.to_jcr()
 profile.save(".")
 ```
 
+Loading the profile from JSON can be done as follows:
+
+```python
+# Load from disk
+loaded = ModelProfile.load("housepricescheap@3.0.0.json")
+# Load from the loaded jcr
+loaded = ModelProfile.from_jcr(jcr)
+```
+
 ## Extending the profile
 
 Up to now, we only have a very basic profile that watches the input features. We want to watch other things though: the model's outputs, the incoming actuals \(we assume we'll have incoming actuals in production here\) and our model's performance.
