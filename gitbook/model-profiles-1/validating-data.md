@@ -77,7 +77,7 @@ profile.view(poi=tags)
 
 This gives the following view. The green lines indicate the position of the POI we are inspecting. As you can see, the `1stFlrSF` feature, is way outside the domain we have seen during training.
 
-![Inspecting a profile with a POI](../.gitbook/assets/image%20%286%29.png)
+![Inspecting a profile with a POI](../.gitbook/assets/image%20%288%29.png)
 
 ### Validating outputs, actuals and evaluations
 
