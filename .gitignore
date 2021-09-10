@@ -115,3 +115,6 @@ venv.bak/
 dev/*
 store_secret.py
 docsrc/_build/**
+doc_code/**
+!doc_code/**.py
+

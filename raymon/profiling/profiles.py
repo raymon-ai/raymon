@@ -16,6 +16,7 @@ from raymon.profiling.scores import Score
 from raymon.out import NoOutput, nullcontext
 from raymon.version import __version__
 from raymon.profiling.utils import filter_nan
+from raymon.tags import convert_tags
 
 
 class ModelProfile(Serializable, Buildable):
@@ -143,7 +144,7 @@ class ModelProfile(Serializable, Buildable):
 
     """Buildable Interface"""
 
-    def build(self, input=None, output=None, actual=None, domains={}, silent=True):
+    def build(self, input=None, output=None, actual=None, domains={}, silent=True, build_extractors=True):
         if silent:
             ctx_mgr = NoOutput()
         else:
@@ -155,13 +156,13 @@ class ModelProfile(Serializable, Buildable):
                 print(component.name)
                 comp_domain = domains.get(component.name, None)
                 if isinstance(component, InputComponent):
-                    values = component.build(data=input, domain=comp_domain)
+                    values = component.build(data=input, domain=comp_domain, build_extractor=build_extractors)
                 elif isinstance(component, OutputComponent):
-                    values = component.build(data=output, domain=comp_domain)
+                    values = component.build(data=output, domain=comp_domain, build_extractor=build_extractors)
                 elif isinstance(component, ActualComponent):
-                    values = component.build(data=actual, domain=comp_domain)
+                    values = component.build(data=actual, domain=comp_domain, build_extractor=build_extractors)
                 elif isinstance(component, EvalComponent):
-                    values = component.build(data=[output, actual])
+                    values = component.build(data=[output, actual], build_extractor=build_extractors)
                 else:
                     raise ProfileStateException("Unknown Component type: ", type(component))
                 component_values[component.name] = filter_nan(values)
@@ -187,14 +188,15 @@ class ModelProfile(Serializable, Buildable):
     def flatten_tags(self, tags):
         tags_dict = {}
         for tag in tags:
-            tags_dict[tag["name"]] = tag["value"]
+            if isinstance(tag, str):
+                # Already flat
+                tags_dict[tag] = tags[tag]
+            else:
+                # JCR format
+                tags_dict[tag["name"]] = tag["value"]
         return tags_dict
 
-    def convert_json(self, tags):
-        tags = [t.to_jcr() for t in tags]
-        return tags
-
-    def _validate_simple(self, data, components, convert_json=True):
+    def _validate_simple(self, data, components, tag_format="jcr"):
         tags = []
         if self.is_built():
             for component in components:
@@ -205,44 +207,39 @@ class ModelProfile(Serializable, Buildable):
             raise ProfileStateException(
                 f"Cannot check data on an unbuilt profile. Check whether all components are built."
             )
-        if convert_json:
-            tags = self.convert_json(tags)
-        return tags
+        return convert_tags(tags, format=tag_format)
 
-    def validate_input(self, input, convert_json=True):
+    def validate_input(self, input, tag_format="jcr"):
         components = [c for c in self.components.values() if isinstance(c, InputComponent)]
-        return self._validate_simple(data=input, components=components, convert_json=convert_json)
+        return self._validate_simple(data=input, components=components, tag_format=tag_format)
 
-    def validate_output(self, output, convert_json=True):
+    def validate_output(self, output, tag_format="jcr"):
         components = [c for c in self.components.values() if isinstance(c, OutputComponent)]
-        return self._validate_simple(data=output, components=components, convert_json=convert_json)
+        return self._validate_simple(data=output, components=components, tag_format=tag_format)
 
-    def validate_actual(self, actual, convert_json=True):
+    def validate_actual(self, actual, tag_format="jcr"):
         components = [c for c in self.components.values() if isinstance(c, ActualComponent)]
-        return self._validate_simple(data=actual, components=components, convert_json=convert_json)
+        return self._validate_simple(data=actual, components=components, tag_format=tag_format)
 
-    def validate_eval(self, output, actual, convert_json=True):
+    def validate_eval(self, output, actual, tag_format="jcr"):
         tags = []
         components = [c for c in self.components.values() if isinstance(c, EvalComponent)]
         if self.is_built():
             for component in components:
                 component_tags = component.validate(data=(output, actual))
-                print(component_tags)
                 self.set_group(component_tags)
                 tags.extend(component_tags)
         else:
             raise ProfileStateException(
                 f"Cannot check data on an unbuilt profile. Check whether all components are built."
             )
-        if convert_json:
-            tags = self.convert_json(tags)
-        return tags
+        return convert_tags(tags, format=tag_format)
 
-    def validate_all(self, input, output, actual, convert_json=True):
-        input_tags = self.validate_input(input=input, convert_json=convert_json)
-        output_tags = self.validate_output(output=output, convert_json=convert_json)
-        actual_tags = self.validate_actual(actual=actual, convert_json=convert_json)
-        eval_tags = self.validate_eval(output=output, actual=actual, convert_json=convert_json)
+    def validate_all(self, input, output, actual, tag_format="jcr"):
+        input_tags = self.validate_input(input=input, tag_format=tag_format)
+        output_tags = self.validate_output(output=output, tag_format=tag_format)
+        actual_tags = self.validate_actual(actual=actual, tag_format=tag_format)
+        eval_tags = self.validate_eval(output=output, actual=actual, tag_format=tag_format)
 
         return input_tags + output_tags + actual_tags + eval_tags
 
