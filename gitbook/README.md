@@ -12,7 +12,9 @@ description: Quick intro to the Raymon library.
 
 **Raymon is open source and can be used standalone** but integrates nicely with the rest of the Raymon.ai ML Observability hub, for example to make predictions [traceable and debuggable](tracing-predictions/untitled.md).
 
-**Raymon’s focus is on simplicity and extendability**. We offer a set of extractors that are cheap to compute and simple to understand. Currently, we offer extractors for structured data and vision data, but you can easily implement you own extractor which means we can any data type and any extractor that you want. 
+**Raymon’s focus is on simplicity, practicality and extendability**. We offer a set of extractors that are cheap to compute and simple to understand.
+
+**We can support any data type**. Currently, we offer extractors for structured data and vision data, but you can easily implement your own extractor which means we can any data type and any extractor that you want.
 
 ## Installation
 
