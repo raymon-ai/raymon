@@ -28,7 +28,6 @@
 
 
 ## At a glance
-But really, there's a lot more 
 
 ### Installation
 
@@ -86,13 +85,16 @@ all_tags = profile.validate_all(input=request,
 ```
 
 ### Inspect and contrast model profiles
-Raymon also lets you inspect and contrast profiles against each other. This can be used fo
-![Profile contrast preview](docsrc/assets/profile-contrast.png)
+interactive-demo
+
+https://user-images.githubusercontent.com/7951058/132864346-2715fb47-00e9-484c-9f06-c709d4a9847f.mov
+
+
 
 
 ### Logging text, data and tags
 
-Moreover, Raymon makes model predictions debuggable by enabling you to log relevant text, data and tags from anywhere in your code. You can later use these tags and data objects to debug and improve your systems.
+Moreover, if you want to use the rest of the platform, Raymon makes model predictions traceable and debuggable. Raymon enables you to log text, data and tags from anywhere in your code. You can later use these tags and data objects to debug and improve your systems.
 
 ```python
 import pandas as pd
@@ -123,5 +125,6 @@ trace.log(ref="pandas-ref", data=rt.DataFrame(df))
 trace.log(ref="image-ref", data=rt.Image(img))
 
 ```
+
 For more information, check out our docs & examples!
 
