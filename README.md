@@ -12,17 +12,19 @@
 </p>
 
 ## What is Raymon?
-Raymon helps Machine Learning teams analyse data, data health and model performance. 
+**Raymon helps Machine Learning teams analyse data, data health and model performance**. Using data profiles, users can extract features describing data quality, data novelty, model confidence and prediction performance from data.Then, they can use these features to validate production data and monitor for data drift, data degradation and model degradation. 
 
-Using data profiles, users can extract features describing data quality, data novelty, model confidence and prediction performance from data and use these features to validate production data and monitor for changes in data distributions, data health or model performance. 
+**Raymon is open source and can be used standalone** but integrates nicely with the rest of the Raymon.ai ML Observability hub, for example to make predictions traceable and debuggable.
 
-Raymon is open source and can be used standalone but integrates nicely with the rest of the Raymon.ai ML Observability hub, for example to make models traceable and debuggable (link to tracing docs).
+**Raymon’s focus is on simplicity, practicality and extendability**. We offer a set of extractors that are cheap to compute and simple to understand. 
 
-Raymon’s focus is on extractors that are cheap to compute and simple to understand. Currently, we offer extractors for structured data and vision data, but by implementing the right feature extractors we support any data type. Let us know if you would like to explore this!
+**We can support any data type**. Currently, we offer extractors for structured data and vision data, but you can easily implement your own extractor which means we can any data type and any extractor that you want. 
 
 
-## Docs
-:point_right: https://docs.raymon.ai
+## Quick Links
+- :point_right: [Docs](https://docs.raymon.ai)
+- :point_right: [Examples](./examples)
+- :point_right: [Issues](https://github.com/raymon-ai/raymon/issues)
 
 
 ## At a glance
@@ -33,50 +35,66 @@ Raymon’s focus is on extractors that are cheap to compute and simple to unders
 pip install raymon
 ```
 ### Building a model profile
-Building a `ModelProfile` captures your expected model data characteristics...
+Building a `ModelProfile` captures all kinds of data characteristics of your models input,s outputs, actuals and predictions.
 
 ```python
-from raymon.profiling.extractors.structured import generate_components
-
 profile = ModelProfile(
     name="HousePricesCheap",
-    version="2.0.0",
+    version="3.0.0",
     components=[
-        InputComponent(name="feature_1", extractor=ElementExtractor(element="feature_1")),
-        InputComponent(name="feature_2", extractor=ElementExtractor(element="feature_2")),
-        InputComponent(name="feature_3", extractor=ElementExtractor(element="feature_3")),
-        InputComponent(name="feature_4", extractor=ElementExtractor(element="feature_4")),               
+        InputComponent(
+            name="outlier_score",
+            extractor=SequenceSimpleExtractor(
+                prep=coltf, extractor=KMeansOutlierScorer()),
+        ),
         OutputComponent(name="prediction", extractor=ElementExtractor(element=0)),
         ActualComponent(name="actual", extractor=ElementExtractor(element=0)),
         EvalComponent(name="abs_error", extractor=AbsoluteRegressionError()),
-    ],
-    reducers=[
-        MeanReducer(
+    ] + generate_components(X_train[feature_selector].dtypes, 
+                            complass=InputComponent),
+    scores=[
+        MeanScore(
             name="MAE",
             inputs=["abs_error"],
-            preferences={"mean": "low"},
-            results=None,
-        )
+            preference="low",
+        ),
+        MeanScore(
+            name="mean_outlier_score",
+            inputs=["outlier_score"],
+            preference="low",
+        ),
     ],
 )
-profile.build(input=X, output=y_pred, actual=y_test)
-profile.save(".")
+profile.build(input=X_val[feature_selector], 
+              output=y_pred_val[:, None], 
+              actual=y_val[:, None])
 ```
 ### Validating production data
-... and can then be used in production code to validate your incoming data and model performance monitoring.
+Profiles can then be used in production code to validate your incoming data and model performance monitoring.
 
 ```python
-profile.validate_input(row)
-profile.validate_outputs(prediction)
+tags = profile.validate_input(request)
+output_tags = profile.validate_output(request_pred)
+actual_tags = profile.validate_actual(request_actual)
+eval_tags = profile.validate_eval(output=request_pred, 
+                                  actual=request_actual)
+# or all at once:
+all_tags = profile.validate_all(input=request, 
+                                output=request_pred, 
+                                actual=request_actual)
 ```
+
 ### Inspect and contrast model profiles
-Raymon also lets you inspect and contrast profiles against each other.
-![Profile contrast preview](docsrc/assets/profile-contrast.png)
+interactive-demo
+
+https://user-images.githubusercontent.com/7951058/132864346-2715fb47-00e9-484c-9f06-c709d4a9847f.mov
+
+
 
 
 ### Logging text, data and tags
 
-Moreover, Raymon makes model predictions debuggable by enabling you to log relevant text, data and tags from anywhere in your code. You can later use these tags and data objects to debug and improve your systems.
+Moreover, if you want to use the rest of the platform, Raymon makes model predictions traceable and debuggable. Raymon enables you to log text, data and tags from anywhere in your code. You can later use these tags and data objects to debug and improve your systems.
 
 ```python
 import pandas as pd
@@ -107,5 +125,6 @@ trace.log(ref="pandas-ref", data=rt.DataFrame(df))
 trace.log(ref="image-ref", data=rt.Image(img))
 
 ```
+
 For more information, check out our docs & examples!
 

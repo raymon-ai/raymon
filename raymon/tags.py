@@ -22,12 +22,38 @@ CTYPE_TAGTYPES = {
     "eval": {"tagtype": PROFILE_SCORE, "errortype": PROFILE_SCORE_ERROR},
 }
 
+ERROR_TYPES = [PROFILE_INPUT_ERROR, PROFILE_OUTPUT_ERROR, PROFILE_ACTUAL_ERROR, PROFILE_SCORE_ERROR]
+
 
 def normalize(tag_name):
     tag_nospaces = tag_name.replace(" ", "_").lower()
     allowed_chars = string.ascii_lowercase + string.digits + "_-@./"
     filtered = [c for c in tag_nospaces if c in allowed_chars]
     return "".join(filtered).rstrip("_")
+
+
+def convert_tags(tags, format="tag"):
+    if format == "tag":
+        return tags
+    elif format == "jcr":
+        return [t.to_jcr() for t in tags]
+    elif format == "simple":
+        return {t.name: t.value for t in tags}
+
+
+def filter_errors(tags, format="tag"):
+    returnval = []
+    for t in tags:
+        if isinstance(t, Tag) and t.type in ERROR_TYPES:
+            returnval.append(t)
+        elif isinstance(t, dict) and t.get("type", None) in ERROR_TYPES:
+            returnval.append(t)
+
+    return convert_tags(returnval, format=format)
+
+
+def flatten_jcr(tags):
+    return {tag["name"]: tag["value"] for tag in tags}
 
 
 class Tag(Serializable):

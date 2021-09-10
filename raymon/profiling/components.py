@@ -109,9 +109,10 @@ class Component(Serializable, Buildable, ABC):
     def build_extractor(self, data):
         self.extractor.build(data)
 
-    def build(self, data, domain=None):
+    def build(self, data, domain=None, build_extractor=True):
         # Compile extractor
-        self.build_extractor(data)
+        if build_extractor:
+            self.build_extractor(data)
         # Configure stats
         return self.build_stats(data, domain=domain)
 

@@ -9,6 +9,9 @@ from raymon.profiling.extractors import SimpleExtractor
 
 
 class KMeansOutlierScorer(SimpleExtractor):
+    """
+    Clusters the data at building time and generates a data novelty score at validation time.
+    """
 
     dist_choices = {"euclidean": euclidean_distances, "cosine": cosine_distances}
 

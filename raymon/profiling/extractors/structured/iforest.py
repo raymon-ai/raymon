@@ -11,6 +11,10 @@ from raymon.profiling.extractors import SimpleExtractor
 
 
 class IsolationForestOutlierScorer(SimpleExtractor):
+    """
+    Builds an isolation forest at building time and generates an outlier score at validation time.
+    """
+
     def __init__(self, iforest):
         self.iforest = iforest
 

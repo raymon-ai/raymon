@@ -7,7 +7,7 @@ from raymon.profiling.components import InputComponent, OutputComponent, ActualC
 
 class ElementExtractor(SimpleExtractor):
     """
-    Extract one element from a vector
+    This extractor simply extracts an element from an array, series or dict.
     """
 
     def __init__(self, element):
@@ -57,7 +57,7 @@ class ElementExtractor(SimpleExtractor):
 
 class MaxScoreElementExtractor(SimpleExtractor):
     """
-    Extract the index with the maximum value from a vector, and optionally translate it to a categorical.
+    Extract the index with the maximum value from a vector, and optionally translate it to a categorical value if categories are given.
     """
 
     def __init__(self, categories=None):

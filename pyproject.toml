@@ -15,6 +15,7 @@ exclude = '''
   | dev
   | examples
   | integration_tests
+  | doc_code
 )/
 '''
 include = '\.pyi?$'

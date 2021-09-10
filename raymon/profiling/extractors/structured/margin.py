@@ -6,7 +6,7 @@ from raymon.profiling.extractors import SimpleExtractor
 
 class ClassificationMarginExtractor(SimpleExtractor):
     """
-    Extract one element from a vector
+    Takes the output of a classifier (i.e. a vector of probabilities) and extracts the classification margin, which is the difference in probability between the most likely and the second most likely class.
     """
 
     def extract(self, data):

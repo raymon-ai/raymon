@@ -314,10 +314,15 @@ class NumericStats(Stats):
         # Keep the maximum distance per x value, and only keep positive ones
         maxes = np.maximum(np.maximum(dists1, dists2), 0)
         drift = min(np.max(maxes), 100) / 100
-        drift_idx = int(np.argmax(maxes))
+        drift_xvalue = merged_domain[int(np.argmax(maxes))]
         # drift_xvalue = merged_domain[drift_idx]
 
-        drift_report = {"drift": float(drift), "drift_idx": drift_idx, "alert": bool(drift > threshold), "valid": True}
+        drift_report = {
+            "drift": float(drift),
+            "drift_xvalue": drift_xvalue,
+            "alert": bool(drift > threshold),
+            "valid": True,
+        }
         return drift_report
 
     def sample(self, n, dtype="float"):
