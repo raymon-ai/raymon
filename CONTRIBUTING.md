@@ -12,5 +12,6 @@ We use bumpversion to manage releases.
 We use Numpy style for writing docstrings.
 We build library API docs with sphinx and publish it on github pages.
 
+Generating the source for the library API docs is donce with `sphinx-apidoc raymon -o docsrc/libapi`
 Building the docs works by running `make github` from the `docsrc` folder.
 
