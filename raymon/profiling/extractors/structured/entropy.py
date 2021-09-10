@@ -6,7 +6,7 @@ from raymon.profiling.extractors import SimpleExtractor
 
 class ClassificationEntropyExtractor(SimpleExtractor):
     """
-    Extract one element from a vector
+    Takes the output of a classifier (i.e. a vector of probabilities) and extracts the entropy.
     """
 
     def extract(self, data):

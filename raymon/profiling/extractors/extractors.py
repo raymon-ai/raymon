@@ -101,7 +101,27 @@ class EvalExtractor(Extractor):
 
 
 class SequenceSimpleExtractor(SimpleExtractor):
+    """
+    Allows you to run preprocessing before running an extractor.
+
+    Parameters
+    ----------
+    SimpleExtractor : [type]
+        [description]
+    """
+
     def __init__(self, prep, extractor, func="transform"):
+        """
+        Parameters
+        ----------
+        prep : Object
+            Object on which the preprocessing will be called.
+        func : str, optional
+            The function to call on the prep object. This method will be called with the data as parameter.
+        extractor : SimpleExtractor
+            The extractor to call after prerpocessing.
+
+        """
         self.prep = prep
         self.extractor = extractor
         self.func = func
@@ -193,7 +213,22 @@ class SequenceSimpleExtractor(SimpleExtractor):
 
 
 class SequenceEvalExtractor(EvalExtractor):
+    """
+    Allows you to run preprocessing before running an EvalExtractor.
+    """
+
     def __init__(self, prep_output, prep_actual, eval_extractor):
+        """
+
+        Parameters
+        ----------
+        prep_output : SimpleExtractor
+            preprocessing to run for the output element
+        prep_actual : SimpleExtractor
+            preprocessing to run for the output element
+        eval_extractor : EvalExtractor
+            The EvalExtractor to run after preprocessing.
+        """
         self.prep_output = prep_output
         self.prep_actual = prep_actual
         self.eval_extractor = eval_extractor
