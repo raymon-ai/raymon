@@ -41,7 +41,7 @@ class EvalExtractor(Extractor):
         raise NotImplementedError
 ```
 
-For more information about the dataflow when using profiles and extractors, see [this page](concepts-and-building-flow.md).
+For more information about the dataflow when using profiles and extractors, see [this page]().
 
 ## Extractor List
 
