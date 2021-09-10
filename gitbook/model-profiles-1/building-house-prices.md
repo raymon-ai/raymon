@@ -243,7 +243,7 @@ When inspecting the profile, you'll notice the domains have changed. For the `bl
 
 ![Profile extract without manually configured domains.](../.gitbook/assets/image%20%2810%29.png)
 
-![Profile extract with manually configured domains.](../.gitbook/assets/image%20%2812%29.png)
+![Profile extract with manually configured domains.](../.gitbook/assets/image%20%2813%29.png)
 
 
 
