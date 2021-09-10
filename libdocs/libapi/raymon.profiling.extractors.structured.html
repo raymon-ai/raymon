@@ -1,0 +1,969 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="raymon.profiling.extractors.vision package" href="raymon.profiling.extractors.vision.html" /><link rel="prev" title="raymon.profiling.extractors package" href="raymon.profiling.extractors.html" />
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"/><meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
+        <title>raymon.profiling.extractors.structured package - Raymon 0.0.30 documentation</title>
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
+    <link rel="stylesheet" href="../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Raymon 0.0.30 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/logo-blue-ai.png" alt="Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption"><span class="caption-text">Module Docs</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">raymon</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="raymon.html">raymon package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="raymon.auth.html">raymon.auth package</a></li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="raymon.profiling.html">raymon.profiling package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4 current has-children"><a class="reference internal" href="raymon.profiling.extractors.html">raymon.profiling.extractors package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l5 current current-page"><a class="current reference internal" href="#">raymon.profiling.extractors.structured package</a></li>
+<li class="toctree-l5"><a class="reference internal" href="raymon.profiling.extractors.vision.html">raymon.profiling.extractors.vision package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <div class="section" id="raymon-profiling-extractors-structured-package">
+<h1>raymon.profiling.extractors.structured package<a class="headerlink" href="#raymon-profiling-extractors-structured-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-raymon.profiling.extractors.structured.element">
+<span id="raymon-profiling-extractors-structured-element-module"></span><h2>raymon.profiling.extractors.structured.element module<a class="headerlink" href="#module-raymon.profiling.extractors.structured.element" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="raymon.profiling.extractors.structured.element.ElementExtractor">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">raymon.profiling.extractors.structured.element.</span></code><code class="sig-name descname"><span class="pre">ElementExtractor</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.ElementExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="raymon.profiling.extractors.html#raymon.profiling.extractors.extractors.SimpleExtractor" title="raymon.profiling.extractors.extractors.SimpleExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">raymon.profiling.extractors.extractors.SimpleExtractor</span></code></a></p>
+<p>This extractor simply extracts an element from an array, series or dict.</p>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.ElementExtractor.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.ElementExtractor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.ElementExtractor.element">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">element</span></code><a class="headerlink" href="#raymon.profiling.extractors.structured.element.ElementExtractor.element" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.ElementExtractor.extract">
+<code class="sig-name descname"><span class="pre">extract</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.ElementExtractor.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a component from a data instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The data instance you want to extract a component from. The type is up to you.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.ElementExtractor.to_jcr">
+<code class="sig-name descname"><span class="pre">to_jcr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.ElementExtractor.to_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a JSON compatible representation of the object. Will generally return a dict cintaining the objects state, but can return anything JSON serializable. json.dumps(xxx) will be called on the output xxx of this function.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.ElementExtractor.from_jcr">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_jcr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jcr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.ElementExtractor.from_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the JSON compatible representation from the function above, load an object of this type with the desired state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>jcr</strong> (<em>[</em><em>dict</em><em>]</em>) – The jcr representation returned from the <cite>to_jcr</cite> function above. Will generally be a dict, but can be anything JSON serializable.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>obj</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type(this)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.ElementExtractor.build">
+<code class="sig-name descname"><span class="pre">build</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.ElementExtractor.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your component extractor must be Buildable. This means that it may use data to set some reference values, used to calculate the component to be extracted from a data sample. A good example for this is the <cite>raymon.profiling.extractors.structured.KMeansOutlierScorer</cite> extractor, which clusters the data at building time and saves those clusters as reference in the objects state. If you dont require and buildabe state, like the <cite>raymon.profiling.extractors.structured.ElementExtractor</cite>, don’t do anything in this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The set of data available at building time. Can be any type you want.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.ElementExtractor.is_built">
+<code class="sig-name descname"><span class="pre">is_built</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.ElementExtractor.is_built" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the object has been built. Typically, this method checks whether the required references for the object is set. If your ComponentExtractor does not use any references, simply return True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>is_built</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt id="raymon.profiling.extractors.structured.element.MaxScoreElementExtractor">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">raymon.profiling.extractors.structured.element.</span></code><code class="sig-name descname"><span class="pre">MaxScoreElementExtractor</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">categories</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.MaxScoreElementExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="raymon.profiling.extractors.html#raymon.profiling.extractors.extractors.SimpleExtractor" title="raymon.profiling.extractors.extractors.SimpleExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">raymon.profiling.extractors.extractors.SimpleExtractor</span></code></a></p>
+<p>Extract the index with the maximum value from a vector, and optionally translate it to a categorical value if categories are given.</p>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">categories</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.categories">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">categories</span></code><a class="headerlink" href="#raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.categories" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.extract">
+<code class="sig-name descname"><span class="pre">extract</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a component from a data instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The data instance you want to extract a component from. The type is up to you.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.to_jcr">
+<code class="sig-name descname"><span class="pre">to_jcr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.to_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a JSON compatible representation of the object. Will generally return a dict cintaining the objects state, but can return anything JSON serializable. json.dumps(xxx) will be called on the output xxx of this function.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.from_jcr">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_jcr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jcr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.from_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the JSON compatible representation from the function above, load an object of this type with the desired state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>jcr</strong> (<em>[</em><em>dict</em><em>]</em>) – The jcr representation returned from the <cite>to_jcr</cite> function above. Will generally be a dict, but can be anything JSON serializable.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>obj</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type(this)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.build">
+<code class="sig-name descname"><span class="pre">build</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your component extractor must be Buildable. This means that it may use data to set some reference values, used to calculate the component to be extracted from a data sample. A good example for this is the <cite>raymon.profiling.extractors.structured.KMeansOutlierScorer</cite> extractor, which clusters the data at building time and saves those clusters as reference in the objects state. If you dont require and buildabe state, like the <cite>raymon.profiling.extractors.structured.ElementExtractor</cite>, don’t do anything in this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The set of data available at building time. Can be any type you want.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.is_built">
+<code class="sig-name descname"><span class="pre">is_built</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.MaxScoreElementExtractor.is_built" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the object has been built. Typically, this method checks whether the required references for the object is set. If your ComponentExtractor does not use any references, simply return True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>is_built</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py function">
+<dt id="raymon.profiling.extractors.structured.element.generate_components">
+<code class="sig-prename descclassname"><span class="pre">raymon.profiling.extractors.structured.element.</span></code><code class="sig-name descname"><span class="pre">generate_components</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dtypes</span></em>, <em class="sig-param"><span class="pre">complass=&lt;class</span> <span class="pre">'raymon.profiling.components.InputComponent'&gt;</span></em>, <em class="sig-param"><span class="pre">name_prefix=''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.element.generate_components" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+</div>
+<div class="section" id="module-raymon.profiling.extractors.structured.entropy">
+<span id="raymon-profiling-extractors-structured-entropy-module"></span><h2>raymon.profiling.extractors.structured.entropy module<a class="headerlink" href="#module-raymon.profiling.extractors.structured.entropy" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="raymon.profiling.extractors.structured.entropy.ClassificationEntropyExtractor">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">raymon.profiling.extractors.structured.entropy.</span></code><code class="sig-name descname"><span class="pre">ClassificationEntropyExtractor</span></code><a class="headerlink" href="#raymon.profiling.extractors.structured.entropy.ClassificationEntropyExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="raymon.profiling.extractors.html#raymon.profiling.extractors.extractors.SimpleExtractor" title="raymon.profiling.extractors.extractors.SimpleExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">raymon.profiling.extractors.extractors.SimpleExtractor</span></code></a></p>
+<p>Takes the output of a classifier (i.e. a vector of probabilities) and extracts the entropy.</p>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.entropy.ClassificationEntropyExtractor.extract">
+<code class="sig-name descname"><span class="pre">extract</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.entropy.ClassificationEntropyExtractor.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a component from a data instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The data instance you want to extract a component from. The type is up to you.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.entropy.ClassificationEntropyExtractor.to_jcr">
+<code class="sig-name descname"><span class="pre">to_jcr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.entropy.ClassificationEntropyExtractor.to_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a JSON compatible representation of the object. Will generally return a dict cintaining the objects state, but can return anything JSON serializable. json.dumps(xxx) will be called on the output xxx of this function.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.entropy.ClassificationEntropyExtractor.from_jcr">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_jcr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jcr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.entropy.ClassificationEntropyExtractor.from_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the JSON compatible representation from the function above, load an object of this type with the desired state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>jcr</strong> (<em>[</em><em>dict</em><em>]</em>) – The jcr representation returned from the <cite>to_jcr</cite> function above. Will generally be a dict, but can be anything JSON serializable.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>obj</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type(this)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.entropy.ClassificationEntropyExtractor.build">
+<code class="sig-name descname"><span class="pre">build</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.entropy.ClassificationEntropyExtractor.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your component extractor must be Buildable. This means that it may use data to set some reference values, used to calculate the component to be extracted from a data sample. A good example for this is the <cite>raymon.profiling.extractors.structured.KMeansOutlierScorer</cite> extractor, which clusters the data at building time and saves those clusters as reference in the objects state. If you dont require and buildabe state, like the <cite>raymon.profiling.extractors.structured.ElementExtractor</cite>, don’t do anything in this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The set of data available at building time. Can be any type you want.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.entropy.ClassificationEntropyExtractor.is_built">
+<code class="sig-name descname"><span class="pre">is_built</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.entropy.ClassificationEntropyExtractor.is_built" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the object has been built. Typically, this method checks whether the required references for the object is set. If your ComponentExtractor does not use any references, simply return True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>is_built</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</div>
+<div class="section" id="module-raymon.profiling.extractors.structured.iforest">
+<span id="raymon-profiling-extractors-structured-iforest-module"></span><h2>raymon.profiling.extractors.structured.iforest module<a class="headerlink" href="#module-raymon.profiling.extractors.structured.iforest" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">raymon.profiling.extractors.structured.iforest.</span></code><code class="sig-name descname"><span class="pre">IsolationForestOutlierScorer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iforest</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="raymon.profiling.extractors.html#raymon.profiling.extractors.extractors.SimpleExtractor" title="raymon.profiling.extractors.extractors.SimpleExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">raymon.profiling.extractors.extractors.SimpleExtractor</span></code></a></p>
+<p>Builds an isolation forest at building time and generates an outlier score at validation time.</p>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iforest</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.iforest">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">iforest</span></code><a class="headerlink" href="#raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.iforest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.extract">
+<code class="sig-name descname"><span class="pre">extract</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a component from a data instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The data instance you want to extract a component from. The type is up to you.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.build">
+<code class="sig-name descname"><span class="pre">build</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your component extractor must be Buildable. This means that it may use data to set some reference values, used to calculate the component to be extracted from a data sample. A good example for this is the <cite>raymon.profiling.extractors.structured.KMeansOutlierScorer</cite> extractor, which clusters the data at building time and saves those clusters as reference in the objects state. If you dont require and buildabe state, like the <cite>raymon.profiling.extractors.structured.ElementExtractor</cite>, don’t do anything in this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The set of data available at building time. Can be any type you want.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.is_built">
+<code class="sig-name descname"><span class="pre">is_built</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.is_built" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the object has been built. Typically, this method checks whether the required references for the object is set. If your ComponentExtractor does not use any references, simply return True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>is_built</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.to_jcr">
+<code class="sig-name descname"><span class="pre">to_jcr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.to_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a JSON compatible representation of the object. Will generally return a dict cintaining the objects state, but can return anything JSON serializable. json.dumps(xxx) will be called on the output xxx of this function.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.from_jcr">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_jcr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jcr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.iforest.IsolationForestOutlierScorer.from_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the JSON compatible representation from the function above, load an object of this type with the desired state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>jcr</strong> (<em>[</em><em>dict</em><em>]</em>) – The jcr representation returned from the <cite>to_jcr</cite> function above. Will generally be a dict, but can be anything JSON serializable.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>obj</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type(this)</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</div>
+<div class="section" id="module-raymon.profiling.extractors.structured.kmeans">
+<span id="raymon-profiling-extractors-structured-kmeans-module"></span><h2>raymon.profiling.extractors.structured.kmeans module<a class="headerlink" href="#module-raymon.profiling.extractors.structured.kmeans" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">raymon.profiling.extractors.structured.kmeans.</span></code><code class="sig-name descname"><span class="pre">KMeansOutlierScorer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="raymon.profiling.extractors.html#raymon.profiling.extractors.extractors.SimpleExtractor" title="raymon.profiling.extractors.extractors.SimpleExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">raymon.profiling.extractors.extractors.SimpleExtractor</span></code></a></p>
+<p>Clusters the data at building time and generates a data novelty score at validation time.</p>
+<dl class="py attribute">
+<dt id="raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.dist_choices">
+<code class="sig-name descname"><span class="pre">dist_choices</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'cosine':</span> <span class="pre">&lt;function</span> <span class="pre">cosine_distances&gt;,</span> <span class="pre">'euclidean':</span> <span class="pre">&lt;function</span> <span class="pre">euclidean_distances&gt;}</span></em><a class="headerlink" href="#raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.dist_choices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.k">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">k</span></code><a class="headerlink" href="#raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.k" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.clusters">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">clusters</span></code><a class="headerlink" href="#raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.clusters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.dist">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dist</span></code><a class="headerlink" href="#raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.dim">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dim</span></code><a class="headerlink" href="#raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.extract">
+<code class="sig-name descname"><span class="pre">extract</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a component from a data instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The data instance you want to extract a component from. The type is up to you.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.build">
+<code class="sig-name descname"><span class="pre">build</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your component extractor must be Buildable. This means that it may use data to set some reference values, used to calculate the component to be extracted from a data sample. A good example for this is the <cite>raymon.profiling.extractors.structured.KMeansOutlierScorer</cite> extractor, which clusters the data at building time and saves those clusters as reference in the objects state. If you dont require and buildabe state, like the <cite>raymon.profiling.extractors.structured.ElementExtractor</cite>, don’t do anything in this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The set of data available at building time. Can be any type you want.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.is_built">
+<code class="sig-name descname"><span class="pre">is_built</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.is_built" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the object has been built. Typically, this method checks whether the required references for the object is set. If your ComponentExtractor does not use any references, simply return True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>is_built</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.to_jcr">
+<code class="sig-name descname"><span class="pre">to_jcr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.to_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a JSON compatible representation of the object. Will generally return a dict cintaining the objects state, but can return anything JSON serializable. json.dumps(xxx) will be called on the output xxx of this function.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.from_jcr">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_jcr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jcr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.kmeans.KMeansOutlierScorer.from_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the JSON compatible representation from the function above, load an object of this type with the desired state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>jcr</strong> (<em>[</em><em>dict</em><em>]</em>) – The jcr representation returned from the <cite>to_jcr</cite> function above. Will generally be a dict, but can be anything JSON serializable.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>obj</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type(this)</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</div>
+<div class="section" id="module-raymon.profiling.extractors.structured.margin">
+<span id="raymon-profiling-extractors-structured-margin-module"></span><h2>raymon.profiling.extractors.structured.margin module<a class="headerlink" href="#module-raymon.profiling.extractors.structured.margin" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="raymon.profiling.extractors.structured.margin.ClassificationMarginExtractor">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">raymon.profiling.extractors.structured.margin.</span></code><code class="sig-name descname"><span class="pre">ClassificationMarginExtractor</span></code><a class="headerlink" href="#raymon.profiling.extractors.structured.margin.ClassificationMarginExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="raymon.profiling.extractors.html#raymon.profiling.extractors.extractors.SimpleExtractor" title="raymon.profiling.extractors.extractors.SimpleExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">raymon.profiling.extractors.extractors.SimpleExtractor</span></code></a></p>
+<p>Takes the output of a classifier (i.e. a vector of probabilities) and extracts the classification margin, which is the difference in probability between the most likely and the second most likely class.</p>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.margin.ClassificationMarginExtractor.extract">
+<code class="sig-name descname"><span class="pre">extract</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.margin.ClassificationMarginExtractor.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a component from a data instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The data instance you want to extract a component from. The type is up to you.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.margin.ClassificationMarginExtractor.to_jcr">
+<code class="sig-name descname"><span class="pre">to_jcr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.margin.ClassificationMarginExtractor.to_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a JSON compatible representation of the object. Will generally return a dict cintaining the objects state, but can return anything JSON serializable. json.dumps(xxx) will be called on the output xxx of this function.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.margin.ClassificationMarginExtractor.from_jcr">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_jcr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jcr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.margin.ClassificationMarginExtractor.from_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the JSON compatible representation from the function above, load an object of this type with the desired state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>jcr</strong> (<em>[</em><em>dict</em><em>]</em>) – The jcr representation returned from the <cite>to_jcr</cite> function above. Will generally be a dict, but can be anything JSON serializable.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>obj</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type(this)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.margin.ClassificationMarginExtractor.build">
+<code class="sig-name descname"><span class="pre">build</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.margin.ClassificationMarginExtractor.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your component extractor must be Buildable. This means that it may use data to set some reference values, used to calculate the component to be extracted from a data sample. A good example for this is the <cite>raymon.profiling.extractors.structured.KMeansOutlierScorer</cite> extractor, which clusters the data at building time and saves those clusters as reference in the objects state. If you dont require and buildabe state, like the <cite>raymon.profiling.extractors.structured.ElementExtractor</cite>, don’t do anything in this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The set of data available at building time. Can be any type you want.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.margin.ClassificationMarginExtractor.is_built">
+<code class="sig-name descname"><span class="pre">is_built</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.margin.ClassificationMarginExtractor.is_built" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the object has been built. Typically, this method checks whether the required references for the object is set. If your ComponentExtractor does not use any references, simply return True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>is_built</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</div>
+<div class="section" id="module-raymon.profiling.extractors.structured.scoring">
+<span id="raymon-profiling-extractors-structured-scoring-module"></span><h2>raymon.profiling.extractors.structured.scoring module<a class="headerlink" href="#module-raymon.profiling.extractors.structured.scoring" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="raymon.profiling.extractors.structured.scoring.ClassificationErrorType">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">raymon.profiling.extractors.structured.scoring.</span></code><code class="sig-name descname"><span class="pre">ClassificationErrorType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.ClassificationErrorType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="raymon.profiling.extractors.html#raymon.profiling.extractors.extractors.EvalExtractor" title="raymon.profiling.extractors.extractors.EvalExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">raymon.profiling.extractors.extractors.EvalExtractor</span></code></a></p>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.ClassificationErrorType.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.ClassificationErrorType.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.ClassificationErrorType.extract">
+<code class="sig-name descname"><span class="pre">extract</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.ClassificationErrorType.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a component from a data instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The data instance you want to extract a component from. The type is up to you.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.ClassificationErrorType.to_jcr">
+<code class="sig-name descname"><span class="pre">to_jcr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.ClassificationErrorType.to_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a JSON compatible representation of the object. Will generally return a dict cintaining the objects state, but can return anything JSON serializable. json.dumps(xxx) will be called on the output xxx of this function.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.ClassificationErrorType.from_jcr">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_jcr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jcr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.ClassificationErrorType.from_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the JSON compatible representation from the function above, load an object of this type with the desired state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>jcr</strong> (<em>[</em><em>dict</em><em>]</em>) – The jcr representation returned from the <cite>to_jcr</cite> function above. Will generally be a dict, but can be anything JSON serializable.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>obj</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type(this)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.ClassificationErrorType.build">
+<code class="sig-name descname"><span class="pre">build</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.ClassificationErrorType.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your component extractor must be Buildable. This means that it may use data to set some reference values, used to calculate the component to be extracted from a data sample. A good example for this is the <cite>raymon.profiling.extractors.structured.KMeansOutlierScorer</cite> extractor, which clusters the data at building time and saves those clusters as reference in the objects state. If you dont require and buildabe state, like the <cite>raymon.profiling.extractors.structured.ElementExtractor</cite>, don’t do anything in this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The set of data available at building time. Can be any type you want.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.ClassificationErrorType.is_built">
+<code class="sig-name descname"><span class="pre">is_built</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.ClassificationErrorType.is_built" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the object has been built. Typically, this method checks whether the required references for the object is set. If your ComponentExtractor does not use any references, simply return True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>is_built</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt id="raymon.profiling.extractors.structured.scoring.RegressionError">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">raymon.profiling.extractors.structured.scoring.</span></code><code class="sig-name descname"><span class="pre">RegressionError</span></code><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.RegressionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="raymon.profiling.extractors.html#raymon.profiling.extractors.extractors.EvalExtractor" title="raymon.profiling.extractors.extractors.EvalExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">raymon.profiling.extractors.extractors.EvalExtractor</span></code></a></p>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.RegressionError.extract">
+<code class="sig-name descname"><span class="pre">extract</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.RegressionError.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a component from a data instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The data instance you want to extract a component from. The type is up to you.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.RegressionError.to_jcr">
+<code class="sig-name descname"><span class="pre">to_jcr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.RegressionError.to_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a JSON compatible representation of the object. Will generally return a dict cintaining the objects state, but can return anything JSON serializable. json.dumps(xxx) will be called on the output xxx of this function.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.RegressionError.from_jcr">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_jcr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jcr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.RegressionError.from_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the JSON compatible representation from the function above, load an object of this type with the desired state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>jcr</strong> (<em>[</em><em>dict</em><em>]</em>) – The jcr representation returned from the <cite>to_jcr</cite> function above. Will generally be a dict, but can be anything JSON serializable.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>obj</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type(this)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.RegressionError.build">
+<code class="sig-name descname"><span class="pre">build</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.RegressionError.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your component extractor must be Buildable. This means that it may use data to set some reference values, used to calculate the component to be extracted from a data sample. A good example for this is the <cite>raymon.profiling.extractors.structured.KMeansOutlierScorer</cite> extractor, which clusters the data at building time and saves those clusters as reference in the objects state. If you dont require and buildabe state, like the <cite>raymon.profiling.extractors.structured.ElementExtractor</cite>, don’t do anything in this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The set of data available at building time. Can be any type you want.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.RegressionError.is_built">
+<code class="sig-name descname"><span class="pre">is_built</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.RegressionError.is_built" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the object has been built. Typically, this method checks whether the required references for the object is set. If your ComponentExtractor does not use any references, simply return True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>is_built</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt id="raymon.profiling.extractors.structured.scoring.AbsoluteRegressionError">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">raymon.profiling.extractors.structured.scoring.</span></code><code class="sig-name descname"><span class="pre">AbsoluteRegressionError</span></code><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.AbsoluteRegressionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="raymon.profiling.extractors.html#raymon.profiling.extractors.extractors.EvalExtractor" title="raymon.profiling.extractors.extractors.EvalExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">raymon.profiling.extractors.extractors.EvalExtractor</span></code></a></p>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.AbsoluteRegressionError.extract">
+<code class="sig-name descname"><span class="pre">extract</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.AbsoluteRegressionError.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a component from a data instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The data instance you want to extract a component from. The type is up to you.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.AbsoluteRegressionError.to_jcr">
+<code class="sig-name descname"><span class="pre">to_jcr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.AbsoluteRegressionError.to_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a JSON compatible representation of the object. Will generally return a dict cintaining the objects state, but can return anything JSON serializable. json.dumps(xxx) will be called on the output xxx of this function.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.AbsoluteRegressionError.from_jcr">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_jcr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jcr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.AbsoluteRegressionError.from_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the JSON compatible representation from the function above, load an object of this type with the desired state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>jcr</strong> (<em>[</em><em>dict</em><em>]</em>) – The jcr representation returned from the <cite>to_jcr</cite> function above. Will generally be a dict, but can be anything JSON serializable.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>obj</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type(this)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.AbsoluteRegressionError.build">
+<code class="sig-name descname"><span class="pre">build</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.AbsoluteRegressionError.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your component extractor must be Buildable. This means that it may use data to set some reference values, used to calculate the component to be extracted from a data sample. A good example for this is the <cite>raymon.profiling.extractors.structured.KMeansOutlierScorer</cite> extractor, which clusters the data at building time and saves those clusters as reference in the objects state. If you dont require and buildabe state, like the <cite>raymon.profiling.extractors.structured.ElementExtractor</cite>, don’t do anything in this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The set of data available at building time. Can be any type you want.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.AbsoluteRegressionError.is_built">
+<code class="sig-name descname"><span class="pre">is_built</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.AbsoluteRegressionError.is_built" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the object has been built. Typically, this method checks whether the required references for the object is set. If your ComponentExtractor does not use any references, simply return True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>is_built</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt id="raymon.profiling.extractors.structured.scoring.SquaredRegressionError">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">raymon.profiling.extractors.structured.scoring.</span></code><code class="sig-name descname"><span class="pre">SquaredRegressionError</span></code><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.SquaredRegressionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="raymon.profiling.extractors.html#raymon.profiling.extractors.extractors.EvalExtractor" title="raymon.profiling.extractors.extractors.EvalExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">raymon.profiling.extractors.extractors.EvalExtractor</span></code></a></p>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.SquaredRegressionError.extract">
+<code class="sig-name descname"><span class="pre">extract</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.SquaredRegressionError.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a component from a data instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The data instance you want to extract a component from. The type is up to you.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.SquaredRegressionError.to_jcr">
+<code class="sig-name descname"><span class="pre">to_jcr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.SquaredRegressionError.to_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a JSON compatible representation of the object. Will generally return a dict cintaining the objects state, but can return anything JSON serializable. json.dumps(xxx) will be called on the output xxx of this function.</p>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.SquaredRegressionError.from_jcr">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_jcr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jcr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.SquaredRegressionError.from_jcr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the JSON compatible representation from the function above, load an object of this type with the desired state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>jcr</strong> (<em>[</em><em>dict</em><em>]</em>) – The jcr representation returned from the <cite>to_jcr</cite> function above. Will generally be a dict, but can be anything JSON serializable.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>obj</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type(this)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.SquaredRegressionError.build">
+<code class="sig-name descname"><span class="pre">build</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.SquaredRegressionError.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your component extractor must be Buildable. This means that it may use data to set some reference values, used to calculate the component to be extracted from a data sample. A good example for this is the <cite>raymon.profiling.extractors.structured.KMeansOutlierScorer</cite> extractor, which clusters the data at building time and saves those clusters as reference in the objects state. If you dont require and buildabe state, like the <cite>raymon.profiling.extractors.structured.ElementExtractor</cite>, don’t do anything in this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – The set of data available at building time. Can be any type you want.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="raymon.profiling.extractors.structured.scoring.SquaredRegressionError.is_built">
+<code class="sig-name descname"><span class="pre">is_built</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#raymon.profiling.extractors.structured.scoring.SquaredRegressionError.is_built" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the object has been built. Typically, this method checks whether the required references for the object is set. If your ComponentExtractor does not use any references, simply return True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>is_built</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</div>
+<div class="section" id="module-raymon.profiling.extractors.structured">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-raymon.profiling.extractors.structured" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="raymon.profiling.extractors.vision.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">raymon.profiling.extractors.vision package</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="raymon.profiling.extractors.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">raymon.profiling.extractors package</div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2021, Raymon BV
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../_sources/libapi/raymon.profiling.extractors.structured.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">raymon.profiling.extractors.structured package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-raymon.profiling.extractors.structured.element">raymon.profiling.extractors.structured.element module</a></li>
+<li><a class="reference internal" href="#module-raymon.profiling.extractors.structured.entropy">raymon.profiling.extractors.structured.entropy module</a></li>
+<li><a class="reference internal" href="#module-raymon.profiling.extractors.structured.iforest">raymon.profiling.extractors.structured.iforest module</a></li>
+<li><a class="reference internal" href="#module-raymon.profiling.extractors.structured.kmeans">raymon.profiling.extractors.structured.kmeans module</a></li>
+<li><a class="reference internal" href="#module-raymon.profiling.extractors.structured.margin">raymon.profiling.extractors.structured.margin module</a></li>
+<li><a class="reference internal" href="#module-raymon.profiling.extractors.structured.scoring">raymon.profiling.extractors.structured.scoring module</a></li>
+<li><a class="reference internal" href="#module-raymon.profiling.extractors.structured">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
+</html>
