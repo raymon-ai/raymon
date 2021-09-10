@@ -10,16 +10,22 @@ Allright, let's get started with Raymon by building a so called `ModelProfile`, 
 
 For this tutorial, we will use the[ house prices dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data) from Kaggle. A slightly preprocessed version is available in the [test same data](https://github.com/raymon-ai/raymon/tree/master/raymon/tests/sample_data/houseprices) of the library on Github. We'll skip talking too much about the dataset and the model here, but feel free to explore it yourself. In this tutorial's use case, your task is to develop a system that predicts house prices based on some input features.
 
-We can start by building a simple model to predict the house prices. The library tests contain some helper code to train a very basic random forest regressor based on the sample data. The code below trains and returns a [`sklearn.ensemble.RandomForestRegressor`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html) model, a [`sklearn.compose.ColumnTransformer`](https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html) and 2 feature selectors, to select the right columns from the dataset DataFrame before and after one-hot encoding of categorical features. Afterwards, it uses the model to make predictions on our test set, which we'll use below.
+We can start by building a simple model to predict the house prices. The library tests contain some helper code to train a very basic random forest regressor based on the sample data. The code below trains and returns a [`sklearn.ensemble.RandomForestRegressor`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html) model, a [`sklearn.compose.ColumnTransformer`](https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html) and 2 feature selectors, to select the right columns from the dataset DataFrame before and after one-hot encoding of categorical features. Afterwards, it uses the model to make predictions on our validation and test set, which we'll use below.
 
 ```python
 import pandas as pd
+from sklearn.model_selection import train_test_split
 from raymon.tests.profiling.houseprices_utils import prep_df, train, load_data
 
 cheap_houses_csv = "../raymon/tests/sample_data/houseprices/subset-cheap.csv"
-X_train, y_train = load_data(cheap_houses_csv) 
-# We use the same train / test data for this test
-X_test, y_test = X_test, y_test
+X, y = load_data(cheap_houses_csv) 
+X_train, X_test, y_train, y_test = train_test_split(X, y, 
+                                                    test_size=0.3, 
+                                                    random_state=1)
+X_train, X_val, y_train, y_val  = train_test_split(X_train, y_train, 
+                                                   test_size=0.5, 
+                                                   random_state=1) 
+
 
 rf, coltf, feature_selector_ohe, feature_selector = train(
     X_train=X_train, 
@@ -30,8 +36,13 @@ Xtf_test = pd.DataFrame(
     coltf.transform(X_test[feature_selector]),
     columns=feature_selector_ohe,
 )
+Xtf_val = pd.DataFrame(
+    coltf.transform(X_val[feature_selector]),
+    columns=feature_selector_ohe,
+)
 
-y_pred = rf.predict(Xtf_test[feature_selector_ohe])
+y_pred_test = rf.predict(Xtf_test[feature_selector_ohe])
+y_pred_val = rf.predict(Xtf_val[feature_selector_ohe])
 ```
 
 ## Watching input features
@@ -76,7 +87,7 @@ profile = ModelProfile(
 After specifying all input features, we can build the profile by passing it some data. 
 
 ```python
-profile.build(input=X_test[feature_selector])
+profile.build(input=X_val[feature_selector])
 ```
 
 When building a profile, the data you pass it is analysed, and the profile will save stats like min, max, mean, domain and distribution for every component.
@@ -171,12 +182,14 @@ profile = ModelProfile(
     components=[
         InputComponent(
             name="outlier_score",
-            extractor=SequenceSimpleExtractor(prep=coltf, extractor=KMeansOutlierScorer()),
+            extractor=SequenceSimpleExtractor(
+                prep=coltf, extractor=KMeansOutlierScorer()),
         ),
         OutputComponent(name="prediction", extractor=ElementExtractor(element=0)),
         ActualComponent(name="actual", extractor=ElementExtractor(element=0)),
         EvalComponent(name="abs_error", extractor=AbsoluteRegressionError()),
-    ] + generate_components(X_test[feature_selector].dtypes, complass=InputComponent),
+    ] + generate_components(X_train[feature_selector].dtypes, 
+                            complass=InputComponent),
     scores=[
         MeanScore(
             name="MAE",
@@ -190,7 +203,9 @@ profile = ModelProfile(
         ),
     ],
 )
-profile.build(input=X_test[feature_selector], output=y_pred[:, None], actual=y_test[:, None])
+profile.build(input=X_val[feature_selector], 
+              output=y_pred_val[:, None], 
+              actual=y_val[:, None])
 ```
 
 As you can see, scores take in one extracted feature and aggregate it in a single value. We also pass a preference for this score: in this case we want both scores to be low. Low is good. In a classification context, we could  for example calculate the precision or recall of our model. In that case, we want those score to be high.

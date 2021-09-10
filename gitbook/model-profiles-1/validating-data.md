@@ -63,6 +63,19 @@ tags = profile.validate_input(invalid)
 filter_errors(tags)
 ```
 
+This should output something like this:
+
+```javascript
+[{'type': 'profile-input-error',
+  'name': 'outlier_score-error',
+  'value': 'UpperBoundError',
+  'group': 'housepricescheap@3.0.0'},
+ {'type': 'profile-input-error',
+  'name': '1stflrsf-error',
+  'value': 'UpperBoundError',
+  'group': 'housepricescheap@3.0.0'}]
+```
+
 As you can see, profiles will generate error tags for abnormal or invalid feature values. Invalid values can be values outside of the domain seen during training, or it can be None or NaN values. If you want to be very strict, you could throw an exception every time an error tag is generated. Alternatively, you can use the Raymon platform to tag [prediction traces](../tracing-predictions/untitled.md) with error tags. That way, you can easily find and debug data errors.
 
 ### Inspecting the data
