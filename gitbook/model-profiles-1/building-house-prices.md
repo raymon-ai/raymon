@@ -214,9 +214,38 @@ Line 32 builds the profile. Since we have defined output, actual and evaluation 
 
 ## Inspecting the full profile
 
-When we build and inspect the full profile, we can see some stuff has been added. We have an easy overview of the scores, and the tabs for outputs, actuals and evaluations also have components associated with them now.
+When we build and inspect the full profile, we can see some stuff has been added. We have an easy overview of the scores, and the tabs for outputs, actuals and evaluations also have components associated with them now. There are click-throughs for bigger plots and more information for each component too.
 
-![](../.gitbook/assets/full_profile.gif)
+![](../.gitbook/assets/full_profile_ext.gif)
+
+## Setting domains
+
+If you do not want to rely on Raymon's auto domain inference, you can set the domains of components manually as follows:
+
+```python
+# Set domains
+domains = {
+    "1stflrsf": (0, None),  # Set the minimum to 0
+    "2ndflrsf": (None, 2000),  # Set the minimum to 2000
+    "3ssnporch": (0, 400),  # Set min and max
+    "bldgtype": [ "1Fam", "TwnhsE", "Twnhs", "2fmCon" ], # removed "Duplex"
+    
+}
+profile_lim = copy.deepcopy(profile)
+profile_lim.build(input=X_val[feature_selector], 
+              output=y_pred_val[:, None], 
+              actual=y_val[:, None],
+              domains=domains)
+profile_lim.view()
+```
+
+When inspecting the profile, you'll notice the domains have changed. For the `bldgtype` component, we have not increased the domain, but limited it. This means our invalid values ratio has gone up now.
+
+![Profile extract without manually configured domains.](../.gitbook/assets/image%20%2810%29.png)
+
+![Profile extract with manually configured domains.](../.gitbook/assets/image%20%2812%29.png)
+
+
 
 ## Wrapping up
 

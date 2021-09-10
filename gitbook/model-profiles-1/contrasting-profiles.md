@@ -83,7 +83,7 @@ profile.view_contrast(profile_exp)
 
 This gives us a the following view, where the original profile is displayed in grey, and the new one in blue. This allows us to spot differences easily. We'll go over different areas of interest below the image.
 
-![Contrasting 2 profiles agains each other.](../.gitbook/assets/image%20%2812%29.png)
+![Contrasting 2 profiles agains each other.](../.gitbook/assets/image%20%2814%29.png)
 
 ### Data integrity
 
@@ -97,13 +97,13 @@ The drift columns shows how much the data distributions have changed. In the ima
 
 Lastly, we also see the difference between the model scores at the top. Here, we see that the mean average error the model made has increased dramatically between the 2 profiles. The outlier score is also much higher on average. 
 
-![](../.gitbook/assets/image%20%2811%29.png)
+![](../.gitbook/assets/image%20%2813%29.png)
 
 Going from the many warning signals we have, we can conclude something is wrong with our data. We don't get a lot on invalid values, but something in the distribution has certainly changed, and our model is not performing well because of it. 
 
 After inspecting the output and actual tabs of the component views, it should be clear what is wrong here. What happened is that, apparently, our system has been processing houses in a higher price range than what we have seen during training, and our model is struggling with that. Time to retrain your model with new and more relevant data!
 
-![The actuals we are trying to predict have shifted dramatically.](../.gitbook/assets/image%20%2810%29.png)
+![The actuals we are trying to predict have shifted dramatically.](../.gitbook/assets/image%20%2811%29.png)
 
 ## Warning reports
 
