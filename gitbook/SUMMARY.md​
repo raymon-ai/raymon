@@ -8,8 +8,8 @@
 * [Building a profile: computer vision](model-profiles-1/building-computer-vision.md)
 * [Validating Data](model-profiles-1/validating-data.md)
 * [Contrasting Profiles](model-profiles-1/contrasting-profiles.md)
-* [Available extractors](model-profiles-1/available-extractors.md)
-* [Writing your own extractors](model-profiles-1/writing-your-own-extractors.md)
+* [Extractors in detail](model-profiles-1/available-extractors.md)
+* [Concepts & building flow](model-profiles-1/concepts-and-building-flow.md)
 
 ## Tracing predictions
 
