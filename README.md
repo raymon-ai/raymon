@@ -34,7 +34,7 @@
 pip install raymon
 ```
 ### Building a model profile
-Building a `ModelProfile` captures all kinds of data characteristics of your models input,s outputs, actuals and predictions.
+Building a `ModelProfile` captures all kinds of data characteristics of your models inputs, outputs, actuals and predictions.
 
 ```python
 profile = ModelProfile(
