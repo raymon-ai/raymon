@@ -84,9 +84,8 @@ all_tags = profile.validate_all(input=request,
 ```
 
 ### Inspect and contrast model profiles
-interactive-demo
+![interactive-demo](https://user-images.githubusercontent.com/7951058/132948529-9e2b0a42-5a0d-42a2-83db-92558c32e3d5.gif)
 
-https://user-images.githubusercontent.com/7951058/132864346-2715fb47-00e9-484c-9f06-c709d4a9847f.mov
 
 
 
