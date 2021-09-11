@@ -12,7 +12,7 @@
 </p>
 
 ## What is Raymon?
-**Raymon helps Machine Learning teams analyse data, data health and model performance**. Using data profiles, users can extract features describing data quality, data novelty, model confidence and prediction performance from data.Then, they can use these features to validate production data and monitor for data drift, data degradation and model degradation. 
+**Raymon helps Machine Learning teams analyse data, data health and model performance**. Using Raymon, users can extract features describing data quality, data novelty, model confidence and prediction performance from model predictions. Then, they can use these features to validate production data and monitor for data drift, data degradation and model degradation. 
 
 **Raymon is open source and can be used standalone** but integrates nicely with the rest of the Raymon.ai ML Observability hub, for example to make predictions traceable and debuggable.
 
