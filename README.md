@@ -12,14 +12,13 @@
 </p>
 
 ## What is Raymon?
-**Raymon helps Machine Learning teams analyse data, data health and model performance**. Using data profiles, users can extract features describing data quality, data novelty, model confidence and prediction performance from data.Then, they can use these features to validate production data and monitor for data drift, data degradation and model degradation. 
-
-**Raymon is open source and can be used standalone** but integrates nicely with the rest of the Raymon.ai ML Observability hub, for example to make predictions traceable and debuggable.
-
-**Raymon’s focus is on simplicity, practicality and extendability**. We offer a set of extractors that are cheap to compute and simple to understand. 
+**Raymon helps Machine Learning teams analyse data, data health and model performance**. Using Raymon, users can extract features describing data quality, data novelty, model confidence and prediction performance from model predictions. Then, they can use these features to validate production data and monitor for data drift, data degradation and model degradation. 
 
 **We can support any data type**. Currently, we offer extractors for structured data and vision data, but you can easily implement your own extractor which means we can any data type and any extractor that you want. 
 
+**Raymon’s focus is on simplicity, practicality and extendability**. We offer a set of extractors that are cheap to compute and simple to understand. 
+
+**Raymon is open source and can be used standalone** but integrates nicely with the rest of the Raymon.ai ML Observability hub, for example to make predictions traceable and debuggable.
 
 ## Quick Links
 - :point_right: [Docs](https://docs.raymon.ai)
@@ -35,7 +34,7 @@
 pip install raymon
 ```
 ### Building a model profile
-Building a `ModelProfile` captures all kinds of data characteristics of your models input,s outputs, actuals and predictions.
+Building a `ModelProfile` captures all kinds of data characteristics of your models inputs, outputs, actuals and predictions.
 
 ```python
 profile = ModelProfile(
