@@ -12,7 +12,7 @@
 </p>
 
 ## What is Raymon?
-**Raymon helps Machine Learning teams analyse data, data health and model performance**. Using Raymon, users can extract features describing data quality, data novelty, model confidence and prediction performance from model predictions. Then, they can use these features to validate production data and monitor for data drift, data degradation and model degradation. 
+**Raymon helps Machine Learning teams analyse data, data health and model performance**. Using Raymon, users can extract features describing data quality, data novelty, model confidence and prediction performance from model predictions. Then, they can use these features to validate production data and generate reports for data drift, data degradation and model degradation. 
 
 **We can support any data type**. Currently, we offer extractors for structured data and vision data, but you can easily implement your own extractor which means we can any data type and any extractor that you want. 
 
