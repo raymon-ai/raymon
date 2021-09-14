@@ -78,7 +78,7 @@ class RaymonAPILogger:
                 else:
                     dc.append(d)  # We assume d is JSON serializable
             data = dc
-        # Else: assume dat is JSON serializble
+        # Else: assume data is JSON serializble
         return data
 
     def structure(self, dtype, trace_id, data, ref=None):
@@ -87,6 +87,7 @@ class RaymonAPILogger:
             "dtype": dtype,
             "timestamp": str(pendulum.now("utc")),
             "trace_id": str(trace_id),
+            "project_id": self.project_id,
             "ref": ref,
             "data": data,
         }
