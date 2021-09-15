@@ -18,7 +18,7 @@
 
 **Raymon’s focus is on simplicity, practicality and extendability**. We offer a set of extractors that are cheap to compute and simple to understand. 
 
-**Raymon is open source and can be used standalone** but integrates nicely with the rest of the Raymon.ai ML Observability hub, for example to make predictions traceable and debuggable.
+**Raymon is open source and can be used standalone** but integrates nicely with the [Raymon.ai ML Observability hub](https://www.raymon.ai/), for example to [make predictions traceable and debuggable](https://docs.raymon.ai/tracing-predictions).
 
 ## Quick Links
 - :point_right: [Docs](https://docs.raymon.ai)
