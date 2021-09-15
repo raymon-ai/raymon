@@ -4,7 +4,7 @@ description: >-
   platform.
 ---
 
-# Tracing predictions
+# Making predictions debuggable
 
 Using Raymon, you can log data, messages and tags to the backend. Of course you need to have the backend set up for this. Since we're still in private alpha, please [contact us](https://raymon.ai) if you want to do so. This can be done by using our cloud hosted API, bit you can also host it yourself.
 
@@ -89,8 +89,6 @@ After logging this data, you can navigate to the [web UI](https://ui.raymon.ai/)
 
 ![Example of a very simple trace \(without visualisations yet\).](../.gitbook/assets/image%20%2811%29.png)
 
-
-
 ### API
 
 You can fetch data from the backend for further debugging or analysis by clicking the download icon next to each data artefact, or download the complete trace by clicking the icon next to the Logs header.
@@ -114,6 +112,4 @@ orig = raymon_wrapped.data
 ## Wrapping Up
 
 This section provided a sneak peek into the Raymon backend, Web UI and API. More to come!
-
-
 

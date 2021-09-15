@@ -6,11 +6,11 @@ description: Introduction to ModelProfiles with vision data.
 
 Constructing model profiles for computer vision data works the same as for structured data or any data type. The main difference is the extractors that are used to extract characteristics \(or "features"\) from the data. We'll show a few examples of extractors below.
 
-Raymon includes a set of [out-of-the-box extractors](available-extractors.md), and we're always interested in hearing about ideas to add more. If you are missing an extractor, let us know and we may help you [implement your own extractor ]()it and may even adopt in in our set of extractor.s
+Raymon includes a set of [out-of-the-box extractors](available-extractors.md), and we're always interested in hearing about ideas to add more. If you are missing an extractor, let us know and we may help you [implement your own extractor ](building-computer-vision.md)it and may even adopt in in our set of extractor.s
 
 ## Watching input image features
 
-To illustrate some features you can extract from input images, we'l use the Pilot technocast dataset taken from [Kaggle](https://www.kaggle.com/ravirajsinh45/real-life-industrial-dataset-of-casting-product). This dataset can be used to train your own manufacturing quality inspection model. Manufacturing  quality inspection is an interesting use case, because all images should look rather similar.
+To illustrate some features you can extract from input images, we'l use the Pilot technocast dataset taken from [Kaggle](https://www.kaggle.com/ravirajsinh45/real-life-industrial-dataset-of-casting-product). This dataset can be used to train your own manufacturing quality inspection model. Manufacturing quality inspection is an interesting use case, because all images should look rather similar.
 
 The goal is to classify images based on production quality. The image below shows and example of what data looks like. A data sample is also included in [`raymon/tests/sample_data/castinginspection`](https://github.com/raymon-ai/raymon/tree/master/raymon/tests/sample_data/castinginspection)\`\`
 
