@@ -50,7 +50,7 @@ profile = ModelProfile(
         ActualComponent(name="actual", extractor=ElementExtractor(element=0)),
         EvalComponent(name="abs_error", extractor=AbsoluteRegressionError()),
     ] + generate_components(X_train[feature_selector].dtypes, 
-                            complass=InputComponent),
+                            complass=InputComponent), # Generates a component for every column in the DF
     scores=[
         MeanScore(
             name="MAE",
@@ -67,7 +67,11 @@ profile = ModelProfile(
 profile.build(input=X_val[feature_selector], 
               output=y_pred_val[:, None], 
               actual=y_val[:, None])
+profile.view()
 ```
+![image](https://user-images.githubusercontent.com/7951058/133390827-c0c2ba3f-1e54-43fc-b6f7-0427b18bb395.png)
+
+
 ### Validating production data
 Profiles can then be used in production code to validate your incoming data and model performance monitoring.
 
@@ -84,9 +88,13 @@ all_tags = profile.validate_all(input=request,
 ```
 
 ### Inspect and contrast model profiles
+You can contast different model profiles against each other too. For example, to compare the profile at model train time, with the profile on production data, or to compare subsets of production data.
+
+```python
+profile.view_contrast(profile_exp)
+```
+
 ![interactive-demo](https://user-images.githubusercontent.com/7951058/132948529-9e2b0a42-5a0d-42a2-83db-92558c32e3d5.gif)
-
-
 
 
 
