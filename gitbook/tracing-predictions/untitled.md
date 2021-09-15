@@ -4,7 +4,7 @@ description: >-
   platform.
 ---
 
-# Making predictions debuggable
+# Tracing prediction requests
 
 Using Raymon, you can log data, messages and tags to the backend. Of course you need to have the backend set up for this. Since we're still in private alpha, please [contact us](https://raymon.ai) if you want to do so. This can be done by using our cloud hosted API, bit you can also host it yourself.
 

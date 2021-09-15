@@ -10,7 +10,7 @@
 * [Contrasting Profiles](model-profiles-1/contrasting-profiles.md)
 * [Extractors in detail](model-profiles-1/available-extractors.md)
 
-## Tracing predictions
+## Tracing & Debugging <a id="tracing-predictions"></a>
 
-* [Making predictions debuggable](tracing-predictions/untitled.md)
+* [Tracing prediction requests](tracing-predictions/untitled.md)
 
