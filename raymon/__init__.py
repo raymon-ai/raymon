@@ -1,5 +1,5 @@
 from raymon.api import RaymonAPI
-from raymon.loggers import RaymonFileLogger, RaymonAPILogger
+from raymon.loggers import RaymonAPILogger
 from raymon.trace import Trace
 from raymon.tags import Tag
 from raymon.globals import Serializable, DataException

@@ -1,9 +1,7 @@
 import json
 import uuid
 import logging
-from logging.handlers import DatagramHandler, RotatingFileHandler
 import sys
-from abc import ABC, abstractmethod
 import pendulum
 import os
 from pathlib import Path
@@ -16,10 +14,58 @@ KB = 1000
 MB = KB * 1000
 
 
-class RaymonLoggerBase(ABC):
-    def __init__(self, project_id="default"):
+class RaymonAPILogger:
+    def __init__(self, project_id, url="https://api.raymon.ai/v0", auth_path=None, env=None, batch_size=1):
         self.project_id = project_id
-        self.setup_logger(stdout=True)
+        self.setup_stdout(stdout=True)
+        self.api = RaymonAPI(url=url, project_id=project_id, auth_path=auth_path, env=env)
+        self.buffer = []
+        self.batch_size = batch_size
+
+    """
+    Functions related to logging of traces
+    """
+
+    def info(self, trace_id, text):
+        # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
+        jcr = self.structure(dtype="info", trace_id=trace_id, data=text)
+        self.stdout.info(text, extra=jcr)
+        self.buffer.append(jcr)
+        self.stdout.info("Added info to buffer.", extra=jcr)
+        self.check_flush()
+
+    def log(self, trace_id, ref, data):
+        # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
+        jcr = self.structure(dtype="object", trace_id=trace_id, ref=ref, data=data.to_jcr())
+        self.buffer.append(jcr)
+        self.stdout.info(f"Added data to buffer for {ref}", extra=jcr)
+        self.check_flush()
+
+    def tag(self, trace_id, tags):
+        tags = self.parse_tags(tags)
+        jcr = self.structure(dtype="tags", trace_id=trace_id, ref=None, data=tags)
+        self.buffer.append(jcr)
+        self.stdout.info("Added tags to buffer", extra=jcr)
+        self.check_flush()
+
+    def flush(self):
+        resp = self.api.post(
+            route=f"projects/{self.project_id}/ingest_batch",
+            json=self.buffer,
+        )
+        status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
+        self.stdout.info(f"Posted buffer. Status: {status}", extra={"trace_id": None})
+
+        if resp.ok:
+            self.buffer = []
+        else:
+            print(resp.text)
+
+    def check_flush(self):
+        if len(self.buffer) >= self.batch_size:
+            self.flush()
+
+    """Helpers"""
 
     def to_json_serializable(self, data):
         """
@@ -38,20 +84,21 @@ class RaymonLoggerBase(ABC):
                 else:
                     dc.append(d)  # We assume d is JSON serializable
             data = dc
-        # Else: assume dat is JSON serializble
+        # Else: assume data is JSON serializble
         return data
 
-    def structure(self, trace_id, ref, data):
+    def structure(self, dtype, trace_id, data, ref=None):
         data = self.to_json_serializable(data)
         return {
+            "dtype": dtype,
             "timestamp": str(pendulum.now("utc")),
             "trace_id": str(trace_id),
+            "project_id": self.project_id,
             "ref": ref,
             "data": data,
-            "project_id": self.project_id,
         }
 
-    def setup_logger(self, fname=None, stdout=True):
+    def setup_stdout(self, stdout=True):
         # Set up the raymon logger
         logger = logging.getLogger("Raymon")
         if len(logger.handlers) == 0:
@@ -64,19 +111,7 @@ class RaymonLoggerBase(ABC):
                 sh.setLevel(logging.INFO)
                 sh.setFormatter(formatter)
                 logger.addHandler(sh)
-        self.logger = logger
-
-    @abstractmethod
-    def info(self, trace_id, text):
-        pass
-
-    @abstractmethod
-    def log(self, trace_id, ref, data):
-        pass
-
-    @abstractmethod
-    def tag(self, trace_id, tags):
-        pass
+        self.stdout = logger
 
     def parse_tags(self, tags):
         parsed_tags = []
@@ -89,93 +124,3 @@ class RaymonLoggerBase(ABC):
             else:
                 raise DataException(f"{type(tag)} not supported as Tag")
         return parsed_tags
-
-
-class RaymonFileLogger(RaymonLoggerBase):
-    def __init__(self, path="/tmp/raymon/", project_id="default", reset_file=False):
-        super().__init__(project_id=project_id)
-        self.setup_datalogger(path=path, reset_file=reset_file)
-
-    def setup_datalogger(self, path, reset_file=False):
-        # Set up the raymon logger
-        logger = logging.getLogger("Raymon-data")
-        self.data_logger = logger
-        if len(logger.handlers) == 1 and isinstance(logger.handlers[0], RotatingFileHandler):
-            if reset_file:
-                print(f"Handler found, but reseting file.")
-                logger.handlers = []
-            else:
-                # Already configured
-                print(f"Skipping add handler", logger.handlers, flush=True)
-                # traceback.print_stack()
-                self.fname = logger.handlers[0].baseFilename
-                return
-
-        print(f"Adding handler")
-        self.fname = Path(path) / f"raymon-{str(uuid.uuid4())}.log"
-        logger.setLevel(logging.INFO)
-        # Add a file handler
-        fh = RotatingFileHandler(self.fname, maxBytes=200 * MB, backupCount=10)
-        fh.setLevel(logging.INFO)
-        logger.addHandler(fh)
-
-    def info(self, trace_id, text):
-        jcr = self.structure(trace_id=trace_id, ref=None, data=text)
-        kafka_msg = {"type": "info", "jcr": jcr}
-        self.data_logger.info(json.dumps(kafka_msg))
-        self.logger.info(f"Logged: {text}", extra=jcr)
-
-    def log(self, trace_id, ref, data):
-        jcr = self.structure(trace_id=trace_id, ref=ref, data=data.to_jcr())
-        kafka_msg = {"type": "data", "jcr": jcr}
-        self.data_logger.info(json.dumps(kafka_msg))
-        self.logger.info(f"Logged ref {ref} data to textfile.", extra=jcr)
-
-    def tag(self, trace_id, tags):
-        tags = self.parse_tags(tags)
-        jcr = self.structure(trace_id=trace_id, ref=None, data=tags)
-        kafka_msg = {"type": "tags", "jcr": jcr}
-        self.data_logger.info(json.dumps(kafka_msg))
-        self.logger.info(f"Logged tags to textfile.", extra=jcr)
-
-
-class RaymonAPILogger(RaymonLoggerBase):
-    def __init__(self, url="https://api.raymon.ai/v0", project_id=None, auth_path=None, env=None):
-        super().__init__(project_id=project_id)
-        self.api = RaymonAPI(url=url, project_id=project_id, auth_path=auth_path, env=env)
-
-    """
-    Functions related to logging of traces
-    """
-
-    def info(self, trace_id, text):
-        # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
-        jcr = self.structure(trace_id=trace_id, ref=None, data=text)
-        self.logger.info(text, extra=jcr)
-        resp = self.api.post(
-            route=f"projects/{self.project_id}/ingest",
-            json=jcr,
-        )
-        status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
-        self.logger.info(f"Logged info. Status: {status}", extra=jcr)
-
-    def log(self, trace_id, ref, data):
-        # print(f"Logging Raymon Datatype...{type(data)}", flush=True)
-        jcr = self.structure(trace_id=trace_id, ref=ref, data=data.to_jcr())
-        self.logger.info(f"Logging data at {ref}", extra=jcr)
-        resp = self.api.post(
-            route=f"projects/{self.project_id}/ingest",
-            json=jcr,
-        )
-        status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
-        self.logger.info(f"Data logged at {ref}. Status: {status}", extra=jcr)
-
-    def tag(self, trace_id, tags):
-        tags = self.parse_tags(tags)
-        jcr = self.structure(trace_id=trace_id, ref=None, data=tags)
-        resp = self.api.post(
-            route=f"projects/{self.project_id}/traces/{trace_id}/tags",
-            json=jcr,
-        )
-        status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
-        self.logger.info(f"Ray tagged. Status: {status}", extra=jcr)
