@@ -44,6 +44,7 @@ class RaymonAPILogger:
     def tag(self, trace_id, tags):
         tags = self.parse_tags(tags)
         jcr = self.structure(dtype="tags", trace_id=trace_id, ref=None, data=tags)
+        self.buffer.append(jcr)
         self.stdout.info("Added tags to buffer", extra=jcr)
         self.check_flush()
 
@@ -54,6 +55,11 @@ class RaymonAPILogger:
         )
         status = "OK" if resp.ok else f"ERROR: {resp.status_code}"
         self.stdout.info(f"Posted buffer. Status: {status}", extra={"trace_id": None})
+
+        if resp.ok:
+            self.buffer = []
+        else:
+            print(resp.text)
 
     def check_flush(self):
         if len(self.buffer) >= self.batch_size:
