@@ -13,6 +13,11 @@ from raymon.auth.user import (
 from raymon.exceptions import NetworkException, SecretException
 
 DEFAULT_FNAME = Path("~/.raymon/secrets.json").expanduser().absolute()
+DEFAULT_ENV = {
+    "auth_url": "https://raymon.eu.auth0.com",
+    "audience": "raymon-backend-api",
+    "client_id": "h6L3zj5d9OOQK2m0fHMfdFOnNn4LM7gK",
+}
 
 
 def load_credentials_file(fpath):
@@ -56,11 +61,7 @@ def login(fpath, project_id=None, env=None):
     if fpath is None:
         fpath = DEFAULT_FNAME
     if env is None:
-        env = {
-            "auth_url": "https://raymon.eu.auth0.com",
-            "audience": "raymon-backend-api",
-            "client_id": "h6L3zj5d9OOQK2m0fHMfdFOnNn4LM7gK",
-        }
+        env = DEFAULT_ENV
     credentials = load_credentials_file(fpath=fpath)
     # See whether we have m2m credentials set
     try:
