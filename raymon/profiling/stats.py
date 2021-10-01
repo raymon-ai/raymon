@@ -63,7 +63,18 @@ class Stats(Serializable, Buildable, ABC):
 
 class NumericStats(Stats):
 
-    _attrs = ["min", "max", "mean", "std", "invalids", "percentiles", "samplesize", "percentiles_lb", "percentiles_ub"]
+    _attrs = [
+        "min",
+        "max",
+        "mean",
+        "std",
+        "invalids",
+        "percentiles",
+        "samplesize",
+        "percentiles_lb",
+        "percentiles_ub",
+        "is_singleton",
+    ]
 
     def __init__(
         self, min=None, max=None, mean=None, std=None, invalids=None, percentiles=None, samplesize=None, **kwargs
@@ -74,7 +85,6 @@ class NumericStats(Stats):
         self.mean = mean
         self.std = std
         self.invalids = invalids
-
         self.percentiles = percentiles
 
     """MIN"""
@@ -169,6 +179,15 @@ class NumericStats(Stats):
     @property
     def percentiles_ub(self):
         return self._percentiles_ub
+
+    """Domain Cardinality"""
+
+    @property
+    def is_singleton(self):
+        if self.max - self.min == 0:
+            return True
+        else:
+            return False
 
     """Size of the sample that was analyzed"""
 
@@ -397,7 +416,7 @@ class FloatStats(NumericStats):
 
 class CategoricStats(Stats):
 
-    _attrs = ["frequencies", "invalids", "samplesize", "frequencies_lb", "frequencies_ub"]
+    _attrs = ["frequencies", "invalids", "samplesize", "frequencies_lb", "frequencies_ub", "is_singleton"]
 
     def __init__(self, frequencies=None, invalids=None, samplesize=None, **kwargs):
 
@@ -451,6 +470,15 @@ class CategoricStats(Stats):
         if value is not None and math.isnan(value):
             raise DataException("stats.invalids cannot be NaN")
         self._invalids = value
+
+    """Domain Cardinality"""
+
+    @property
+    def is_singleton(self):
+        if len(self.frequencies) == 1:
+            return True
+        else:
+            return False
 
     @property
     def samplesize(self):
