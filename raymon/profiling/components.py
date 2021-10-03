@@ -132,8 +132,9 @@ class Component(Serializable, Buildable, ABC):
                 raise ComponentStateException(f"Component {other.name} in 'other' is not built.")
             drift_report = self.stats.report_drift(other.stats, threshold=drift_threshold)
             invalids_report = self.stats.report_invalid_diff(other.stats, threshold=invalids_threshold)
+            singleton_report = self.stats.report_singleton_change(other.stats)
 
-            return {"drift": drift_report, "invalids": invalids_report}
+            return {"drift": drift_report, "invalids": invalids_report, "singleton": singleton_report}
         except ComponentStateException as e:
             return {}
 

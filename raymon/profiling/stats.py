@@ -344,6 +344,18 @@ class NumericStats(Stats):
         }
         return drift_report
 
+    def report_singleton_change(self, other):
+        if other.samplesize == 0:
+            return {"is_singleton": False, "singleton_value": "-1", "alert": False, "valid": False}
+        # If both singleton -> no alert
+        # If only other is singleton -> Alert
+        if other.is_singleton and not self.is_singleton:
+            return {"is_singleton": True, "singleton_value": self.min, "alert": True, "valid": True}
+        elif other.is_singleton and self.is_singleton:
+            return {"is_singleton": True, "singleton_value": self.min, "alert": False, "valid": True}
+        else:
+            return {"is_singleton": False, "singleton_value": -1, "alert": False, "valid": True}
+
     def sample(self, n, dtype="float"):
         # Sample floats in range 0 - len(percentiles)
         samples = np.random.random(n) * 100
@@ -607,6 +619,24 @@ class CategoricStats(Stats):
         drift_report = {"drift": float(drift), "drift_idx": drift_idx, "alert": bool(drift > threshold), "valid": True}
 
         return drift_report
+
+    def report_singleton_change(self, other):
+        if other.samplesize == 0:
+            return {"is_singleton": False, "singleton_value": "-1", "alert": False, "valid": False}
+        value = list(self.frequencies.keys())[0]
+        # If both singleton -> no alert
+        # If only other is singleton -> Alert
+        if other.is_singleton and not self.is_singleton:
+            return {
+                "is_singleton": True,
+                "singleton_value": value,
+                "alert": True,
+                "valid": True,
+            }
+        elif other.is_singleton and self.is_singleton:
+            return {"is_singleton": True, "singleton_value": value, "alert": False, "valid": True}
+        else:
+            return {"is_singleton": False, "singleton_value": -1, "alert": False, "valid": True}
 
     def sample(self, n):
         domain = sorted(list(self.frequencies.keys()))
