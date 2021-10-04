@@ -193,13 +193,13 @@ profile.view_contrast(profile_cheap_new)
 report = profile.contrast(profile_exp)
 import json
 
-print(json.dumps(report["health_reports"]["outlier_score"], indent=4))
+print(json.dumps(report["component_reports"]["outlier_score"], indent=4))
 # %%
 profile.view_contrast(profile_exp)
 
 # %%
 report_same = profile.contrast(profile_cheap_new)
-print(json.dumps(report_same["score_reports"], indent=4))  # Eh-oh, not good.
+print(json.dumps(report_same["global_reports"]["scores"], indent=4))  # Eh-oh, not good.
 
 #%%
 thresholds = {
@@ -207,7 +207,7 @@ thresholds = {
     "scores": {"mean_outlier_score": 0.30},
 }
 report = profile.contrast(profile_exp, thresholds=thresholds)
-print(json.dumps(report["health_reports"]["outlier_score"], indent=4))
-print(json.dumps(report["score_reports"], indent=4))
+print(json.dumps(report["component_reports"]["outlier_score"], indent=4))
+print(json.dumps(report["global_reports"]["scores"], indent=4))
 
 # %%

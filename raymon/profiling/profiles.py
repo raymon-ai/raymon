@@ -289,6 +289,8 @@ class ModelProfile(Serializable, Buildable):
         component_thresholds = thresholds.get("components", {})
         scorer_thresholds = thresholds.get("scores", {})
         report = {}
+        drifts = []
+
         for component in self.components.values():
             print(component.name)
             comp_thresholds = component_thresholds.get(component.name, {})
@@ -302,7 +304,11 @@ class ModelProfile(Serializable, Buildable):
                 alternativeB.components[component.name],
                 thresholds=comp_thresholds,
             )
+            if comp_report["drift"]["valid"]:
+                drifts.append(comp_report["drift"]["drift"])
             report[component.name] = comp_report
+
+        avg_drift = sum(drifts) / len(drifts)
 
         scorer_reports = {}
         for scorer in self.scores.values():
@@ -318,12 +324,14 @@ class ModelProfile(Serializable, Buildable):
             )
             scorer_reports[scorer.name] = red_report
 
+        global_reports = {"scores": scorer_reports, "multivariate_drift": avg_drift}
+
         jcr = {}
         jcr["reference"] = self.to_jcr()
         jcr["alternativeA"] = alternativeA.to_jcr()
         jcr["alternativeB"] = alternativeB.to_jcr()
-        jcr["health_reports"] = report
-        jcr["score_reports"] = scorer_reports
+        jcr["component_reports"] = report
+        jcr["global_reports"] = global_reports
         return jcr
 
     def view(self, poi=None, mode="external", outdir=None, silent=True):

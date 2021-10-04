@@ -1,13 +1,15 @@
 from raymon.profiling.components import DataType
 import pytest
 import json
-from raymon import ModelProfile
-from raymon import InputComponent
+from raymon import ModelProfile, out
+from raymon import InputComponent, OutputComponent, ActualComponent, EvalComponent
 from raymon import IntStats, FloatStats, CategoricStats
 from raymon.profiling.extractors.vision.similarity import FixedSubpatchSimilarity
 from raymon.profiling.extractors.structured.scoring import ClassificationErrorType
 from raymon.profiling.extractors.vision import DN2AnomalyScorer, AvgIntensity, Sharpness
 from raymon.profiling.extractors.structured import ElementExtractor
+from raymon.profiling.extractors.structured.scoring import AbsoluteRegressionError
+
 import numpy as np
 import pandas as pd
 
@@ -44,11 +46,7 @@ def test_profile_with_vision_data(images, tmp_path):
         name="retinopathy",
         version="2.0.0",
         components=[
-            InputComponent(
-                name="sharpness",
-                extractor=Sharpness(),
-                dtype=DataType.FLOAT,
-            ),
+            InputComponent(name="sharpness", extractor=Sharpness(), dtype=DataType.FLOAT, main=True),
             InputComponent(
                 name="intensity",
                 extractor=AvgIntensity(),
@@ -121,3 +119,61 @@ def test_profile_with_structured_data(tmp_path):
     assert loaded_profile.name == profile_restored.name
     assert loaded_profile.version == profile_restored.version
     assert all([c1 == c2 for (c1, c2) in zip(loaded_profile.components.keys(), profile_restored.components.keys())])
+
+
+def test_profile_main_component(tmp_path):
+    profile = ModelProfile(
+        name="vector",
+        version="1.0.0",
+        components=[
+            InputComponent(name="actual", extractor=ElementExtractor(element="num1"), dtype=DataType.INT, main=True),
+            OutputComponent(name="actual", extractor=ElementExtractor(element="num2"), dtype=DataType.INT, main=True),
+            ActualComponent(name="actual", extractor=ElementExtractor(element="num2"), dtype=DataType.INT, main=True),
+            EvalComponent(name="actual", extractor=AbsoluteRegressionError(), dtype=DataType.INT, main=True),
+        ],
+    )
+    # Sample data: df
+    cols = {
+        "num1": list(range(10)),
+        "cat1": ["a"] * 5 + ["b"] * 5,
+        "cat2": ["c"] * 5 + ["d"] * 5,
+        "num2": [0.2] * 10,
+    }
+    df = pd.DataFrame(data=cols)
+    # Build profile: profile
+    profile.build(input=df, output=df["num2"].to_frame(), actual=df["num2"].to_frame())
+    # Save profile
+    profile.save(str(tmp_path))
+    # Load profile: loaded_profile
+    loaded_profile = ModelProfile().load(str(tmp_path) + f"/{profile.group_idfr}.json")
+
+    assert all(c.main for c in loaded_profile.components.values())
+
+
+def test_profile_no_main_component(tmp_path):
+    profile = ModelProfile(
+        name="vector",
+        version="1.0.0",
+        components=[
+            InputComponent(name="actual", extractor=ElementExtractor(element="num1"), dtype=DataType.INT),
+            OutputComponent(name="actual", extractor=ElementExtractor(element="num2"), dtype=DataType.INT),
+            ActualComponent(name="actual", extractor=ElementExtractor(element="num2"), dtype=DataType.INT),
+            EvalComponent(name="actual", extractor=AbsoluteRegressionError(), dtype=DataType.INT),
+        ],
+    )
+    # Sample data: df
+    cols = {
+        "num1": list(range(10)),
+        "cat1": ["a"] * 5 + ["b"] * 5,
+        "cat2": ["c"] * 5 + ["d"] * 5,
+        "num2": [0.2] * 10,
+    }
+    df = pd.DataFrame(data=cols)
+    # Build profile: profile
+    profile.build(input=df, output=df["num2"].to_frame(), actual=df["num2"].to_frame())
+    # Save profile
+    profile.save(str(tmp_path))
+    # Load profile: loaded_profile
+    loaded_profile = ModelProfile().load(str(tmp_path) + f"/{profile.group_idfr}.json")
+
+    assert not any(c.main for c in loaded_profile.components.values())

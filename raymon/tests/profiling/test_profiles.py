@@ -48,8 +48,8 @@ def test_schema_contrast_alternatives(cheap_houses_csv):
     profile_c = get_profile()
 
     contrast = profile_a.contrast_alternatives(alternativeA=profile_b, alternativeB=profile_c)
-    assert len(contrast["health_reports"]) == len(profile_a.components)
-    assert len(contrast["score_reports"]) == 1
+    assert len(contrast["component_reports"]) == len(profile_a.components)
+    assert len(contrast["global_reports"]["scores"]) == 1
 
 
 def test_schema_contrast_missingcomponents(cheap_houses_csv):
@@ -90,9 +90,9 @@ def test_schema_contrast_missingcomponents(cheap_houses_csv):
     profile_dropped.build(input=inputs, output=preds[:, None])
 
     contrast = profile.contrast(profile_dropped)
-    assert all(k.lower() in contrast["health_reports"] for k in keys)
-    assert "actual" not in contrast["health_reports"]
-    assert len(contrast["score_reports"]) == 0
+    assert all(k.lower() in contrast["component_reports"] for k in keys)
+    assert "actual" not in contrast["component_reports"]
+    assert len(contrast["global_reports"]["scores"]) == 0
 
 
 def test_schema_contrast_missingcomponents(cheap_houses_csv):
@@ -143,8 +143,8 @@ def test_schema_contrast_missingcomponents(cheap_houses_csv):
     profile_dropped.build(input=inputs, output=preds[:, None], actual=actuals[:, None])
 
     contrast = profile.contrast(profile_dropped)
-    assert all(k.lower() in contrast["health_reports"] for k in keys)
-    assert len(contrast["score_reports"]) == 1
+    assert all(k.lower() in contrast["component_reports"] for k in keys)
+    assert len(contrast["global_reports"]["scores"]) == 1
 
 
 def test_schema_build_input_types(cheap_houses_csv):
@@ -212,6 +212,7 @@ def test_schema_build_big_houseprices(cheap_houses_csv, exp_houses_csv):
         InputComponent(
             name="outlier_score",
             extractor=SequenceSimpleExtractor(prep=coltf, extractor=KMeansOutlierScorer()),
+            main=True,
         ),
         OutputComponent(name="prediction", extractor=ElementExtractor(element=0)),
         ActualComponent(name="actual", extractor=ElementExtractor(element=0)),

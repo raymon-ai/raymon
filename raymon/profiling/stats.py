@@ -184,6 +184,8 @@ class NumericStats(Stats):
 
     @property
     def is_singleton(self):
+        if self.max is None or self.min is None:
+            return None
         if self.max - self.min == 0:
             return True
         else:
