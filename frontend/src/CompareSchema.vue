@@ -78,11 +78,9 @@ export default {
       return this.comparison.alternativeB;
     },
     reportData() {
-      return this.comparison.health_reports;
+      return this.comparison.component_reports;
     },
-    reducerReportData() {
-      return this.comparison.reducer_reports;
-    },
+
     pageToShow() {
       if (this.componentName !== undefined) {
         return FeatureDetailView;
