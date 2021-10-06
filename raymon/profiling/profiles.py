@@ -266,7 +266,11 @@ class ModelProfile(Serializable, Buildable):
             component_reports[component.name] = comp_report
             if comp_report["drift"]["valid"]:
                 drifts.append(comp_report["drift"]["drift"])
-        avg_drift = sum(drifts) / len(drifts)
+        if len(drifts) > 0:
+            avg_drift = sum(drifts) / len(drifts)
+            multivariate_drift = {"drift": avg_drift, "valid": True, "alert": avg_drift > global_threshold}
+        else:
+            multivariate_drift = {"drift": -1, "valid": False, "alert": False}
 
         scorer_reports = {}
         for score in self.scores.values():
@@ -279,7 +283,7 @@ class ModelProfile(Serializable, Buildable):
 
         global_reports = {
             "scores": scorer_reports,
-            "multivariate_drift": {"drift": avg_drift, "valid": True, "alert": avg_drift > global_threshold},
+            "multivariate_drift": multivariate_drift,
         }
 
         jcr = {}
@@ -314,7 +318,11 @@ class ModelProfile(Serializable, Buildable):
                 drifts.append(comp_report["drift"]["drift"])
             report[component.name] = comp_report
 
-        avg_drift = sum(drifts) / len(drifts)
+        if len(drifts) > 0:
+            avg_drift = sum(drifts) / len(drifts)
+            multivariate_drift = {"drift": avg_drift, "valid": True, "alert": avg_drift > global_threshold}
+        else:
+            multivariate_drift = {"drift": -1, "valid": False, "alert": False}
 
         scorer_reports = {}
         for scorer in self.scores.values():
@@ -332,7 +340,7 @@ class ModelProfile(Serializable, Buildable):
 
         global_reports = {
             "scores": scorer_reports,
-            "multivariate_drift": {"drift": avg_drift, "valid": True, "alert": avg_drift > global_threshold},
+            "multivariate_drift": multivariate_drift,
         }
 
         jcr = {}
