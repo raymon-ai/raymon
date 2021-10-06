@@ -115,6 +115,9 @@ class Score(Serializable, Buildable):
             raise NameError(f"Could not locate classpath {classpath}")
         return statsclass.from_jcr(state_jcr)
 
+    def __repr__(self):
+        return f"MeanScore(name='{self.name}'"
+
 
 class MeanScore(Score):
     def __init__(self, name, inputs, preference, result=None):

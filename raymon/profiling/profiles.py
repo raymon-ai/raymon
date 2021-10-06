@@ -251,6 +251,7 @@ class ModelProfile(Serializable, Buildable):
         #     raise ProfileStateException("Profile 'other' is not built.")
         component_thresholds = thresholds.get("components", {})
         scorer_thresholds = thresholds.get("scores", {})
+        global_threshold = thresholds.get("global_drift", 0.05)
         component_reports = {}
         drifts = []
         for component in self.components.values():
@@ -276,7 +277,10 @@ class ModelProfile(Serializable, Buildable):
             red_report = score.contrast(other.scores[score.name], components=self.components, threshold=red_threshold)
             scorer_reports[score.name] = red_report
 
-        global_reports = {"scores": scorer_reports, "multivariate_drift": avg_drift}
+        global_reports = {
+            "scores": scorer_reports,
+            "multivariate_drift": {"drift": avg_drift, "valid": True, "alert": avg_drift > global_threshold},
+        }
 
         jcr = {}
         jcr["reference"] = self.to_jcr()
@@ -288,6 +292,8 @@ class ModelProfile(Serializable, Buildable):
     def contrast_alternatives(self, alternativeA, alternativeB, thresholds={}):
         component_thresholds = thresholds.get("components", {})
         scorer_thresholds = thresholds.get("scores", {})
+        global_threshold = thresholds.get("global_drift", 0.05)
+
         report = {}
         drifts = []
 
@@ -324,7 +330,10 @@ class ModelProfile(Serializable, Buildable):
             )
             scorer_reports[scorer.name] = red_report
 
-        global_reports = {"scores": scorer_reports, "multivariate_drift": avg_drift}
+        global_reports = {
+            "scores": scorer_reports,
+            "multivariate_drift": {"drift": avg_drift, "valid": True, "alert": avg_drift > global_threshold},
+        }
 
         jcr = {}
         jcr["reference"] = self.to_jcr()
