@@ -115,7 +115,7 @@ def get_singleton_issues(ref_profile, obs_profile, contrast_report, main=None):
     return issues
 
 
-def get_global_drift_issue(ref_profile, obs_profile, contrast_report):
+def get_global_drift_issues(ref_profile, obs_profile, contrast_report):
     metrics = contrast_report["global_reports"]["multivariate_drift"]
     issue = {
         "component_type": None,
@@ -129,7 +129,7 @@ def get_global_drift_issue(ref_profile, obs_profile, contrast_report):
         "value": metrics["drift"],  # Set in profile
         "extra": {},
     }
-    return issue
+    return [issue]
 
 
 def get_drift_issues(ref_profile, obs_profile, contrast_report, main=None):
@@ -183,7 +183,7 @@ def parse_issues(ref_profile, obs_profile, contrast_report):
         ref_profile=ref_profile, obs_profile=obs_profile, contrast_report=contrast_report, main=False
     )
     # Global drift issue
-    globdrift = get_global_drift_issue(
+    globdrift = get_global_drift_issues(
         ref_profile=ref_profile,
         obs_profile=obs_profile,
         contrast_report=contrast_report,
