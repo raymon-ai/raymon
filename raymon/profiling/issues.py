@@ -89,7 +89,6 @@ def get_integrity_issues(ref_profile, obs_profile, contrast_report, main=None):
 
 
 def get_singleton_issues(ref_profile, obs_profile, contrast_report, main=None):
-
     issues = []
     for ctype in CTYPE_PRIORITY:
         ctype_components = get_ctype_components(ref_profile, ctype, main=main)
@@ -148,7 +147,7 @@ def get_drift_issues(ref_profile, obs_profile, contrast_report, main=None):
                 "issue_type": "component_drift",
                 "valid": metrics["valid"],  # Set in profile
                 "threshold_alert": metrics["alert"],  # Set in profile
-                "value": int(metrics["drift"]),  # Set in profile
+                "value": float(metrics["drift"]),  # Set in profile
                 "extra": {
                     "ref": ref_profile.components[comp.name].stats.to_jcr(),
                     "obs": obs_profile.components[comp.name].stats.to_jcr(),
