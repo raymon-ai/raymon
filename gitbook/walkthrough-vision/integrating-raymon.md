@@ -117,7 +117,7 @@ Now, the manifest should be visible on the settings page. Moreover, when opening
 
 ![](<../.gitbook/assets/image (20).png>)
 
-The actions that we've set up here are of course very simply, but remember actions are very versatile. For example, they can take multiple logged object as input and support webhooks, so you can easily create very complex visualisations that may help you gain more insight in your models!
+The actions that we've set up here are of course very simple ones, but remember actions are very versatile. For example, they can take multiple logged object as input and support webhooks, so you can easily create very complex visualisations that may help you gain more insight in your models!
 
 ## Wrapping up
 

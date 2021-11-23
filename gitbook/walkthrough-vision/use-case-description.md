@@ -85,7 +85,7 @@ oracle.get_target(metadata=metadata)
 
 Raymon's focus is post-deployment, so let's set up a toy deployment and set up code to push data through it!&#x20;
 
-The following code (which can also be found [here](https://github.com/raymon-ai/raymon-demos/blob/master/retinopathy/retinopathy/base.py)) sets up our toy deployment. it does the following things:
+The following code (which can also be found [here](https://github.com/raymon-ai/raymon-demos/blob/master/retinopathy/retinopathy/base.py)) sets up our toy deployment. It does the following things:
 
 1. It defines a RetinopathyDeployment that ingests data and makes a prediction. (line 12)
 2. It pushes data through the deployment (line 70, or the `run` method at line 44).
