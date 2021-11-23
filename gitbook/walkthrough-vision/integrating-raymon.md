@@ -79,7 +79,7 @@ Now, you can go to the Raymon UI, click on your project and navigate toward the 
 
 ## Configuring the project
 
-We have pushed some data, but inspecting this data in the Trace view is not exactly useful. To improve this, we can configure visualisations using actions as described in [Visualisations](../actions/visualisations.md).
+We have pushed some data, but inspecting this data in the trace view is not exactly useful since it's just b64-encoded data. To improve this, we can configure visualisations using actions as described in [Visualisations](../actions/visualisations.md). Visualisation actions are only triggered when we open the trace view in the browser, so they are not executed for all traces automatically.
 
 Let's define a native visualisation for the images that we have logged. To do this, create a `manifest.yaml `file and paste the following contents:
 
@@ -117,7 +117,7 @@ Now, the manifest should be visible on the settings page. Moreover, when opening
 
 ![](<../.gitbook/assets/image (20).png>)
 
-The actions that we've set up here are of course very simple ones, but remember actions are very versatile. For example, they can take multiple logged object as input and support webhooks, so you can easily create very complex visualisations that may help you gain more insight in your models!
+The actions that we've set up here are of course very simple ones, but remember actions are very versatile. For example, they can take multiple logged objects as input and support web hooks, so you can easily create very complex visualisations that may help you gain insight in your models and how they behave. One example of this could be visualisations related to explainability.&#x20;
 
 ## Wrapping up
 
