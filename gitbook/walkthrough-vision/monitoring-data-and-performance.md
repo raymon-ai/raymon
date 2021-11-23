@@ -101,7 +101,7 @@ After running the code as follows, we see a lot more tags in the traces view. Al
 python base_basicprofile.py
 ```
 
-![There are a lot more tags in Raymon already!](<../.gitbook/assets/image (16).png>)
+![There are a lot more tags in Raymon already!](<../.gitbook/assets/image (16) (1).png>)
 
 ## Expanding the profile a bit
 

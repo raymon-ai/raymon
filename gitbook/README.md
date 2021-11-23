@@ -4,7 +4,7 @@ description: Quick intro to the Raymon library.
 
 # Intro & Installation
 
-![Raymon: analyse data & model health](<.gitbook/assets/image (19).png>)
+![Raymon: analyse data & model health](<.gitbook/assets/image (19) (1).png>)
 
 ## What is Raymon?
 

@@ -10,7 +10,7 @@ description: >-
 
 Before sending data to Raymon, you'll need to create a project to send data to. For this, go to [https://raymon.app/](https://raymon.app), login and click the "New Project" button. After entering a name for your project and clicking "continue". You should now see your project listed.
 
-![](<../.gitbook/assets/image (21).png>)
+![](<../.gitbook/assets/image (21) (1).png>)
 
 The uuid at the top right of the box is your project id. You need to copy this id to you clipboard.
 
