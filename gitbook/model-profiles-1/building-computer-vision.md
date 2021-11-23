@@ -4,17 +4,17 @@ description: Introduction to ModelProfiles with vision data.
 
 # Building a profile: computer vision
 
-Constructing model profiles for computer vision data works the same as for structured data or any data type. The main difference is the extractors that are used to extract characteristics \(or "features"\) from the data. We'll show a few examples of extractors below.
+Constructing model profiles for computer vision data works the same as for structured data or any data type. The main difference is the extractors that are used to extract characteristics (or "features") from the data. We'll show a few examples of extractors below.
 
-Raymon includes a set of [out-of-the-box extractors](available-extractors.md), and we're always interested in hearing about ideas to add more. If you are missing an extractor, let us know and we may help you [implement your own extractor ]()it and may even adopt in in our set of extractor.s
+Raymon includes a set of [out-of-the-box extractors](available-extractors.md), and we're always interested in hearing about ideas to add more. If you are missing an extractor, let us know and we may help you [implement your own extractor ](building-computer-vision.md)it and may even adopt in in our set of extractors.
 
 ## Watching input image features
 
-To illustrate some features you can extract from input images, we'l use the Pilot technocast dataset taken from [Kaggle](https://www.kaggle.com/ravirajsinh45/real-life-industrial-dataset-of-casting-product). This dataset can be used to train your own manufacturing quality inspection model. Manufacturing  quality inspection is an interesting use case, because all images should look rather similar.
+To illustrate some features you can extract from input images, we'l use the Pilot technocast dataset taken from [Kaggle](https://www.kaggle.com/ravirajsinh45/real-life-industrial-dataset-of-casting-product). This dataset can be used to train your own manufacturing quality inspection model. Manufacturing quality inspection is an interesting use case, because all images should look rather similar.
 
-The goal is to classify images based on production quality. The image below shows and example of what data looks like. A data sample is also included in [`raymon/tests/sample_data/castinginspection`](https://github.com/raymon-ai/raymon/tree/master/raymon/tests/sample_data/castinginspection)\`\`
+The goal is to classify images based on production quality. The image below shows and example of what data looks like. A data sample is also included in [`raymon/tests/sample_data/castinginspection`](https://github.com/raymon-ai/raymon/tree/master/raymon/tests/sample\_data/castinginspection)
 
-![An example of what an image looks like.](../.gitbook/assets/cast_ok_0_2190.jpeg)
+![An example of what an image looks like.](<../.gitbook/assets/cast\_ok\_0\_2190 (2).jpeg>)
 
 We will not build a full model here, but let's see how we can watch some data features. The following snippet loads the data.
 
@@ -62,11 +62,11 @@ profile.view()
 
 Viewing the profile leads to the following visualisation:
 
-![](../.gitbook/assets/image%20%282%29.png)
+![](<../.gitbook/assets/image (2) (1).png>)
 
 ## Watching output features: YOLO detection confidence example
 
-Watching your input images in one thing, but you could of course watch features of your model output, actuals or error metrics. Here, we'll give a small example of how you'd approach tracking your object detection confidence \(using YOLO\). We'll skip loading the YOLO model itself, we have included some model inputs and predictions of the COCO dataset in `raymon/tests/sample_data/coco.`
+Watching your input images in one thing, but you could also watch features of your model output, actuals or error metrics. Here, we'll give a small example of how you'd approach tracking your object detection confidence (using YOLO). We have included some model inputs and predictions of the COCO dataset in `raymon/tests/sample_data/coco.`
 
 ```python
 import pickle
@@ -93,9 +93,8 @@ profile.build(input=images, output=outputs)
 
 Easy right? Now the output component tab of the profile view looks like this:
 
-![](../.gitbook/assets/image%20%283%29.png)
+![](<../.gitbook/assets/image (3) (1).png>)
 
 ## Wrapping up
 
 We hope you get the gist. You can extract any feature you deem relevant from your data, and use a model profile to watch how this feature evolves over time. How exactly you can use profiles for data validation and monitoring we'll see next.
-

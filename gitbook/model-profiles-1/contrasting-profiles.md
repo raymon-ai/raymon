@@ -45,7 +45,7 @@ profile.build(input=X_val[feature_selector],
               actual=y_val[:, None])
 ```
 
-Now, say we have collected a sample of production data into another CSV file. We will simulate this by loading another CSV file, just as before. 
+Now, say we have collected a sample of production data into another CSV file. We will simulate this by loading another CSV file, just as before.
 
 ```python
 exp_houses_csv = "../raymon/tests/sample_data/houseprices/subset-exp.csv"
@@ -83,7 +83,7 @@ profile.view_contrast(profile_exp)
 
 This gives us a the following view, where the original profile is displayed in grey, and the new one in blue. This allows us to spot differences easily. We'll go over different areas of interest below the image.
 
-![Contrasting 2 profiles agains each other.](../.gitbook/assets/image%20%2815%29.png)
+![Contrasting 2 profiles agains each other.](<../.gitbook/assets/image (15) (1).png>)
 
 ### Data integrity
 
@@ -91,19 +91,19 @@ For every component, the next to last columns shows the amount of invalid values
 
 ### Drift
 
-The drift columns shows how much the data distributions have changed. In the image above, the column has been sorted from high to low. The distance is always between 0% and 100% and is the distance between the 90% confidence intervals of the distributions. For categorical data, the Chebyshev distance is used. For numerical data, we use the same distance metric as in the Kolmogorov-Smirnov test: the maximum distance between the CDF distributions. 
+The drift columns shows how much the data distributions have changed. In the image above, the column has been sorted from high to low. The distance is always between 0% and 100% and is the distance between the 90% confidence intervals of the distributions. For categorical data, the Chebyshev distance is used. For numerical data, we use the same distance metric as in the Kolmogorov-Smirnov test: the maximum distance between the CDF distributions.
 
 ### Scores
 
-Lastly, we also see the difference between the model scores at the top. Here, we see that the mean average error the model made has increased dramatically between the 2 profiles. The outlier score is also much higher on average. 
+Lastly, we also see the difference between the model scores at the top. Here, we see that the mean average error the model made has increased dramatically between the 2 profiles. The outlier score is also much higher on average.
 
-![](../.gitbook/assets/image%20%2814%29.png)
+![](<../.gitbook/assets/image (14) (1).png>)
 
-Going from the many warning signals we have, we can conclude something is wrong with our data. We don't get a lot on invalid values, but something in the distribution has certainly changed, and our model is not performing well because of it. 
+Going from the many warning signals we have, we can conclude something is wrong with our data. We don't get a lot on invalid values, but something in the distribution has certainly changed, and our model is not performing well because of it.
 
 After inspecting the output and actual tabs of the component views, it should be clear what is wrong here. What happened is that, apparently, our system has been processing houses in a higher price range than what we have seen during training, and our model is struggling with that. Time to retrain your model with new and more relevant data!
 
-![The actuals we are trying to predict have shifted dramatically.](../.gitbook/assets/image%20%2812%29.png)
+![The actuals we are trying to predict have shifted dramatically.](<../.gitbook/assets/image (12) (1).png>)
 
 ## Warning reports
 
@@ -115,18 +115,18 @@ report = profile.contrast(profile_exp)
 
 This will output a dictionary with the following keys.
 
-| Key | Description |
-| :--- | :--- |
-| `reference` | Contains the JSON Compatible Representation of the reference profile. That is the one you are calling `.contrast()` on. |
-| `alternativeA` | Contains the JSON Compatible Representation of the parameter profile. |
-| `health_reports` | Contains a report for every component. The report checks for drift and invalid values. |
-| `score_reports` | Contains a report for every score. |
+| Key              | Description                                                                                                             |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `reference`      | Contains the JSON Compatible Representation of the reference profile. That is the one you are calling `.contrast()` on. |
+| `alternativeA`   | Contains the JSON Compatible Representation of the parameter profile.                                                   |
+| `health_reports` | Contains a report for every component. The report checks for drift and invalid values.                                  |
+| `score_reports`  | Contains a report for every score.                                                                                      |
 
 Let's go in a bit more detail about the reports.
 
 ### Heath reports
 
-The health reports is a `dict` containing a `<key, value>` pair for every profile component. The `key` is the component's name, the `value` is another `dict`, containing the component report.  The component report contains 2 sub reports: one for distribution drift and one for invalid values. The `outlier_score`'component's report looks as follows.
+The health reports is a `dict` containing a `<key, value>` pair for every profile component. The `key` is the component's name, the `value` is another `dict`, containing the component report. The component report contains 2 sub reports: one for distribution drift and one for invalid values. The `outlier_score`'component's report looks as follows.
 
 ```python
 report["health_reports"]["outlier_score"]
@@ -148,7 +148,7 @@ report["health_reports"]["outlier_score"]
 }
 ```
 
-Notice all reports have a metric associated with them \(`drift` for drift reports, `invalids` for invalids reports. They also have a valid key, and an alert key. If `valid` is `False`, you can ignore the report. This will happen is there is not enough data to analyse for example.  IF the report is valid, and the metric is over a certain [threshold](contrasting-profiles.md#thresholds-and-tuning), `alert` will be `True`. As an extra, the drift report returns `drift_xvalue`, the location of where the maximum drift was detected. 
+Notice all reports have a metric associated with them (`drift` for drift reports, `invalids` for invalids reports. They also have a valid key, and an alert key. If `valid` is `False`, you can ignore the report. This will happen is there is not enough data to analyse for example. IF the report is valid, and the metric is over a certain [threshold](contrasting-profiles.md#thresholds-and-tuning), `alert` will be `True`. As an extra, the drift report returns `drift_xvalue`, the location of where the maximum drift was detected.
 
 ### Score reports
 
@@ -174,11 +174,11 @@ The output is very similar to the heath reports.
 }
 ```
 
-Scores will have alert True if the value has increased above or dropped below a certain threshold, depending on the [preference of the score](building-house-prices.md#model-scores) \(i.e. do we want the score to be high or low\).
+Scores will have alert True if the value has increased above or dropped below a certain threshold, depending on the [preference of the score](building-house-prices.md#model-scores) (i.e. do we want the score to be high or low).
 
 ## Thresholds & Tuning
 
-Drift detection can be difficult. You may not want to watch all features or you may want to tolerate a lot more drift for some features than for others. Raymon lets you easily control this using thresholds. The main reason Raymon does not use traditional statistical hypothesis testing to detect drift, is because statistical significance in ML is meaningless. Practical significance is what we want, and what practical significance is will depend on your use case, and the effect size \(i.e. the amount of drift detected\).
+Drift detection can be difficult. You may not want to watch all features or you may want to tolerate a lot more drift for some features than for others. Raymon lets you easily control this using thresholds. The main reason Raymon does not use traditional statistical hypothesis testing to detect drift, is because statistical significance in ML is meaningless. Practical significance is what we want, and what practical significance is will depend on your use case, and the effect size (i.e. the amount of drift detected).
 
 If we do not want to get warned about drift, an increase in invalid values or worse scores, we can tune this using thresholds.
 
@@ -234,11 +234,6 @@ print(json.dumps(report["score_reports"], indent=4))
 
 ## Wrapping up
 
-In this section we have seen how you can use model profiles to guard agains drift or degrading data and model quality. In the next sections we'll talk about what extractors are currently available in Raymon and how you can implement your own. 
+In this section we have seen how you can use model profiles to guard agains drift or degrading data and model quality. In the next sections we'll talk about what extractors are currently available in Raymon and how you can implement your own.
 
-Raymon also supports making your model predictions traceable and debuggable using our \(free version of\) our platform. Check out t[racing predictions](../tracing-predictions/untitled.md) to find out more!
-
-
-
-
-
+Raymon also supports making your model predictions traceable and debuggable using our (free version of) our platform. Check out t[racing predictions](../using-the-raymon-hub/untitled.md) to find out more!

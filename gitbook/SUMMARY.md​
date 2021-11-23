@@ -2,7 +2,7 @@
 
 * [Intro & Installation](README.md)
 
-## Model Profiles <a id="model-profiles-1"></a>
+## Raymon Library <a href="model-profiles-1" id="model-profiles-1"></a>
 
 * [Building a profile: structured data](model-profiles-1/building-house-prices.md)
 * [Building a profile: computer vision](model-profiles-1/building-computer-vision.md)
@@ -10,7 +10,29 @@
 * [Contrasting Profiles](model-profiles-1/contrasting-profiles.md)
 * [Extractors in detail](model-profiles-1/available-extractors.md)
 
-## Tracing predictions
+## Using the Raymon hub
 
-* [Tracing predictions](tracing-predictions/untitled.md)
+* [Tracing predictions](using-the-raymon-hub/untitled.md)
+* [M2M communication](using-the-raymon-hub/m2m-communication.md)
+* [Dashboards](using-the-raymon-hub/dashboards.md)
+* [Slices](using-the-raymon-hub/slices.md)
+* [Issues](using-the-raymon-hub/issues.md)
 
+## Walkthrough: vision
+
+* [Intro: vision walkthrough](walkthrough-vision/intro-vision-walkthrough.md)
+* [Use case description](walkthrough-vision/use-case-description.md)
+* [Integrating Raymon](walkthrough-vision/integrating-raymon.md)
+* [Monitoring Data & Performance](walkthrough-vision/monitoring-data-and-performance.md)
+* [Slice-based monitoring](walkthrough-vision/slice-based-monitoring.md)
+* [Issues & Tuning](walkthrough-vision/issues-and-tuning.md)
+
+## Actions
+
+* [Intro](actions/intro.md)
+* [Visualisations](actions/visualisations.md)
+* [Mappers](actions/mappers.md)
+* [Reducers](actions/reducers.md)
+* [Sequence Mappers](actions/sequence-mappers.md)
+* [Alerts](actions/alerts.md)
+* [Cleanups](actions/cleanups.md)

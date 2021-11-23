@@ -8,7 +8,7 @@ Allright, let's get started with Raymon by building a so called `ModelProfile`, 
 
 ## Prerequisites: data and a model
 
-For this tutorial, we will use the[ house prices dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data) from Kaggle. A slightly preprocessed version is available in the [test same data](https://github.com/raymon-ai/raymon/tree/master/raymon/tests/sample_data/houseprices) of the library on Github. We'll skip talking too much about the dataset and the model here, but feel free to explore it yourself. In this tutorial's use case, your task is to develop a system that predicts house prices based on some input features.
+For this tutorial, we will use the[ house prices dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data) from Kaggle. A slightly preprocessed version is available in the [test same data](https://github.com/raymon-ai/raymon/tree/master/raymon/tests/sample\_data/houseprices) of the library on Github. We'll skip talking too much about the dataset and the model here, but feel free to explore it yourself. In this tutorial's use case, your task is to develop a system that predicts house prices based on some input features.
 
 We can start by building a simple model to predict the house prices. The library tests contain some helper code to train a very basic random forest regressor based on the sample data. The code below trains and returns a [`sklearn.ensemble.RandomForestRegressor`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html) model, a [`sklearn.compose.ColumnTransformer`](https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html) and 2 feature selectors, to select the right columns from the dataset DataFrame before and after one-hot encoding of categorical features. Afterwards, it uses the model to make predictions on our validation and test set, which we'll use below.
 
@@ -47,11 +47,11 @@ y_pred_val = rf.predict(Xtf_val[feature_selector_ohe])
 
 ## Watching input features
 
-We have trained a model. Good. But now we need to ship it to production and we need to know how it performs in production right? Is the data it processes healthy? Are the predictions still accurate enough 5 month after deployment? Does this new customer that sales has signed get the performance that was advertised? These kinds of questions is what Raymon helps you answer. 
+We have trained a model. Good. But now we need to ship it to production and we need to know how it performs in production right? Is the data it processes healthy? Are the predictions still accurate enough 5 month after deployment? Does this new customer that sales has signed get the performance that was advertised? These kinds of questions is what Raymon helps you answer.
 
-To monitor our data health and model performance in production, we'll create a model profile. A model profile is a collection on components that each watch a certain characteristic of our data. These characteristics are extracted from your data by so called extractors. In this case, we can for example track every input feature for stability. 
+To monitor our data health and model performance in production, we'll create a model profile. A model profile is a collection on components that each watch a certain characteristic of our data. These characteristics are extracted from your data by so called extractors. In this case, we can for example track every input feature for stability.
 
-The snippet below shows how to construct a profile that  watches a few input features of various data types \(float, int and a categorical feature\). Every component has a name, a datatype and an extractor. The extractor extracts a value from the data, the component analyses the characteristics of those extracted values.
+The snippet below shows how to construct a profile that watches a few input features of various data types (float, int and a categorical feature). Every component has a name, a datatype and an extractor. The extractor extracts a value from the data, the component analyses the characteristics of those extracted values.
 
 ```python
 from raymon import ModelProfile
@@ -84,7 +84,7 @@ profile = ModelProfile(
 )
 ```
 
-After specifying all input features, we can build the profile by passing it some data. 
+After specifying all input features, we can build the profile by passing it some data.
 
 ```python
 profile.build(input=X_val[feature_selector])
@@ -102,7 +102,7 @@ profile.view()
 
 This will open a new browser tab and display an interactive visualisation that you can interact with.
 
-![Viewing a ModelProfile](../.gitbook/assets/image%20%281%29.png)
+![Viewing a ModelProfile](<../.gitbook/assets/image (1) (1).png>)
 
 You can also save the model to JSON, or simply convert it into a JSON compatible representation:
 
@@ -124,11 +124,11 @@ loaded = ModelProfile.from_jcr(jcr)
 
 ## Extending the profile
 
-Up to now, we only have a very basic profile that watches the input features. We want to watch other things though: the model's outputs, the incoming actuals \(we assume we'll have incoming actuals in production here\) and our model's performance.
+Up to now, we only have a very basic profile that watches the input features. We want to watch other things though: the model's outputs, the incoming actuals (we assume we'll have incoming actuals in production here) and our model's performance.
 
 ### Model Output
 
-We can add an `OutputComponent` that watches our models predictions by simply appending it to the components list. Defining the component goes as follows: we define a component of type `OutputComponent` and pass it an extractor that extracts the first element from the model's output \(that we will pass to it later\).
+We can add an `OutputComponent` that watches our models predictions by simply appending it to the components list. Defining the component goes as follows: we define a component of type `OutputComponent` and pass it an extractor that extracts the first element from the model's output (that we will pass to it later).
 
 ```python
 OutputComponent(name="prediction", extractor=ElementExtractor(element=0))
@@ -141,8 +141,6 @@ Watching a model actual is very similar to watching the output, but we need to u
 ```python
 ActualComponent(name="actual", extractor=ElementExtractor(0), dtype=DataType.CAT),
 ```
-
-
 
 ### Model Evaluations
 
@@ -163,7 +161,7 @@ InputComponent(
 )
 ```
 
-Notice there is a small caveat here: we wrap our main extractor in a `SequenceSimpleExtractor`. This type of extractor allows us to define a preprocessing step, that will be executed before the specified extractor is called. We use this to transform our input data \(which can have categorical features\) into a purely numeric array, where categorical features are one-hot encoded. We need to do this because the `KMeansOutlierScorer` expects purely numeric values.
+Notice there is a small caveat here: we wrap our main extractor in a `SequenceSimpleExtractor`. This type of extractor allows us to define a preprocessing step, that will be executed before the specified extractor is called. We use this to transform our input data (which can have categorical features) into a purely numeric array, where categorical features are one-hot encoded. We need to do this because the `KMeansOutlierScorer` expects purely numeric values.
 
 ### Model Scores
 
@@ -208,7 +206,7 @@ profile.build(input=X_val[feature_selector],
               actual=y_val[:, None])
 ```
 
-As you can see, scores take in one extracted feature and aggregate it in a single value. We also pass a preference for this score: in this case we want both scores to be low. Low is good. In a classification context, we could  for example calculate the precision or recall of our model. In that case, we want those score to be high.
+As you can see, scores take in one extracted feature and aggregate it in a single value. We also pass a preference for this score: in this case we want both scores to be low. Low is good. In a classification context, we could for example calculate the precision or recall of our model. In that case, we want those score to be high.
 
 Line 32 builds the profile. Since we have defined output, actual and evaluation components, we need to pass output and actual data here too in order to build the full profile.
 
@@ -216,7 +214,7 @@ Line 32 builds the profile. Since we have defined output, actual and evaluation 
 
 When we build and inspect the full profile, we can see some stuff has been added. We have an easy overview of the scores, and the tabs for outputs, actuals and evaluations also have components associated with them now. There are click-throughs for bigger plots and more information for each component too.
 
-![](../.gitbook/assets/full_profile_ext.gif)
+![](<../.gitbook/assets/full\_profile\_ext (1).gif>)
 
 ## Setting domains
 
@@ -241,13 +239,10 @@ profile_lim.view()
 
 When inspecting the profile, you'll notice the domains have changed. For the `bldgtype` component, we have not increased the domain, but limited it. This means our invalid values ratio has gone up now.
 
-![Profile extract without manually configured domains.](../.gitbook/assets/image%20%2810%29.png)
+![Profile extract without manually configured domains.](<../.gitbook/assets/image (10) (1).png>)
 
-![Profile extract with manually configured domains.](../.gitbook/assets/image%20%2813%29.png)
-
-
+![Profile extract with manually configured domains.](<../.gitbook/assets/image (13) (1).png>)
 
 ## Wrapping up
 
 We have now built a model profile for structured data. The next section will show how to do this for vision data. If you are not interested in vision at this point, feel free to skip that section. Afterwards, we'll show how we can use these profiles for data [validation](validating-data.md) and [monitoring](contrasting-profiles.md).
-
