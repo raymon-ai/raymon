@@ -55,7 +55,7 @@ class RetinopathyDeployment:
 
 Notice lines 5, 12, 13, 15, 17 and 27. What happened there?
 
-* Line 5: our deployment keeps a reference to the Raymon API, which is used to send data to it. Here, the `RAYMON_URL` is set to the default one (`ttps://api.raymon.ai/v0)`, `PROJECT_ID` should be your project id that you copied above and `batch_size=20 `indicates that we want to send data to Raymon in batches of 20.
+* Line 5: our deployment keeps a reference to the Raymon API, which is used to send data to it. Here, the `RAYMON_URL` is set to the default one (`https://api.raymon.ai/v0)`, `PROJECT_ID` should be your project id that you copied above and `batch_size=20 `indicates that we want to send data to Raymon in batches of 20.
 * Line 12: We create a trace object that acts as a logger. All data logged to this object will be sent to Raymon and connected to the same trace.&#x20;
 * Line 13: Let's tag the trace with all the metadata that we have. Remember, the metadata in this case are things like the hospital sending the data, the machine id that took the picture, the age of the patient and so on. We will be able to use all this metadata to slice and dice our production data!
 * Line 15 and 17: log images to Raymon.&#x20;

@@ -90,7 +90,7 @@ The following code (which can also be found [here](https://github.com/raymon-ai/
 1. It defines a RetinopathyDeployment that ingests data and makes a prediction. (line 12)
 2. It pushes data through the deployment (line 70, or the `run` method at line 44).
    1. Generate a request id, which we call `trace_id`
-   2. get some metadata for this request like the age of the patient, the hospital that generated the data, the machine id that generated the data.&#x20;
+   2. Get some metadata for this request like the age of the patient, the hospital that generated the data, the machine id that generated the data.&#x20;
    3. Load the image
    4. Process it.
 
