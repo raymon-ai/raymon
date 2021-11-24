@@ -76,11 +76,15 @@ Then, visualise it like this.
 
 ## Web Hook Actions
 
+As mentioned before, the native supported visualisation actions are very simple. For your use case, you may want something more complex. This is possible by writing your own function, deploying it on (for example) AWS Lambda and plugging it into Raymon. Other FaaS platforms can and will  be supported too in the future (Google Cloud Functions, OpenFaas,..). Do not be shy to let us know what integrations you are missing!
+
 ### AWS Lambda
+
+Setting up a lambda function goes as follows. Note the `visual_type`_ (_`lambda_hook`), and the settings.
 
 ```yaml
 actions:
-  visualize: # On demand
+  visualize:
     - name: request_data_lambda
       visual_type: lambda_hook
       function: img2html
@@ -89,13 +93,27 @@ actions:
       settings:
         aws_access_key_id: <your key id>
         aws_secret_access_key: <your secret access key>
-        aws_region: eu-central-1
+        aws_region: <your aws region>
 ```
 
 ### Writing your own action
 
-More info to come. (WIP)
+To be able to write and deploy your own function, you need to know what to program right? The snippet below shows what a function can look like. In this case, it's a Lambda function. It receives a parameter 'event' which contains a dict. This dict will contain a key, value pair for every input specified in the action definition. The key will be the name specified (here: '`data`'), and the value will be the object artefact, in a JSON-compatible format ("jcr"). This can then be loaded as shown on lines 2 and 3.
 
-Input data
+Your function should return a str, containing HTML. This HTML will be rendered in the UI. Thats it!
 
-Output data: html
+```python
+import raymon.types as rt
+
+def img2html(event, context):
+    data = event["data"]
+    img = rt.load_jcr(data)
+    if isinstance(img, rt.Image):
+        pilimg = img.data
+    else:
+        raise TypeError(f"Unsupported input type: {type(img)}")
+    htmlstr = pil2html(pilimg)
+    return htmlstr
+
+```
+
