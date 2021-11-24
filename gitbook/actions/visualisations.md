@@ -1,5 +1,5 @@
 ---
-description: you to ... visualise data.
+description: Visualisations let you... visualise data.
 ---
 
 # Visualisations
