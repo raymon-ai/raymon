@@ -10,7 +10,7 @@ Visualisation actions for a certain trace are only triggered when someone access
 
 ## Native Actions
 
-Raymon currently offers very basic native visualisation actions: one for visualising images and one for visualising pandas dataframes and series. They are configured as follows.
+Raymon currently offers very basic native visualisation actions: one for visualising images, one to visualise native types and one for visualising pandas dataframes and series. They are configured as follows.
 
 ### Image visualisation
 
@@ -22,7 +22,7 @@ from raymon import types as rt
 trace.log(ref="request_data", data=rt.Image(data))
 ```
 
-Then, one can configure an action tho visualise this image as follows.
+Then, one can configure an action to visualise this image as follows.
 
 ```yaml
 actions:
@@ -33,7 +33,7 @@ actions:
         data: request_data
 ```
 
-Line 4 defines the function to call whenever this action is triggered. Since this is a native action, this is a function that is shipped with Raymon. Lines 5 and 6 define the inputs for the function. In this case, the function will be called with one parameter (called `data`, with as value the object logged with reference `request_data` for the trace this action is triggered for.
+Line 4 defines the function to call whenever this action is triggered. Since this is a native action, this is a function that is shipped with Raymon. Lines 5 and 6 define the inputs for the function. In this case, the function will be called with one parameter (called `data`, and its value will be the object logged with reference `request_data` for the trace this action is triggered for.
 
 ### Pandas visualisation
 
@@ -69,8 +69,8 @@ trace.log(ref="model_prediction", data=rt.Native(pred))
 Then, visualise it like this.
 
 ```yaml
-    - name: show_predualise it like
-        data: model_prediction # Peephole name
+    - name: show_pred
+        data: model_prediction
       params: null
 ```
 
