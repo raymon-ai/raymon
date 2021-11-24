@@ -24,7 +24,7 @@ actions:
 
 ## Web Hook Mappers
 
-Next to native mappers, it's possible to write your own. That way, you can do any computation you like on any combination of objects.
+Next to native mappers, it's possible to write your own. That way, you can do any computation you like on any combination of objects. Currently, we only support AWS Lambda, but other FaaS platforms can and will  be supported too. [Do not be shy to let us know what integrations you are missing](https://github.com/raymon-ai/raymon/issues)!
 
 ### AWS Lambda
 

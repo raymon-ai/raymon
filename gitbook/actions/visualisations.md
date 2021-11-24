@@ -76,7 +76,7 @@ Then, visualise it like this.
 
 ## Web Hook Actions
 
-As mentioned before, the native supported visualisation actions are very simple. For your use case, you may want something more complex. This is possible by writing your own function, deploying it on (for example) AWS Lambda and plugging it into Raymon. Other FaaS platforms can and will  be supported too in the future (Google Cloud Functions, OpenFaas,..). Do not be shy to let us know what integrations you are missing!
+As mentioned before, the native supported visualisation actions are very simple. For your use case, you may want something more complex. This is possible by writing your own function, deploying it on (for example) AWS Lambda and plugging it into Raymon. Other FaaS platforms can and will  be supported too in the future (Google Cloud Functions, OpenFaas,..). [Do not be shy to let us know what integrations you are missing](https://github.com/raymon-ai/raymon/issues)!
 
 ### AWS Lambda
 
