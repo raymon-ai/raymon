@@ -2,7 +2,7 @@
 description: Quick intro to the Raymon library.
 ---
 
-# Intro & Installation
+# Introducing Raymon
 
 ![Raymon: analyse data & model health](<.gitbook/assets/image (19) (1).png>)
 
@@ -16,12 +16,5 @@ description: Quick intro to the Raymon library.
 
 **We can support any data type**. Currently, we offer extractors for structured data and vision data, but you can easily implement your own extractor which means we can any data type and any extractor that you want.
 
-## Installation
 
-You can install the open source Python client library from pip.
 
-```
-pip install raymon
-```
-
-The library can be used standalone, but integrates nicely with the rest of the Raymon.ai platform. See [https://raymon.ai](https://raymon.ai) for more info.

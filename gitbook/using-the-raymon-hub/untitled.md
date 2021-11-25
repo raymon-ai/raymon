@@ -1,7 +1,7 @@
 ---
 description: >-
   How to make you model predictions traceable and debuggable using the Raymon
-  platform.
+  hub.
 ---
 
 # Tracing predictions

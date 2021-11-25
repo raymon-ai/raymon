@@ -1,23 +1,15 @@
 # Table of contents
 
-* [Intro & Installation](README.md)
+* [Introducing Raymon](README.md)
 
-## Raymon Library <a href="model-profiles-1" id="model-profiles-1"></a>
+## Model Profiles <a href="model-profiles-1" id="model-profiles-1"></a>
 
+* [Installation](model-profiles-1/installation.md)
 * [Building a profile: structured data](model-profiles-1/building-house-prices.md)
 * [Building a profile: computer vision](model-profiles-1/building-computer-vision.md)
 * [Validating Data](model-profiles-1/validating-data.md)
 * [Contrasting Profiles](model-profiles-1/contrasting-profiles.md)
 * [Extractors in detail](model-profiles-1/available-extractors.md)
-
-## Using the Raymon hub
-
-* [Tracing predictions](using-the-raymon-hub/untitled.md)
-* [Tags](using-the-raymon-hub/tags.md)
-* [M2M communication](using-the-raymon-hub/m2m-communication.md)
-* [Dashboards](using-the-raymon-hub/dashboards.md)
-* [Slices](using-the-raymon-hub/slices.md)
-* [Issues](using-the-raymon-hub/issues.md)
 
 ## Walkthrough: vision
 
@@ -27,6 +19,16 @@
 * [Monitoring Data & Performance](walkthrough-vision/monitoring-data-and-performance.md)
 * [Slice-based monitoring](walkthrough-vision/slice-based-monitoring.md)
 * [Issues & Tuning](walkthrough-vision/issues-and-tuning.md)
+
+## Using the Raymon hub
+
+* [Tracing predictions](using-the-raymon-hub/untitled.md)
+* [Tags](using-the-raymon-hub/tags.md)
+* [Slices](using-the-raymon-hub/slices.md)
+* [Issues](using-the-raymon-hub/issues.md)
+* [Dashboards](using-the-raymon-hub/dashboards.md)
+* [The Manifest](using-the-raymon-hub/the-manifest.md)
+* [M2M communication](using-the-raymon-hub/m2m-communication.md)
 
 ## Actions
 
