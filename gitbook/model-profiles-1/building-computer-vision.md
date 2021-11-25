@@ -64,7 +64,7 @@ Viewing the profile leads to the following visualisation:
 
 ![](<../.gitbook/assets/image (2) (1).png>)
 
-## Watching output features
+## Watching output features: YOLO detection confidence example
 
 Watching your input images in one thing, but you could also watch features of your model output, actuals or error metrics. Here, we'll give a small example of how you'd approach tracking your object detection confidence (using YOLO). We have included some model inputs and predictions of the COCO dataset in `raymon/tests/sample_data/coco.`
 

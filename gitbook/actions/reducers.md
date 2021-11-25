@@ -1,6 +1,6 @@
 # Reducers
 
-Reducers are periodical checks. They are actions that are triggered every x minutes, aggregate tags, perform checks on those tags, resulting in issues that are written back to Raymon. These issues are then shown on the issues page if applicable and may generate alerts. Reducers power Raymon's monitoring capabilities.
+Reducers are actions that are triggered every x minutes, aggregate data (tags), perform checks resulting in issues and write those issues back to Raymon. These issues are then shown on the issues page if applicable. Reducers power Raymon's monitoring capabilities.
 
 ## Native Reducers
 
