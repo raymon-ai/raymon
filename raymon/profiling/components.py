@@ -24,11 +24,12 @@ class DataType:
 
 
 class Component(Serializable, Buildable, ABC):
-    def __init__(self, name, extractor, dtype=DataType.FLOAT, stats=None):
+    def __init__(self, name, extractor, dtype=DataType.FLOAT, stats=None, main=False):
         self.name = name
         self.extractor = extractor
         self.dtype = dtype
         self.stats = stats
+        self.main = main
 
     @property
     def name(self):
@@ -83,6 +84,17 @@ class Component(Serializable, Buildable, ABC):
         else:
             raise DataException(f"Stats type / dtype mismatch. {self.dtype} <-> {type(value)}")
 
+    @property
+    def main(self):
+        return self._main
+
+    @main.setter
+    def main(self, value):
+        if isinstance(value, bool):
+            self._main = value
+        else:
+            raise DataException(f"main must be boolean, not {type(value)}")
+
     """Serializable interface """
 
     def to_jcr(self):
@@ -94,6 +106,7 @@ class Component(Serializable, Buildable, ABC):
                 "dtype": self.dtype,
                 "stats": self.stats.to_jcr(),
                 "extractor": self.extractor.to_jcr(),
+                "main": self.main,
             },
         }
         return data
@@ -132,8 +145,9 @@ class Component(Serializable, Buildable, ABC):
                 raise ComponentStateException(f"Component {other.name} in 'other' is not built.")
             drift_report = self.stats.report_drift(other.stats, threshold=drift_threshold)
             invalids_report = self.stats.report_invalid_diff(other.stats, threshold=invalids_threshold)
+            singleton_report = self.stats.report_singleton_change(other.stats)
 
-            return {"drift": drift_report, "invalids": invalids_report}
+            return {"drift": drift_report, "invalids": invalids_report, "singleton": singleton_report}
         except ComponentStateException as e:
             return {}
 
@@ -146,9 +160,6 @@ class Component(Serializable, Buildable, ABC):
 
 
 class InputComponent(Component):
-    def __init__(self, name, extractor, dtype=DataType.FLOAT, stats=None):
-        super().__init__(name=name, extractor=extractor, dtype=dtype, stats=stats)
-
     def build_stats(self, data, domain=None):
         extracted = self.extractor.extract_multiple(data)
         self.stats.build(extracted, domain=domain)
@@ -172,11 +183,12 @@ class InputComponent(Component):
         name = jcr["name"]
         dtype = jcr["dtype"]
         stats = Stats.from_jcr(jcr["stats"])
+        main = jcr.get("main", False)
         if mock_extractor:
             extractor = NoneExtractor()
         else:
             extractor = Extractor.from_jcr(jcr["extractor"])
-        component = cls(name=name, extractor=extractor, stats=stats, dtype=dtype)
+        component = cls(name=name, extractor=extractor, stats=stats, dtype=dtype, main=main)
         return component
 
     def __str__(self):
@@ -184,9 +196,6 @@ class InputComponent(Component):
 
 
 class OutputComponent(Component):
-    def __init__(self, name, extractor, dtype=DataType.FLOAT, stats=None):
-        super().__init__(name=name, extractor=extractor, dtype=dtype, stats=stats)
-
     def build_stats(self, data, domain=None):
         extracted = self.extractor.extract_multiple(data)
         self.stats.build(extracted, domain=domain)
@@ -212,11 +221,12 @@ class OutputComponent(Component):
         name = jcr["name"]
         dtype = jcr["dtype"]
         stats = Stats.from_jcr(jcr["stats"])
+        main = jcr.get("main", False)
         if mock_extractor:
             extractor = NoneExtractor()
         else:
             extractor = Extractor.from_jcr(jcr["extractor"])
-        component = cls(name=name, extractor=extractor, stats=stats, dtype=dtype)
+        component = cls(name=name, extractor=extractor, stats=stats, dtype=dtype, main=main)
         return component
 
     def __str__(self):
@@ -224,9 +234,6 @@ class OutputComponent(Component):
 
 
 class ActualComponent(Component):
-    def __init__(self, name, extractor, dtype=DataType.FLOAT, stats=None):
-        super().__init__(name=name, extractor=extractor, dtype=dtype, stats=stats)
-
     def build_stats(self, data, domain=None):
         extracted = self.extractor.extract_multiple(data)
         self.stats.build(extracted, domain=domain)
@@ -252,11 +259,12 @@ class ActualComponent(Component):
         name = jcr["name"]
         dtype = jcr["dtype"]
         stats = Stats.from_jcr(jcr["stats"])
+        main = jcr.get("main", False)
         if mock_extractor:
             extractor = NoneExtractor()
         else:
             extractor = Extractor.from_jcr(jcr["extractor"])
-        component = cls(name=name, extractor=extractor, stats=stats, dtype=dtype)
+        component = cls(name=name, extractor=extractor, stats=stats, dtype=dtype, main=main)
         return component
 
     def __str__(self):
@@ -264,9 +272,6 @@ class ActualComponent(Component):
 
 
 class EvalComponent(Component):
-    def __init__(self, name, extractor, dtype=DataType.FLOAT, stats=None):
-        super().__init__(name=name, extractor=extractor, dtype=dtype, stats=stats)
-
     def build_stats(self, data, domain=None):
         output, actual = data
         extracted = self.extractor.extract_multiple(output=output, actual=actual)
@@ -290,11 +295,12 @@ class EvalComponent(Component):
         name = jcr["name"]
         dtype = jcr["dtype"]
         stats = Stats.from_jcr(jcr["stats"])
+        main = jcr.get("main", False)
         if mock_extractor:
-            extractor = NoneEvalExtractor()
+            extractor = NoneExtractor()
         else:
             extractor = Extractor.from_jcr(jcr["extractor"])
-        component = cls(name=name, extractor=extractor, stats=stats, dtype=dtype)
+        component = cls(name=name, extractor=extractor, stats=stats, dtype=dtype, main=main)
         return component
 
     def __str__(self):

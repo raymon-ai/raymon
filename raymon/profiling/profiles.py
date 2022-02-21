@@ -5,6 +5,7 @@ import tempfile
 import shutil
 import webbrowser
 import numbers
+import math
 
 from pydoc import locate
 from pathlib import Path
@@ -250,7 +251,9 @@ class ModelProfile(Serializable, Buildable):
         #     raise ProfileStateException("Profile 'other' is not built.")
         component_thresholds = thresholds.get("components", {})
         scorer_thresholds = thresholds.get("scores", {})
-        report = {}
+        global_threshold = thresholds.get("global_drift", 0.05)
+        component_reports = {}
+        drifts = []
         for component in self.components.values():
             if component.name not in other.components:
                 print(f"Component {component.name} not found in other, skipping...")
@@ -260,7 +263,14 @@ class ModelProfile(Serializable, Buildable):
                 other.components[component.name],
                 thresholds=comp_thresholds,
             )
-            report[component.name] = comp_report
+            component_reports[component.name] = comp_report
+            if comp_report["drift"]["valid"]:
+                drifts.append(comp_report["drift"]["drift"])
+        if len(drifts) > 0:
+            avg_drift = sum(drifts) / len(drifts)
+            multivariate_drift = {"drift": avg_drift, "valid": True, "alert": avg_drift > global_threshold}
+        else:
+            multivariate_drift = {"drift": -1, "valid": False, "alert": False}
 
         scorer_reports = {}
         for score in self.scores.values():
@@ -271,17 +281,26 @@ class ModelProfile(Serializable, Buildable):
             red_report = score.contrast(other.scores[score.name], components=self.components, threshold=red_threshold)
             scorer_reports[score.name] = red_report
 
+        global_reports = {
+            "scores": scorer_reports,
+            "multivariate_drift": multivariate_drift,
+        }
+
         jcr = {}
         jcr["reference"] = self.to_jcr()
         jcr["alternativeA"] = other.to_jcr()
-        jcr["health_reports"] = report
-        jcr["score_reports"] = scorer_reports
+        jcr["component_reports"] = component_reports
+        jcr["global_reports"] = global_reports
         return jcr
 
     def contrast_alternatives(self, alternativeA, alternativeB, thresholds={}):
         component_thresholds = thresholds.get("components", {})
         scorer_thresholds = thresholds.get("scores", {})
+        global_threshold = thresholds.get("global_drift", 0.05)
+
         report = {}
+        drifts = []
+
         for component in self.components.values():
             print(component.name)
             comp_thresholds = component_thresholds.get(component.name, {})
@@ -295,7 +314,15 @@ class ModelProfile(Serializable, Buildable):
                 alternativeB.components[component.name],
                 thresholds=comp_thresholds,
             )
+            if comp_report["drift"]["valid"]:
+                drifts.append(comp_report["drift"]["drift"])
             report[component.name] = comp_report
+
+        if len(drifts) > 0:
+            avg_drift = sum(drifts) / len(drifts)
+            multivariate_drift = {"drift": avg_drift, "valid": True, "alert": avg_drift > global_threshold}
+        else:
+            multivariate_drift = {"drift": -1, "valid": False, "alert": False}
 
         scorer_reports = {}
         for scorer in self.scores.values():
@@ -311,12 +338,17 @@ class ModelProfile(Serializable, Buildable):
             )
             scorer_reports[scorer.name] = red_report
 
+        global_reports = {
+            "scores": scorer_reports,
+            "multivariate_drift": multivariate_drift,
+        }
+
         jcr = {}
         jcr["reference"] = self.to_jcr()
         jcr["alternativeA"] = alternativeA.to_jcr()
         jcr["alternativeB"] = alternativeB.to_jcr()
-        jcr["health_reports"] = report
-        jcr["score_reports"] = scorer_reports
+        jcr["component_reports"] = report
+        jcr["global_reports"] = global_reports
         return jcr
 
     def view(self, poi=None, mode="external", outdir=None, silent=True):

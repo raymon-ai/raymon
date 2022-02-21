@@ -63,7 +63,18 @@ class Stats(Serializable, Buildable, ABC):
 
 class NumericStats(Stats):
 
-    _attrs = ["min", "max", "mean", "std", "invalids", "percentiles", "samplesize", "percentiles_lb", "percentiles_ub"]
+    _attrs = [
+        "min",
+        "max",
+        "mean",
+        "std",
+        "invalids",
+        "percentiles",
+        "samplesize",
+        "percentiles_lb",
+        "percentiles_ub",
+        "is_singleton",
+    ]
 
     def __init__(
         self, min=None, max=None, mean=None, std=None, invalids=None, percentiles=None, samplesize=None, **kwargs
@@ -74,7 +85,6 @@ class NumericStats(Stats):
         self.mean = mean
         self.std = std
         self.invalids = invalids
-
         self.percentiles = percentiles
 
     """MIN"""
@@ -169,6 +179,17 @@ class NumericStats(Stats):
     @property
     def percentiles_ub(self):
         return self._percentiles_ub
+
+    """Domain Cardinality"""
+
+    @property
+    def is_singleton(self):
+        if self.max is None or self.min is None:
+            return None
+        if self.max - self.min == 0:
+            return True
+        else:
+            return False
 
     """Size of the sample that was analyzed"""
 
@@ -325,6 +346,18 @@ class NumericStats(Stats):
         }
         return drift_report
 
+    def report_singleton_change(self, other):
+        if other.samplesize == 0:
+            return {"is_singleton": False, "singleton_value": "-1", "alert": False, "valid": False}
+        # If both singleton -> no alert
+        # If only other is singleton -> Alert
+        if other.is_singleton and not self.is_singleton:
+            return {"is_singleton": True, "singleton_value": self.min, "alert": True, "valid": True}
+        elif other.is_singleton and self.is_singleton:
+            return {"is_singleton": True, "singleton_value": self.min, "alert": False, "valid": True}
+        else:
+            return {"is_singleton": False, "singleton_value": -1, "alert": False, "valid": True}
+
     def sample(self, n, dtype="float"):
         # Sample floats in range 0 - len(percentiles)
         samples = np.random.random(n) * 100
@@ -397,7 +430,7 @@ class FloatStats(NumericStats):
 
 class CategoricStats(Stats):
 
-    _attrs = ["frequencies", "invalids", "samplesize", "frequencies_lb", "frequencies_ub"]
+    _attrs = ["frequencies", "invalids", "samplesize", "frequencies_lb", "frequencies_ub", "is_singleton"]
 
     def __init__(self, frequencies=None, invalids=None, samplesize=None, **kwargs):
 
@@ -451,6 +484,15 @@ class CategoricStats(Stats):
         if value is not None and math.isnan(value):
             raise DataException("stats.invalids cannot be NaN")
         self._invalids = value
+
+    """Domain Cardinality"""
+
+    @property
+    def is_singleton(self):
+        if len(self.frequencies) == 1:
+            return True
+        else:
+            return False
 
     @property
     def samplesize(self):
@@ -579,6 +621,24 @@ class CategoricStats(Stats):
         drift_report = {"drift": float(drift), "drift_idx": drift_idx, "alert": bool(drift > threshold), "valid": True}
 
         return drift_report
+
+    def report_singleton_change(self, other):
+        if other.samplesize == 0:
+            return {"is_singleton": False, "singleton_value": "-1", "alert": False, "valid": False}
+        value = list(self.frequencies.keys())[0]
+        # If both singleton -> no alert
+        # If only other is singleton -> Alert
+        if other.is_singleton and not self.is_singleton:
+            return {
+                "is_singleton": True,
+                "singleton_value": value,
+                "alert": True,
+                "valid": True,
+            }
+        elif other.is_singleton and self.is_singleton:
+            return {"is_singleton": True, "singleton_value": value, "alert": False, "valid": True}
+        else:
+            return {"is_singleton": False, "singleton_value": -1, "alert": False, "valid": True}
 
     def sample(self, n):
         domain = sorted(list(self.frequencies.keys()))
